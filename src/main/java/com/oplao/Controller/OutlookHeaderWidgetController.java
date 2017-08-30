@@ -1,22 +1,20 @@
 package com.oplao.Controller;
 
 
-import com.oplao.model.GeoLocation;
 import com.oplao.model.OutlookWeatherMapping;
+import com.oplao.model.TextWeatherMapping;
+import com.oplao.model.WeeklyWeatherSummaryMapping;
+import com.oplao.service.TextWeatherService;
 import com.oplao.service.WeatherService;
-import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class OutlookHeaderWidgetController {
@@ -32,10 +30,65 @@ public class OutlookHeaderWidgetController {
         return service.getRemoteData();
     }
 
-//    @RequestMapping("/get_widget_header")
-//    @ResponseBody
-//    public OutlookWeatherMapping getWidgetHeader(HttpServletRequest request){
-//
-//    }
+    @RequestMapping("/get_text_weather")
+    @ResponseBody
+    public OutlookWeatherMapping getTextWeather(){
 
+        DateTime dateTime = new DateTime();
+        DateTime closestMondayDateTime = dateTime.minusDays(dateTime.getDayOfWeek()-1);
+
+        return null;
+    }
+
+
+    @RequestMapping("/get_weekly_weather_summary")
+    @ResponseBody
+    public WeeklyWeatherSummaryMapping getWeeklySummary(){
+
+        DateTime dateTime = new DateTime();
+        DateTime closestMondayDateTime = dateTime.minusDays(dateTime.getDayOfWeek()-1);
+
+        TextWeatherService service = new TextWeatherService();
+
+        List<TextWeatherMapping> list = new ArrayList<>();
+        for (int day = closestMondayDateTime.getDayOfWeek(); day <=7; day++) {
+            list.add(service.getTextWeatherMapping(closestMondayDateTime.plusDays(day-1)));
+        }
+
+        TextWeatherMapping maxDayTemp = list.stream()
+                .max(Comparator.comparing(TextWeatherMapping::getMaxDayTempC)).orElse(new TextWeatherMapping());
+        TextWeatherMapping minDayTemp = list.stream()
+                .min(Comparator.comparing(TextWeatherMapping::getMinDayTempC)).orElse(new TextWeatherMapping());
+
+
+        final int[] averageMaxC = {0};
+        list.stream().forEach(textWeatherMapping -> averageMaxC[0] +=textWeatherMapping.getMaxDayTempC());
+
+        final int[] averageMaxF = {0};
+        list.stream().forEach(textWeatherMapping -> averageMaxF[0] +=textWeatherMapping.getMaxDayTempF());
+
+        final int[] averageMinC = {0};
+        list.stream().forEach(textWeatherMapping -> averageMinC[0] +=textWeatherMapping.getMinDayTempC());
+
+        final int[] averageMinF = {0};
+        list.stream().forEach(textWeatherMapping -> averageMinF[0] +=textWeatherMapping.getMinDayTempF());
+
+        final double[] totalRainfall = {0};
+        list.stream().forEach(textWeatherMapping -> totalRainfall[0] +=textWeatherMapping.getmaxRainfallMM());
+
+
+        TextWeatherMapping windiestMS = list.stream().sorted(Comparator.comparing(TextWeatherMapping::getMaxWindMS).reversed()).findFirst().orElse(new TextWeatherMapping());
+
+        double maxWindiestMS = windiestMS.getMaxWindMS();
+
+        TextWeatherMapping windiestKmPh = list.stream().sorted(Comparator.comparing(TextWeatherMapping::getMaxWindKmPh).reversed()).findFirst().orElse(new TextWeatherMapping());
+
+        double maxWindiestKmPh = windiestKmPh.getMaxWindKmPh();
+
+
+        return new WeeklyWeatherSummaryMapping(maxDayTemp.getMaxDayTempC(), maxDayTemp.getMaxDayTempF(),
+                minDayTemp.getMinDayTempC(), minDayTemp.getMinDayTempF(), averageMinC[0]/list.size(),
+                averageMinF[0]/list.size(), averageMaxC[0]/list.size(), averageMaxF[0]/list.size(),
+                totalRainfall[0],maxWindiestMS , maxWindiestKmPh);
+    }
 }
