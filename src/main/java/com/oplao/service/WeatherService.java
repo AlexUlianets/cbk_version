@@ -1,6 +1,7 @@
 package com.oplao.service;
 
 import com.oplao.Utils.DateConstants;
+import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.GeoLocation;
 import com.oplao.model.OutlookWeatherMapping;
 import com.oplao.model.WeeklyWeatherReportMapping;
@@ -20,6 +21,40 @@ import java.util.stream.Collectors;
 public class WeatherService {
 
 
+    public static String convertDayOfWeekShort(int day) {
+
+        switch (day) {
+            case DateTimeConstants.MONDAY
+                    :
+                return "Mon";
+            case DateTimeConstants.TUESDAY
+                    :
+                return "Tue";
+
+            case DateTimeConstants.WEDNESDAY
+                    :
+                return "Wed";
+
+            case DateTimeConstants.THURSDAY
+                    :
+                return "Thur";
+
+            case DateTimeConstants.FRIDAY
+                    :
+                return "Fri";
+
+            case DateTimeConstants.SATURDAY
+                    :
+                return "Sat";
+
+            case DateTimeConstants.SUNDAY
+                    :
+                return "Sun";
+            default:
+                return "wrong value for field 'day of week' ";
+
+        }
+    }
     List<Integer> dayTimeValues = Arrays.asList(600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700);
     List<Integer> nightTimeValues = Arrays.asList(0,100,200,300,400,500,1800,1900,2000,2100,2200,2300);
 
@@ -278,5 +313,53 @@ public class WeatherService {
                             Integer.parseInt(String.valueOf(hourlyHm.get("WindGustKmph"))),
                             Integer.parseInt(String.valueOf(currentConditions.get("pressure"))));
 
+    }
+
+
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(){
+            List<DetailedForecastGraphMapping> result = new ArrayList<>();
+
+            DateTime dateTime = new DateTime();
+        for (int day = 0; day < 10; day++) {
+            result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day)));
+        }
+        return result;
+    }
+    private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime){
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+        URL url = null;
+
+        try {
+            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        URLConnection con = null;
+        String body = "";
+        try {
+            con = url.openConnection();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            body = IOUtils.toString(in, encoding);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = new JSONObject(body);
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
+        HashMap currentConditions = (HashMap)((ArrayList)((HashMap)(((ArrayList)map.get("weather"))).get(0)).get("hourly")).get(0);
+
+
+        int tempC = parseInt(currentConditions.get("tempC"));
+        int tempF = parseInt(currentConditions.get("tempF"));
+        double precip = parseDouble(currentConditions.get("precipMM"));
+        int dayOfMonth = dateTime.getDayOfMonth();
+        int monthOfYear = dateTime.getMonthOfYear();
+        String dayOfWeek = convertDayOfWeekShort(dateTime.getDayOfWeek());
+
+
+
+            return new DetailedForecastGraphMapping(tempC,tempF,dayOfMonth,monthOfYear,dayOfWeek, precip);
     }
 }

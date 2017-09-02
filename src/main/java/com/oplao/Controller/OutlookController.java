@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.*;
 
 @Controller
-public class OutlookHeaderWidgetController {
+public class OutlookController {
 
     @RequestMapping("/get_api_weather")
     @ResponseBody
@@ -87,6 +87,11 @@ public class OutlookHeaderWidgetController {
                 totalRainfall[0],maxWindiestMS , maxWindiestKmPh);
     }
 
+    @RequestMapping("/get_detailed_forecast")
+    @ResponseBody
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(){
+        return new WeatherService().getDetailedForecastMapping();
+    }
     @RequestMapping("/get_weekly_weather")
     @ResponseBody
     public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(){
