@@ -1,5 +1,6 @@
 package com.oplao.service;
 
+import com.oplao.Utils.CityToTimeZoneConverter;
 import com.oplao.Utils.DateConstants;
 import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.GeoLocation;
@@ -15,6 +16,12 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -268,6 +275,35 @@ public class WeatherService {
         }
     }
 
+
+
+    private float roundFloat(float num){
+        String pattern = "##0.00";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        return Float.parseFloat(decimalFormat.format(num).replace(',', '.'));
+    }
+    public String getCoordinates(){
+
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+        ZonedDateTime zdt = ZonedDateTime.now(ZoneOffset.UTC);
+        LocalDateTime ldt = LocalDateTime.of(zdt.getYear(),
+                zdt.getMonth(), zdt.getDayOfMonth(),
+                zdt.getHour(), zdt.getMinute());
+
+        String hoursBetween = "" + ChronoUnit.HOURS.between(ldt, ZonedDateTime.now
+                (ZoneId.of(CityToTimeZoneConverter.convert(geoLocation.getCity()))));
+
+        if(Integer.parseInt(hoursBetween)>0){
+            hoursBetween = "+ " + hoursBetween;
+        }
+         return geoLocation.getCity() + ", " + geoLocation.getCountryName()+ ". "
+                + geoLocation.getCity() + " on the map " + roundFloat((geoLocation.getLatitude()))
+                + "°, " + roundFloat(geoLocation.getLongitude()) + "°. Timezone: UTC " + hoursBetween;
+
+
+
+
+    }
 
         public OutlookWeatherMapping getRemoteData(){
         GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");

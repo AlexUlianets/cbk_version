@@ -35,6 +35,12 @@ public class OutlookController {
         return null;
     }
 
+    @RequestMapping("/get_coordinates")
+    @ResponseBody
+    public String getCoordinates(){
+
+        return new WeatherService().getCoordinates();
+    }
 
     @RequestMapping("/get_weekly_weather_summary")
     @ResponseBody
