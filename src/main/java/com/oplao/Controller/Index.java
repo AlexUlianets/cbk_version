@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Index {
     @RequestMapping("/a")
     public String get(){
-        return "redirect:about.html";
+        return "redirect:/";
     }
 }

@@ -1,10 +1,7 @@
 package com.oplao.Controller;
 
 
-import com.oplao.model.DetailedForecastGraphMapping;
-import com.oplao.model.OutlookWeatherMapping;
-import com.oplao.model.TextWeatherMapping;
-import com.oplao.model.WeeklyWeatherSummaryMapping;
+import com.oplao.model.*;
 import com.oplao.service.TextWeatherService;
 import com.oplao.service.WeatherService;
 import org.joda.time.DateTime;
@@ -12,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class OutlookController {
@@ -95,8 +89,14 @@ public class OutlookController {
 
     @RequestMapping("/get_detailed_forecast")
     @ResponseBody
-    public DetailedForecastGraphMapping getDetailedForecastMapping(){
-
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(){
         return new WeatherService().getDetailedForecastMapping();
     }
+    @RequestMapping("/get_weekly_weather")
+    @ResponseBody
+    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(){
+        WeatherService service = new WeatherService();
+        return service.getWeeklyWeatherReport();
+    }
+
 }

@@ -4,6 +4,7 @@ import com.oplao.Utils.DateConstants;
 import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.GeoLocation;
 import com.oplao.model.OutlookWeatherMapping;
+import com.oplao.model.WeeklyWeatherReportMapping;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -14,8 +15,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WeatherService {
 
@@ -53,6 +54,146 @@ public class WeatherService {
                 return "wrong value for field 'day of week' ";
 
         }
+    }
+    List<Integer> dayTimeValues = Arrays.asList(600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700);
+    List<Integer> nightTimeValues = Arrays.asList(0,100,200,300,400,500,1800,1900,2000,2100,2200,2300);
+
+
+
+    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>> getWeeklyWeatherReport(){
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+
+        DateTime dateTime = new DateTime();
+
+       HashMap<Integer, HashMap<String, WeeklyWeatherReportMapping>> result = new HashMap();
+
+        for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+7 ; day++, count++) {
+            result.put(count, getOneDayReportMapping(dateTime.plusDays(
+                    count),
+                    geoLocation.getCity(),count));
+        }
+
+
+        return result;
+    }
+
+    private HashMap<String, WeeklyWeatherReportMapping> getOneDayReportMapping(DateTime dateTime, String city, int count ){
+        URL url = null;
+        try {
+            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + dateTime.getDayOfMonth()  + "&q=" + city);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        URLConnection con = null;
+        String body = "";
+        try {
+            con = url.openConnection();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            body = IOUtils.toString(in, encoding);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        JSONObject jsonObject = new JSONObject(body);
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
+        ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
+        HashMap weatherData = weather.get(count);
+        ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
+
+
+        int maxDayC = getMaxIntParam(hourly, "tempC", dayTimeValues);
+        int maxDayF = getMaxIntParam(hourly,"tempF", dayTimeValues);
+        int maxNightC = getMaxIntParam(hourly,"tempC", nightTimeValues);
+        int maxNightF = getMaxIntParam(hourly,"tempF", nightTimeValues);
+        int maxFeelLikeDayC = getMaxIntParam(hourly,"FeelsLikeC", dayTimeValues);
+        int maxFeelLikeDayF = getMaxIntParam(hourly,"FeelsLikeF", dayTimeValues);
+        int maxFeelLikeNightC = getMaxIntParam(hourly,"FeelsLikeC", nightTimeValues);
+        int maxFeelLikeNightF = getMaxIntParam(hourly,"FeelsLikeF", nightTimeValues);
+        int precipeChanceDay = getAVGIntParam(hourly, "chanceofrain",dayTimeValues);
+        int precipeChanceNight = getAVGIntParam(hourly, "chanceofrain",nightTimeValues);
+        double precipDayMM  = getMaxDoubleParam(hourly,"precipMM", dayTimeValues);
+        double precipNightMM = getMaxDoubleParam(hourly,"precipMM", nightTimeValues);
+        int avgWindMDay = getAVGIntParam(hourly,"windspeedMiles", dayTimeValues);
+        int avgWindKmhDay = getAVGIntParam(hourly,"windspeedKmph", dayTimeValues);
+        int avgWindMNight = getAVGIntParam(hourly,"windspeedMiles", nightTimeValues);
+        int avgWindKmhNight = getAVGIntParam(hourly, "windspeedKmph" ,nightTimeValues);
+        int maxGustMDay = getMaxIntParam(hourly, "WindGustMiles", dayTimeValues);
+        int maxGustKmhDay = getMaxIntParam(hourly,"WindGustKmph", dayTimeValues);
+        int maxGustMNight = getMaxIntParam(hourly, "WindGustMiles", nightTimeValues);
+        int maxGustKmhNight = getMaxIntParam(hourly, "WindGustKmph", nightTimeValues);
+        int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
+        int avgPressureNight = getAVGIntParam(hourly, "pressure", nightTimeValues);
+        String weaherIcon = String.valueOf(((HashMap)((ArrayList)(map.get("current_condition"))).get(0)).get("weatherIconUrl"));
+
+
+        //TODO weather icon validation add here!!!
+        HashMap<String, WeeklyWeatherReportMapping> result = new HashMap<>();
+        result.put("day", new WeeklyWeatherReportMapping(
+                dateTime.getDayOfMonth(), convertMonthOfYear(dateTime.getMonthOfYear()),
+                convertDayOfWeek(dateTime.getDayOfWeek()),
+                "Day", weaherIcon, maxDayC, maxDayF, maxFeelLikeDayC,
+                maxFeelLikeDayF, precipeChanceDay, precipDayMM, avgWindMDay, avgWindKmhDay, maxGustMDay,
+                maxGustKmhDay, avgPressureDay)
+        );
+
+        result.put("night", new WeeklyWeatherReportMapping(
+                dateTime.getDayOfMonth(), convertMonthOfYear(dateTime.getMonthOfYear()),
+                convertDayOfWeek(dateTime.getDayOfWeek()), "Night", weaherIcon, maxNightC,
+                maxNightF, maxFeelLikeNightC, maxFeelLikeNightF,
+                precipeChanceNight, precipNightMM, avgWindMNight, avgWindKmhNight, maxGustMNight,
+                maxGustKmhNight, avgPressureNight)
+        );
+
+
+        return result;
+    }
+
+    private Integer getAVGIntParam(List<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
+        final int[] precipChance = {0};
+
+        hourly = hourly.stream().filter(hashMap ->
+                dayTimeValues.contains(parseInt(hashMap.get("time"))))
+                .collect(Collectors.toList());
+
+        hourly.stream().forEach(hashMap ->
+                precipChance[0] += parseInt(hashMap.get(paramName)));
+
+        return precipChance[0]/dayTimeValues.size(
+
+        );
+    }
+    private Double getMaxDoubleParam(ArrayList<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
+        List<HashMap> hourlyDay = hourly.stream().filter(
+                hashMap -> dayTimeValues.contains(parseInt(hashMap.get("time"))
+                )).collect(Collectors.toList());
+
+
+        double param = parseDouble(hourlyDay.stream().max(
+                Comparator.comparing(hashMap -> parseDouble(hashMap.get(paramName)))
+        ).get().get(paramName));
+        return param;
+    }
+
+
+    private Integer getMaxIntParam(ArrayList<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
+        List<HashMap> hourlyDay = hourly.stream().filter(
+                hashMap -> dayTimeValues.contains(parseInt(hashMap.get("time"))
+                )).collect(Collectors.toList());
+
+
+        int param = parseInt(hourlyDay.stream().max(
+                Comparator.comparing(hashMap -> parseInt(hashMap.get(paramName)))
+        ).get().get(paramName));
+        return param;
+    }
+    private Integer parseInt(Object o){
+        return Integer.parseInt(String.valueOf(o));
+    }
+    private Double parseDouble(Object o){
+        return Double.parseDouble(String.valueOf(o));
     }
     public static String convertDayOfWeek(int day) {
 
@@ -154,9 +295,9 @@ public class WeatherService {
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> currentCondition = (ArrayList<HashMap>)map.get("current_condition");
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
-        HashMap weatherData = weather.get(0);
-        ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
-        HashMap hourlyHm = hourly.get(0);
+            HashMap weatherData = weather.get(0);
+            ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
+            HashMap hourlyHm = hourly.get(0);
         HashMap currentConditions = currentCondition.get(0);
 
             return
@@ -174,13 +315,22 @@ public class WeatherService {
 
     }
 
-    public DetailedForecastGraphMapping getDetailedForecastMapping(){
+
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(){
+            List<DetailedForecastGraphMapping> result = new ArrayList<>();
+
+            DateTime dateTime = new DateTime();
+        for (int day = 0; day < 10; day++) {
+            result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day)));
+        }
+        return result;
+    }
+    private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime){
         GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
         URL url = null;
-        DateTime dateTime = new DateTime();
 
         try {
-            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -198,13 +348,18 @@ public class WeatherService {
 
         JSONObject jsonObject = new JSONObject(body);
         HashMap map = (HashMap)jsonObject.toMap().get("data");
-        HashMap currentConditions = ((ArrayList<HashMap>)map.get("current_condition")).get(0);
+        HashMap currentConditions = (HashMap)((ArrayList)((HashMap)(((ArrayList)map.get("weather"))).get(0)).get("hourly")).get(0);
 
 
-  //      int tempC = currentConditions.get("temp_C");
+        int tempC = parseInt(currentConditions.get("tempC"));
+        int tempF = parseInt(currentConditions.get("tempF"));
+        double precip = parseDouble(currentConditions.get("precipMM"));
+        int dayOfMonth = dateTime.getDayOfMonth();
+        int monthOfYear = dateTime.getMonthOfYear();
+        String dayOfWeek = convertDayOfWeekShort(dateTime.getDayOfWeek());
 
 
 
-            return new DetailedForecastGraphMapping(10,10,2,4,"str", 30);
+            return new DetailedForecastGraphMapping(tempC,tempF,dayOfMonth,monthOfYear,dayOfWeek, precip);
     }
 }
