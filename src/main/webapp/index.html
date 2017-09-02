@@ -51,8 +51,8 @@
                 <a id="nav-toggle" href="#"><span></span><em></em></a>
 
                 <div class="temp-wrap">
-                    <div class="temp-block  tmp-cel">°C</div>
-                    <div class="temp-block active active-mob tmp-far">°F</div>
+                    <div class="temp-block  active active-mob tmp-cel" ng-click="local.typeTemp = 'C'">°C</div>
+                    <div class="temp-block tmp-far" ng-click="local.typeTemp = 'F'">°F</div>
                 </div><!-- end temp-wrap -->
 
                 <div id="h-share">
@@ -165,9 +165,9 @@
                 </div>
                 <div class="ht-location">
                     <dl>
-                        <dt><i class="icon location"></i><span class="search-text1">Minsk</span> weather, <span
-                                class="search-text2">Belarus</span></dt>
-                        <dd>Today. August 19. Friday. <span>12:10 AM</span></dd>
+                        <dt><i class="icon location"></i><span class="search-text1">{{temperature.city}}</span> weather, <span
+                                class="search-text2">{{temperature.country}}</span></dt>
+                        <dd>Today. {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span>{{temperature.hours}}:{{temperature.minutes}}</span></dd>
                     </dl>
                 </div>
 
@@ -244,7 +244,8 @@
             <div class="hb-inner">
                 <div class="weather-now">
                     <img src="images/svg-icons/weather-ico1.svg" alt="img">
-                    <div><b>18</b><em>C</em><span>/<strong>75</strong>F</span></div>
+                    <div><b ng-bind="local.typeTemp=='C'?temperature.temp_c:temperature.temp_f"></b><em ng-bind="local.typeTemp"></em>
+                        <span>/<strong ng-bind="local.typeTemp=='C'?temperature.temp_f:temperature.temp_c"></strong><abbr ng-bind="local.typeTemp!='C'?'C':'F'"></abbr></span></div>
                 </div>
             </div>
         </div>
@@ -436,19 +437,19 @@
     </div>
 </div>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/charts_init.js"></script>
-<script src="js/popup.js"></script>
-<script src="js/scripts.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <!--<script src="js/charts.js"></script>-->
+    <!--<script src="js/charts_init.js"></script>-->
+    <script src="js/popup.js"></script>
+    <script src="js/scripts.js"></script>
 
 
 
-<script src="assets/plugins/angularJS/angular.min.js"></script>
+    <script src="assets/plugins/angularJS/angular.min.js"></script>
     <script src="assets/plugins/angularJS/angular-ui-router.min.js"></script>
     <script src="assets/plugins/angularJS/ocLazyLoad.min.js"></script>
     <script src="assets/plugins/other/angular-cookies.min.js"></script>
-<script src="app.js"></script>
+    <script src="app.js"></script>
 
 </body>
 </html>
