@@ -354,12 +354,15 @@ public class WeatherService {
         int tempC = parseInt(currentConditions.get("tempC"));
         int tempF = parseInt(currentConditions.get("tempF"));
         double precip = parseDouble(currentConditions.get("precipMM"));
-        int dayOfMonth = dateTime.getDayOfMonth();
-        int monthOfYear = dateTime.getMonthOfYear();
-        String dayOfWeek = convertDayOfWeekShort(dateTime.getDayOfWeek());
+
+        String month = dateTime.getMonthOfYear() > 9? "" + dateTime.getMonthOfYear():"0" + dateTime.getMonthOfYear();
+        String day = dateTime.getDayOfMonth() > 9 ? "" + dateTime.getDayOfMonth():"0" + dateTime.getDayOfMonth();
+        String date = dateTime.getYear() + "-" +
+                month + "-" +
+                day;
 
 
 
-            return new DetailedForecastGraphMapping(tempC,tempF,dayOfMonth,monthOfYear,dayOfWeek, precip);
+            return new DetailedForecastGraphMapping(tempC,tempF,date, precip);
     }
 }
