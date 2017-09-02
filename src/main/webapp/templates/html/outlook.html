@@ -70,11 +70,11 @@
                                 </div>
                             </div>
                             <div class="tb-contant">
-                                <div class="tb-item" ng-repeat="temperatureDay in temperatureWeekly.data track by $index">
+                                <div class="tb-item" ng-repeat="temperatureDay in temperatureWeekly.data"  ng-init="sectionIndex = $index">
 
                                     <div class="tb-row" ng-repeat="day in temperatureDay">
                                         <div class="tb-date" ng-if="day.time == 'Night'">
-                                            <div class="tb-today" ng-if="$index==0">Today</div>
+                                            <div class="tb-today" ng-if="sectionIndex==0">Today</div>
                                             <div class="tb-date-day">{{day.dayOfMonth}} {{day.monthOfYear | limitTo:3}},</div>
                                             <div class="tb-day">{{day.dayOfWeek | limitTo:3}}</div>
                                         </div>
