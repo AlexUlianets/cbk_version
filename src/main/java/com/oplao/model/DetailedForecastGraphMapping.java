@@ -5,15 +5,16 @@ public class DetailedForecastGraphMapping extends TempMapping{
     private int dayOfMonth;
     private int monthOfYear;
     private String dayOWeek;
-    private int precip;
+    private double precip;
 
-    public DetailedForecastGraphMapping(int tempC, int tempF, int dayOfMonth, int monthOfYear, String dayOWeek, int precip) {
+    public DetailedForecastGraphMapping(int tempC, int tempF, int dayOfMonth, int monthOfYear, String dayOWeek, double precip) {
         super(tempC, tempF);
         this.dayOfMonth = dayOfMonth;
         this.monthOfYear = monthOfYear;
         this.dayOWeek = dayOWeek;
         this.precip = precip;
     }
+
 
     public int getTempC(){
         return super.getTempC();
@@ -54,11 +55,11 @@ public class DetailedForecastGraphMapping extends TempMapping{
         this.dayOWeek = dayOWeek;
     }
 
-    public int getPrecip() {
+    public double getPrecip() {
         return precip;
     }
 
-    public void setPrecip(int precip) {
+    public void setPrecip(double precip) {
         this.precip = precip;
     }
 }
