@@ -1,6 +1,7 @@
 package com.oplao.service;
 
 import com.oplao.Utils.DateConstants;
+import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.GeoLocation;
 import com.oplao.model.OutlookWeatherMapping;
 import org.apache.commons.io.IOUtils;
@@ -19,6 +20,40 @@ import java.util.HashMap;
 public class WeatherService {
 
 
+    public static String convertDayOfWeekShort(int day) {
+
+        switch (day) {
+            case DateTimeConstants.MONDAY
+                    :
+                return "Mon";
+            case DateTimeConstants.TUESDAY
+                    :
+                return "Tue";
+
+            case DateTimeConstants.WEDNESDAY
+                    :
+                return "Wed";
+
+            case DateTimeConstants.THURSDAY
+                    :
+                return "Thur";
+
+            case DateTimeConstants.FRIDAY
+                    :
+                return "Fri";
+
+            case DateTimeConstants.SATURDAY
+                    :
+                return "Sat";
+
+            case DateTimeConstants.SUNDAY
+                    :
+                return "Sun";
+            default:
+                return "wrong value for field 'day of week' ";
+
+        }
+    }
     public static String convertDayOfWeek(int day) {
 
 
@@ -137,5 +172,39 @@ public class WeatherService {
                             Integer.parseInt(String.valueOf(hourlyHm.get("WindGustKmph"))),
                             Integer.parseInt(String.valueOf(currentConditions.get("pressure"))));
 
+    }
+
+    public DetailedForecastGraphMapping getDetailedForecastMapping(){
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+        URL url = null;
+        DateTime dateTime = new DateTime();
+
+        try {
+            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        URLConnection con = null;
+        String body = "";
+        try {
+            con = url.openConnection();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            body = IOUtils.toString(in, encoding);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = new JSONObject(body);
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
+        HashMap currentConditions = ((ArrayList<HashMap>)map.get("current_condition")).get(0);
+
+
+  //      int tempC = currentConditions.get("temp_C");
+
+
+
+            return new DetailedForecastGraphMapping(10,10,2,4,"str", 30);
     }
 }

@@ -1,6 +1,7 @@
 package com.oplao.Controller;
 
 
+import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.OutlookWeatherMapping;
 import com.oplao.model.TextWeatherMapping;
 import com.oplao.model.WeeklyWeatherSummaryMapping;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class OutlookHeaderWidgetController {
+public class OutlookController {
 
     @RequestMapping("/get_api_weather")
     @ResponseBody
@@ -90,5 +91,12 @@ public class OutlookHeaderWidgetController {
                 minDayTemp.getMinDayTempC(), minDayTemp.getMinDayTempF(), averageMinC[0]/list.size(),
                 averageMinF[0]/list.size(), averageMaxC[0]/list.size(), averageMaxF[0]/list.size(),
                 totalRainfall[0],maxWindiestMS , maxWindiestKmPh);
+    }
+
+    @RequestMapping("/get_detailed_forecast")
+    @ResponseBody
+    public DetailedForecastGraphMapping getDetailedForecastMapping(){
+
+        return new WeatherService().getDetailedForecastMapping();
     }
 }
