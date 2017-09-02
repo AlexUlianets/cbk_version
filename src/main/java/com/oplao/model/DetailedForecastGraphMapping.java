@@ -15,6 +15,7 @@ public class DetailedForecastGraphMapping extends TempMapping{
         this.precip = precip;
     }
 
+
     public int getTempC(){
         return super.getTempC();
     }
