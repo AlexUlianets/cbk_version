@@ -35,11 +35,11 @@ public class OutlookController {
         return null;
     }
 
-    @RequestMapping("/get_coordinates")
+    @RequestMapping("/get_astronomy")
     @ResponseBody
-    public String getCoordinates(){
+    public HashMap getAstronomy(){
 
-        return new WeatherService().getCoordinates();
+        return new WeatherService().getAstronomy();
     }
 
     @RequestMapping("/get_weekly_weather_summary")
