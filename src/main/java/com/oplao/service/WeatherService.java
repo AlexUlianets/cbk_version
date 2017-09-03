@@ -2,6 +2,7 @@ package com.oplao.service;
 
 import com.oplao.Utils.CityToTimeZoneConverter;
 import com.oplao.Utils.DateConstants;
+import com.oplao.Utils.MoonPhase;
 import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.GeoLocation;
 import com.oplao.model.OutlookWeatherMapping;
@@ -10,7 +11,6 @@ import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -44,7 +44,7 @@ public class WeatherService {
 
             case DateTimeConstants.THURSDAY
                     :
-                return "Thur";
+                return "Thu";
 
             case DateTimeConstants.FRIDAY
                     :
@@ -282,7 +282,7 @@ public class WeatherService {
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
         return Float.parseFloat(decimalFormat.format(num).replace(',', '.'));
     }
-    public String getCoordinates(){
+    private HashMap getCoordinates(){
 
         GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
         ZonedDateTime zdt = ZonedDateTime.now(ZoneOffset.UTC);
@@ -296,15 +296,32 @@ public class WeatherService {
         if(Integer.parseInt(hoursBetween)>0){
             hoursBetween = "+ " + hoursBetween;
         }
-         return geoLocation.getCity() + ", " + geoLocation.getCountryName()+ ". "
-                + geoLocation.getCity() + " on the map " + roundFloat((geoLocation.getLatitude()))
-                + "°, " + roundFloat(geoLocation.getLongitude()) + "°. Timezone: UTC " + hoursBetween;
+
+        HashMap result = new HashMap();
+
+        result.put("city", geoLocation.getCity());
+        result.put("country", geoLocation.getCountryName());
+        result.put("latitude", roundFloat(geoLocation.getLatitude()));
+        result.put("longitude", roundFloat(geoLocation.getLongitude()));
+        result.put("hours_between", hoursBetween);
 
 
-
+        return result;
 
     }
 
+    public HashMap getAstronomy(){
+
+        HashMap result = new HashMap<>();
+
+        result.put("coordinates", getCoordinates());
+        result.put("moon_phase_index", getMoonPhase());
+        return result;
+    }
+
+    private int getMoonPhase(){
+        return new MoonPhase(Calendar.getInstance()).getPhaseIndex();
+    }
         public OutlookWeatherMapping getRemoteData(){
         GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
             URL url = null;
