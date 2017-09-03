@@ -418,4 +418,42 @@ public class WeatherService {
 
             return new DetailedForecastGraphMapping(tempC,tempF,date, precip);
     }
+
+    public List<HashMap> getWeeklyUltraviolet(){
+
+        DateTime dateTime = new DateTime();
+        List<HashMap> list = new ArrayList();
+        for (int day = 0; day < 5; day++) {
+            list.add(getSingleUltravioletIndex(dateTime.plusDays(day)));
+        }
+        return list;
+    }
+    private HashMap getSingleUltravioletIndex(DateTime dateTime){
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+        URL url = null;
+
+        try {
+            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        URLConnection con = null;
+        String body = "";
+        try {
+            con = url.openConnection();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            body = IOUtils.toString(in, encoding);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = new JSONObject(body);
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
+
+        HashMap res = new HashMap();
+        res.put(((HashMap)((ArrayList)map.get("weather")).get(0)).get("date"),((HashMap)((ArrayList)map.get("weather")).get(0)).get("uvIndex"));
+        return res;
+    }
 }

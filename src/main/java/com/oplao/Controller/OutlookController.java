@@ -105,4 +105,10 @@ public class OutlookController {
         return service.getWeeklyWeatherReport();
     }
 
+    @RequestMapping("/get_weekly_ultraviolet_index")
+    @ResponseBody
+    public List getWeeklyUltravioletIndex(){
+        WeatherService service = new WeatherService();
+        return service.getWeeklyUltraviolet();
+    }
 }
