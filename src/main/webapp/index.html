@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="/" />
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,8 +52,8 @@
                 <a id="nav-toggle" href="#"><span></span><em></em></a>
 
                 <div class="temp-wrap">
-                    <div class="temp-block  active active-mob tmp-cel" ng-click="local.typeTemp = 'C'">°C</div>
-                    <div class="temp-block tmp-far" ng-click="local.typeTemp = 'F'">°F</div>
+                    <div class="temp-block  active active-mob tmp-cel" ng-click="local.typeTemp = 'C'; updateTemp()">°C</div>
+                    <div class="temp-block tmp-far" ng-click="local.typeTemp = 'F'; updateTemp();">°F</div>
                 </div><!-- end temp-wrap -->
 
                 <div id="h-share">
@@ -442,14 +443,10 @@
     <!--<script src="js/charts_init.js"></script>-->
     <script src="js/popup.js"></script>
     <script src="js/scripts.js"></script>
-
-
-
     <script src="assets/plugins/angularJS/angular.min.js"></script>
     <script src="assets/plugins/angularJS/angular-ui-router.min.js"></script>
     <script src="assets/plugins/angularJS/ocLazyLoad.min.js"></script>
     <script src="assets/plugins/other/angular-cookies.min.js"></script>
     <script src="app.js"></script>
-
 </body>
 </html>
