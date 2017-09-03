@@ -1,6 +1,6 @@
 var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
-    app.run( ['$rootScope', '$state', '$stateParams', function ($rootScope,   $state,   $stateParams) {
+    app.run( ['$rootScope', '$state', '$stateParams', '$http', function ($rootScope,   $state,   $stateParams, $http) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $rootScope.example = "";
@@ -13,6 +13,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         }).done(function( msg ) {
             $rootScope.temperature = msg;
         })
+
+        $rootScope.updateTemp = function(){
+            readyGet($rootScope.$$childHead.detailedTemp, $rootScope.local.typeTemp)
+        }
     }]);
     app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider) {
 
