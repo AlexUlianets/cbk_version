@@ -18,7 +18,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             readyGet($rootScope.$$childHead.detailedTemp, $rootScope.local.typeTemp)
         }
     }]);
-    app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider) {
+    app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 
           $ocLazyLoadProvider.config({
               'debug': false,
@@ -59,4 +59,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                       }]
                   }
               });
+
+        $locationProvider.html5Mode(true)
   }]);
