@@ -275,6 +275,51 @@ public class WeatherService {
         }
     }
 
+    public static String convertMonthOfYearShort(int month) {
+
+
+        switch (month) {
+            case DateConstants.JANUARY
+                    :
+                return "Jan";
+
+            case DateConstants.FEBRUARY
+                    :
+                return "Feb";
+            case DateConstants.MARCH
+                    :
+                return "Mar";
+            case DateConstants.APRIL
+                    :
+                return "Apr";
+            case DateConstants.MAY
+                    :
+                return "May";
+            case DateConstants.JUNE
+                    :
+                return "Jun";
+            case DateConstants.JULY
+                    :
+                return "Jul";
+            case DateConstants.AUGUST
+                    :
+                return "Aug";
+            case DateConstants.SEPTEMBER
+                    :
+                return "Sep";
+            case DateConstants.OCTOBER
+                    :
+                return "Oct";
+            case DateConstants.NOVEMBER
+                    :
+                return "Nov";
+            case DateConstants.DECEMBER
+                    :
+                return "Dec";
+            default:
+                return "Wrong value for field 'month'";
+        }
+    }
 
 
     private float roundFloat(float num){
@@ -453,7 +498,11 @@ public class WeatherService {
         HashMap map = (HashMap)jsonObject.toMap().get("data");
 
         HashMap res = new HashMap();
-        res.put(((HashMap)((ArrayList)map.get("weather")).get(0)).get("date"),((HashMap)((ArrayList)map.get("weather")).get(0)).get("uvIndex"));
+        res.put("index",
+                ((HashMap)((ArrayList)map.get("weather")).get(0)).get("uvIndex"));
+        res.put("date", convertDayOfWeekShort(dateTime.getDayOfWeek())+" " +
+                dateTime.getDayOfMonth()+" "
+                + convertMonthOfYearShort(dateTime.getMonthOfYear()));
         return res;
     }
 }
