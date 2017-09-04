@@ -327,7 +327,7 @@ public class WeatherService {
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
         return Float.parseFloat(decimalFormat.format(num).replace(',', '.'));
     }
-    private HashMap getCoordinates(){
+    public HashMap getCoordinates(){
 
         GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
         ZonedDateTime zdt = ZonedDateTime.now(ZoneOffset.UTC);
@@ -356,10 +356,39 @@ public class WeatherService {
     }
 
     public HashMap getAstronomy(){
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+        URL url = null;
+        DateTime dateTime = new DateTime();
 
+        try {
+            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        URLConnection con = null;
+        String body = "";
+        try {
+            con = url.openConnection();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            body = IOUtils.toString(in, encoding);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = new JSONObject(body);
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
         HashMap result = new HashMap<>();
 
-        result.put("coordinates", getCoordinates());
+
+        HashMap dateMap = new HashMap();
+        dateMap.put("dayOfMonth", dateTime.getDayOfMonth());
+        dateMap.put("monthOfYear", convertMonthOfYearShort(dateTime.getMonthOfYear()));
+        dateMap.put("year", dateTime.getYear());
+        result.put("date", dateMap);
+        result.put("sunrise", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunrise"));
+        result.put("sunset", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunset"));
         result.put("moon_phase_index", getMoonPhase());
         return result;
     }

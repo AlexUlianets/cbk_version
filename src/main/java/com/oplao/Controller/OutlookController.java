@@ -14,6 +14,12 @@ import java.util.*;
 @Controller
 public class OutlookController {
 
+
+    @RequestMapping("get_coordinates")
+    @ResponseBody
+    public HashMap getCoordinates(){
+        return new WeatherService().getCoordinates();
+    }
     @RequestMapping("/get_api_weather")
     @ResponseBody
     public OutlookWeatherMapping getApiWeather() throws Exception{
