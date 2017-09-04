@@ -293,7 +293,7 @@
         <div class="page-content">
             <section id="astronomy">
                 <h2>Astronomy</h2>
-                <h3>1 sep 2016</h3>
+                <h3>{{astronomy.date.dayOfMonth}} {{astronomy.date.monthOfYear}} {{astronomy.date.year}}</h3>
                 <div class="astronomy-row">
                     <div class="astronomy-left">
                         <div class="al-inner">
@@ -301,13 +301,13 @@
                                 <div class="al-img">
                                     <img src="images/svg/oplao_sunrise.svg" alt="img">
                                 </div>
-                                <span>2am</span>
+                                <span>{{astronomy.sunrise}}</span>
                             </div>
                             <div class="al-block">
                                 <div class="al-img">
                                     <img src="images/svg/oplao_sunset.svg" alt="img">
                                 </div>
-                                <span>10pm</span>
+                                <span>{{astronomy.sunset}}</span>
                             </div>
                         </div>
                     </div>

@@ -12,8 +12,12 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       });
 
       $http.post('/get_astronomy').then(function (response) {
-          $scope.$parent.coordinates = response.data['coordinates'];
           $scope.$parent.moon_phase_index = 'images/svg/oplao_moon_'+response.data['moon_phase_index']+'.svg';
+          $scope.$parent.astronomy = response.data;
+      });
+
+      $http.post('/get_coordinates').then(function (response) {
+          $scope.$parent.coordinates = response.data;
       });
 
       $http.post('/get_weekly_ultraviolet_index').then(function (response) {
