@@ -391,7 +391,7 @@
 <section id="coordinates">
     <div class="container">
         <h2>Coordinates</h2>
-        <p><b>Minsk, Belarus.</b> Minsk <a href="#">on the map</a> 53.90°, 27.57°. Timezone: UTC + 3</p>
+        <p><b>{{coordinates.city}}, {{coordinates.country}}.</b> {{coordinates.city}} <a href="#">on the map</a> {{coordinates.latitude}}°, {{coordinates.longitude}}°. Timezone: UTC {{coordinates.hours_between}}</p>
     </div>
 </section><!-- end coordinates -->
 
@@ -471,7 +471,6 @@
         </div>
     </div>
 </section>
-
 <section id="uv-index">
     <div class="container">
         <h2>UV Index</h2>
@@ -498,7 +497,7 @@
             </div>
         </div>
 
-        <div class="uv-bot">
+        <div class="uv-bot" ng-repeat="ultra in ultraviolet">
             <div class="uv-bot-block">
                 <em>Today</em>
                 <span class="greenLow"></span>
@@ -519,6 +518,7 @@
                 <em>Mon 5 Sep</em>
                 <span class="redExtreme"></span>
             </div>
+
         </div>
     </div>
 </section>

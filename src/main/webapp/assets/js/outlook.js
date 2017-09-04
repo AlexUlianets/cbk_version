@@ -11,4 +11,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           readyGet(response, $scope.local.typeTemp)
       });
 
+      $http.post('/get_astronomy').then(function (response) {
+          $scope.$parent.coordinates = response.data['coordinates'];
+      });
+
   }]);
