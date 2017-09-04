@@ -314,14 +314,7 @@
                     <div class="astronomy-right">
                         <div class="ar-inner">
                             <h5>Waning</h5>
-                            <img src="images/svg/oplao_moon_1.svg" alt="img">
-                            <img src="images/svg/oplao_moon_2.svg" alt="img">
-                            <img src="images/svg/oplao_moon_3.svg" alt="img">
-                            <img src="images/svg/oplao_moon_4.svg" alt="img">
-                            <img src="images/svg/oplao_moon_5.svg" alt="img">
-                            <img src="images/svg/oplao_moon_6.svg" alt="img">
-                            <img src="images/svg/oplao_moon_7.svg" alt="img">
-                            <img src="images/svg/oplao_moon_8.svg" alt="img">
+                            <img src="{{moon_phase_index}}" alt="img">
                         </div>
                     </div>
                 </div>
@@ -497,28 +490,11 @@
             </div>
         </div>
 
-        <div class="uv-bot" ng-repeat="ultra in ultraviolet">
-            <div class="uv-bot-block">
-                <em>Today</em>
-                <span class="greenLow"></span>
+        <div class="uv-bot" >
+            <div class="uv-bot-block" ng-repeat="ultra in ultraviolet track by $index">
+                <em>{{ultra.date}}</em>
+                <span class="{{colorsUV[$index]}}"></span>
             </div>
-            <div class="uv-bot-block">
-                <em>Fri 2 Sep</em>
-                <span class="yellowAverage"></span>
-            </div>
-            <div class="uv-bot-block">
-                <em>Sat 3 Sep</em>
-                <span class="orangeHigh"></span>
-            </div>
-            <div class="uv-bot-block">
-                <em>Sun 4 Sep</em>
-                <span class="redHigh"></span>
-            </div>
-            <div class="uv-bot-block">
-                <em>Mon 5 Sep</em>
-                <span class="redExtreme"></span>
-            </div>
-
         </div>
     </div>
 </section>
