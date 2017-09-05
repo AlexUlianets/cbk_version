@@ -19,33 +19,16 @@ public class TextWeatherService {
 
     public TextWeatherMapping getTextWeatherMapping(DateTime dateTime){
         GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
-        URL url = null;
 
-        try {
-            url = new URL("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        URLConnection con = null;
-        String body = "";
-        try {
-            con = url.openConnection();
-            InputStream in = con.getInputStream();
-            String encoding = con.getContentEncoding();
-            encoding = encoding == null ? "UTF-8" : encoding;
-            body = IOUtils.toString(in, encoding);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, geoLocation.getCity(),
+          new DateTime().isAfter(dateTime), false, 3 );
 
-        JSONObject jsonObject = new JSONObject(body);
-        HashMap map = (HashMap)jsonObject.toMap().get("data");
-        ArrayList<HashMap> currentCondition = (ArrayList<HashMap>)map.get("current_condition");
+
+  HashMap map = apiWeatherFinder.findWeatherByDate();
+
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
         HashMap weatherData = weather.get(0);
         ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
-        HashMap hourlyHm = hourly.get(0);
-        HashMap currentConditions = currentCondition.get(0);
 
         int maxTempC = Integer.parseInt(String.valueOf(weatherData.get("maxtempC")));
         int maxTempF = Integer.parseInt(String.valueOf(weatherData.get("maxtempF")));
