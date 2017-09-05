@@ -148,9 +148,10 @@ class UrlBuilder{
         String year = dt.getYear() + "";
         String month = dt.getMonthOfYear()>9?dt.getMonthOfYear()+"":"0"+dt.getMonthOfYear();
         String day = dt.getDayOfMonth()>9?dt.getDayOfMonth()+"":"0"+dt.getDayOfMonth();
+        builder.append("&tp=" + finder.getHourDifference());
         builder.append(
                 "&date=" +
-                        finder.getDateTime().getYear()+ "-"
+                        year+ "-"
                  +month + "-" + day
         );
 
