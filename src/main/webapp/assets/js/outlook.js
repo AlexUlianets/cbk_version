@@ -39,4 +39,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           });
       });
 
+      $http.post('/get_five_years_average').then(function (response) {
+          $scope.$parent.five_years_average = response.data;
+      });
+
   }]);

@@ -402,7 +402,7 @@
                     </div>
                     <div class="v-today-wrap">
                         <div class="today">Today</div>
-                        <div class="date">20 August</div>
+                        <div class="date">{{temperature.day}} {{temperature.month}}</div>
                     </div>
                 </div>
                 <div class="btn-wrap">
@@ -411,52 +411,12 @@
             </div>
             <div class="v-year-wrap">
                 <div class="v-year-list">
-                    <div class="v-year-item">
-                        <div class="v-year">2017</div>
+                    <div class="v-year-item" ng-repeat="year in five_years_average">
+                        <div class="v-year">{{year.year}}</div>
                         <i class="icon clear_day-white"></i>
                         <div class="temperature">
-                            <span class="count">+14</span>
-                            <span class="mark">°C</span>
-                        </div>
-                    </div>
-                    <div class="v-year-item">
-                        <div class="v-year">2016</div>
-                        <i class="icon clear_day-white"></i>
-                        <div class="temperature">
-                            <span class="count">+14</span>
-                            <span class="mark">°C</span>
-                        </div>
-                    </div>
-                    <div class="v-year-item">
-                        <div class="v-year">2015</div>
-                        <i class="icon clear_day-white"></i>
-                        <div class="temperature">
-                            <span class="count">+14</span>
-                            <span class="mark">°C</span>
-                        </div>
-                    </div>
-                    <div class="v-year-item">
-                        <div class="v-year">2014</div>
-                        <i class="icon clear_day-white"></i>
-                        <div class="temperature">
-                            <span class="count">+14</span>
-                            <span class="mark">°C</span>
-                        </div>
-                    </div>
-                    <div class="v-year-item">
-                        <div class="v-year">2013</div>
-                        <i class="icon clear_day-white"></i>
-                        <div class="temperature">
-                            <span class="count">+14</span>
-                            <span class="mark">°C</span>
-                        </div>
-                    </div>
-                    <div class="v-year-item">
-                        <div class="v-year">2012</div>
-                        <i class="icon clear_day-white"></i>
-                        <div class="temperature">
-                            <span class="count">+14</span>
-                            <span class="mark">°C</span>
+                            <span class="count">{{local.typeTemp=='C'?year.tempC:year.tempF}}</span>
+                            <span class="mark">°{{local.typeTemp}}</span>
                         </div>
                     </div>
                 </div>
@@ -492,7 +452,7 @@
 
         <div class="uv-bot" >
             <div class="uv-bot-block" ng-repeat="ultra in ultraviolet track by $index">
-                <em>{{ultra.date}}</em>
+                <em>{{$index == 0 ? 'Today':ultra.date}}</em>
                 <span class="{{colorsUV[$index]}}"></span>
             </div>
         </div>
