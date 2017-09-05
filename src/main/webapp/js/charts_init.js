@@ -223,6 +223,7 @@ function readyGet(response, type) {
     for (var i = 0; i <= 13; i++) {
         $('#weatherFourteenIcon .wrp-icon').append('<span class="icon"><img src="img/' + iconDetailed[i] + '.svg"></span>');
     }
+    $('#weatherTenIcon .wrp-icon').html(' ')
     for (var i = 0; i <= 9; i++) {
         $('#weatherTenIcon .wrp-icon').append('<span class="icon"><img src="img/' + iconDetailed[i] + '.svg"></span>');
     }
