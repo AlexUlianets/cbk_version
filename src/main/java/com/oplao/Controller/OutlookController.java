@@ -111,6 +111,12 @@ public class OutlookController {
         return service.getWeeklyWeatherReport();
     }
 
+    @RequestMapping("/get_five_years_average")
+    @ResponseBody
+    public List getFiveYearsAverage(){
+        return new WeatherService().getFiveYearsAverage();
+    }
+
     @RequestMapping("/get_weekly_ultraviolet_index")
     @ResponseBody
     public List getWeeklyUltravioletIndex(){

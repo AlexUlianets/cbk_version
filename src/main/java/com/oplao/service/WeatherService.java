@@ -3,6 +3,7 @@ package com.oplao.service;
 import com.oplao.Utils.CityToTimeZoneConverter;
 import com.oplao.Utils.DateConstants;
 import com.oplao.Utils.MoonPhase;
+import com.oplao.Utils.MyJsonHelper;
 import com.oplao.model.DetailedForecastGraphMapping;
 import com.oplao.model.GeoLocation;
 import com.oplao.model.OutlookWeatherMapping;
@@ -533,5 +534,34 @@ public class WeatherService {
                 dateTime.getDayOfMonth()+" "
                 + convertMonthOfYearShort(dateTime.getMonthOfYear()));
         return res;
+    }
+
+    public List getFiveYearsAverage(){
+
+        DateTime dateTime = new DateTime();
+        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+
+        ArrayList output = new ArrayList();
+
+        for (int i = 0; i < 6; i++) {
+
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime.minusYears(i), geoLocation.getCity(),
+                    new DateTime().isAfter(dateTime), false, 1);
+
+            HashMap map = apiWeatherFinder.findWeatherByDate();
+
+            ArrayList param = (ArrayList) MyJsonHelper.getParam(map, "weather", "hourly");
+
+            int tempC = parseInt(((HashMap) param.get(14)).get("tempC"));
+            int tempF = parseInt(((HashMap) param.get(14)).get("tempF"));
+            HashMap result = new HashMap();
+            result.put("year", dateTime.minusYears(i).getYear());
+            result.put("tempC", tempC);
+            result.put("tempF", tempF);
+
+            output.add(result);
+
+        }
+        return output;
     }
 }
