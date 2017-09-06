@@ -83,7 +83,7 @@ public class APIWeatherFinder {
         this.hourDifference = hourDifference;
     }
 
-    public HashMap findWeatherByDate(){
+    protected HashMap findWeatherByDate(){
 
         UrlBuilder urlBuilder = new UrlBuilder();
         JSONObject jsonObject = null;

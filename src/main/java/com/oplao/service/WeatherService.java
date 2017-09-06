@@ -76,6 +76,42 @@ public class WeatherService {
 
         }
     }
+    public List<HashMap> getYearSummary(String ipAddress){
+
+        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+
+        JSONObject jsonObject = null;
+
+        try{
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&q=" + geoLocation.getCity() + "&cc=no&fx=yes&num_of_days=1&tp=24&showlocaltime=no");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        HashMap map = (HashMap) jsonObject.toMap().get("data");
+
+        List months = ((ArrayList)((HashMap)((ArrayList)map.get("ClimateAverages")).get(0)).get("month"));
+
+
+
+
+        List<HashMap> result = new ArrayList<>();
+
+        for (int i = 0; i < months.size(); i++) {
+            HashMap res = new HashMap();
+            HashMap elem = ((HashMap)months.get(i));
+            res.put("month", "" + String.valueOf(elem.get("name")).substring(0,3));
+            res.put("maxtempC", elem.get("avgMaxTemp"));
+            res.put("maxtempF", elem.get("avgMaxTemp_F"));
+            res.put("mintempC", elem.get("avgMinTemp"));
+            res.put("mintempF", elem.get("avgMinTemp_F"));
+            res.put("precipp", elem.get("avgMonthlyRainfall"));
+            result.add(res);
+        }
+
+        return result;
+
+    }
     List<Integer> dayTimeValues = Arrays.asList(600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700);
     List<Integer> nightTimeValues = Arrays.asList(0,100,200,300,400,500,1800,1900,2000,2100,2200,2300);
 
