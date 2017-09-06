@@ -168,7 +168,7 @@
                     <dl>
                         <dt><i class="icon location"></i><span class="search-text1">{{temperature.city}}</span> weather, <span
                                 class="search-text2">{{temperature.country}}</span></dt>
-                        <dd>Today. {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span>{{temperature.hours}}:{{temperature.minutes}}</span></dd>
+                        <dd>Today. {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span>{{("0" + temperature.hours).slice(-2)}}:{{("0" + temperature.minutes).slice(-2)}}</span></dd>
                     </dl>
                 </div>
 
