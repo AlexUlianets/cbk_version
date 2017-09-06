@@ -230,42 +230,42 @@
                 <div class="glance-row">
                     <div class="glance-left">Max. temperature</div>
                     <div class="glance-right">
-                        <div class="glance-temp">+23°C</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.maxDayTempC:weekly_weather_summary.maxDayTempF}}°{{local.typeTemp}}</div>
                         <div class="glance-date">Sep.2</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Min. temperature</div>
                     <div class="glance-right">
-                        <div class="glance-temp">+10°C</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.minDayTempC:weekly_weather_summary.minDayTempF}}°{{local.typeTemp}}</div>
                         <div class="glance-date">Sep.6</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Average max. temperature</div>
                     <div class="glance-right">
-                        <div class="glance-temp">+20°C</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.averageMinTempC:weekly_weather_summary.averageMinTempF}}°{{local.typeTemp}}</div>
                         <div class="glance-date">Next 7 days</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Average min. temperature</div>
                     <div class="glance-right">
-                        <div class="glance-temp">+11°C</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.averageMaxTempC:weekly_weather_summary.averageMaxTempF}}°{{local.typeTemp}}</div>
                         <div class="glance-date">Next 7 days</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Total rainfall</div>
                     <div class="glance-right">
-                        <div class="glance-temp">0.8 MM</div>
+                        <div class="glance-temp">{{weekly_weather_summary.totalRainfall}} MM</div>
                         <div class="glance-date">Next 7 days</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Windiest</div>
                     <div class="glance-right">
-                        <div class="glance-temp">5 M/S</div>
+                        <div class="glance-temp">{{weekly_weather_summary.windiestMS}} M/S</div>
                         <div class="glance-date">Sep.2</div>
                     </div>
                 </div>

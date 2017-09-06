@@ -43,4 +43,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           $scope.$parent.five_years_average = response.data;
       });
 
+      $http.post('/get_weekly_weather_summary').then(function (response) {
+          $scope.$parent.weekly_weather_summary = response.data;
+      });
   }]);
