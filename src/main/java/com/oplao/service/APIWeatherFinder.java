@@ -1,15 +1,11 @@
 package com.oplao.service;
 
-import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
+import static com.oplao.service.WeatherService.readJsonFromUrl;
 
 public class APIWeatherFinder {
 
@@ -89,28 +85,13 @@ public class APIWeatherFinder {
 
     public HashMap findWeatherByDate(){
 
-        URL url = null;
         UrlBuilder urlBuilder = new UrlBuilder();
-        try {
-            url = new URL(urlBuilder.buildUrl(this));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        URLConnection con = null;
-        String body = "";
-        try {
-            con = url.openConnection();
-            InputStream in = con.getInputStream();
-            String encoding = con.getContentEncoding();
-            encoding = encoding == null ? "UTF-8" : encoding;
-            body = IOUtils.toString(in, encoding);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        JSONObject jsonObject = new JSONObject(body);
-
+        JSONObject jsonObject = null;
+            try {
+                jsonObject = readJsonFromUrl(urlBuilder.buildUrl(this));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         return (HashMap)jsonObject.toMap().get("data");
 
 
