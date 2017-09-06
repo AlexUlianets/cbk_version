@@ -15,7 +15,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         })
 
         $rootScope.updateTemp = function(){
-            readyGet($rootScope.$$childHead.detailedTemp, $rootScope.local.typeTemp)
+            readyGet($rootScope.$$childHead.detailedTemp, $rootScope.$$childHead.get_year_summary, $rootScope.local.typeTemp)
         }
     }]);
     app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
@@ -60,5 +60,5 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               });
 
-        $locationProvider.html5Mode(true)
+        // $locationProvider.html5Mode(true)
   }]);
