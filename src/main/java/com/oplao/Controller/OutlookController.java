@@ -106,6 +106,12 @@ public class OutlookController {
         return service.getWeeklyWeatherReport(getCurrentIpAddress(request));
     }
 
+    @RequestMapping("/get_year_summary")
+    @ResponseBody
+    public List<HashMap> getYearSummary(HttpServletRequest request){
+        return new WeatherService().getYearSummary(getCurrentIpAddress(request));
+
+    }
     @RequestMapping("/get_five_years_average")
     @ResponseBody
     public List getFiveYearsAverage(HttpServletRequest request){
