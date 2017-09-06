@@ -2,13 +2,16 @@ package com.oplao.Controller;
 
 
 import com.oplao.model.*;
+import com.oplao.service.GeoIPv4;
 import com.oplao.service.TextWeatherService;
 import com.oplao.service.WeatherService;
 import org.joda.time.DateTime;
+import org.json.HTTP;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
@@ -17,35 +20,27 @@ public class OutlookController {
 
     @RequestMapping("/get_coordinates")
     @ResponseBody
-    public HashMap getCoordinates(){
-        return new WeatherService().getCoordinates();
+    public HashMap getCoordinates(HttpServletRequest request){
+
+
+        return new WeatherService().getCoordinates(getCurrentIpAddress(request));
     }
     @RequestMapping("/get_api_weather")
     @ResponseBody
-    public OutlookWeatherMapping getApiWeather() throws Exception{
+    public OutlookWeatherMapping getApiWeather(HttpServletRequest request) throws Exception{
 
 
         WeatherService service = new WeatherService();
 
 
-        return service.getRemoteData();
-    }
-
-    @RequestMapping("/get_text_weather")
-    @ResponseBody
-    public OutlookWeatherMapping getTextWeather(){
-
-        DateTime dateTime = new DateTime();
-        DateTime closestMondayDateTime = dateTime.minusDays(dateTime.getDayOfWeek()-1);
-
-        return null;
+        return service.getRemoteData(getCurrentIpAddress(request));
     }
 
     @RequestMapping("/get_astronomy")
     @ResponseBody
-    public HashMap getAstronomy(){
+    public HashMap getAstronomy(HttpServletRequest request){
 
-        return new WeatherService().getAstronomy();
+        return new WeatherService().getAstronomy(getCurrentIpAddress(request));
     }
 
     @RequestMapping("/get_weekly_weather_summary")
@@ -101,26 +96,50 @@ public class OutlookController {
 
     @RequestMapping("/get_detailed_forecast")
     @ResponseBody
-    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(){
-        return new WeatherService().getDetailedForecastMapping();
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(HttpServletRequest request){
+        return new WeatherService().getDetailedForecastMapping(getCurrentIpAddress(request));
     }
     @RequestMapping("/get_weekly_weather")
     @ResponseBody
-    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(){
+    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(HttpServletRequest request){
         WeatherService service = new WeatherService();
-        return service.getWeeklyWeatherReport();
+        return service.getWeeklyWeatherReport(getCurrentIpAddress(request));
     }
 
     @RequestMapping("/get_five_years_average")
     @ResponseBody
-    public List getFiveYearsAverage(){
-        return new WeatherService().getFiveYearsAverage();
+    public List getFiveYearsAverage(HttpServletRequest request){
+        return new WeatherService().getFiveYearsAverage(getCurrentIpAddress(request));
     }
 
     @RequestMapping("/get_weekly_ultraviolet_index")
     @ResponseBody
-    public List getWeeklyUltravioletIndex(){
+    public List getWeeklyUltravioletIndex(HttpServletRequest request){
         WeatherService service = new WeatherService();
-        return service.getWeeklyUltraviolet();
+        return service.getWeeklyUltraviolet(getCurrentIpAddress(request));
+    }
+
+    private String getCurrentIpAddress(HttpServletRequest request){
+
+
+        String ip = request.getHeader("x-forwarded-for");
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        if(ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")){
+            return "94.126.240.2";
+        }
+        else{
+            return ip;
+        }
+
+
     }
 }

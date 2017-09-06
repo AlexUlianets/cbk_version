@@ -2,7 +2,7 @@ package com.oplao.service;
 
 import com.oplao.model.GeoLocation;
 import com.oplao.model.TextWeatherMapping;
-import org.apache.commons.io.IOUtils;
+//import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
