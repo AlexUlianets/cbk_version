@@ -34,7 +34,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
           $stateProvider
               .state('outlook', {
-                  url: "/outlook",
+                  url: "/",
                   views: {
                       "": {
                           templateUrl: "templates/html/outlook.html"
@@ -47,7 +47,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
               .state('today', {
-                  url: "/",
+                  url: "/today",
                   views: {
                       "": {
                           templateUrl: "templates/html/today.html"
@@ -60,5 +60,5 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               });
 
-        // $locationProvider.html5Mode(true)
+         $locationProvider.html5Mode(true)
   }]);
