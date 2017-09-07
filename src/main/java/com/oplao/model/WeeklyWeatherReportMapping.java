@@ -7,8 +7,10 @@ public class WeeklyWeatherReportMapping {
     private String dayOfWeek;
     private String time;
     private String weatherUrl;
-    private int temperatureC;
-    private int temperatureF;
+    private int maxTemperatureC;
+    private int maxTemperatureF;
+    private int minTemperatureC;
+    private int minTemperatureF;
     private int feelsLikeC;
     private int feelsLikeF;
     private double precipChance;
@@ -23,8 +25,8 @@ public class WeeklyWeatherReportMapping {
     public WeeklyWeatherReportMapping(){
 
     }
-    public WeeklyWeatherReportMapping(int dayOfMonth, String monthOfYear, String dayOfWeek, String time, String weatherUrl, int temperatureC,
-                                      int temperatureF, int feelsLikeC, int feelsLikeF,
+    public WeeklyWeatherReportMapping(int dayOfMonth, String monthOfYear, String dayOfWeek, String time, String weatherUrl, int maxTemperatureC,
+                                      int maxTemperatureF, int minTemperatureC, int minTemperatureF, int feelsLikeC, int feelsLikeF,
                                       double precipChance, double precip,
                                       int windM,
                                       int windKm,
@@ -34,8 +36,10 @@ public class WeeklyWeatherReportMapping {
         this.dayOfWeek = dayOfWeek;
         this.time = time;
         this.weatherUrl = weatherUrl;
-        this.temperatureC = temperatureC;
-        this.temperatureF = temperatureF;
+        this.maxTemperatureC = maxTemperatureC;
+        this.maxTemperatureF = maxTemperatureF;
+        this.minTemperatureC = minTemperatureC;
+        this.minTemperatureF = minTemperatureF;
         this.feelsLikeC = feelsLikeC;
         this.feelsLikeF = feelsLikeF;
         this.precipChance = precipChance;
@@ -45,6 +49,23 @@ public class WeeklyWeatherReportMapping {
         this.gustM = gustM;
         this.gustKmh = gustKmh;
         this.pressure = pressure;
+    }
+
+
+    public int getMinTemperatureC() {
+        return minTemperatureC;
+    }
+
+    public void setMinTemperatureC(int minTemperatureC) {
+        this.minTemperatureC = minTemperatureC;
+    }
+
+    public int getMinTemperatureF() {
+        return minTemperatureF;
+    }
+
+    public void setMinTemperatureF(int minTemperatureF) {
+        this.minTemperatureF = minTemperatureF;
     }
 
     public int getDayOfMonth() {
@@ -87,20 +108,20 @@ public class WeeklyWeatherReportMapping {
         this.weatherUrl = weatherUrl;
     }
 
-    public int getTemperatureC() {
-        return temperatureC;
+    public int getMaxTemperatureC() {
+        return maxTemperatureC;
     }
 
-    public void setTemperatureC(int temperatureC) {
-        this.temperatureC = temperatureC;
+    public void setMaxTemperatureC(int maxTemperatureC) {
+        this.maxTemperatureC = maxTemperatureC;
     }
 
-    public int getTemperatureF() {
-        return temperatureF;
+    public int getMaxTemperatureF() {
+        return maxTemperatureF;
     }
 
-    public void setTemperatureF(int temperatureF) {
-        this.temperatureF = temperatureF;
+    public void setMaxTemperatureF(int maxTemperatureF) {
+        this.maxTemperatureF = maxTemperatureF;
     }
 
     public int getFeelsLikeC() {
