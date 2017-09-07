@@ -374,7 +374,7 @@ public class WeatherService {
                 zdt.getHour(), zdt.getMinute());
 
         String hoursBetween = "" + ChronoUnit.HOURS.between(ldt, ZonedDateTime.now
-                (ZoneId.of(CityToTimeZoneConverter.convert(geoLocation.getCity()))));
+                (ZoneId.of(CityToTimeZoneConverter.convert(geoLocation))));
 
         if(Integer.parseInt(hoursBetween)>0){
             hoursBetween = "+ " + hoursBetween;
