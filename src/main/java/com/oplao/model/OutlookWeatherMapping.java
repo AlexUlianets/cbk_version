@@ -24,7 +24,7 @@ public class OutlookWeatherMapping {
     private int windGustMiles;
     private int windGustKmph;
     private int pressure;
-
+    private String weatherIconCode;
 
     public static OutlookWeatherMapping create(String country, String city,
                                                DateTime dateTime, int temp_c,
@@ -32,7 +32,7 @@ public class OutlookWeatherMapping {
                                                int feelsLikeF, double precipMM,
                                                int windspeedMiles, int windSpeedKmph,
                                                int windGustMiles, int windGustKmph,
-                                               int pressure) {
+                                               int pressure, String weatherIconCode) {
 
         return new OutlookWeatherMapping(
                 country,
@@ -46,7 +46,7 @@ public class OutlookWeatherMapping {
                 feelsLikeF,
                 precipMM, windspeedMiles, windSpeedKmph,
                 windGustMiles, windGustKmph,
-                pressure
+                pressure, weatherIconCode
         );
     }
 
@@ -58,7 +58,7 @@ public class OutlookWeatherMapping {
                                  String dayOfWeek, int hours, int minutes, int temp_c,
                                  int temp_f, int feelsLikeC, int feelsLikeF, double precipMM,
                                  int windspeedMiles, int windspeedKmph, int windGustMiles, int windGustKmph,
-                                 int pressure) {
+                                 int pressure, String weatherIconCode) {
         this.country = country;
         this.city = city;
         this.month = month;
@@ -76,6 +76,16 @@ public class OutlookWeatherMapping {
         this.windGustMiles = windGustMiles;
         this.windGustKmph = windGustKmph;
         this.pressure = pressure;
+        this.weatherIconCode = weatherIconCode;
+    }
+
+
+    public String getWeatherIconCode() {
+        return weatherIconCode;
+    }
+
+    public void setWeatherIconCode(String weatherIconCode) {
+        this.weatherIconCode = weatherIconCode;
     }
 
     public int getTemp_c() {
