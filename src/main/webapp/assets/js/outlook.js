@@ -8,7 +8,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
       $http.post('/get_detailed_forecast').then(function (response) {
           $scope.$parent.detailedTemp = response;
-          readyGet(response, $scope.local.typeTemp)
+          $http.post('/get_year_summary').then(function (responseYear) {
+              $scope.$parent.get_year_summary = responseYear;
+              readyGet(response, responseYear, $scope.local.typeTemp)
+          });
       });
 
       $http.post('/get_astronomy').then(function (response) {
@@ -46,4 +49,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       $http.post('/get_weekly_weather_summary').then(function (response) {
           $scope.$parent.weekly_weather_summary = response.data;
       });
+
+
+
   }]);

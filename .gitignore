@@ -1,0 +1,4 @@
+.idea/*
+src/main/webapp/html/*
+src/test/
+target/*
