@@ -1,19 +1,17 @@
 package com.oplao.service;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.oplao.Utils.CityToTimeZoneConverter;
 import com.oplao.Utils.DateConstants;
 import com.oplao.Utils.MoonPhase;
 import com.oplao.Utils.MyJsonHelper;
-import com.oplao.model.DetailedForecastGraphMapping;
-import com.oplao.model.GeoLocation;
-import com.oplao.model.OutlookWeatherMapping;
-import com.oplao.model.WeeklyWeatherReportMapping;
-//import org.apache.commons.io.IOUtils;
+import com.oplao.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+
+import javax.xml.ws.ServiceMode;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,15 +19,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,9 +28,61 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class WeatherService {
 
+    private static final Map<Integer, WeatherStateExt> EXT_STATES = new HashMap<>();
 
+    static {
+        EXT_STATES.put(113, WeatherStateExt.Clear);
+        EXT_STATES.put(116, WeatherStateExt.PartlyCloudy);
+        EXT_STATES.put(119, WeatherStateExt.Cloudy);
+        EXT_STATES.put(122, WeatherStateExt.Overcast);
+        EXT_STATES.put(143, WeatherStateExt.Mist);
+        EXT_STATES.put(176, WeatherStateExt.ModeratePatchyRain);
+        EXT_STATES.put(179, WeatherStateExt.ModeratePatchySnow);
+        EXT_STATES.put(182, WeatherStateExt.PatchySleet);
+        EXT_STATES.put(185, WeatherStateExt.PatchySleet);
+        EXT_STATES.put(200, WeatherStateExt.PatchyStorm);
+        EXT_STATES.put(227, WeatherStateExt.Blizzard);
+        EXT_STATES.put(230, WeatherStateExt.Blizzard);
+        EXT_STATES.put(248, WeatherStateExt.Fog);
+        EXT_STATES.put(260, WeatherStateExt.FreezingFog);
+        EXT_STATES.put(263, WeatherStateExt.LightPatchyRain);
+        EXT_STATES.put(266, WeatherStateExt.LightRain);
+        EXT_STATES.put(281, WeatherStateExt.LightSleet);
+        EXT_STATES.put(284, WeatherStateExt.HeavySleet);
+        EXT_STATES.put(293, WeatherStateExt.LightPatchyRain);
+        EXT_STATES.put(296, WeatherStateExt.LightRain);
+        EXT_STATES.put(299, WeatherStateExt.ModeratePatchyRain);
+        EXT_STATES.put(302, WeatherStateExt.ModerateRain);
+        EXT_STATES.put(305, WeatherStateExt.HeavyPatchyRain);
+        EXT_STATES.put(308, WeatherStateExt.HeavyRain);
+        EXT_STATES.put(311, WeatherStateExt.FreezingRain);
+        EXT_STATES.put(314, WeatherStateExt.HeavyFreezingRain);
+        EXT_STATES.put(317, WeatherStateExt.LightSleet);
+        EXT_STATES.put(320, WeatherStateExt.HeavySleet);
+        EXT_STATES.put(323, WeatherStateExt.LightPatchySnow);
+        EXT_STATES.put(326, WeatherStateExt.LightSnow);
+        EXT_STATES.put(329, WeatherStateExt.ModeratePatchySnow);
+        EXT_STATES.put(332, WeatherStateExt.ModerateSnow);
+        EXT_STATES.put(335, WeatherStateExt.HeavyPatchySnow);
+        EXT_STATES.put(338, WeatherStateExt.HeavySnow);
+        EXT_STATES.put(350, WeatherStateExt.IcePellets);
+        EXT_STATES.put(353, WeatherStateExt.LightRain);
+        EXT_STATES.put(356, WeatherStateExt.RainShower);
+        EXT_STATES.put(359, WeatherStateExt.RainShower);
+        EXT_STATES.put(362, WeatherStateExt.PatchySleet);
+        EXT_STATES.put(365, WeatherStateExt.PatchySleet);
+        EXT_STATES.put(368, WeatherStateExt.LightPatchySnow);
+        EXT_STATES.put(371, WeatherStateExt.ModeratePatchySnow);
+        EXT_STATES.put(374, WeatherStateExt.IcePelletsShowers);
+        EXT_STATES.put(377, WeatherStateExt.HeavyIcePelletsShowers);
+        EXT_STATES.put(386, WeatherStateExt.PatchyStorm);
+        EXT_STATES.put(389, WeatherStateExt.HeavyStorm);
+        EXT_STATES.put(392, WeatherStateExt.LightSnowStorm);
+        EXT_STATES.put(395, WeatherStateExt.HeavySnowStorm);
+    }
     public static String convertDayOfWeekShort(int day) {
 
         switch (day) {
@@ -482,6 +523,7 @@ DateTime dateTime = new DateTime();
         int tempC = parseInt(currentConditions.get("tempC"));
         int tempF = parseInt(currentConditions.get("tempF"));
         double precip = parseDouble(currentConditions.get("precipMM"));
+        String weatherIconCode = "" + EXT_STATES.get(parseInt(currentConditions.get("weatherCode")));
 
         String month = dateTime.getMonthOfYear() > 9? "" + dateTime.getMonthOfYear():"0" + dateTime.getMonthOfYear();
         String day = dateTime.getDayOfMonth() > 9 ? "" + dateTime.getDayOfMonth():"0" + dateTime.getDayOfMonth();
@@ -491,7 +533,7 @@ DateTime dateTime = new DateTime();
 
 
 
-            return new DetailedForecastGraphMapping(tempC,tempF,date, precip);
+            return new DetailedForecastGraphMapping(tempC,tempF,date, precip, weatherIconCode);
     }
 
     public List<HashMap> getWeeklyUltraviolet(String ipAddress){
