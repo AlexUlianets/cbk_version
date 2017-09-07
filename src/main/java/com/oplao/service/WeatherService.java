@@ -495,7 +495,7 @@ DateTime dateTime = new DateTime();
                             parseInt(hourlyHm.get("WindGustMiles")),
                             parseInt(hourlyHm.get("WindGustKmph")),
                             parseInt(currentConditions.get("pressure")),
-                            ""+(hourlyHm.get("weatherCode")));
+                            ""+(EXT_STATES.get(parseInt(hourlyHm.get("weatherCode")))));
 
     }
 
