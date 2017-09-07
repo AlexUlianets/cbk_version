@@ -83,7 +83,7 @@
                                             <div class="tb-img">
                                                 <i class="icon clear_day-grey"></i>
                                             </div>
-                                            <div class="tb-temp">+14°/+19°</div>
+                                            <div class="tb-temp">{{local.typeTemp=='C'?day.maxTemperatureC:day.maxTemperatureF}}°{{local.typeTemp}}/{{local.typeTemp=='C'?day.minTemperatureC:day.minTemperatureF}}°{{local.typeTemp}}</div>
                                         </div>
 
                                         <div class="tb-time">
