@@ -7,6 +7,7 @@ import com.oplao.Utils.MyJsonHelper;
 import com.oplao.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -467,7 +469,7 @@ public class WeatherService {
 
         public OutlookWeatherMapping getRemoteData(String ipAddress){
         GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
-DateTime dateTime = new DateTime();
+DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(geoLocation)));
 
             JSONObject jsonObject = null;
         try {
