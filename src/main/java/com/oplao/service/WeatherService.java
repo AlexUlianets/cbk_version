@@ -464,13 +464,14 @@ public class WeatherService {
     private int getMoonPhase(){
         return new MoonPhase(Calendar.getInstance()).getPhaseIndex();
     }
+
         public OutlookWeatherMapping getRemoteData(String ipAddress){
         GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
 DateTime dateTime = new DateTime();
 
             JSONObject jsonObject = null;
         try {
-          jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+          jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -484,16 +485,17 @@ DateTime dateTime = new DateTime();
 
             return
                     OutlookWeatherMapping.create(geoLocation.getCountryName(), geoLocation.getCity(), dateTime,
-                            Integer.parseInt(String.valueOf(currentConditions.get("temp_C"))),
-                            Integer.parseInt(String.valueOf(currentConditions.get("temp_F"))),
-                            Integer.parseInt(String.valueOf(currentConditions.get("FeelsLikeC"))),
-                            Integer.parseInt(String.valueOf(currentConditions.get("FeelsLikeF"))),
-                            Double.parseDouble(String.valueOf(currentConditions.get("precipMM"))),
-                            Integer.parseInt(String.valueOf(currentConditions.get("windspeedMiles"))),
-                            Integer.parseInt(String.valueOf(currentConditions.get("windspeedKmph"))),
-                            Integer.parseInt(String.valueOf(hourlyHm.get("WindGustMiles"))),
-                            Integer.parseInt(String.valueOf(hourlyHm.get("WindGustKmph"))),
-                            Integer.parseInt(String.valueOf(currentConditions.get("pressure"))));
+                            parseInt(currentConditions.get("temp_C")),
+                            parseInt(currentConditions.get("temp_F")),
+                            parseInt(currentConditions.get("FeelsLikeC")),
+                            parseInt(currentConditions.get("FeelsLikeF")),
+                            parseDouble(currentConditions.get("precipMM")),
+                            parseInt(currentConditions.get("windspeedMiles")),
+                            parseInt(currentConditions.get("windspeedKmph")),
+                            parseInt(hourlyHm.get("WindGustMiles")),
+                            parseInt(hourlyHm.get("WindGustKmph")),
+                            parseInt(currentConditions.get("pressure")),
+                            ""+(hourlyHm.get("weatherCode")));
 
     }
 
