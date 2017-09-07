@@ -1,9 +1,7 @@
 package com.oplao.model;
 
-import com.oplao.Utils.DateConstants;
 import com.oplao.service.WeatherService;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 public class OutlookWeatherMapping {
 
