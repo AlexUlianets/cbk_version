@@ -139,18 +139,20 @@ public class WeatherService {
         JSONObject jsonObject = null;
 
         try{
-            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + dateTime.getDayOfMonth()  + "&q=" + city);
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth()  + "&q=" + city);
         }catch (IOException e){
             e.printStackTrace();
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
-        HashMap weatherData = weather.get(count);
+        HashMap weatherData = weather.get(0);
         ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
 
 
         int maxDayC = getMaxIntParam(hourly, "tempC", dayTimeValues);
         int maxDayF = getMaxIntParam(hourly,"tempF", dayTimeValues);
+        int minDayC =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempC"));
+        int minDayF =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempF"));
         int maxNightC = getMaxIntParam(hourly,"tempC", nightTimeValues);
         int maxNightF = getMaxIntParam(hourly,"tempF", nightTimeValues);
         int maxFeelLikeDayC = getMaxIntParam(hourly,"FeelsLikeC", dayTimeValues);
@@ -179,7 +181,7 @@ public class WeatherService {
         result.put("day", new WeeklyWeatherReportMapping(
                 dateTime.getDayOfMonth(), convertMonthOfYear(dateTime.getMonthOfYear()),
                 convertDayOfWeek(dateTime.getDayOfWeek()),
-                "Day", weaherIcon, maxDayC, maxDayF, maxFeelLikeDayC,
+                "Day", weaherIcon, maxDayC, maxDayF, minDayC, minDayF, maxFeelLikeDayC,
                 maxFeelLikeDayF, precipeChanceDay, precipDayMM, avgWindMDay, avgWindKmhDay, maxGustMDay,
                 maxGustKmhDay, avgPressureDay)
         );
@@ -187,7 +189,7 @@ public class WeatherService {
         result.put("night", new WeeklyWeatherReportMapping(
                 dateTime.getDayOfMonth(), convertMonthOfYear(dateTime.getMonthOfYear()),
                 convertDayOfWeek(dateTime.getDayOfWeek()), "Night", weaherIcon, maxNightC,
-                maxNightF, maxFeelLikeNightC, maxFeelLikeNightF,
+                maxNightF,0,0, maxFeelLikeNightC, maxFeelLikeNightF,
                 precipeChanceNight, precipNightMM, avgWindMNight, avgWindKmhNight, maxGustMNight,
                 maxGustKmhNight, avgPressureNight)
         );
