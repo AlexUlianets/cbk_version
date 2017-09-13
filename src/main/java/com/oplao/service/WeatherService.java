@@ -11,8 +11,6 @@ import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.ServiceMode;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +18,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,7 +30,7 @@ import java.util.stream.Collectors;
 @Service
 public class WeatherService {
 
-    private static final Map<Integer, WeatherStateExt> EXT_STATES = new HashMap<>();
+    public static final Map<Integer, WeatherStateExt> EXT_STATES = new HashMap<>();
 
     static {
         EXT_STATES.put(113, WeatherStateExt.Clear);
@@ -119,25 +116,23 @@ public class WeatherService {
 
         }
     }
-    public List<HashMap> getYearSummary(String ipAddress){
+    public List<HashMap> getYearSummary(JSONObject city){
 
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
 
         JSONObject jsonObject = null;
 
         try{
-            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&q=" + geoLocation.getCity() + "&cc=no&fx=yes&num_of_days=1&tp=24&showlocaltime=no");
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&q=" + cityName + "&cc=no&fx=yes&num_of_days=1&tp=24&showlocaltime=no");
         }catch (IOException e){
             e.printStackTrace();
         }
 
         HashMap map = (HashMap) jsonObject.toMap().get("data");
-
         List months = ((ArrayList)((HashMap)((ArrayList)map.get("ClimateAverages")).get(0)).get("month"));
-
-
-
-
         List<HashMap> result = new ArrayList<>();
 
         for (int i = 0; i < months.size(); i++) {
@@ -160,8 +155,12 @@ public class WeatherService {
 
 
 
-    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>> getWeeklyWeatherReport(String ipAddress){
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>> getWeeklyWeatherReport(JSONObject city){
+
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
 
         DateTime dateTime = new DateTime();
 
@@ -170,14 +169,14 @@ public class WeatherService {
         for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+7 ; day++, count++) {
             result.put(count, getOneDayReportMapping(dateTime.plusDays(
                     count),
-                    geoLocation.getCity(),count));
+                    cityName));
         }
 
 
         return result;
     }
 
-    private HashMap<String, WeeklyWeatherReportMapping> getOneDayReportMapping(DateTime dateTime, String city, int count ){
+    private HashMap<String, WeeklyWeatherReportMapping> getOneDayReportMapping(DateTime dateTime, String city){
 
         JSONObject jsonObject = null;
 
@@ -410,16 +409,19 @@ public class WeatherService {
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
         return Float.parseFloat(decimalFormat.format(num).replace(',', '.'));
     }
-    public HashMap getCoordinates(String ipAddress){
+    public HashMap getCoordinates(JSONObject city){
 
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
         ZonedDateTime zdt = ZonedDateTime.now(ZoneOffset.UTC);
         LocalDateTime ldt = LocalDateTime.of(zdt.getYear(),
                 zdt.getMonth(), zdt.getDayOfMonth(),
                 zdt.getHour(), zdt.getMinute());
 
         String hoursBetween = "" + ChronoUnit.HOURS.between(ldt, ZonedDateTime.now
-                (ZoneId.of(CityToTimeZoneConverter.convert(geoLocation))));
+                (ZoneId.of(CityToTimeZoneConverter.convert(city))));
 
         if(Integer.parseInt(hoursBetween)>0){
             hoursBetween = "+ " + hoursBetween;
@@ -427,24 +429,25 @@ public class WeatherService {
 
         HashMap result = new HashMap();
 
-        result.put("city", geoLocation.getCity());
-        result.put("country", geoLocation.getCountryName());
-        result.put("latitude", roundFloat(geoLocation.getLatitude()));
-        result.put("longitude", roundFloat(geoLocation.getLongitude()));
+        result.put("city", cityName);
+        result.put("country", city.get("countryName"));
+        result.put("latitude", roundFloat((float) city.getDouble("lat")));
+        result.put("longitude", roundFloat((float) city.getDouble("lng")));
         result.put("hours_between", hoursBetween);
-
-
         return result;
-
     }
 
-    public HashMap getAstronomy(String ipAddress){
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+    public HashMap getAstronomy(JSONObject city){
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
+
         DateTime dateTime = new DateTime();
         JSONObject jsonObject = null;
 
         try{
-           jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+           jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + cityName);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -467,13 +470,19 @@ public class WeatherService {
         return new MoonPhase(Calendar.getInstance()).getPhaseIndex();
     }
 
-        public OutlookWeatherMapping getRemoteData(String ipAddress){
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
-DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(geoLocation)));
+        public OutlookWeatherMapping getRemoteData(JSONObject city){
+
+
+            String cityName = ((String)city.get("asciiName"));
+            if(cityName.contains("'")){
+                cityName = cityName.replace("'", "");
+            }
+
+            DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
 
             JSONObject jsonObject = null;
         try {
-          jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+          jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + cityName);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -486,7 +495,7 @@ DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.conv
         HashMap currentConditions = currentCondition.get(0);
 
             return
-                    OutlookWeatherMapping.create(geoLocation.getCountryName(), geoLocation.getCity(), dateTime,
+                    OutlookWeatherMapping.create((String)city.get("countryName"), cityName, dateTime,
                             parseInt(currentConditions.get("temp_C")),
                             parseInt(currentConditions.get("temp_F")),
                             parseInt(currentConditions.get("FeelsLikeC")),
@@ -502,21 +511,25 @@ DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.conv
     }
 
 
-    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(String ipAddress){
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(JSONObject city){
             List<DetailedForecastGraphMapping> result = new ArrayList<>();
 
             DateTime dateTime = new DateTime();
         for (int day = 0; day < 10; day++) {
-            result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day), ipAddress));
+            result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day), city));
         }
         return result;
     }
-    private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime, String ipAddress){
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+    private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime, JSONObject city){
 
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
+        
         JSONObject jsonObject = null;
         try {
-            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + cityName);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -540,21 +553,25 @@ DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.conv
             return new DetailedForecastGraphMapping(tempC,tempF,date, precip, weatherIconCode);
     }
 
-    public List<HashMap> getWeeklyUltraviolet(String ipAddress){
+    public List<HashMap> getWeeklyUltraviolet(JSONObject city){
 
         DateTime dateTime = new DateTime();
         List<HashMap> list = new ArrayList();
         for (int day = 0; day < 5; day++) {
-            list.add(getSingleUltravioletIndex(dateTime.plusDays(day), ipAddress));
+            list.add(getSingleUltravioletIndex(dateTime.plusDays(day), city));
         }
         return list;
     }
-    private HashMap getSingleUltravioletIndex(DateTime dateTime, String ipAddress){
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
+    private HashMap getSingleUltravioletIndex(DateTime dateTime, JSONObject city){
+
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
 
             JSONObject jsonObject = null;
             try {
-                jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + geoLocation.getCity());
+                jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + cityName);
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -569,18 +586,20 @@ DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.conv
         return res;
     }
 
-    public List getFiveYearsAverage(String ipAddress){
+    public List getFiveYearsAverage(JSONObject city){
+
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
+        }
 
         DateTime dateTime = new DateTime();
-        GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
 
         ArrayList output = new ArrayList();
 
         for (int i = 0; i < 6; i++) {
-
-            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime.minusYears(i), geoLocation.getCity(),
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime.minusYears(i), cityName,
                     new DateTime().isAfter(dateTime), false, 1);
-
             HashMap map = apiWeatherFinder.findWeatherByDate();
 
             ArrayList param = (ArrayList) MyJsonHelper.getParam(map, "weather", "hourly");
@@ -598,7 +617,7 @@ DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.conv
         return output;
     }
 
-        private static String readAll(Reader rd) throws IOException {
+        public static String readAll(Reader rd) throws IOException {
             StringBuilder sb = new StringBuilder();
             int cp;
             while ((cp = rd.read()) != -1) {
