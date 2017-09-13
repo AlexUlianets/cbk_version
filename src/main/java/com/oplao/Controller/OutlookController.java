@@ -1,18 +1,18 @@
 package com.oplao.Controller;
 
-
 import com.oplao.model.*;
-import com.oplao.service.GeoIPv4;
+import com.oplao.service.SearchService;
 import com.oplao.service.TextWeatherService;
 import com.oplao.service.WeatherService;
 import org.joda.time.DateTime;
-import org.json.HTTP;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Controller
@@ -21,31 +21,63 @@ public class OutlookController {
 
     @Autowired
     WeatherService weatherService;
+    @Autowired
+    SearchService searchService;
+
+    @RequestMapping("/set_current_location_cookie")
+    public void setCurrentLocationCookie(HttpServletRequest request, HttpServletResponse response){
+       searchService.setCurrentLocationCookie(request, response);
+    }
     @RequestMapping("/get_coordinates")
     @ResponseBody
-    public HashMap getCoordinates(HttpServletRequest request){
-
-
-        return weatherService.getCoordinates(getCurrentIpAddress(request));
+    public HashMap getCoordinates(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+        return weatherService.getCoordinates(selectedCity);
     }
     @RequestMapping("/get_api_weather")
     @ResponseBody
-    public OutlookWeatherMapping getApiWeather(HttpServletRequest request) throws Exception{
+    public OutlookWeatherMapping getApiWeather(HttpServletRequest request, HttpServletResponse response) throws Exception{
 
-        return weatherService.getRemoteData(getCurrentIpAddress(request));
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+        return weatherService.getRemoteData(selectedCity);
     }
 
     @RequestMapping("/get_astronomy")
     @ResponseBody
-    public HashMap getAstronomy(HttpServletRequest request){
+    public HashMap getAstronomy(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
 
-        return weatherService.getAstronomy(getCurrentIpAddress(request));
+        return weatherService.getAstronomy(selectedCity);
     }
 
     @RequestMapping("/get_weekly_weather_summary")
     @ResponseBody
-    public WeeklyWeatherSummaryMapping getWeeklySummary(){
-
+    public WeeklyWeatherSummaryMapping getWeeklySummary(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
         DateTime dateTime = new DateTime();
         DateTime closestMondayDateTime = dateTime.minusDays(dateTime.getDayOfWeek()-1);
 
@@ -53,7 +85,7 @@ public class OutlookController {
 
         List<TextWeatherMapping> list = new ArrayList<>();
         for (int day = closestMondayDateTime.getDayOfWeek(); day <=7; day++) {
-            list.add(service.getTextWeatherMapping(closestMondayDateTime.plusDays(day-1)));
+            list.add(service.getTextWeatherMapping(closestMondayDateTime.plusDays(day-1), selectedCity));
         }
 
         TextWeatherMapping maxDayTemp = list.stream()
@@ -95,54 +127,75 @@ public class OutlookController {
 
     @RequestMapping("/get_detailed_forecast")
     @ResponseBody
-    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(HttpServletRequest request){
-        return weatherService.getDetailedForecastMapping(getCurrentIpAddress(request));
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+        return weatherService.getDetailedForecastMapping(selectedCity);
     }
     @RequestMapping("/get_weekly_weather")
     @ResponseBody
-    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(HttpServletRequest request){
-        return weatherService.getWeeklyWeatherReport(getCurrentIpAddress(request));
+    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(HttpServletRequest request, HttpServletResponse response){
+
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+        return weatherService.getWeeklyWeatherReport(selectedCity);
     }
 
     @RequestMapping("/get_year_summary")
     @ResponseBody
-    public List<HashMap> getYearSummary(HttpServletRequest request){
-        return weatherService.getYearSummary(getCurrentIpAddress(request));
+    public List<HashMap> getYearSummary(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+
+        return weatherService.getYearSummary(selectedCity);
 
     }
     @RequestMapping("/get_five_years_average")
     @ResponseBody
-    public List getFiveYearsAverage(HttpServletRequest request){
-        return weatherService.getFiveYearsAverage(getCurrentIpAddress(request));
+    public List getFiveYearsAverage(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+        return weatherService.getFiveYearsAverage(selectedCity);
     }
 
     @RequestMapping("/get_weekly_ultraviolet_index")
     @ResponseBody
-    public List getWeeklyUltravioletIndex(HttpServletRequest request){
-        return weatherService.getWeeklyUltraviolet(getCurrentIpAddress(request));
+    public List getWeeklyUltravioletIndex(HttpServletRequest request, HttpServletResponse response){
+        JSONObject selectedCity = null;
+        try {
+            selectedCity = searchService.getSelectedCity();
+        }catch (Exception e){
+            searchService.setCurrentLocationCookie(request, response);
+            selectedCity = searchService.getSelectedCity();
+        }
+
+        return weatherService.getWeeklyUltraviolet(selectedCity);
     }
 
-    private String getCurrentIpAddress(HttpServletRequest request){
+    @RequestMapping("get_recent_cities_tabs")
+    @ResponseBody
+    public List<HashMap> getRecentCitiesTabs(){
 
-
-        String ip = request.getHeader("x-forwarded-for");
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-
-        if(ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")){
-            return "94.126.240.2";
-        }
-        else{
-            return ip;
-        }
-
-
+        return searchService.createRecentCitiesTabs();
     }
-}
+    }

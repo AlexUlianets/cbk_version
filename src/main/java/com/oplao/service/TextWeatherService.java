@@ -1,26 +1,21 @@
 package com.oplao.service;
 
-import com.oplao.model.GeoLocation;
 import com.oplao.model.TextWeatherMapping;
-//import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
 public class TextWeatherService {
 
-    public TextWeatherMapping getTextWeatherMapping(DateTime dateTime){
-        GeoLocation geoLocation = GeoIPv4.getLocation("94.126.240.2");
+    public TextWeatherMapping getTextWeatherMapping(DateTime dateTime, JSONObject city){
 
-  APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, geoLocation.getCity(),
+        String cityName = ((String)city.get("asciiName"));
+        if(cityName.contains("'")){
+            cityName.replace("'", "");
+        }
+  APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
           new DateTime().isAfter(dateTime), false, 3 );
 
 
