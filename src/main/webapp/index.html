@@ -146,19 +146,19 @@
                         <div class="ht-search-inner">
                             <div class="ht-search-input">
                                 <i></i>
-                                <input type="text" value="City/Town, Post/Zip code, LAT, LON"
-                                       placeholder="City/Town, Post/Zip code, LAT, LON">
+                                <input type="text" value="City/Town, Post/Zip code, LAT, LON" ng-model="searchInput"
+                                       placeholder="City/Town, Post/Zip code, LAT, LON" ng-click="searchHint()" ng-change="searchHint()">
                             </div>
                             <!--<div class="ht-search-ico"><input type="submit" value=""></div> \-->
                             <div class="ht-search-autoloc"><span></span></div>
                         </div>
                         <div class="search-dropdown">
                             <ul>
-                                <li><a href="#" id="w0" class="active">Minsk, Belarus <span></span></a></li>
-                                <li><a href="#" id="w1">London, Great Britain <span></span></a></li>
-                                <li><a href="#" id="w2">New Your, United States <span></span></a></li>
-                                <li><a href="#" id="w3">Moscow, Russia <span></span></a></li>
-                                <li><a href="#" id="w4">Berlin, Germany <span></span></a></li>
+                                <li ng-repeat="i in searchList"><a href="#" ng-click="selectCity(i.geonameId)" ng-if="searchInput.length>1" id="w0">{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
+                                <li><a href="#" id="w1" ng-repeat="i in searchList" ng-if="searchInput.length<2" ng-class="{'active':i.city==temperature.city}">{{i.city}}<span></span></a></li>
+                                <!--<li><a href="#" id="w2">New Your, United States <span></span></a></li>-->
+                                <!--<li><a href="#" id="w3">Moscow, Russia <span></span></a></li>-->
+                                <!--<li><a href="#" id="w4">Berlin, Germany <span></span></a></li>-->
                             </ul>
                             <a href="#" class="dropdown-top"></a>
                         </div>
@@ -177,66 +177,66 @@
 
             <div class="favorite-location">
                 <div class="container">
-                    <a href="#" class="weather-block-favorite w0">
+                    <a href="#" class="weather-block-favorite w0" ng-repeat="i in get_recent_cities_tabs">
                         <div class="wb-left">
-                            <i class="icon blizzard-white"></i>
-                            <div class="wbl-temp">24 <span>C</span></div>
+                            <i class="icon {{i.weatherCode}}"></i>
+                            <div class="wbl-temp">{{local.typeTemp=='C'?i.tempC:i.tempF}} <span>{{local.typeTemp}}</span></div>
                         </div>
                         <div class="wb-right">
                             <div>
-                                <h3>Minsk<span>,&nbsp;</span></h3>
-                                <h4>BU</h4>
+                                <h3>{{i.city}}<span>,&nbsp;</span></h3>
+                                <h4>{{i.countryCode}}</h4>
                             </div>
                         </div>
                     </a>
-                    <a href="#" class="weather-block-favorite w1">
-                        <div class="wb-left">
-                            <i class="icon clear_day-white"></i>
-                            <div class="wbl-temp">24 <span>C</span></div>
-                        </div>
-                        <div class="wb-right">
-                            <div>
-                                <h3>London<span>,&nbsp;</span></h3>
-                                <h4>GB</h4>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="weather-block-favorite w2">
-                        <div class="wb-left">
-                            <i class="icon clear_night"></i>
-                            <div class="wbl-temp">24 <span>C</span></div>
-                        </div>
-                        <div class="wb-right">
-                            <div>
-                                <h3>Belford Roxo<span>,&nbsp;</span></h3>
-                                <h4>BR</h4>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="weather-block-favorite w3">
-                        <div class="wb-left">
-                            <i class="icon cloudy-white"></i>
-                            <div class="wbl-temp">24 <span>C</span></div>
-                        </div>
-                        <div class="wb-right">
-                            <div>
-                                <h3>Chelyabinsk<span>,&nbsp;</span></h3>
-                                <h4>RU</h4>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="#" class="weather-block-favorite w4">
-                        <div class="wb-left">
-                            <i class="icon blizzard-white"></i>
-                            <div class="wbl-temp">24 <span>C</span></div>
-                        </div>
-                        <div class="wb-right">
-                            <div>
-                                <h3>New York<span>,&nbsp;</span></h3>
-                                <h4>US</h4>
-                            </div>
-                        </div>
-                    </a>
+                    <!--<a href="#" class="weather-block-favorite w1">-->
+                        <!--<div class="wb-left">-->
+                            <!--<i class="icon clear_day-white"></i>-->
+                            <!--<div class="wbl-temp">24 <span>C</span></div>-->
+                        <!--</div>-->
+                        <!--<div class="wb-right">-->
+                            <!--<div>-->
+                                <!--<h3>London<span>,&nbsp;</span></h3>-->
+                                <!--<h4>GB</h4>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                    <!--<a href="#" class="weather-block-favorite w2">-->
+                        <!--<div class="wb-left">-->
+                            <!--<i class="icon clear_night"></i>-->
+                            <!--<div class="wbl-temp">24 <span>C</span></div>-->
+                        <!--</div>-->
+                        <!--<div class="wb-right">-->
+                            <!--<div>-->
+                                <!--<h3>Belford Roxo<span>,&nbsp;</span></h3>-->
+                                <!--<h4>BR</h4>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                    <!--<a href="#" class="weather-block-favorite w3">-->
+                        <!--<div class="wb-left">-->
+                            <!--<i class="icon cloudy-white"></i>-->
+                            <!--<div class="wbl-temp">24 <span>C</span></div>-->
+                        <!--</div>-->
+                        <!--<div class="wb-right">-->
+                            <!--<div>-->
+                                <!--<h3>Chelyabinsk<span>,&nbsp;</span></h3>-->
+                                <!--<h4>RU</h4>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                    <!--<a href="#" class="weather-block-favorite w4">-->
+                        <!--<div class="wb-left">-->
+                            <!--<i class="icon blizzard-white"></i>-->
+                            <!--<div class="wbl-temp">24 <span>C</span></div>-->
+                        <!--</div>-->
+                        <!--<div class="wb-right">-->
+                            <!--<div>-->
+                                <!--<h3>New York<span>,&nbsp;</span></h3>-->
+                                <!--<h4>US</h4>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
                 </div>
             </div>
         </div><!-- end container -->
