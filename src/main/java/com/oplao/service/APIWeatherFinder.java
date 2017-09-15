@@ -136,10 +136,15 @@ class UrlBuilder{
                  +month + "-" + day
         );
 
-        builder.append("&q=" + finder.getCity());
+        builder.append("&q=" + concatMultiWordCity(finder.getCity()));
 
 
 
         return builder.toString();
+    }
+
+    private String concatMultiWordCity(String city){
+
+        return city.replaceAll(" ", "_");
     }
 }

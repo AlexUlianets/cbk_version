@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.oplao.service.SearchService.cookie;
 import static com.oplao.service.SearchService.cookiedMaps;
@@ -27,7 +28,7 @@ public class SearchController {
     public List<HashMap> onChange(@PathVariable("searchRequest") String searchRequest) {
         List list = null;
         try{
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=ru&max=10&nameStarts="+searchRequest);
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts="+searchRequest.replaceAll(" ", "%20"));
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -42,7 +43,7 @@ public class SearchController {
     private HttpStatus checkDuplicateCookie(HttpServletRequest request, HttpServletResponse response,
                                             HashMap city){
         for (int i = 0; i < SearchService.cookiedMaps.size(); i++) {
-            if(Integer.parseInt(""+(cookiedMaps.get(i)).get("adminCode1")) == Integer.parseInt(""+ city.get("adminCode1"))){
+            if(Objects.equals("" + (cookiedMaps.get(i)).get("geonameId"), "" + city.get("geonameId"))){
 
                 searchService.setCookieSelected(i);
                 searchService.clearCookies(request, response);
@@ -60,7 +61,7 @@ public class SearchController {
                                HttpServletResponse response) {
         List list = null;
         try{
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=ru&max=10&geonameId=" + geonameId);
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -86,9 +87,9 @@ public class SearchController {
         }
 
         JSONObject object = new JSONObject(city);
-        if(SearchService.cookiedMaps.size()>5) {
+        if(SearchService.cookiedMaps.size()>4) {
             SearchService.cookiedMaps.remove(1);
-            SearchService.cookiedMaps.add(5, object);
+            SearchService.cookiedMaps.add(4, object);
         }else{
             SearchService.cookiedMaps.add(object);
         }

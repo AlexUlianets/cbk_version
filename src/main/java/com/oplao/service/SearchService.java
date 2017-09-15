@@ -131,6 +131,7 @@ public class SearchService {
         if(city.contains("'")){
             city = city.replace("'", "");
         }
+        city = city.replace(" ", "%20");
         DateTime dateTime = new DateTime();
         JSONObject jsonObject = null;
         try {
@@ -145,7 +146,7 @@ public class SearchService {
         result.put("weatherCode",(WeatherService.EXT_STATES.get(Integer.parseInt((String)hourly.get("weatherCode")))));
         result.put("tempC", hourly.get("tempC"));
         result.put("tempF", hourly.get("tempF"));
-        result.put("city", city);
+        result.put("city", city.replace("%20", " "));
         result.put("countryCode", coutryCode);
         return result;
     }

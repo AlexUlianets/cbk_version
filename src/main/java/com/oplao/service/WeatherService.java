@@ -118,10 +118,7 @@ public class WeatherService {
     }
     public List<HashMap> getYearSummary(JSONObject city){
 
-        String cityName = ((String)city.get("asciiName"));
-        if(cityName.contains("'")){
-            cityName = cityName.replace("'", "");
-        }
+        String cityName = validateCityName((String)city.get("asciiName"));
 
         JSONObject jsonObject = null;
 
@@ -157,10 +154,8 @@ public class WeatherService {
 
     public HashMap<Integer, HashMap<String,HashMap>> getWeeklyWeatherReport(JSONObject city){
 
-        String cityName = ((String)city.get("asciiName"));
-        if(cityName.contains("'")){
-            cityName = cityName.replace("'", "");
-        }
+        String cityName = validateCityName((String)city.get("asciiName"));
+
 
         DateTime dateTime = new DateTime();
 
@@ -436,10 +431,7 @@ public class WeatherService {
     }
     public HashMap getCoordinates(JSONObject city){
 
-        String cityName = ((String)city.get("asciiName"));
-        if(cityName.contains("'")){
-            cityName = cityName.replace("'", "");
-        }
+        String cityName = validateCityName((String)city.get("asciiName"));
         ZonedDateTime zdt = ZonedDateTime.now(ZoneOffset.UTC);
         LocalDateTime ldt = LocalDateTime.of(zdt.getYear(),
                 zdt.getMonth(), zdt.getDayOfMonth(),
@@ -462,11 +454,17 @@ public class WeatherService {
         return result;
     }
 
-    public HashMap getAstronomy(JSONObject city){
-        String cityName = ((String)city.get("asciiName"));
+    private String validateCityName(String cityName){
         if(cityName.contains("'")){
             cityName = cityName.replace("'", "");
         }
+
+        cityName = cityName.replaceAll(" ", "%20");
+        return cityName;
+    }
+    public HashMap getAstronomy(JSONObject city){
+        String cityName = validateCityName((String)city.get("asciiName"));
+
 
         DateTime dateTime = new DateTime();
         JSONObject jsonObject = null;
@@ -498,10 +496,8 @@ public class WeatherService {
         public OutlookWeatherMapping getRemoteData(JSONObject city){
 
 
-            String cityName = ((String)city.get("asciiName"));
-            if(cityName.contains("'")){
-                cityName = cityName.replace("'", "");
-            }
+            String cityName = validateCityName((String)city.get("asciiName"));
+
 
             DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
 
@@ -520,7 +516,7 @@ public class WeatherService {
         HashMap currentConditions = currentCondition.get(0);
 
             return
-                    OutlookWeatherMapping.create((String)city.get("countryName"), cityName, dateTime,
+                    OutlookWeatherMapping.create((String)city.get("countryName"), cityName.replaceAll("%20", " "), dateTime,
                             parseInt(currentConditions.get("temp_C")),
                             parseInt(currentConditions.get("temp_F")),
                             parseInt(currentConditions.get("FeelsLikeC")),
@@ -547,10 +543,7 @@ public class WeatherService {
     }
     private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime, JSONObject city){
 
-        String cityName = ((String)city.get("asciiName"));
-        if(cityName.contains("'")){
-            cityName = cityName.replace("'", "");
-        }
+        String cityName = validateCityName((String)city.get("asciiName"));
         
         JSONObject jsonObject = null;
         try {
@@ -589,10 +582,7 @@ public class WeatherService {
     }
     private HashMap getSingleUltravioletIndex(DateTime dateTime, JSONObject city){
 
-        String cityName = ((String)city.get("asciiName"));
-        if(cityName.contains("'")){
-            cityName = cityName.replace("'", "");
-        }
+        String cityName = validateCityName((String)city.get("asciiName"));
 
             JSONObject jsonObject = null;
             try {
@@ -613,10 +603,7 @@ public class WeatherService {
 
     public List getFiveYearsAverage(JSONObject city){
 
-        String cityName = ((String)city.get("asciiName"));
-        if(cityName.contains("'")){
-            cityName = cityName.replace("'", "");
-        }
+        String cityName = validateCityName((String)city.get("asciiName"));
 
         DateTime dateTime = new DateTime();
 
