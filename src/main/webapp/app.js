@@ -45,7 +45,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
                      $.ajax({
                         method: "POST",
-                        url: "/find_occurences/"+$rootScope.searchInput.split(' ').join('_')
+                        url: "/find_occurences/"+$rootScope.searchInput
                      }).done(function( msg ) {
                          $rootScope.$apply(function(){
                              $rootScope.searchList = msg;

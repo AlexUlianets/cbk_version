@@ -226,8 +226,8 @@ public class WeatherService {
         wholeDayMap.put("minTemperatureC", minWholeDayC);
         wholeDayMap.put("minTemperatureF", minWholeDayF);
 
-        dayMap.put("avgDayTempC", avgDayC);
-        dayMap.put("avgDayTempF", avgDayF);
+        dayMap.put("avgTempC", avgDayC);
+        dayMap.put("avgTempF", avgDayF);
         dayMap.put("time", "Day");
         dayMap.put("feelsLikeC", maxFeelLikeDayC);
         dayMap.put("feelsLikeF", maxFeelLikeDayF);
@@ -241,8 +241,8 @@ public class WeatherService {
 
         HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
-        nightMap.put("avgNightTempC", avgNightC);
-        nightMap.put("avgNightTempF", avgNightF);
+        nightMap.put("avgTempC", avgNightC);
+        nightMap.put("avgTempF", avgNightF);
         nightMap.put("feelsLikeC", maxFeelLikeNightC);
         nightMap.put("feelsLikeF", maxFeelLikeNightF);
         nightMap.put("precipChance", precipeChanceNight);
