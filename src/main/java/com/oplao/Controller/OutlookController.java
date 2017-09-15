@@ -139,7 +139,8 @@ public class OutlookController {
     }
     @RequestMapping("/get_weekly_weather")
     @ResponseBody
-    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(HttpServletRequest request, HttpServletResponse response){
+
+    public HashMap<Integer, HashMap<String,HashMap>>  getWeeklyWeather(HttpServletRequest request, HttpServletResponse response){
 
         JSONObject selectedCity = null;
         try {
