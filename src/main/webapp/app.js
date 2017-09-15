@@ -9,14 +9,22 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.searchInput = '';
         $rootScope.searchList = [];
 
+
+        $.ajax({
+            method: "POST",
+            url: "/set_current_location_cookie"
+        }).done(function( msg ) {
+
+        });
+
         $rootScope.get_recent_cities_tabs_func = function(){
             $.ajax({
-                method: "POST",
+                  method: "POST",
                 url: "/get_recent_cities_tabs"
             }).done(function( msg ) {
-                $rootScope.get_recent_cities_tabs = msg;
-                console.log(msg);
-                $rootScope.$apply;
+                $rootScope.$apply(function(){
+                    $rootScope.get_recent_cities_tabs = msg;
+                });
             });
         }
 
@@ -32,30 +40,32 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.get_api_weather();
 
         $rootScope.searchHint = function(){
-                console.log($rootScope.searchInput);
+            $('.search-dropdown').css({'display': 'block'})
                 if($rootScope.searchInput.length > 1){
+
                      $.ajax({
                         method: "POST",
-                        url: "/find_occurences/"+$rootScope.searchInput
+                        url: "/find_occurences/"+$rootScope.searchInput.split(' ').join('_')
                      }).done(function( msg ) {
-                        console.log(msg);
-                        $rootScope.searchList = msg;
-                        $rootScope.$apply;
+                         $rootScope.$apply(function(){
+                             $rootScope.searchList = msg;
+                         });
+
                      })
                 }else{
                       $rootScope.searchList = $rootScope.get_recent_cities_tabs;
-                      console.log($rootScope.searchList);
-                      $rootScope.$apply;
 
+                      if($rootScope.get_recent_cities_tabs===undefined){
+                          $('.search-dropdown').css({'display': 'none'})
+                      }
                 }
         }
         $rootScope.selectCity = function(e){
-            console.log(e);
+            $('.search-dropdown').css({'display': 'none'})
             $.ajax({
             method: "POST",
                 url: "/select_city/"+e
             }).done(function( msg ) {
-                console.log(msg)
                 $state.reload();
                 $rootScope.get_api_weather();
             })
@@ -63,6 +73,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.updateTemp = function(){
             readyGet($rootScope.$$childHead.detailedTemp, $rootScope.$$childHead.get_year_summary, $rootScope.local.typeTemp)
         }
+
     }]);
     app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
 
