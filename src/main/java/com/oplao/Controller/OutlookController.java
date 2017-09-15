@@ -100,7 +100,7 @@ public class OutlookController {
     }
     @RequestMapping("/get_weekly_weather")
     @ResponseBody
-    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>>  getWeeklyWeather(HttpServletRequest request){
+    public HashMap<Integer, HashMap<String,HashMap>>  getWeeklyWeather(HttpServletRequest request){
         return weatherService.getWeeklyWeatherReport(getCurrentIpAddress(request));
     }
 

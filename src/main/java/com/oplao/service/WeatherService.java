@@ -11,8 +11,6 @@ import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-
-import javax.xml.ws.ServiceMode;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +18,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -85,7 +82,7 @@ public class WeatherService {
         EXT_STATES.put(392, WeatherStateExt.LightSnowStorm);
         EXT_STATES.put(395, WeatherStateExt.HeavySnowStorm);
     }
-    public static String convertDayOfWeekShort(int day) {
+    private String convertDayOfWeekShort(int day) {
 
         switch (day) {
             case DateTimeConstants.MONDAY
@@ -160,12 +157,12 @@ public class WeatherService {
 
 
 
-    public HashMap<Integer, HashMap<String,WeeklyWeatherReportMapping>> getWeeklyWeatherReport(String ipAddress){
+    public HashMap<Integer, HashMap<String,HashMap>> getWeeklyWeatherReport(String ipAddress){
         GeoLocation geoLocation = GeoIPv4.getLocation(ipAddress);
 
         DateTime dateTime = new DateTime();
 
-       HashMap<Integer, HashMap<String, WeeklyWeatherReportMapping>> result = new HashMap();
+       HashMap<Integer, HashMap<String,HashMap>> result = new HashMap<>();
 
         for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+7 ; day++, count++) {
             result.put(count, getOneDayReportMapping(dateTime.plusDays(
@@ -177,7 +174,7 @@ public class WeatherService {
         return result;
     }
 
-    private HashMap<String, WeeklyWeatherReportMapping> getOneDayReportMapping(DateTime dateTime, String city, int count ){
+    private HashMap<String, HashMap> getOneDayReportMapping(DateTime dateTime, String city, int count ){
 
         JSONObject jsonObject = null;
 
@@ -192,12 +189,14 @@ public class WeatherService {
         ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
 
 
-        int maxDayC = getMaxIntParam(hourly, "tempC", dayTimeValues);
-        int maxDayF = getMaxIntParam(hourly,"tempF", dayTimeValues);
-        int minDayC =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempC"));
-        int minDayF =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempF"));
-        int maxNightC = getMaxIntParam(hourly,"tempC", nightTimeValues);
-        int maxNightF = getMaxIntParam(hourly,"tempF", nightTimeValues);
+        int maxWholeDayC = parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("maxtempC"));
+        int maxWholeDayF = parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("maxtempF"));
+        int minWholeDayC =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempC"));
+        int minWholeDayF =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempF"));
+        int avgDayC = getAVGIntParam(hourly, "tempC", dayTimeValues);
+        int avgDayF = getAVGIntParam(hourly, "tempF", dayTimeValues);
+        int avgNightC = getAVGIntParam(hourly, "tempC", nightTimeValues);
+        int avgNightF = getAVGIntParam(hourly, "tempF", nightTimeValues);
         int maxFeelLikeDayC = getMaxIntParam(hourly,"FeelsLikeC", dayTimeValues);
         int maxFeelLikeDayF = getMaxIntParam(hourly,"FeelsLikeF", dayTimeValues);
         int maxFeelLikeNightC = getMaxIntParam(hourly,"FeelsLikeC", nightTimeValues);
@@ -216,42 +215,65 @@ public class WeatherService {
         int maxGustKmhNight = getMaxIntParam(hourly, "WindGustKmph", nightTimeValues);
         int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
         int avgPressureNight = getAVGIntParam(hourly, "pressure", nightTimeValues);
-        String weaherIcon = String.valueOf(((HashMap)((ArrayList)(map.get("current_condition"))).get(0)).get("weatherIconUrl"));
+        String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(0).get("weatherCode")));
 
+        HashMap<String, HashMap> result = new HashMap<>();
+        HashMap<String, Object> dayMap = new HashMap<>();
+        HashMap<String, Object> wholeDayMap = new HashMap<>();
+        wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
+        wholeDayMap.put("monthOfYear",convertMonthOfYear(dateTime.getMonthOfYear()));
+        wholeDayMap.put("dayOfWeek", convertDayOfWeek(dateTime.getDayOfWeek()));
+        wholeDayMap.put("weatherCode", weatherCode);
+        wholeDayMap.put("maxTemperatureC", maxWholeDayC);
+        wholeDayMap.put("maxTemperatureF", maxWholeDayF);
+        wholeDayMap.put("minTemperatureC", minWholeDayC);
+        wholeDayMap.put("minTemperatureF", minWholeDayF);
 
-        //TODO weather icon validation add here!!!
-        HashMap<String, WeeklyWeatherReportMapping> result = new HashMap<>();
-        result.put("day", new WeeklyWeatherReportMapping(
-                dateTime.getDayOfMonth(), convertMonthOfYear(dateTime.getMonthOfYear()),
-                convertDayOfWeek(dateTime.getDayOfWeek()),
-                "Day", weaherIcon, maxDayC, maxDayF, minDayC, minDayF, maxFeelLikeDayC,
-                maxFeelLikeDayF, precipeChanceDay, precipDayMM, avgWindMDay, avgWindKmhDay, maxGustMDay,
-                maxGustKmhDay, avgPressureDay)
-        );
+        dayMap.put("avgDayTempC", avgDayC);
+        dayMap.put("avgDayTempF", avgDayF);
+        dayMap.put("time", "Day");
+        dayMap.put("feelsLikeC", maxFeelLikeDayC);
+        dayMap.put("feelsLikeF", maxFeelLikeDayF);
+        dayMap.put("precipChance", precipeChanceDay);
+        dayMap.put("precip", precipDayMM);
+        dayMap.put("windM", avgWindMDay);
+        dayMap.put("windKm", avgWindKmhDay);
+        dayMap.put("gustM", maxGustMDay);
+        dayMap.put("gustKmh", maxGustKmhDay);
+        dayMap.put("pressure", avgPressureDay);
 
-        result.put("night", new WeeklyWeatherReportMapping(
-                dateTime.getDayOfMonth(), convertMonthOfYear(dateTime.getMonthOfYear()),
-                convertDayOfWeek(dateTime.getDayOfWeek()), "Night", weaherIcon, maxNightC,
-                maxNightF,0,0, maxFeelLikeNightC, maxFeelLikeNightF,
-                precipeChanceNight, precipNightMM, avgWindMNight, avgWindKmhNight, maxGustMNight,
-                maxGustKmhNight, avgPressureNight)
-        );
+        HashMap<String, Object> nightMap = new HashMap<>();
+        nightMap.put("time", "Night");
+        nightMap.put("avgNightTempC", avgNightC);
+        nightMap.put("avgNightTempF", avgNightF);
+        nightMap.put("feelsLikeC", maxFeelLikeNightC);
+        nightMap.put("feelsLikeF", maxFeelLikeNightF);
+        nightMap.put("precipChance", precipeChanceNight);
+        nightMap.put("precip", precipNightMM);
+        nightMap.put("windM", avgWindMNight);
+        nightMap.put("windKm", avgWindKmhNight);
+        nightMap.put("gustM", maxGustMNight);
+        nightMap.put("gustKmh", maxGustKmhNight);
+        nightMap.put("pressure", avgPressureNight);
 
+        result.put("wholeDay", wholeDayMap);
+        result.put("Day", dayMap);
+        result.put("Night", nightMap);
 
         return result;
     }
 
     private Integer getAVGIntParam(List<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
-        final int[] precipChance = {0};
+        final int[] avgParam = {0};
 
         hourly = hourly.stream().filter(hashMap ->
                 dayTimeValues.contains(parseInt(hashMap.get("time"))))
                 .collect(Collectors.toList());
 
         hourly.stream().forEach(hashMap ->
-                precipChance[0] += parseInt(hashMap.get(paramName)));
+                avgParam[0] += parseInt(hashMap.get(paramName)));
 
-        return precipChance[0]/dayTimeValues.size(
+        return avgParam[0]/dayTimeValues.size(
 
         );
     }
@@ -358,7 +380,7 @@ public class WeatherService {
         }
     }
 
-    public static String convertMonthOfYearShort(int month) {
+    private String convertMonthOfYearShort(int month) {
 
 
         switch (month) {
