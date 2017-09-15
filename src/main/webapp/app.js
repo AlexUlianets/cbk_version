@@ -18,7 +18,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         });
 
         $rootScope.get_recent_cities_tabs_func = function(){
-
+            $.ajax({
+                  method: "POST",
+                url: "/get_recent_cities_tabs"
+            }).done(function( msg ) {
+                $rootScope.$apply(function(){
+                    $rootScope.get_recent_cities_tabs = msg;
+                });
+            });
         }
 
         $rootScope.get_api_weather = function(){
