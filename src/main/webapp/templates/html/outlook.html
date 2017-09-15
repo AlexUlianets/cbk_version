@@ -72,18 +72,18 @@
                             <div class="tb-contant">
                                 <div class="tb-item" ng-repeat="temperatureDay in temperatureWeekly.data"  ng-init="sectionIndex = $index">
 
-                                    <div class="tb-row" ng-repeat="day in temperatureDay">
+                                    <div class="tb-row" ng-repeat="day in temperatureDay" ng-if="day.time == 'Night' || day.time == 'Day'">
                                         <div class="tb-date" ng-if="day.time == 'Night'">
                                             <div class="tb-today" ng-if="sectionIndex==0">Today</div>
-                                            <div class="tb-date-day">{{day.dayOfMonth}} {{day.monthOfYear | limitTo:3}},</div>
-                                            <div class="tb-day">{{day.dayOfWeek | limitTo:3}}</div>
+                                            <div class="tb-date-day">{{temperatureDay.wholeDay.dayOfMonth}} {{temperatureDay.wholeDay.monthOfYear | limitTo:3}},</div>
+                                            <div class="tb-day">{{temperatureDay.wholeDay.dayOfWeek | limitTo:3}}</div>
                                         </div>
 
                                         <div class="tb-date" ng-if="day.time == 'Day'">
                                             <div class="tb-img">
                                                 <i class="icon clear_day-grey"></i>
                                             </div>
-                                            <div class="tb-temp">{{local.typeTemp=='C'?day.maxTemperatureC:day.maxTemperatureF}}°{{local.typeTemp}}/{{local.typeTemp=='C'?day.minTemperatureC:day.minTemperatureF}}°{{local.typeTemp}}</div>
+                                            <div class="tb-temp">{{local.typeTemp=='C'?temperatureDay.wholeDay.minTemperatureC:temperatureDay.wholeDay.minTemperatureF}}°{{local.typeTemp}}/{{local.typeTemp=='C'?temperatureDay.wholeDay.maxTemperatureC:temperatureDay.wholeDay.maxTemperatureF}}°{{local.typeTemp}}</div>
                                         </div>
 
                                         <div class="tb-time">
@@ -94,7 +94,7 @@
                                             <i class="icon clear_day-grey" ng-if="day.time == 'Day'"></i>
                                         </div>
                                         <div class="tb-temperature">
-                                            <div class="tb-text">{{local.typeTemp=='C'?day.maxTemperatureC:day.maxTemperatureF}}°{{local.typeTemp}}</div>
+                                            <div class="tb-text">{{local.typeTemp=='C'?day.avgTempC:day.avgTempF}}°{{local.typeTemp}}</div>
                                         </div>
                                         <div class="tb-feels-like">
                                             <div class="tb-text">{{local.typeTemp=='C'?day.feelsLikeC:day.feelsLikeF}}°{{local.typeTemp}}</div>
