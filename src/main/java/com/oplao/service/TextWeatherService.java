@@ -13,8 +13,10 @@ public class TextWeatherService {
 
         String cityName = ((String)city.get("asciiName"));
         if(cityName.contains("'")){
-            cityName.replace("'", "");
+            cityName = cityName.replace("'", "");
         }
+
+        cityName = cityName.replace(" ", "%20");
   APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
           new DateTime().isAfter(dateTime), false, 3 );
 
