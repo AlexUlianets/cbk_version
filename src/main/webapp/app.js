@@ -8,14 +8,15 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.local.typeTemp = 'C';
         $rootScope.searchInput = '';
         $rootScope.searchList = [];
+        $rootScope.result = 0;
 
 
-        $.ajax({
-            method: "POST",
-            url: "/set_current_location_cookie"
-        }).done(function( msg ) {
-
-        });
+        // $.ajax({
+        //     method: "POST",
+        //     url: "/set_current_location_cookie"
+        // }).done(function( msg ) {
+        //
+        // });
 
         $rootScope.get_recent_cities_tabs_func = function(){
             $.ajax({
@@ -40,6 +41,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.get_api_weather();
 
         $rootScope.searchHint = function(){
+            $('.search-dropdown ul').css({'display': 'none'})
+            $('.search-dropdown img').css({'display': 'block'})
             $('.search-dropdown').css({'display': 'block'})
                 if($rootScope.searchInput.length > 1){
 
@@ -49,19 +52,30 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                      }).done(function( msg ) {
                          $rootScope.$apply(function(){
                              $rootScope.searchList = msg;
+                             $rootScope.result = 1;
                          });
+                         $('.search-dropdown img').css({'display': 'none'})
+                         $('.search-dropdown ul').css({'display': 'block'})
+
 
                      })
                 }else{
                       $rootScope.searchList = $rootScope.get_recent_cities_tabs;
-
+                      $rootScope.result = 0;
+                        $('.search-dropdown img').css({'display': 'none'})
+                        $('.search-dropdown ul').css({'display': 'block'})
                       if($rootScope.get_recent_cities_tabs===undefined){
                           $('.search-dropdown').css({'display': 'none'})
+
                       }
                 }
         }
         $rootScope.selectCity = function(e){
             $('.search-dropdown').css({'display': 'none'})
+
+            $rootScope.searchInput = '';
+            $('.ht-search-input input').val('')
+
             $.ajax({
             method: "POST",
                 url: "/select_city/"+e
@@ -69,7 +83,33 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $state.reload();
                 $rootScope.get_api_weather();
             })
-        }
+
+        };
+        $rootScope.deleteCity = function(e, index){
+            $.ajax({
+                method: "POST",
+                url: "/deleteCity/"+e
+            }).done(function( msg ) {
+                var $this = $(this);
+                var $item = $('.weather-block-favorite')[0] ? $('.weather-block-favorite') : $('.weather-block-width');
+                $this.parent().slideUp();
+                var $menuIndex = index;
+                var block_weater = $('.weather-block-favorite')[0] ? $('.weather-block-favorite') : $('.weather-block-width');
+                if (!$('.weather-block-favorite')[0]) {
+                    console.log('true');
+                }
+                $('.w' + $menuIndex).remove();
+                $('.w' + $menuIndex + '_li').remove();
+                if ($(window).width() > 480) {
+                    block_weater.css("width", 100 / ($item.length - 1) + '%');
+                    if (($item.length - 1) == 0) {
+                        $('#top-page').animate({height: '-=71px'});
+                    }
+                } else {
+                    $('#top-page').animate({height: '-=70px'});
+                }
+            })
+        };
         $rootScope.updateTemp = function(){
             readyGet($rootScope.$$childHead.detailedTemp, $rootScope.$$childHead.get_year_summary, $rootScope.local.typeTemp)
         }

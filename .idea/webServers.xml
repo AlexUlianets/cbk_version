@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="172fa495-f555-458f-b5d0-fa718df4a669" name="oplao" url="http://staging.oplao.com">
-        <fileTransfer host="staging.oplao.com" port="2218" privateKey="C:\Users\homen\IdeaProjects\cbk_version\private_oplao.key" accessType="SFTP" keyPair="true">
+        <fileTransfer host="staging.oplao.com" port="2218" privateKey="$PROJECT_DIR$/private_oplao.key" accessType="SFTP" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

@@ -22,8 +22,9 @@ q:before, q:after, blockquote:before, blockquote:after{content:"";content:none;}
 a img{border:none;}
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary{display:block;}
 .tab-hour-content.active .hour-row-inner:last-child{border-bottom:1px solid #00daa9 !important;}
-.sprite-sprite, .sprite-alert-grey, .apt-left:after, .sprite-arr-down-white, .f-arr-white, .h-arr-white, .sprite-arr-right-grey, .arr-right-grey, .alert-settings span, .lp-read-all span, .sprite-arr-right-white, .arr-right-white, .alert-settings:hover span, .sprite-arr-top-green, .arr-top-green, .sprite-autoloc-hov, .ht-search-autoloc span:hover, .sprite-autoloc, .ht-search-autoloc span, .sprite-cloud-grey, .sprite-feels-grey, .c-t-max i, .c-t-min i, .sprite-find-ico, .ht-search-ico input, .sprite-humidity-grey, .sprite-km-grey, .sprite-menu-ico, #nav-toggle span, .sprite-menu-open-ico, #nav-toggle.active span, .sprite-popup-close-hov, .search-dropdown ul li a:hover span, .sprite-popup-close, .search-dropdown ul li a span, .sprite-prec, .sprite-prec-grey, .c-t-prec i, .sprite-pressure-grey, .sprite-settings-grey, .spt-left:after, .sprite-view-map-hov, .t-view-map:hover:after, .sprite-view-map, .t-view-map:after, .sprite-wind-grey, .sprite-wind-right-grey, .sprite-wind{background-image:url('../images/sprite-sc494cbf1d8.png');background-repeat:no-repeat;}
+.sprite-sprite, .sprite-alert-grey, .apt-left:after, .sprite-arr-down-white, .f-arr-white, .h-arr-white, .sprite-arr-right-grey, .arr-right-grey, .alert-settings span, .lp-read-all span, .sprite-arr-right-white, .arr-right-white, .alert-settings:hover span, .sprite-arr-top-green, .arr-top-green, .sprite-autoloc-hov, .ht-search-autoloc span:hover, .sprite-autoloc, .ht-search-autoloc span, .sprite-cloud-grey, .sprite-feels-grey, .c-t-max i, .c-t-min i, .sprite-find-ico, .ht-search-ico input, .sprite-humidity-grey, .sprite-km-grey, .sprite-menu-ico, #nav-toggle span, .sprite-menu-open-ico, #nav-toggle.active span, .sprite-popup-close-hov, .search-dropdown ul li a:hover span, .sprite-popup-close, .search-dropdown ul li span, .sprite-prec, .sprite-prec-grey, .c-t-prec i, .sprite-pressure-grey, .sprite-settings-grey, .spt-left:after, .sprite-view-map-hov, .t-view-map:hover:after, .sprite-view-map, .t-view-map:after, .sprite-wind-grey, .sprite-wind-right-grey, .sprite-wind{background-image:url('../images/sprite-sc494cbf1d8.png');background-repeat:no-repeat;}
 .sprite-alert-grey, .apt-left:after{background-position:0 0;}
+.search-dropdown ul li{border-bottom: 1px solid #ebebeb;}
 .sprite-arr-down-white, .f-arr-white, .h-arr-white{background-position:0 -19px;}
 .sprite-arr-right-grey, .arr-right-grey, .alert-settings span, .lp-read-all span{background-position:0 -28px;}
 .sprite-arr-right-white, .arr-right-white, .alert-settings:hover span{background-position:0 -35px;}
@@ -38,7 +39,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 .sprite-menu-ico, #nav-toggle span{background-position:0 -185px;}
 .sprite-menu-open-ico, #nav-toggle.active span{background-position:0 -199px;}
 .sprite-popup-close-hov, .search-dropdown ul li a:hover span{background-position:0 -219px;}
-.sprite-popup-close, .search-dropdown ul li a span{background-position:0 -232px;}
+.sprite-popup-close, .search-dropdown ul li span{background-position:0 -232px;}
 .sprite-prec, .sprite-prec-grey, .c-t-prec i{background-image:url("../images/svg/oplao_w_precipitation.svg");background-size:cover;}
 .sprite-pressure-grey{background-image:url("../images/svg/oplao_w_pressure .svg");background-size:cover;}
 .sprite-settings-grey, .spt-left:after{background-position:0 -285px;}
@@ -386,9 +387,10 @@ img.mfp-img{width:auto;max-width:100%;height:auto;display:block;line-height:0;bo
 .ht-search-input i{right:10px;}
 }
 .search-dropdown{display:none;border-bottom:1px solid #ebebeb;background:#fff;border-left-bottom-radius:3px;max-width:550px;padding-top:80px;position:absolute;top:50px;left:0;right:0;width:100%;padding:0px 20px 00px 20px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;border-top:1px solid #fff;z-index:100;}
-.search-dropdown ul li a{display:block;border-bottom:1px solid #ebebeb;font:400 1.4em/48px "FiraSans-Book", sans-serif;height:48px;color:#4c4c4c;padding-left:20px;position:relative;}
-.search-dropdown ul li a span{position:absolute;display:block;top:18px;right:2px;width:12px;height:13px;}
-.search-dropdown ul li a:hover{background:#ebebeb;}
+.search-dropdown ul li a{font:400 1.4em/48px "FiraSans-Book", sans-serif;height:48px;color:#4c4c4c;padding-left:20px;position:relative; width: 92%;}
+.search-dropdown ul li span{    display: block;    right: 27px;    width: 12px;    height: 13px;    float: right;    margin-top: 20px;}
+.search-dropdown ul li:hover{background:#ebebeb;}
+.search-dropdown ul li span:hover {cursor: pointer; opacity: 0.6;}
 .search-dropdown ul li a.active{color:#0880d5;}
 .dropdown-top{height:50px;display:block;position:relative;}
 .dropdown-top:after{content:'';position:absolute;top:50%;margin-top:-4px;left:50%;margin-left:-4px;width:0;height:0;border-style:solid;border-width:0 4px 8px 4px;border-color:transparent transparent #e3e3e3 transparent;}
@@ -462,7 +464,7 @@ img.mfp-img{width:auto;max-width:100%;height:auto;display:block;line-height:0;bo
 .wb-right a:hover h3, .wb-right a:hover h4{text-decoration:underline;}
 .wbl-temp{font:500 1.6em/1 "Fira Sans", sans-serif;color:#0880d5;margin-top:6px;}
 .wbl-temp span{margin-left:4px;position:relative;}
-.wbl-temp span:after{content:'';position:absolute;left:-5px;top:1px;width:2px;height:2px;border:1px solid #0880d5;display:block;-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;}
+.wbl-temp span:after{content:'';position:absolute;left:-5px;top:1px;width:2px;height:2px;border:1px solid white;display:block;-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;}
 .tmp-s{background:#f2f2f2;vertical-align:middle;margin-top:63px;padding-top:90px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;height:250px;}
 .tmp-s p{font:300 3.3em/1 "Fira Sans", sans-serif;color:#fff;text-align:center;}
 .weather-block-width-wrap{display:block;width:100%;}

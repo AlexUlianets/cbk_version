@@ -1,4 +1,10 @@
 $(document).ready(function () {
+
+    setTimeout(function (){$('.load_header').fadeOut( "slow", function() {
+        $('.head-bot-mini').css({'display': 'block'});
+        $('#top-page').find('.container').css({'display': 'block'});
+    })}, 4000)
+
     $("head").append("<link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>");
     $('.temp-block').on('click', function (e) {
         $this = $(this);
@@ -189,38 +195,6 @@ $(document).ready(function () {
         e.preventDefault();
         var $this = $(this);
         $this.addClass('active').siblings().removeClass('active');
-    });
-    $('.search-dropdown ul li a').on('click', function (e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $text = $this.text();
-        var $words = $text.split(",");
-        var $word1 = $words[0];
-        var $word2 = $words[1];
-        $('.search-text1').text($word1);
-        $('.search-text2').text($word2);
-        $this.addClass('active').parent().siblings().find('a').removeClass('active');
-    });
-    $('.search-dropdown ul li a span').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var $this = $(this);
-        var $item = $('.weather-block-favorite')[0] ? $('.weather-block-favorite') : $('.weather-block-width');
-        $this.parent().slideUp();
-        var $menuIndex = $this.parent().parent().index();
-        var block_weater = $('.weather-block-favorite')[0] ? $('.weather-block-favorite') : $('.weather-block-width');
-        if (!$('.weather-block-favorite')[0]) {
-            console.log('true');
-        }
-        $('.w' + $menuIndex).remove();
-        if ($(window).width() > 480) {
-            block_weater.css("width", 100 / ($item.length - 1) + '%');
-            if (($item.length - 1) == 0) {
-                $('#top-page').animate({height: '-=71px'});
-            }
-        } else {
-            $('#top-page').animate({height: '-=70px'});
-        }
     });
     var $dropdown = $('.search-dropdown');
     $('.ht-search-input input, .ht-search-input i').on('click', function () {
