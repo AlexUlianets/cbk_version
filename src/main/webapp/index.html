@@ -139,23 +139,26 @@
 
 <div class="blur">
     <section id="top-page">
-        <div class="container">
+        <img src="images/loading.gif" style="width: 10%;margin-left: 45%;margin-right: 45%;" class="load_header">
+        <div class="container" style="display: none">
+
             <div class="head-top">
                 <div class="ht-search">
                     <form class="ht-search-wrap">
                         <div class="ht-search-inner">
                             <div class="ht-search-input">
                                 <i></i>
-                                <input type="text" value="City/Town"
-                                       placeholder="City/Town" ng-click="searchHint()" ng-keyup="searchHint()" ng-model="searchInput">
+                                <input type="text" value=""
+                                       placeholder="City/Town, Post/Zip code, LAT, LON" ng-click="searchHint()" ng-keyup="searchHint()" ng-model="searchInput">
                             </div>
                             <!--<div class="ht-search-ico"><input type="submit" value=""></div> \-->
                             <div class="ht-search-autoloc"><span></span></div>
                         </div>
                         <div class="search-dropdown">
+                            <img src="images/cloud_load.gif" style="width: 18%;margin-left: 41%;display: none;margin-right: 41%;" class="load_search">
                             <ul>
-                                <li ng-repeat="i in searchList" ng-click="selectCity(i.geonameId)"><a ng-if="searchInput.length>1" ng-class="{'active':i.city==temperature.city}">{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
-                                <li ng-repeat="i in searchList track by $index"><a  id="w{{$index}}" ng-if="searchInput.length<=1" ng-class="{'active':i.city==temperature.city}">{{i.city}}<span></span></a></li>
+                                <li ng-repeat="i in searchList" ng-if="searchInput.length>1 && result==1" ng-click="selectCity(i.geonameId)"><a  ng-class="{'active':i.city==temperature.city}">{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
+                                <li ng-repeat="i in searchList track by $index" ng-if="searchInput.length<=1" class="w{{$index}}_li"><a ng-click="selectCity(i.geonameId)" id="w{{$index}}" ng-class="{'active':i.city==temperature.city}">{{i.city}}</a><span ng-if="i.city!=temperature.city" ng-click="deleteCity(1, $index)"></span></li>
                                 <li ng-if="searchList.length==0"><a>No results</a></li>
                             </ul>
                             <a href="#" class="dropdown-top"></a>
@@ -175,7 +178,7 @@
 
             <div class="favorite-location" ng-if="get_recent_cities_tabs.length!=0">
                 <div class="container">
-                    <a ng-repeat="i in get_recent_cities_tabs track by $index" class="weather-block-favorite w{{$index}}">
+                    <a ng-repeat="i in get_recent_cities_tabs track by $index" ng-click="selectCity(i.geonameId)" class="weather-block-favorite w{{$index}}">
                         <div class="wb-left">
                             <i class="icon clear_day-grey"></i>
                             <div class="wbl-temp">{{local.typeTemp=='C'?i.tempC:i.tempF}} <span>{{local.typeTemp}}</span></div>
@@ -191,7 +194,7 @@
             </div>
         </div><!-- end container -->
 
-        <div class="head-bot-mini">
+        <div class="head-bot-mini"  style="display: none">
             <div class="hb-inner">
                 <div class="weather-now">
                     <img src="img/{{temperature.weatherIconCode}}.svg" alt="img">
