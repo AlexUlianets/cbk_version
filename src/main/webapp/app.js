@@ -71,7 +71,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             })
         }
         $rootScope.updateTemp = function(){
-            readyGet($rootScope.$$childHead.detailedTemp, $rootScope.$$childHead.get_year_summary, $rootScope.local.typeTemp)
+            $state.reload();
         }
 
     }]);
