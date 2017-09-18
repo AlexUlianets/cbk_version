@@ -91,13 +91,13 @@ public class SearchService {
 
        ArrayList<HashMap> data = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
-            data.add(getRecentCityInfo((String) array.getJSONObject(i).get("asciiName"),(String) array.getJSONObject(i).get("countryCode")));
+            data.add(getRecentCityInfo((String) array.getJSONObject(i).get("asciiName"),(String) array.getJSONObject(i).get("countryCode"), String.valueOf(array.getJSONObject(i).get("geonameId"))));
         }
        return data;
     }
 
 
-    private HashMap getRecentCityInfo(String city, String coutryCode){
+    private HashMap getRecentCityInfo(String city, String coutryCode, String geonameId){
 
         if(city.contains("'")){
             city = city.replace("'", "");
@@ -119,6 +119,7 @@ public class SearchService {
         result.put("tempF", hourly.get("tempF"));
         result.put("city", city.replace("%20", " "));
         result.put("countryCode", coutryCode);
+        result.put("geonameId", geonameId);
         return result;
     }
 
