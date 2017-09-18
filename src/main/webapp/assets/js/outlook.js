@@ -16,6 +16,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
       $http.post('/get_astronomy').then(function (response) {
           $scope.$parent.moon_phase_index = response.data['moon_phase_index'];
+          $scope.$parent.moon_phase_name = response.data['moon_phase_name'];
           $scope.$parent.astronomy = response.data;
       });
 
