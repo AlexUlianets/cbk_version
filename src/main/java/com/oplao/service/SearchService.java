@@ -20,13 +20,11 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Service
 public class SearchService {
-
-    public static List<JSONObject> cookiedMaps = new ArrayList<>();
-    public static Cookie cookie = new Cookie("lastCitiesVisited", "");
+    public static final String cookieName = "lastCitiesVisited";
 
     public static List<JSONObject> findByOccurences(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
@@ -47,80 +45,53 @@ public class SearchService {
     }
 
    public void clearCookies(HttpServletRequest request, HttpServletResponse response){
-       for (Cookie c: request.getCookies()){
-           c.setValue("");
-           c.setPath("/");
-           c.setMaxAge(0);
-           response.addCookie(c);
+       for (int i = 0; i < request.getCookies().length; i++) {
+               request.getCookies()[i].setPath("/");
+               request.getCookies()[i].setValue("");
+               request.getCookies()[i].setMaxAge(0);
+               response.addCookie(request.getCookies()[i]);
        }
    }
 
 
-   public void setCookieSelected(int elem){
-       for (Object cookiedMap : SearchService.cookiedMaps) {
-           ((JSONObject) cookiedMap).remove("status");
-           ((JSONObject) cookiedMap).put("status", "unselected");
+   public JSONObject findSelectedCity(HttpServletRequest request, HttpServletResponse response, String currentCookieValue){
+
+       if(!Objects.equals(currentCookieValue, "")){
+       JSONArray array = new JSONArray(currentCookieValue);
+       for (int i = 0; i < array.length(); i++) {
+           if(array.getJSONObject(i).get("status").equals("selected")){
+               return array.getJSONObject(i);
+           }
        }
-       (SearchService.cookiedMaps.get(elem)).remove("status");
-       (SearchService.cookiedMaps.get(elem)).put("status", "selected");
-   }
+       }else {
+           GeoLocation geoLocation = GeoIPv4.getLocation(AddressGetter.getCurrentIpAddress(request));
 
-   public void setCurrentLocationCookie(HttpServletRequest request, HttpServletResponse response){
-       GeoLocation geoLocation = GeoIPv4.getLocation(AddressGetter.getCurrentIpAddress(request));
-
-       List list = null;
-       try {
-           list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=ru&max=10&nameStarts=" + geoLocation.getCity());
-       } catch (IOException e) {
-           e.printStackTrace();
+           List<JSONObject> list = null;
+           try {
+               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + geoLocation.getCity());
+               JSONObject obj = list.get(0);
+               obj.put("status", "selected");
+               JSONArray arr = new JSONArray("["+obj.toString()+"]");
+               Cookie c = new Cookie(cookieName,arr.toString());
+               c.setMaxAge(60 * 60 * 24);
+               c.setPath("/");
+               response.addCookie(c);
+               return obj;
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
        }
-       if(!list.isEmpty()) {
-
-           HashMap city = (HashMap) ((JSONObject) list.get(0)).toMap();
-           if(!city.containsKey("status")){
-               city.put("status", "selected");
-           }else {
-               city.replace("status", "selected");
-           }
-
-           JSONObject object = new JSONObject(city);
-           if(!SearchService.cookiedMaps.isEmpty()){
-               SearchService.cookiedMaps.remove(0);
-               SearchService.cookiedMaps.add(0, object);
-           }else {
-               SearchService.cookiedMaps.add(0, object);
-           }
-
-           if(!SearchService.cookiedMaps.isEmpty()) {
-               for (int i = 1; i < SearchService.cookiedMaps.size(); i++) {
-                   (cookiedMaps.get(i)).remove("status");
-                   (cookiedMaps.get(i)).put("status", "unselected");
-               }
-           }
-           if(request.getCookies()!=null) {
-               clearCookies(request, response);
-           }
-
-           SearchService.cookie.setValue(SearchService.cookiedMaps.toString());
-           response.addCookie(SearchService.cookie);
-       }
-   }
-
-   public JSONObject getSelectedCity(){
-
-           JSONObject selectedCity = cookiedMaps.stream().filter(jsonObject ->
-                   jsonObject.get("status").equals("selected")).collect(Collectors.toList()).get(0);
-
-       return selectedCity;
+       return null;
    }
 
 
-    public List<HashMap> createRecentCitiesTabs(){
+    public List<HashMap> createRecentCitiesTabs(String currentCookieValue){
 
-       List<HashMap> data = new ArrayList<>();
+       JSONArray array = new JSONArray(currentCookieValue);
 
-        for (int i = 0; i < cookiedMaps.size(); i++) {
-            data.add(getRecentCityInfo((String) cookiedMaps.get(i).toMap().get("asciiName"),(String) cookiedMaps.get(i).toMap().get("countryCode")));
+       ArrayList<HashMap> data = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            data.add(getRecentCityInfo((String) array.getJSONObject(i).get("asciiName"),(String) array.getJSONObject(i).get("countryCode")));
         }
        return data;
     }
@@ -149,5 +120,24 @@ public class SearchService {
         result.put("city", city.replace("%20", " "));
         result.put("countryCode", coutryCode);
         return result;
+    }
+
+    public Cookie deleteCity(String currentCookieValue, String geonameId, HttpServletRequest request, HttpServletResponse response){
+
+        JSONArray array = new JSONArray(currentCookieValue);
+
+        for (int i = 0; i < array.length(); i++) {
+            if(String.valueOf(array.getJSONObject(i).get("geonameId")).equals(geonameId)){
+                array.remove(i);
+                clearCookies(request, response);
+                Cookie c = new Cookie(cookieName,array.toString());
+                c.setMaxAge(60 * 60 * 24);
+                c.setPath("/");
+                return c;
+            }
+        }
+
+        return null;
+
     }
 }
