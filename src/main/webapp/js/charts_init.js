@@ -202,14 +202,14 @@ function readyGet(response, responseYear, type) {
             if (colDate[i]['h'][j]) {
                 tempDateFive[t] = colDate[i]['h'][j]['flt'];
                 precipDateFive[t] = colDate[i]['h'][j]['cop'];
-                $('#weatherFiveIcon .wrp-icon').append('<span class="icon"><img src="img/' + colDate[i]['h'][j]['wse'] + '.svg"></span>');
+                $('#weatherFiveIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + colDate[i]['h'][j]['wse'] + '.svg"></span>');
                 deyDate[t] = ' ';
             }
             ;
             if (i <= 2) {
                 tempDateThree[t] = colDate[i]['h'][j]['flt'];
                 precipDateThree[t] = colDate[i]['h'][j]['cop'];
-                $('#weatherThreeIcon .wrp-icon').append('<span class="icon"><img src="img/' + colDate[i]['h'][j]['wse'] + '.svg"></span>');
+                $('#weatherThreeIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + colDate[i]['h'][j]['wse'] + '.svg"></span>');
             }
             ;
             t++;
