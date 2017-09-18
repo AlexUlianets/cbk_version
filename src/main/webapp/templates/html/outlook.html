@@ -81,7 +81,7 @@
 
                                         <div class="tb-date" ng-if="day.time == 'Day'">
                                             <div class="tb-img">
-                                                <i class="icon clear_day-grey"></i>
+                                                <img src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;">
                                             </div>
                                             <div class="tb-temp">{{local.typeTemp=='C'?temperatureDay.wholeDay.minTemperatureC:temperatureDay.wholeDay.minTemperatureF}}°{{local.typeTemp}}/{{local.typeTemp=='C'?temperatureDay.wholeDay.maxTemperatureC:temperatureDay.wholeDay.maxTemperatureF}}°{{local.typeTemp}}</div>
                                         </div>
@@ -90,8 +90,8 @@
                                             <div class="tb-text">{{day.time}}</div>
                                         </div>
                                         <div class="tb-weather">
-                                            <i class="icon clear_night-white" ng-if="day.time == 'Night'"></i>
-                                            <i class="icon clear_day-grey" ng-if="day.time == 'Day'"></i>
+                                            <img src="svg/wicons_svg_white/{{day.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Night'">
+                                            <img src="svg/wicons_svg/{{day.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Day'">
                                         </div>
                                         <div class="tb-temperature">
                                             <div class="tb-text">{{local.typeTemp=='C'?day.avgTempC:day.avgTempF}}°{{local.typeTemp}}</div>
@@ -413,7 +413,7 @@
                 <div class="v-year-list">
                     <div class="v-year-item" ng-repeat="year in five_years_average">
                         <div class="v-year">{{year.year}}</div>
-                        <i class="icon clear_day-white"></i>
+                        <img src="svg/wicons_svg_white/{{year.weatherCode}}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
                         <div class="temperature">
                             <span class="count">{{local.typeTemp=='C'?year.tempC:year.tempF}}</span>
                             <span class="mark">°{{local.typeTemp}}</span>

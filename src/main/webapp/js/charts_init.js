@@ -138,6 +138,7 @@ function readyGet(response, responseYear, type) {
     var weatherIcons = []
 
     temp.forEach(function (temp) {
+
         type==='C'? tempDateTenArray.push(temp.tempC) : tempDateTenArray.push(temp.tempF)
         precipDateTenArray.push(temp.precip)
         weatherIcons.push(temp.weatherIcon)
@@ -233,17 +234,17 @@ function readyGet(response, responseYear, type) {
         t++;
     }
     for (var i = 0; i <= 23; i++) {
-        $('#weatherDetailedIcon .wrp-icon').append('<span class="icon"><img src="img/' + iconDetailed[i] + '.svg"></span>');
+        $('#weatherDetailedIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + iconDetailed[i] + '.svg"></span>');
     }
     for (var i = 0; i <= 13; i++) {
-        $('#weatherFourteenIcon .wrp-icon').append('<span class="icon"><img src="img/' + iconDetailed[i] + '.svg"></span>');
+        $('#weatherFourteenIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + iconDetailed[i] + '.svg"></span>');
     }
     $('#weatherTenIcon .wrp-icon').html(' ')
     for (var i = 0; i <= 9; i++) {
-        $('#weatherTenIcon .wrp-icon').append('<span class="icon"><img src="img/' + iconDetailed[i] + '.svg"></span>');
+        $('#weatherTenIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + iconDetailed[i] + '.svg"></span>');
     }
     for (var i = 0; i <= 6; i++) {
-        $('#weatherSevenIcon .wrp-icon').append('<span class="icon"><img src="img/' + iconDetailed[i] + '.svg"></span>');
+        $('#weatherSevenIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + iconDetailed[i] + '.svg"></span>');
     }
     minTempThree = Math.min(...tempDateThree
 )
