@@ -52,8 +52,8 @@
                 <a id="nav-toggle" href="#"><span></span><em></em></a>
 
                 <div class="temp-wrap">
-                    <div class="temp-block  active active-mob tmp-cel" ng-click="local.typeTemp = 'C'; updateTemp()">°C</div>
-                    <div class="temp-block tmp-far" ng-click="local.typeTemp = 'F'; updateTemp();">°F</div>
+                    <div class="temp-block tmp-cel" ng-class="{'active active-mob':local.typeTemp=='C'}" ng-click="local.typeTemp = 'C'; updateTemp()">°C</div>
+                    <div class="temp-block tmp-far" ng-class="{'active active-mob':local.typeTemp=='F'}" ng-click="local.typeTemp = 'F'; updateTemp();">°F</div>
                 </div><!-- end temp-wrap -->
 
                 <div id="h-share">

@@ -1,11 +1,19 @@
 var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
-    app.run( ['$rootScope', '$state', '$stateParams', '$http', function ($rootScope,   $state,   $stateParams, $http) {
+    app.run( ['$rootScope', '$state', '$stateParams', '$http', '$cookies', function ($rootScope,   $state,   $stateParams, $http, $cookies) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $rootScope.example = "";
         $rootScope.local = {};
-        $rootScope.local.typeTemp = 'C';
+
+        console.log($cookies.get('temp_val'))
+        if($cookies.get('temp_val')===undefined){
+            $cookies.put('temp_val', 'C');
+            $rootScope.local.typeTemp = 'C';
+        }else {
+            $rootScope.local.typeTemp = $cookies.get('temp_val').toString();
+
+        }
         $rootScope.searchInput = '';
         $rootScope.searchList = [];
         $rootScope.result = 0;
@@ -111,7 +119,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             })
         };
         $rootScope.updateTemp = function(){
-            $state.reload();
+            if($cookies.get('temp_val')==='C'){
+                $cookies.put('temp_val', 'F');
+
+            }else {
+                $cookies.put('temp_val', 'C');
+
+            }
+            document.location.reload(true);
         }
 
     }]);
@@ -159,3 +174,4 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
          $locationProvider.html5Mode(true)
   }]);
+
