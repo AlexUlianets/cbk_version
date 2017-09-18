@@ -212,7 +212,9 @@ public class WeatherService {
         int maxGustKmhNight = getAVGIntParam(hourly, "WindGustKmph", nightTimeValues);
         int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
         int avgPressureNight = getAVGIntParam(hourly, "pressure", nightTimeValues);
-        String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(0).get("weatherCode")));
+        String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(12).get("weatherCode")));
+        String dayWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(14).get("weatherCode")));
+        String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode")));
         int windDegreeDay = getAVGIntParam(hourly, "winddirDegree", dayTimeValues) + 40;
         int windDegreeNight = getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40;
         HashMap<String, HashMap> result = new HashMap<>();
@@ -240,6 +242,7 @@ public class WeatherService {
         dayMap.put("gustKmh", maxGustKmhDay);
         dayMap.put("pressure", avgPressureDay);
         dayMap.put("windDegree", windDegreeDay);
+        dayMap.put("weatherCode", dayWeatherCode);
 
         HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
@@ -255,6 +258,7 @@ public class WeatherService {
         nightMap.put("gustKmh", maxGustKmhNight);
         nightMap.put("pressure", avgPressureNight);
         nightMap.put("windDegree", windDegreeNight);
+        nightMap.put("weatherCode", nightWeatherCode);
 
         result.put("wholeDay", wholeDayMap);
         result.put("Day", dayMap);
@@ -670,10 +674,12 @@ public class WeatherService {
 
             int tempC = parseInt(((HashMap) param.get(14)).get("tempC"));
             int tempF = parseInt(((HashMap) param.get(14)).get("tempF"));
+            String weatherCode = ""+EXT_STATES.get(Integer.parseInt((String)((HashMap) param.get(14)).get("weatherCode")));
             HashMap result = new HashMap();
             result.put("year", dateTime.minusYears(i).getYear());
             result.put("tempC", tempC);
             result.put("tempF", tempF);
+            result.put("weatherCode", weatherCode);
 
             output.add(result);
 
