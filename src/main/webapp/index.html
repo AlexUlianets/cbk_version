@@ -201,6 +201,60 @@
                     <div><b ng-bind="local.typeTemp=='C'?temperature.temp_c:temperature.temp_f"></b><em ng-bind="local.typeTemp"></em>
                         <span>/<strong ng-bind="local.typeTemp=='C'?temperature.temp_f:temperature.temp_c"></strong><abbr ng-bind="local.typeTemp!='C'?'C':'F'"></abbr></span></div>
                 </div>
+
+                <div class="weather-info">
+                    <div class="weather-info-block">
+                        <div class="wb-img">
+                            <span class="helper"></span>
+                            <img src="img/feels_like_white.svg" alt="img" style="    width: 43px;">
+                        </div>
+                        <h4>Feels like</h4>
+                        <p>{{local.typeTemp=='C'?temperature.feelsLikeC:temperature.feelsLikeF}} <span class="cels">{{local.typeTemp}}</span></p>
+                    </div>
+                    <div class="weather-info-block">
+                        <div class="wb-img">
+                            <span class="helper"></span>
+                            <img src="img/humidity.svg" alt="img" style="    width: 53px;">
+                        </div>
+                        <h4>Humidity</h4>
+                        <p>{{temperature.humidity}}<span>%</span></p>
+                    </div>
+                    <div class="weather-info-block">
+                        <div class="wb-img">
+                            <span class="helper"></span>
+                            <img src="img/pressure_white.svg" alt="img" style="    width: 53px;">
+                        </div>
+                        <h4>Pressure</h4>
+                        <p>{{temperature.pressure}} <span>hPa</span></p>
+                    </div>
+                    <div class="weather-info-block">
+                        <div class="wb-img">
+                            <span class="helper"></span>
+                            <!-- <i class="sprite-wind"></i> -->
+                            <img src="img/wind_white.svg" alt="img" style="    width: 43px;    -ms-transform: rotate({{day.windDegree + 'deg'}});    -webkit-transform: rotate({{day.windDegree + 'deg'}});    transform: rotate({{day.windDegree + 'deg'}});">
+                        </div>
+                        <h4>Wind</h4>
+                        <p>{{temperature.wind}} <span>{{temperature.direction}}</span></p>
+                    </div>
+                </div><!-- end weather-info -->
+
+                <div class="weather-time">
+                    <div class="weather-time-block">
+                        <div class="wtb-img">
+                            <span class="helper"></span>
+                            <i class="icon am"></i>
+                        </div>
+                        <div class="wt-time">{{temperature.sunrise}} <span>AM</span></div>
+                    </div>
+                    <div class="weather-time-block">
+                        <div class="wtb-img">
+                            <span class="helper"></span>
+                            <!-- <i class="icon pm"></i> -->
+                            <img src="images/svg-sprite/pm.svg" alt="">
+                        </div>
+                        <div class="wt-time">{{temperature.sunset}} <span>PM</span></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section><!-- end top page -->

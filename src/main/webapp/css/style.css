@@ -1240,7 +1240,7 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 @media only screen and (max-width:480px){.weather-block-favorite{width:100%;}
 .weather-block-favorite{margin-bottom:1px;}
 .weather-block-favorite:last-child{margin-bottom:0;}
-#top-page{height:420px;}
+#top-page{height:500px;}
 }
 
 @media only screen and (max-width:700px){
