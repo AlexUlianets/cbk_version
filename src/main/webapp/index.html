@@ -158,7 +158,7 @@
                             <img src="images/cloud_load.gif" style="width: 18%;margin-left: 41%;display: none;margin-right: 41%;" class="load_search">
                             <ul>
                                 <li ng-repeat="i in searchList" ng-if="searchInput.length>1 && result==1" ng-click="selectCity(i.geonameId)"><a  ng-class="{'active':i.city==temperature.city}">{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
-                                <li ng-repeat="i in searchList track by $index" ng-if="searchInput.length<=1" class="w{{$index}}_li"><a ng-click="selectCity(i.geonameId)" id="w{{$index}}" ng-class="{'active':i.city==temperature.city}">{{i.city}}</a><span ng-if="i.city!=temperature.city" ng-click="deleteCity(1, $index)"></span></li>
+                                <li ng-repeat="i in searchList track by $index" ng-if="searchInput.length<=1" class="w{{$index}}_li"><a ng-click="selectCity(i.geonameId)" id="w{{$index}}" ng-class="{'active':i.city==temperature.city}">{{i.city}}</a><span ng-if="i.city!=temperature.city" ng-click="deleteCity(i.geonameId, $index)"></span></li>
                                 <li ng-if="searchList.length==0"><a>No results</a></li>
                             </ul>
                             <a href="#" class="dropdown-top"></a>

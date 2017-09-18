@@ -147,8 +147,8 @@ public class WeatherService {
         return result;
 
     }
-    List<Integer> dayTimeValues = Arrays.asList(600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700);
-    List<Integer> nightTimeValues = Arrays.asList(0,100,200,300,400,500,1800,1900,2000,2100,2200,2300);
+    List<Integer> dayTimeValues = Arrays.asList(600,700,800,900,1000,1100,1200);
+    List<Integer> nightTimeValues = Arrays.asList(0,100,200,300,400,500,1800);
 
 
 
@@ -194,22 +194,22 @@ public class WeatherService {
         int avgDayF = getAVGIntParam(hourly, "tempF", dayTimeValues);
         int avgNightC = getAVGIntParam(hourly, "tempC", nightTimeValues);
         int avgNightF = getAVGIntParam(hourly, "tempF", nightTimeValues);
-        int maxFeelLikeDayC = getMaxIntParam(hourly,"FeelsLikeC", dayTimeValues);
-        int maxFeelLikeDayF = getMaxIntParam(hourly,"FeelsLikeF", dayTimeValues);
-        int maxFeelLikeNightC = getMaxIntParam(hourly,"FeelsLikeC", nightTimeValues);
-        int maxFeelLikeNightF = getMaxIntParam(hourly,"FeelsLikeF", nightTimeValues);
+        int maxFeelLikeDayC = getAVGIntParam(hourly,"FeelsLikeC", dayTimeValues);
+        int maxFeelLikeDayF = getAVGIntParam(hourly,"FeelsLikeF", dayTimeValues);
+        int maxFeelLikeNightC = getAVGIntParam(hourly,"FeelsLikeC", nightTimeValues);
+        int maxFeelLikeNightF = getAVGIntParam(hourly,"FeelsLikeF", nightTimeValues);
         int precipeChanceDay = getAVGIntParam(hourly, "chanceofrain",dayTimeValues);
         int precipeChanceNight = getAVGIntParam(hourly, "chanceofrain",nightTimeValues);
-        double precipDayMM  = getMaxDoubleParam(hourly,"precipMM", dayTimeValues);
-        double precipNightMM = getMaxDoubleParam(hourly,"precipMM", nightTimeValues);
+        double precipDayMM  = getSumDoubleParam(hourly,"precipMM", dayTimeValues);
+        double precipNightMM = getSumDoubleParam(hourly,"precipMM", nightTimeValues);
         int avgWindMDay = getAVGIntParam(hourly,"windspeedMiles", dayTimeValues);
         int avgWindKmhDay = getAVGIntParam(hourly,"windspeedKmph", dayTimeValues);
         int avgWindMNight = getAVGIntParam(hourly,"windspeedMiles", nightTimeValues);
         int avgWindKmhNight = getAVGIntParam(hourly, "windspeedKmph" ,nightTimeValues);
-        int maxGustMDay = getMaxIntParam(hourly, "WindGustMiles", dayTimeValues);
-        int maxGustKmhDay = getMaxIntParam(hourly,"WindGustKmph", dayTimeValues);
-        int maxGustMNight = getMaxIntParam(hourly, "WindGustMiles", nightTimeValues);
-        int maxGustKmhNight = getMaxIntParam(hourly, "WindGustKmph", nightTimeValues);
+        int maxGustMDay = getAVGIntParam(hourly, "WindGustMiles", dayTimeValues);
+        int maxGustKmhDay = getAVGIntParam(hourly,"WindGustKmph", dayTimeValues);
+        int maxGustMNight = getAVGIntParam(hourly, "WindGustMiles", nightTimeValues);
+        int maxGustKmhNight = getAVGIntParam(hourly, "WindGustKmph", nightTimeValues);
         int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
         int avgPressureNight = getAVGIntParam(hourly, "pressure", nightTimeValues);
         String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(0).get("weatherCode")));
@@ -260,6 +260,22 @@ public class WeatherService {
         return result;
     }
 
+
+
+    private double getSumDoubleParam(List<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
+
+        final int[] avgParam = {0};
+
+        hourly = hourly.stream().filter(hashMap ->
+                dayTimeValues.contains(parseInt(hashMap.get("time"))))
+                .collect(Collectors.toList());
+
+        hourly.stream().forEach(hashMap ->
+                avgParam[0] += parseDouble(hashMap.get(paramName)));
+
+        return avgParam[0];
+
+    }
     private Integer getAVGIntParam(List<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
         final int[] avgParam = {0};
 
