@@ -7,10 +7,14 @@ import com.oplao.service.WeatherService;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -24,63 +28,38 @@ public class OutlookController {
     @Autowired
     SearchService searchService;
 
-    @RequestMapping("/set_current_location_cookie")
-    public void setCurrentLocationCookie(HttpServletRequest request, HttpServletResponse response){
-       searchService.setCurrentLocationCookie(request, response);
-    }
     @RequestMapping("/get_coordinates")
     @ResponseBody
-    public HashMap getCoordinates(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
-        return weatherService.getCoordinates(selectedCity);
+    public HashMap getCoordinates(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
+
+        return weatherService.getCoordinates(searchService.findSelectedCity(request, response, currentCookieValue));
     }
     @RequestMapping("/get_api_weather")
     @ResponseBody
-    public OutlookWeatherMapping getApiWeather(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public OutlookWeatherMapping getApiWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
 
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
-        return weatherService.getRemoteData(selectedCity);
+        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue));
     }
 
+    @RequestMapping("/refresh_cookies")
+    @ResponseBody
+    public String refreshCookies(@CookieValue(value = SearchService.cookieName, defaultValue = "")String currentCookieValue){
+        return currentCookieValue;
+    }
     @RequestMapping("/get_astronomy")
     @ResponseBody
-    public HashMap getAstronomy(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
+    public HashMap getAstronomy(@CookieValue(value = SearchService.cookieName, defaultValue = "")String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
 
-        return weatherService.getAstronomy(selectedCity);
+        return weatherService.getAstronomy(searchService.findSelectedCity(request, response, currentCookieValue));
     }
 
     @RequestMapping("/get_weekly_weather_summary")
     @ResponseBody
-    public WeeklyWeatherSummaryMapping getWeeklySummary(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
+    public WeeklyWeatherSummaryMapping getWeeklySummary(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+
         DateTime dateTime = new DateTime();
         DateTime closestMondayDateTime = dateTime.minusDays(dateTime.getDayOfWeek()-1);
-
+        JSONObject selectedCity = searchService.findSelectedCity(request, response, currentCookieValue);
         TextWeatherService service = new TextWeatherService();
 
         List<TextWeatherMapping> list = new ArrayList<>();
@@ -127,76 +106,57 @@ public class OutlookController {
 
     @RequestMapping("/get_detailed_forecast")
     @ResponseBody
-    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
-        return weatherService.getDetailedForecastMapping(selectedCity);
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
+        return weatherService.getDetailedForecastMapping(searchService.findSelectedCity(request, response, currentCookieValue));
     }
     @RequestMapping("/get_weekly_weather")
     @ResponseBody
 
-    public HashMap<Integer, HashMap<String,HashMap>>  getWeeklyWeather(HttpServletRequest request, HttpServletResponse response){
+    public HashMap<Integer, HashMap<String,HashMap>>  getWeeklyWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
 
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
-        return weatherService.getWeeklyWeatherReport(selectedCity);
+        return weatherService.getWeeklyWeatherReport(searchService.findSelectedCity(request, response, currentCookieValue));
     }
 
     @RequestMapping("/get_year_summary")
     @ResponseBody
-    public List<HashMap> getYearSummary(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
-
-        return weatherService.getYearSummary(selectedCity);
+    public List<HashMap> getYearSummary(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
+        return weatherService.getYearSummary(searchService.findSelectedCity(request, response, currentCookieValue));
 
     }
     @RequestMapping("/get_five_years_average")
     @ResponseBody
-    public List getFiveYearsAverage(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
-        return weatherService.getFiveYearsAverage(selectedCity);
+    public List getFiveYearsAverage(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
+        return weatherService.getFiveYearsAverage(searchService.findSelectedCity(request, response, currentCookieValue));
     }
 
     @RequestMapping("/get_weekly_ultraviolet_index")
     @ResponseBody
-    public List getWeeklyUltravioletIndex(HttpServletRequest request, HttpServletResponse response){
-        JSONObject selectedCity = null;
-        try {
-            selectedCity = searchService.getSelectedCity();
-        }catch (Exception e){
-            searchService.setCurrentLocationCookie(request, response);
-            selectedCity = searchService.getSelectedCity();
-        }
+    public List getWeeklyUltravioletIndex(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
 
-        return weatherService.getWeeklyUltraviolet(selectedCity);
+        return weatherService.getWeeklyUltraviolet(searchService.findSelectedCity(request, response, currentCookieValue));
     }
 
     @RequestMapping("get_recent_cities_tabs")
     @ResponseBody
-    public List<HashMap> getRecentCitiesTabs(){
+    public List<HashMap> getRecentCitiesTabs(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
 
-        return searchService.createRecentCitiesTabs();
+        return searchService.createRecentCitiesTabs(currentCookieValue);
+    }
+
+    @RequestMapping("/deleteCity/{geonameId}")
+    @ResponseBody
+    public HttpStatus deleteCity(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                 @PathVariable("geonameId") String geonameId,
+                                 HttpServletRequest request, HttpServletResponse response){
+
+            Cookie c = searchService.deleteCity(currentCookieValue, geonameId, request, response);
+
+            if(c !=null){
+                response.addCookie(c);
+            }else {
+                return HttpStatus.BAD_REQUEST;
+            }
+
+       return HttpStatus.OK;
     }
     }
