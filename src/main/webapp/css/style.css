@@ -171,6 +171,8 @@ img.mfp-img{width:auto;max-width:100%;height:auto;display:block;line-height:0;bo
 .mfp-zoom-in.mfp-ready.mfp-bg{opacity:0.8;}
 .mfp-zoom-in.mfp-removing .mfp-with-anim{transform:scale(0.8);opacity:0;}
 .mfp-zoom-in.mfp-removing.mfp-bg{opacity:0;}
+.op{opacity:0.3;}
+.op_full{opacity:1;}
 .alert-popup{position:relative;background:#fff;width:auto;max-width:570px;margin:0 auto;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}
 .alert-popup-top{height:90px;border-bottom:1px solid #ebebeb;padding-top:40px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
 .apt-left{margin-left:70px;padding-left:35px;font:300 2em/1 "Fira Sans", sans-serif;text-transform:uppercase;color:#88929c;position:relative;}
