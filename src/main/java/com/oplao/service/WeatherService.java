@@ -213,7 +213,8 @@ public class WeatherService {
         int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
         int avgPressureNight = getAVGIntParam(hourly, "pressure", nightTimeValues);
         String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(0).get("weatherCode")));
-
+        int windDegreeDay = getAVGIntParam(hourly, "winddirDegree", dayTimeValues) + 40;
+        int windDegreeNight = getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40;
         HashMap<String, HashMap> result = new HashMap<>();
         HashMap<String, Object> dayMap = new HashMap<>();
         HashMap<String, Object> wholeDayMap = new HashMap<>();
@@ -238,6 +239,7 @@ public class WeatherService {
         dayMap.put("gustM", maxGustMDay);
         dayMap.put("gustKmh", maxGustKmhDay);
         dayMap.put("pressure", avgPressureDay);
+        dayMap.put("windDegree", windDegreeDay);
 
         HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
@@ -252,6 +254,7 @@ public class WeatherService {
         nightMap.put("gustM", maxGustMNight);
         nightMap.put("gustKmh", maxGustKmhNight);
         nightMap.put("pressure", avgPressureNight);
+        nightMap.put("windDegree", windDegreeNight);
 
         result.put("wholeDay", wholeDayMap);
         result.put("Day", dayMap);
