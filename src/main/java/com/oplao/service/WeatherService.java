@@ -396,6 +396,36 @@ public class WeatherService {
         }
     }
 
+     String moon_phase_name[] = { "New Moon", // 0
+     "Waxing crescent", // 1
+     "First quarter", // 2
+     "Waxing gibbous", // 3
+     "Full Moon", // 4
+     "Waning gibbous", // 5
+     "Third quarter", // 6
+     "Waning crescent"}; //7
+
+    private String convertMoonPhaseIndexToName(int moonPhaseIndex){
+        switch (moonPhaseIndex){
+            case 0 :
+                return moon_phase_name[0];
+            case 1 :
+                return moon_phase_name[1];
+            case 2 :
+                return moon_phase_name[2];
+            case 3 :
+                return moon_phase_name[3];
+            case 4 :
+                return moon_phase_name[4];
+            case 5 :
+                return moon_phase_name[5];
+            case 6 :
+                return moon_phase_name[6];
+            case 7 :
+                return moon_phase_name[7];
+            default: return null;
+        }
+    }
     private String convertMonthOfYearShort(int month) {
 
 
@@ -498,13 +528,16 @@ public class WeatherService {
 
 
         HashMap dateMap = new HashMap();
+        int moonPhaseIndex = getMoonPhase();
+
         dateMap.put("dayOfMonth", dateTime.getDayOfMonth());
         dateMap.put("monthOfYear", convertMonthOfYearShort(dateTime.getMonthOfYear()));
         dateMap.put("year", dateTime.getYear());
         result.put("date", dateMap);
         result.put("sunrise", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunset"));
-        result.put("moon_phase_index", getMoonPhase());
+        result.put("moon_phase_index", moonPhaseIndex);
+        result.put("moon_phase_name", convertMoonPhaseIndexToName(moonPhaseIndex));
         return result;
     }
 
