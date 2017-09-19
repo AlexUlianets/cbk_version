@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,17 +31,17 @@ public class SearchController {
             String lat = "";
             String lon = "";
             if(parsedRequest.length==4){
-                lat= parsedRequest[0].trim() + "." + parsedRequest[1].trim();
-                lon = parsedRequest[2].trim() +"." +parsedRequest[3].trim();
+                lat= parsedRequest[0].trim() + "." + parsedRequest[1].replaceAll("°", "").trim();
+                lon = parsedRequest[2].trim() +"." +parsedRequest[3].replaceAll("°", "").trim();
             }else {
-                lat = parsedRequest[0].replace(",", ".").trim();
+                lat = parsedRequest[0].replace(",", ".").replaceAll("°", "").trim();
                 try {
-                    lon = parsedRequest[1].replaceAll(",", ".").trim();
+                    lon = parsedRequest[1].replaceAll(",", ".").replaceAll("°", "").trim();
                 }catch (ArrayIndexOutOfBoundsException e){
                 }
             }
 
-            if(lat.contains(".")|| lat.contains(",") && lon.contains(".") || lon.contains(",")) {
+            if(lat.contains(".")&& lon.contains(".") && (!lon.equals("") || !lon.equals("-"))) {
                 list = searchService.findByCoordinates(lat, lon);
             }else {
                  return null;
@@ -51,13 +50,24 @@ public class SearchController {
                list = searchService.findByAirports(searchRequest);
         }
         else {
-               list = searchService.findByCity(searchRequest);
+
+            try {
+            list = searchService.findByCity(searchRequest);
+             }catch (NullPointerException e){
+
         }
-        List<HashMap> maps = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            maps.add((HashMap) ((JSONObject) list.get(i)).toMap());
         }
-        return maps;
+        try {
+            List<HashMap> maps = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                maps.add((HashMap) ((JSONObject) list.get(i)).toMap());
+            }
+            return maps;
+        }catch (NullPointerException e){
+
+        }
+
+        return new ArrayList<>();
     }
 
     private int checkDuplicateCookie(HttpServletRequest request, HttpServletResponse response,

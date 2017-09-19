@@ -27,9 +27,9 @@ public class SearchService {
     public static final String cookieName = "lastCitiesVisited";
 
     public static List<JSONObject> findByOccurences(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-
+        InputStream is = null;
         try {
+            is = new URL(url).openStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = WeatherService.readAll(rd);
             List<JSONObject> objects = new ArrayList<>();
