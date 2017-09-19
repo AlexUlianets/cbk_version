@@ -52,8 +52,11 @@
                 <a id="nav-toggle" href="#"><span></span><em></em></a>
 
                 <div class="temp-wrap">
-                    <div class="temp-block tmp-cel" ng-class="{'active active-mob':local.typeTemp=='C'}" ng-click="local.typeTemp = 'C'; updateTemp()">°C</div>
-                    <div class="temp-block tmp-far" ng-class="{'active active-mob':local.typeTemp=='F'}" ng-click="local.typeTemp = 'F'; updateTemp();">°F</div>
+                    <div ng-if="local.typeTemp !== 'F'" class="temp-block tmp-far"  ng-click="local.typeTemp = 'F'; updateTemp(local.typeTemp);">°F</div>
+                    <div ng-if="local.typeTemp !== 'C'" class="temp-block tmp-cel"  ng-click="local.typeTemp = 'C'; updateTemp(local.typeTemp);">°C</div>
+
+                    <div ng-if="local.typeTemp == 'F'" class="temp-block tmp-far active active-mob">°F</div>
+                    <div ng-if="local.typeTemp == 'C'" class="temp-block tmp-cel active active-mob">°C</div>
                 </div><!-- end temp-wrap -->
 
                 <div id="h-share">
@@ -182,7 +185,7 @@
                 <div class="container">
                     <a ng-repeat="i in get_recent_cities_tabs track by $index" ng-click="selectCity(i.geonameId)" class="weather-block-favorite w{{$index}}">
                         <div class="wb-left">
-                            <img src="svg/wicons_svg/{{i.weatherCode}}_{{(temperature.hours<=6 && temperature.hours>=18)?'day':'night'}}.svg" style="width: 30px;">
+                            <img src="svg/wicons_svg/{{i.weatherCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" style="width: 30px;">
                             <div class="wbl-temp">{{local.typeTemp=='C'?i.tempC:i.tempF}} <span>{{local.typeTemp}}</span></div>
                         </div>
                         <div class="wb-right">
@@ -199,7 +202,7 @@
         <div class="head-bot-mini"  style="display: none">
             <div class="hb-inner">
                 <div class="weather-now">
-                    <img src="svg/wicons_svg_white/{{temperature.weatherIconCode}}_{{(temperature.hours<=6 && temperature.hours>=18)?'day':'night'}}.svg" alt="img">
+                    <img src="svg/wicons_svg_white/{{temperature.weatherIconCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" alt="img">
                     <div><b ng-bind="local.typeTemp=='C'?temperature.temp_c:temperature.temp_f"></b><em ng-bind="local.typeTemp"></em>
                         <span>/<strong ng-bind="local.typeTemp=='C'?temperature.temp_f:temperature.temp_c"></strong><abbr ng-bind="local.typeTemp!='C'?'C':'F'"></abbr></span></div>
                 </div>
