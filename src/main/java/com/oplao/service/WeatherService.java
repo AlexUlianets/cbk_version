@@ -679,7 +679,7 @@ public class WeatherService {
 
         for (int i = 0; i < 6; i++) {
             APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime.minusYears(i), cityName,
-                     new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city))).isAfter(dateTime), false, 1);
+                     i > 0, false, 1);
             HashMap map = apiWeatherFinder.findWeatherByDate();
 
             ArrayList param = (ArrayList) MyJsonHelper.getParam(map, "weather", "hourly");
