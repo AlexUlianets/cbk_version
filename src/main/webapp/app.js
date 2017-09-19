@@ -18,14 +18,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.searchList = [];
         $rootScope.result = 0;
 
-
-        // $.ajax({
-        //     method: "POST",
-        //     url: "/set_current_location_cookie"
-        // }).done(function( msg ) {
-        //
-        // });
-
         $rootScope.get_recent_cities_tabs_func = function(){
             $.ajax({
                   method: "POST",
@@ -118,15 +110,20 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }
             })
         };
-        $rootScope.updateTemp = function(){
-            if($cookies.get('temp_val')==='C'){
-                $cookies.put('temp_val', 'F');
-
-            }else {
-                $cookies.put('temp_val', 'C');
+        $rootScope.updateTemp = function(val){
+            if(val===$cookies.get('temp_val')){
 
             }
-            document.location.reload(true);
+            else {
+                if ($cookies.get('temp_val') === 'C') {
+                    $cookies.put('temp_val', 'F');
+
+                } else {
+                    $cookies.put('temp_val', 'C');
+
+                }
+                document.location.reload(true);
+            }
         }
 
     }]);
