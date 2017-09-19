@@ -103,21 +103,21 @@
                                             <div class="tb-text">{{day.precipChance}}%</div>
                                         </div>
                                         <div class="tb-precip">
-                                            <div class="tb-count">{{day.precip}}</div>
-                                            <div class="tb-meter">mm</div>
+                                            <div class="tb-count">{{local.typeTemp=='C'?day.precipMm:day.precipIn}}</div>
+                                            <div class="tb-meter">{{local.typeTemp=='C'?'mm':'in'}}</div>
                                         </div>
                                         <div class="tb-wind">
                                             <i class="sprite-wind-tb" style="    -ms-transform: rotate({{day.windDegree + 'deg'}});    -webkit-transform: rotate({{day.windDegree + 'deg'}});    transform: rotate({{day.windDegree + 'deg'}});"></i>
-                                            <div class="tb-count">{{day.windM}} m/s</div>
+                                            <div class="tb-count">{{local.typeTemp=='C'?day.windMph:day.windMs}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                             <div class="tb-meter">NNW</div>
                                         </div>
                                         <div class="tb-gust">
-                                            <div class="tb-count">{{day.gustM}}</div>
-                                            <div class="tb-meter">m/s</div>
+                                            <div class="tb-count">{{local.typeTemp=='C'?day.gustMs:day.gustMph}}</div>
+                                            <div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                         </div>
                                         <div class="tb-pressure">
-                                            <div class="tb-count">{{day.pressure}}</div>
-                                            <div class="tb-meter">hPa</div>
+                                            <div class="tb-count">{{local.typeTemp=='C'?day.pressurehPa:day.pressureInch}}</div>
+                                            <div class="tb-meter">{{local.typeTemp=='C'?'hPa':'in'}}</div>
                                         </div>
                                     </div>
                                 </div>
