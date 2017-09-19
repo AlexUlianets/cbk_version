@@ -44,6 +44,55 @@ public class SearchService {
         }
     }
 
+    public List<JSONObject> findByCoordinates(String lat, String lon){
+        List<JSONObject> list = null;
+        try {
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&lat=" + lat + "&lng=" + lon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<JSONObject> findByGeonameIdAirports(int geonameId){
+        List<JSONObject> list = null;
+        try {
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId + "&featureClass=S");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<JSONObject> findByGeonameId(int geonameId){
+        List<JSONObject> list = null;
+        try {
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public List<JSONObject> findByAirports(String name){
+        List<JSONObject> list = null;
+        try {
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts="+name.trim()+"&featureClass=S");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+    public List<JSONObject> findByCity(String city){
+        List<JSONObject> list = null;
+        try {
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
    public void clearCookies(HttpServletRequest request, HttpServletResponse response){
        for (int i = 0; i < request.getCookies().length; i++) {
                request.getCookies()[i].setPath("/");
