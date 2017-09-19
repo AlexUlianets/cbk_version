@@ -247,6 +247,7 @@ $(document).ready(function () {
     });
     $('body').on('click', function () {
         $('#h-share').removeClass('active');
+        $('.ht-search-input input').val('')
     });
 
 
