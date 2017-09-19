@@ -157,7 +157,7 @@ public class WeatherService {
         String cityName = validateCityName((String)city.get("asciiName"));
 
 
-        DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
        HashMap<Integer, HashMap<String,HashMap>> result = new HashMap<>();
 
@@ -519,7 +519,7 @@ public class WeatherService {
         String cityName = validateCityName((String)city.get("asciiName"));
 
 
-        DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         JSONObject jsonObject = null;
 
         try{
@@ -555,7 +555,7 @@ public class WeatherService {
             String cityName = validateCityName((String)city.get("asciiName"));
 
 
-            DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
+            DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
             JSONObject jsonObject = null;
         try {
@@ -594,7 +594,7 @@ public class WeatherService {
         result.put("windDegree", hourlyHm.get("winddirDegree"));
         result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
-        result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
+        result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(hourlyHm.get("weatherCode")))));
 
         return result;
     }
@@ -603,7 +603,7 @@ public class WeatherService {
     public List<DetailedForecastGraphMapping> getDetailedForecastMapping(JSONObject city){
             List<DetailedForecastGraphMapping> result = new ArrayList<>();
 
-        DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         for (int day = 0; day < 10; day++) {
             result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day), city));
         }
@@ -641,8 +641,8 @@ public class WeatherService {
 
     public List<HashMap> getWeeklyUltraviolet(JSONObject city){
 
-        DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
-        List<HashMap> list = new ArrayList();
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        List<HashMap> list = new ArrayList<>();
         for (int day = 0; day < 5; day++) {
             list.add(getSingleUltravioletIndex(dateTime.plusDays(day), city));
         }
@@ -673,7 +673,7 @@ public class WeatherService {
 
         String cityName = validateCityName((String)city.get("asciiName"));
 
-        DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
         ArrayList output = new ArrayList();
 
@@ -724,7 +724,7 @@ public class WeatherService {
 
         String cityName = validateCityName((String)city.get("asciiName"));
 
-        DateTime dateTime = new DateTime(DateTimeZone.forID(CityToTimeZoneConverter.convert(city)));
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
         List<HashMap> week = new ArrayList<>();
         for (int i = 0; i < 7; i++) {

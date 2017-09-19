@@ -3,6 +3,7 @@ package com.oplao.service;
 import com.oplao.Utils.AddressGetter;
 import com.oplao.model.GeoLocation;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,35 +141,36 @@ public class SearchService {
 
        ArrayList<HashMap> data = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
-            data.add(getRecentCityInfo((String) array.getJSONObject(i).get("asciiName"),(String) array.getJSONObject(i).get("countryCode"), String.valueOf(array.getJSONObject(i).get("geonameId"))));
+            data.add(getRecentCityInfo(array.getJSONObject(i)));
         }
        return data;
     }
 
 
-    private HashMap getRecentCityInfo(String city, String coutryCode, String geonameId){
+    private HashMap getRecentCityInfo(JSONObject city){
 
-        if(city.contains("'")){
-            city = city.replace("'", "");
+        String cityName = city.getString("asciiName");
+        if(cityName.contains("'")){
+            cityName = cityName.replace("'", "");
         }
-        city = city.replace(" ", "%20");
-        DateTime dateTime = new DateTime();
+        cityName = cityName.replace(" ", "%20");
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         JSONObject jsonObject = null;
         try {
-            jsonObject = WeatherService.readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + city);
+            jsonObject = WeatherService.readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + cityName);
         }catch (IOException e){
             e.printStackTrace();
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
-        HashMap hourly = ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("hourly")).get(0));
+        HashMap hourly = ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("hourly")).get(dateTime.getHourOfDay()));
 
         HashMap<String, Object> result = new HashMap<>();
         result.put("weatherCode",(WeatherService.EXT_STATES.get(Integer.parseInt((String)hourly.get("weatherCode")))));
         result.put("tempC", hourly.get("tempC"));
         result.put("tempF", hourly.get("tempF"));
-        result.put("city", city.replace("%20", " "));
-        result.put("countryCode", coutryCode);
-        result.put("geonameId", geonameId);
+        result.put("city", cityName.replace("%20", " "));
+        result.put("countryCode", city.getString("countryCode"));
+        result.put("geonameId", city.getInt("geonameId"));
         return result;
     }
 
