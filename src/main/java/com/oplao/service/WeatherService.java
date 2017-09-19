@@ -732,7 +732,7 @@ public class WeatherService {
             DateTime dt1 = dateTime.plusDays(i);
             JSONObject jsonObject = null;
             try {
-                jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+ dt1.getYear() + "-" + dt1.getMonthOfYear() + "-" + dt1.getDayOfMonth()+ "&q=" + cityName);
+                jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+ dt1.getYear() + "-" + dt1.getMonthOfYear() + "-" + dt1.getDayOfMonth()+ "&q=" + cityName);
                 week.add(((HashMap)(((ArrayList)((JSONObject)jsonObject.get("data")).toMap().get("weather")).get(0))));
             }catch (IOException e){
                 e.printStackTrace();
@@ -807,7 +807,7 @@ public class WeatherService {
             DoubleSummaryStatistics maxPrecipMMs = hourly.stream().mapToDouble((value) ->
                     parseDouble(value.get("precipMM"))).summaryStatistics();
 
-            total+=maxPrecipMMs.getMax();
+            total+=maxPrecipMMs.getSum();
         }
         return total;
     }
