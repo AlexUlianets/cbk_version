@@ -33,7 +33,7 @@ public class OutlookController {
     }
     @RequestMapping("/get_api_weather")
     @ResponseBody
-    public OutlookWeatherMapping getApiWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public HashMap getApiWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
 
         return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue));
     }

@@ -549,7 +549,7 @@ public class WeatherService {
         return new MoonPhase(Calendar.getInstance()).getPhaseIndex();
     }
 
-        public OutlookWeatherMapping getRemoteData(JSONObject city){
+        public HashMap getRemoteData(JSONObject city){
 
 
             String cityName = validateCityName((String)city.get("asciiName"));
@@ -559,7 +559,7 @@ public class WeatherService {
 
             JSONObject jsonObject = null;
         try {
-          jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + cityName);
+          jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + cityName);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -568,23 +568,35 @@ public class WeatherService {
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
             HashMap weatherData = weather.get(0);
             ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
-            HashMap hourlyHm = hourly.get(0);
+            HashMap hourlyHm = hourly.get(dateTime.getHourOfDay());
         HashMap currentConditions = currentCondition.get(0);
 
-            return
-                    OutlookWeatherMapping.create((String)city.get("countryName"), cityName.replaceAll("%20", " "), dateTime,
-                            parseInt(currentConditions.get("temp_C")),
-                            parseInt(currentConditions.get("temp_F")),
-                            parseInt(currentConditions.get("FeelsLikeC")),
-                            parseInt(currentConditions.get("FeelsLikeF")),
-                            parseDouble(currentConditions.get("precipMM")),
-                            parseInt(currentConditions.get("windspeedMiles")),
-                            parseInt(currentConditions.get("windspeedKmph")),
-                            parseInt(hourlyHm.get("WindGustMiles")),
-                            parseInt(hourlyHm.get("WindGustKmph")),
-                            parseInt(currentConditions.get("pressure")),
-                            ""+(EXT_STATES.get(parseInt(hourlyHm.get("weatherCode")))));
 
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        result.put("city", cityName.replaceAll("%20", " "));
+        result.put("country", city.get("countryName"));
+        result.put("month", convertMonthOfYear(dateTime.getMonthOfYear()));
+        result.put("day", dateTime.getDayOfMonth());
+        result.put("dayOfWeek", convertDayOfWeek(dateTime.getDayOfWeek()));
+        result.put("hours", dateTime.getHourOfDay());
+        result.put("minutes", dateTime.getMinuteOfHour());
+        result.put("temp_c", hourlyHm.get("tempC"));
+        result.put("temp_f", hourlyHm.get("tempF"));
+        result.put("feelsLikeC", hourlyHm.get("FeelsLikeC"));
+        result.put("feelsLikeF", hourlyHm.get("FeelsLikeF"));
+        result.put("humidity", hourlyHm.get("humidity"));
+        result.put("pressure", hourlyHm.get("pressure"));
+        result.put("windSpeedMiles", hourlyHm.get("windspeedMiles"));
+        result.put("windSpeedKmph", hourlyHm.get("windspeedKmph"));
+        result.put("direction", hourlyHm.get("winddir16Point"));
+        result.put("windDegree", hourlyHm.get("winddirDegree"));
+        result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
+        result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
+        result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
+
+        return result;
     }
 
 
