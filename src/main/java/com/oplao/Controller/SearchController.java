@@ -23,14 +23,35 @@ public class SearchController {
 
     @Autowired
     SearchService searchService;
-    @RequestMapping(value = "/find_occurences/{searchRequest}", method = RequestMethod.POST)
+    @RequestMapping(value = "find_occurences/{searchRequest:.+}", method = RequestMethod.POST)
     @ResponseBody
     public List<HashMap> onChange(@PathVariable("searchRequest") String searchRequest) {
         List list = null;
-        try{
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts="+searchRequest.replaceAll(" ", "%20"));
-        }catch (IOException e){
-            e.printStackTrace();
+        if((Character.isDigit(searchRequest.trim().charAt(0)) || Character.isDigit(searchRequest.trim().charAt(1))) && searchRequest.contains(",")){
+            String [] parsedRequest = searchRequest.split(",");
+            String lat = "";
+            String lon = "";
+            if(parsedRequest.length==4){
+                lat= parsedRequest[0].trim() + "." + parsedRequest[1].trim();
+                lon = parsedRequest[2].trim() +"." +parsedRequest[3].trim();
+            }else {
+                lat = parsedRequest[0].replace(",", ".").trim();
+                try {
+                    lon = parsedRequest[1].replaceAll(",", ".").trim();
+                }catch (ArrayIndexOutOfBoundsException e){
+                }
+            }
+
+            if(lat.contains(".")|| lat.contains(",") && lon.contains(".") || lon.contains(",")) {
+                list = searchService.findByCoordinates(lat, lon);
+            }else {
+                 return null;
+            }
+        }else if(searchRequest.length()==3 && Objects.equals(searchRequest, searchRequest.toUpperCase())) {
+               list = searchService.findByAirports(searchRequest);
+        }
+        else {
+               list = searchService.findByCity(searchRequest);
         }
         List<HashMap> maps = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
@@ -38,7 +59,6 @@ public class SearchController {
         }
         return maps;
     }
-
 
     private int checkDuplicateCookie(HttpServletRequest request, HttpServletResponse response,
                                             JSONObject city){
@@ -77,9 +97,16 @@ public class SearchController {
     public HttpStatus selectCity(@PathVariable("geonameId") int geonameId, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request,
                                HttpServletResponse response) {
         List<JSONObject> list = null;
+        JSONObject city = null;
         try{
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId);
-            JSONObject city = list.get(0);
+            try {
+                list =searchService.findByGeonameId(geonameId);
+                city = list.get(0);
+            }catch (Exception e){
+                list = searchService.findByGeonameIdAirports(geonameId);
+                city = list.get(0);
+            }
+
             city.put("status", "selected");
             JSONArray arr = new JSONArray(currentCookieValue);
             for (int i = 0; i < arr.length(); i++) {
@@ -102,7 +129,7 @@ public class SearchController {
 
                 return HttpStatus.OK;
             }
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
 
