@@ -226,6 +226,10 @@ public class WeatherService {
         int maxGustMsNight = (int)Math.round(maxGustKmhNight * 0.27777777777778);
         double precipDayIn = new BigDecimal(precipDayMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         double precipNightIn = new BigDecimal(precipDayMM * precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+        String winddirDay = "" + hourly.get(14).get("winddir16Point");
+        String winddirNight = "" + hourly.get(2).get("winddir16Point");
+
+
         HashMap<String, HashMap> result = new HashMap<>();
         HashMap<String, Object> dayMap = new HashMap<>();
         HashMap<String, Object> wholeDayMap = new HashMap<>();
@@ -254,6 +258,7 @@ public class WeatherService {
         dayMap.put("pressureInch", avgPressureInchDay);
         dayMap.put("windDegree", windDegreeDay);
         dayMap.put("weatherCode", dayWeatherCode);
+        dayMap.put("winddir", winddirDay);
 
         HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
@@ -272,6 +277,7 @@ public class WeatherService {
         nightMap.put("pressureInch", avgPressureInchNight);
         nightMap.put("windDegree", windDegreeNight);
         nightMap.put("weatherCode", nightWeatherCode);
+        nightMap.put("winddir", winddirNight);
 
         result.put("wholeDay", wholeDayMap);
         result.put("Day", dayMap);
