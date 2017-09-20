@@ -230,7 +230,7 @@
                             <img src="img/pressure_white.svg" alt="img" style="    width: 42px;">
                         </div>
                         <h4>Pressure</h4>
-                        <p>{{temperature.pressure}} <span>hPa</span></p>
+                        <p>{{local.typeTemp=='C'?temperature.pressurehPa:temperature.pressureInch}} <span>{{local.typeTemp=='C'?'hPa':'in'}}</span></p>
                     </div>
                     <div class="weather-info-block">
                         <div class="wb-img">
@@ -239,7 +239,7 @@
                             <img src="img/wind_white.svg" alt="img" style="    width: 25px;    -ms-transform: rotate({{temperature.windDegree + 'deg'}});    -webkit-transform: rotate({{temperature.windDegree + 'deg'}});    transform: rotate({{temperature.windDegree + 'deg'}});">
                         </div>
                         <h4>Wind</h4>
-                        <p>{{temperature.wind}} <span>{{temperature.windSpeedMiles}} m/s</span></p>
+                        <p>{{temperature.wind}} <span>{{local.typeTemp=='C'?temperature.windMs:temperature.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</span></p>
                     </div>
                 </div><!-- end weather-info -->
             </div>
