@@ -489,7 +489,7 @@ public class WeatherService {
 
         HashMap result = new HashMap();
 
-        result.put("city", cityName);
+        result.put("city", cityName.replaceAll("%20", " "));
         result.put("country", city.get("countryName"));
         result.put("latitude", roundFloat((float) city.getDouble("lat")));
         result.put("longitude", roundFloat((float) city.getDouble("lng")));
