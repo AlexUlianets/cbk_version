@@ -554,12 +554,10 @@ public class WeatherService {
             e.printStackTrace();
         }
             HashMap map = (HashMap)jsonObject.toMap().get("data");
-        ArrayList<HashMap> currentCondition = (ArrayList<HashMap>)map.get("current_condition");
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
             HashMap weatherData = weather.get(0);
             ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
             HashMap hourlyHm = hourly.get(dateTime.getHourOfDay());
-        HashMap currentConditions = currentCondition.get(0);
 
 
 
@@ -577,9 +575,10 @@ public class WeatherService {
         result.put("feelsLikeC", hourlyHm.get("FeelsLikeC"));
         result.put("feelsLikeF", hourlyHm.get("FeelsLikeF"));
         result.put("humidity", hourlyHm.get("humidity"));
-        result.put("pressure", hourlyHm.get("pressure"));
-        result.put("windSpeedMiles", hourlyHm.get("windspeedMiles"));
-        result.put("windSpeedKmph", hourlyHm.get("windspeedKmph"));
+        result.put("pressurehPa", hourlyHm.get("pressure"));
+        result.put("pressureInch", new BigDecimal(parseInt(hourlyHm.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+        result.put("windMph",  hourlyHm.get("windspeedMiles"));
+        result.put("windMs", (int)Math.round(parseInt(hourlyHm.get("windspeedKmph"))*0.27777777777778));
         result.put("direction", hourlyHm.get("winddir16Point"));
         result.put("windDegree", hourlyHm.get("winddirDegree"));
         result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
