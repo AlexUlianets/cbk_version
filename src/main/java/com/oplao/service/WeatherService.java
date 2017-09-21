@@ -141,7 +141,8 @@ public class WeatherService {
             res.put("maxtempF", elem.get("avgMaxTemp_F"));
             res.put("mintempC", elem.get("avgMinTemp"));
             res.put("mintempF", elem.get("avgMinTemp_F"));
-            res.put("precipp", elem.get("avgMonthlyRainfall"));
+            res.put("precipMM", elem.get("avgMonthlyRainfall"));
+            res.put("precipInch", elem.get("avgMonthlyRainfall_inch"));
             result.add(res);
         }
 
