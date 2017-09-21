@@ -81,7 +81,7 @@
 
                                         <div class="tb-date" ng-if="day.time == 'Day'">
                                             <div class="tb-img">
-                                                <img src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;">
+                                                <img ng-src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;">
                                             </div>
                                             <div class="tb-temp">{{local.typeTemp=='C'?temperatureDay.wholeDay.minTemperatureC:temperatureDay.wholeDay.minTemperatureF}}°{{local.typeTemp}}/{{local.typeTemp=='C'?temperatureDay.wholeDay.maxTemperatureC:temperatureDay.wholeDay.maxTemperatureF}}°{{local.typeTemp}}</div>
                                         </div>
@@ -90,8 +90,8 @@
                                             <div class="tb-text">{{day.time}}</div>
                                         </div>
                                         <div class="tb-weather">
-                                            <img src="svg/wicons_svg/{{day.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Night'">
-                                            <img src="svg/wicons_svg/{{day.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Day'">
+                                            <img ng-src="svg/wicons_svg/{{day.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Night'">
+                                            <img ng-src="svg/wicons_svg/{{day.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Day'">
                                         </div>
                                         <div class="tb-temperature">
                                             <div class="tb-text">{{local.typeTemp=='C'?day.avgTempC:day.avgTempF}}°{{local.typeTemp}}</div>
@@ -136,7 +136,7 @@
                 <div class="links-after">
                     <a href="#">Outlook</a>
                     <a href="#">Hourly weather</a>
-                    <a href="#">Temperature</a>
+                    <a href="#">Temperature map</a>
                     <a href="#">Past weather</a>
                     <a href="#">14 day weather</a>
                 </div>
@@ -313,7 +313,7 @@
                     <div class="astronomy-right">
                         <div class="ar-inner">
                             <h5>Waning</h5>
-                            <img alt="img" ng-repeat="n in [1, 2, 3, 4, 5, 6, 7, 8]" src="svg/oplao_moon_{{n}}.svg" ng-class="{'op_full':moon_phase_index==n, 'op':moon_phase_index!=n}">
+                            <img alt="img" ng-repeat="n in [0, 1, 2, 3, 4, 5, 6, 7]" ng-src="svg/oplao_moon_{{n+1}}.svg" ng-class="{'op_full':moon_phase_index==n, 'op':moon_phase_index!=n}">
                         </div>
                     </div>
                 </div>
@@ -402,7 +402,7 @@
                     <div class="v-today-wrap">
                         <div class="today">Today</div>
                         <div class="date">{{temperature.day}} {{temperature.month}}</div>
-                        <div style="font-size: 12px">at 2:00 pm</div>
+                        <div style="font-size: 12px">Data at 2.00 pm</div>
                     </div>
                 </div>
                 <div class="btn-wrap">
@@ -413,7 +413,7 @@
                 <div class="v-year-list">
                     <div class="v-year-item" ng-repeat="year in five_years_average">
                         <div class="v-year">{{year.year}}</div>
-                        <img src="svg/wicons_svg_white/{{year.weatherCode}}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
+                        <img ng-src="svg/wicons_svg_white/{{year.weatherCode}}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
                         <div class="temperature">
                             <span class="count">{{local.typeTemp=='C'?year.tempC:year.tempF}}</span>
                             <span class="mark">°{{local.typeTemp}}</span>

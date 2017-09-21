@@ -181,11 +181,12 @@
 
             </div><!-- end head-top -->
 
+
             <div class="favorite-location" ng-if="get_recent_cities_tabs.length!=0">
                 <div class="container">
                     <a ng-repeat="i in get_recent_cities_tabs track by $index" ng-click="selectCity(i.geonameId)" class="weather-block-favorite w{{$index}}">
                         <div class="wb-left">
-                            <img src="svg/wicons_svg/{{i.weatherCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" style="width: 30px;">
+                            <img ng-src="svg/wicons_svg/{{i.weatherCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" style="width: 30px;">
                             <div class="wbl-temp">{{local.typeTemp=='C'?i.tempC:i.tempF}} <span>{{local.typeTemp}}</span></div>
                         </div>
                         <div class="wb-right">
@@ -202,7 +203,7 @@
         <div class="head-bot-mini"  style="display: none">
             <div class="hb-inner">
                 <div class="weather-now">
-                    <img src="svg/wicons_svg_white/{{temperature.weatherIconCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" alt="img">
+                    <img ng-src="svg/wicons_svg_white/{{temperature.weatherIconCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" alt="img">
                     <div><b ng-bind="local.typeTemp=='C'?temperature.temp_c:temperature.temp_f"></b><em ng-bind="local.typeTemp"></em>
                         <span>/<strong ng-bind="local.typeTemp=='C'?temperature.temp_f:temperature.temp_c"></strong><abbr ng-bind="local.typeTemp!='C'?'C':'F'"></abbr></span></div>
                 </div>
@@ -242,6 +243,24 @@
                         <p>{{temperature.wind}} <span>{{local.typeTemp=='C'?temperature.windMs:temperature.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</span></p>
                     </div>
                 </div><!-- end weather-info -->
+
+                <div class="weather-time">
+                    <div class="weather-time-block">
+                        <div class="wtb-img">
+                            <span class="helper"></span>
+                            <i class="icon am"></i>
+                        </div>
+                        <div class="wt-time">{{temperature.sunrise}}</div>
+                    </div>
+                    <div class="weather-time-block">
+                        <div class="wtb-img">
+                            <span class="helper"></span>
+                            <!-- <i class="icon pm"></i> -->
+                            <img src="images/svg-sprite/pm.svg" alt="">
+                        </div>
+                        <div class="wt-time">{{temperature.sunset}}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section><!-- end top page -->
