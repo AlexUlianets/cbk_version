@@ -141,7 +141,8 @@ public class WeatherService {
             res.put("maxtempF", elem.get("avgMaxTemp_F"));
             res.put("mintempC", elem.get("avgMinTemp"));
             res.put("mintempF", elem.get("avgMinTemp_F"));
-            res.put("precipp", elem.get("avgMonthlyRainfall"));
+            res.put("precipMM", elem.get("avgMonthlyRainfall"));
+            res.put("precipInch", elem.get("avgMonthlyRainfall_inch"));
             result.add(res);
         }
 
@@ -225,7 +226,7 @@ public class WeatherService {
         int maxGustMsDay = (int)Math.round(maxGustKmhDay * 0.27777777777778);
         int maxGustMsNight = (int)Math.round(maxGustKmhNight * 0.27777777777778);
         double precipDayIn = new BigDecimal(precipDayMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-        double precipNightIn = new BigDecimal(precipDayMM * precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+        double precipNightIn = new BigDecimal(precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         String winddirDay = "" + hourly.get(14).get("winddir16Point");
         String winddirNight = "" + hourly.get(2).get("winddir16Point");
 
@@ -604,18 +605,19 @@ public class WeatherService {
         
         JSONObject jsonObject = null;
         try {
-            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + cityName);
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + cityName);
         }catch (IOException e){
             e.printStackTrace();
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
-        HashMap currentConditions = (HashMap)((ArrayList)((HashMap)(((ArrayList)map.get("weather"))).get(0)).get("hourly")).get(0);
+        ArrayList<HashMap> hourly2PmData = ((ArrayList)((HashMap)((ArrayList)(map.get("weather"))).get(0)).get("hourly"));
 
 
-        int tempC = parseInt(currentConditions.get("tempC"));
-        int tempF = parseInt(currentConditions.get("tempF"));
-        double precip = parseDouble(currentConditions.get("precipMM"));
-        String weatherIconCode = "" + EXT_STATES.get(parseInt(currentConditions.get("weatherCode")));
+        int tempC = parseInt(hourly2PmData.get(14).get("tempC"));
+        int tempF = parseInt(hourly2PmData.get(14).get("tempF"));
+        double precipMM = getOneDayTotalRainfall(hourly2PmData).getSum();
+        double precipInch = new BigDecimal(precipMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+        String weatherIconCode = "" + EXT_STATES.get(parseInt(hourly2PmData.get(14).get("weatherCode")));
 
         String month = dateTime.getMonthOfYear() > 9? "" + dateTime.getMonthOfYear():"0" + dateTime.getMonthOfYear();
         String day = dateTime.getDayOfMonth() > 9 ? "" + dateTime.getDayOfMonth():"0" + dateTime.getDayOfMonth();
@@ -623,9 +625,7 @@ public class WeatherService {
                 month + "-" +
                 day;
 
-
-
-            return new DetailedForecastGraphMapping(tempC,tempF,date, precip, weatherIconCode);
+            return new DetailedForecastGraphMapping(tempC,tempF,date, precipMM, precipInch,  weatherIconCode);
     }
 
     public List<HashMap> getWeeklyUltraviolet(JSONObject city){
@@ -759,13 +759,19 @@ public class WeatherService {
         String minTempDay = convertMonthOfYearShort(minTempDateTime.getMonthOfYear()).toUpperCase() + "."+minTempDateTime.getDayOfMonth();
 
 
-        double totalRainfall = getTotalRainfall(week);
+        double totalRainfallMM = getTotalRainfall(week);
 
-        int windiestMS = getWindiestMS(week);
+        double totalRainfallInch = new BigDecimal(totalRainfallMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
 
-        int windiestKmph = getWindiestKmph(week);
+        int windiestMiles = getWindiestMiles(week);
 
-        DateTime windiestDateTime = new DateTime(getWindiestDay(week, windiestMS));
+        int windiestMS = (int)Math.round(getWindiestKmph(week)*0.27777777777778);
+
+
+
+
+        String foundWindiest = (String)getWindiestDay(week, windiestMiles).get("date");
+        DateTime windiestDateTime = new DateTime(foundWindiest);
         String windiestDay = convertMonthOfYearShort(windiestDateTime.getMonthOfYear()).toUpperCase() + "."+windiestDateTime.getDayOfMonth();
 
        HashMap<String, Object> results = new HashMap<>();
@@ -778,9 +784,10 @@ public class WeatherService {
        results.put("minTempF", minTempF);
        results.put("avgMinTempC", avgMinTempC);
        results.put("avgMinTempF", avgMinTempF);
-       results.put("totalRainfall", totalRainfall);
+       results.put("totalRainfallMM", totalRainfallMM);
+       results.put("totalRainfallInch", totalRainfallInch);
+       results.put("windiestMiles", windiestMiles);
        results.put("windiestMS", windiestMS);
-       results.put("windiestKmph", windiestKmph);
        results.put("maxTempDay", maxTempDay);
        results.put("minTempDay", minTempDay);
        results.put("windiestDay", windiestDay);
@@ -793,27 +800,38 @@ public class WeatherService {
         for (int i = 0; i < week.size(); i++) {
             ArrayList<HashMap> hourly = (ArrayList<HashMap>) week.get(i).get("hourly");
 
-            DoubleSummaryStatistics maxPrecipMMs = hourly.stream().mapToDouble((value) ->
-                    parseDouble(value.get("precipMM"))).summaryStatistics();
+            DoubleSummaryStatistics maxPrecipMMs = getOneDayTotalRainfall(hourly);
 
-            total+=maxPrecipMMs.getSum();
+            total+=maxPrecipMMs.getMax();
         }
         return total;
     }
 
-    private String getWindiestDay(List<HashMap> week, int windiestValue){
-        for (int i = 0; i < week.size(); i++) {
-            ArrayList<HashMap> hourly = (ArrayList<HashMap>) week.get(i).get("hourly");
-            try {
-                String date = (String) hourly.stream().filter(hashMap -> parseInt(hashMap.get("windspeedMiles")) == windiestValue).findAny().get().get("date");
-                return date;
-            }catch (NoSuchElementException e){
+    DoubleSummaryStatistics getOneDayTotalRainfall(ArrayList<HashMap> hourly){
+        return  hourly.stream().mapToDouble((value) ->
+                parseDouble(value.get("precipMM"))).summaryStatistics();
+    }
 
+    private HashMap getWindiestDay(List<HashMap> week, int windiestValue){
+
+        HashMap elem = null;
+        for (int i = 0; i < week.size(); i++) {
+
+            List<HashMap> hourlylist = new ArrayList<>();
+            for (int j = 0; j < 24; j++) {
+             hourlylist.add((HashMap)((ArrayList)week.get(i).get("hourly")).get(j));
+            }
+
+            try {
+                elem = hourlylist.stream().filter(hashMap -> hashMap.get("windspeedMiles").toString().equals(String.valueOf(windiestValue))).findAny().get();
+                if(week.get(i).get("hourly").equals(hourlylist)){
+                    return week.get(i);
+                }
+            }catch (NoSuchElementException e){
+                continue;
             }
 
         }
-
-
 
 
         return null;
@@ -837,8 +855,8 @@ public class WeatherService {
         return theWindiestKmph;
     }
 
-    private int getWindiestMS(List<HashMap> week){
-        int theWindiestMS = 0;
+    private int getWindiestMiles(List<HashMap> week){
+        int theWindiestMiles = 0;
         for (int i = 0; i < week.size(); i++) {
             ArrayList<HashMap> hourly = (ArrayList<HashMap>) week.get(i).get("hourly");
 
@@ -848,11 +866,11 @@ public class WeatherService {
 
             int windiestInDay = maxWindiestMMs.getMax();
 
-            if(windiestInDay> theWindiestMS){
-                theWindiestMS = windiestInDay;
+            if(windiestInDay> theWindiestMiles){
+                theWindiestMiles = windiestInDay;
             }
 
         }
-        return theWindiestMS;
+        return theWindiestMiles;
     }
 }
