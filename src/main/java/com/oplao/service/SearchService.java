@@ -171,6 +171,7 @@ public class SearchService {
         result.put("city", cityName.replace("%20", " "));
         result.put("countryCode", city.getString("countryCode"));
         result.put("geonameId", city.getInt("geonameId"));
+        result.put("hours", dateTime.getHourOfDay());
         return result;
     }
 

@@ -186,7 +186,7 @@
                 <div class="container">
                     <a ng-repeat="i in get_recent_cities_tabs track by $index" ng-click="selectCity(i.geonameId)" class="weather-block-favorite w{{$index}}">
                         <div class="wb-left">
-                            <img ng-src="svg/wicons_svg/{{i.weatherCode}}_{{(temperature.hours<=6 || temperature.hours>=18)?'night':'day'}}.svg" style="width: 30px;">
+                            <img ng-src="svg/wicons_svg/{{i.weatherCode}}_{{(i.hours<=6 || i.hours>=18)?'night':'day'}}.svg" style="width: 30px;">
                             <div class="wbl-temp">{{local.typeTemp=='C'?i.tempC:i.tempF}} <span>{{local.typeTemp}}</span></div>
                         </div>
                         <div class="wb-right">
