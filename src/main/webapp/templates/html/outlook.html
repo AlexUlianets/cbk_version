@@ -260,14 +260,14 @@
                 <div class="glance-row">
                     <div class="glance-left">Total rainfall</div>
                     <div class="glance-right">
-                        <div class="glance-temp">{{weekly_weather_summary.totalRainfall.toFixed(1);}} MM</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.totalRainfallMM.toFixed(1) : weekly_weather_summary.totalRainfallInch.toFixed(1);}}  {{local.typeTemp=='C'?'MM':'In'}}</div>
                         <div class="glance-date">Next 7 days</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Windiest</div>
                     <div class="glance-right">
-                        <div class="glance-temp">{{weekly_weather_summary.windiestMS}} M/S</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.windiestMS :weekly_weather_summary.windiestMiles}} {{local.typeTemp=='C'?'M/S':'Mph'}}</div>
                         <div class="glance-date">{{weekly_weather_summary.windiestDay}}</div>
                     </div>
                 </div>
