@@ -69,7 +69,7 @@
                                     <div class="tb-head-title">Pressure</div>
                                 </div>
                             </div>
-                            <div class="tb-contant">
+                            <div class="tb-contant inner-html" style="display: none;">
                                 <div class="tb-item" ng-repeat="temperatureDay in temperatureWeekly.data"  ng-init="sectionIndex = $index">
 
                                     <div class="tb-row" ng-repeat="day in temperatureDay" ng-if="day.time == 'Night' || day.time == 'Day'">
@@ -260,7 +260,9 @@
                 <div class="glance-row">
                     <div class="glance-left">Total rainfall</div>
                     <div class="glance-right">
+
                         <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.totalRainfallMM.toFixed(1) : weekly_weather_summary.totalRainfallInch.toFixed(1);}}  {{local.typeTemp=='C'?'MM':'In'}}</div>
+                      
                         <div class="glance-date">Next 7 days</div>
                     </div>
                 </div>

@@ -142,7 +142,7 @@
 
 <div class="blur">
     <section id="top-page">
-        <span  style="margin-left: 45%;margin-right: 45%;margin-top: 90px;display: block;" class="load_header">
+        <span  style="display:block; margin-top: 90px;text-align: -webkit-center;" class="load_header">
               <svg xmlns="http://www.w3.org/2000/svg" width="100" height="25" viewBox="0 0 120 30" fill="#fff"><circle cx="15" cy="15" r="11.8022"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite"/><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite"/></circle><circle cx="60" cy="15" r="12.1978" fill-opacity="0.3"><animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite"/><animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite"/></circle><circle cx="105" cy="15" r="11.8022"><animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite"/><animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite"/></circle></svg>
         </span>
         <div class="container" style="display: none">
@@ -228,7 +228,7 @@
                     <div class="weather-info-block">
                         <div class="wb-img">
                             <span class="helper"></span>
-                            <img src="img/pressure_white.svg" alt="img" style="    width: 42px;">
+                            <img src="images/svg-sprite/pressure_white_fill.svg" alt="img" style="    width: 42px;">
                         </div>
                         <h4>Pressure</h4>
                         <p>{{local.typeTemp=='C'?temperature.pressurehPa:temperature.pressureInch}} <span>{{local.typeTemp=='C'?'hPa':'in'}}</span></p>
@@ -248,7 +248,7 @@
                     <div class="weather-time-block">
                         <div class="wtb-img">
                             <span class="helper"></span>
-                            <i class="icon am"></i>
+                            <img src="images/svg-sprite/sunrise-weather-symbol.svg" alt="" style="width: 35px;">
                         </div>
                         <div class="wt-time">{{temperature.sunrise}}</div>
                     </div>
@@ -256,7 +256,7 @@
                         <div class="wtb-img">
                             <span class="helper"></span>
                             <!-- <i class="icon pm"></i> -->
-                            <img src="images/svg-sprite/pm.svg" alt="">
+                            <img src="images/svg-sprite/sunset-fill-interface-symbol.svg" alt="" style="width: 35px;">
                         </div>
                         <div class="wt-time">{{temperature.sunset}}</div>
                     </div>
