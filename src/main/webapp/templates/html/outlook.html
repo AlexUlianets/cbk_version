@@ -38,15 +38,15 @@
                                     </div>
                                     <div class="tb-head-title">Feels like</div>
                                 </div>
-                                <div class="tb-precip-chance">
+                                <div class="tb-precipMM-chance">
                                     <div class="tb-head-icon">
                                         <img src="img/precip_chance.svg" alt="" height="25">
                                     </div>
                                     <div class="tb-head-title">Precip chance</div>
                                 </div>
-                                <div class="tb-precip">
+                                <div class="tb-precipMM">
                                     <div class="tb-head-icon">
-                                        <img src="img/precip.svg" alt="" height="25">
+                                        <img src="img/precipMM.svg" alt="" height="25">
                                     </div>
                                     <div class="tb-head-title">Precip</div>
                                 </div>
@@ -99,10 +99,10 @@
                                         <div class="tb-feels-like">
                                             <div class="tb-text">{{local.typeTemp=='C'?day.feelsLikeC:day.feelsLikeF}}°{{local.typeTemp}}</div>
                                         </div>
-                                        <div class="tb-precip-chance">
+                                        <div class="tb-precipMM-chance">
                                             <div class="tb-text">{{day.precipChance}}%</div>
                                         </div>
-                                        <div class="tb-precip">
+                                        <div class="tb-precipMM">
                                             <div class="tb-count">{{local.typeTemp=='C'?day.precipMm:day.precipIn}}</div>
                                             <div class="tb-meter">{{local.typeTemp=='C'?'mm':'in'}}</div>
                                         </div>
@@ -260,14 +260,14 @@
                 <div class="glance-row">
                     <div class="glance-left">Total rainfall</div>
                     <div class="glance-right">
-                        <div class="glance-temp">{{weekly_weather_summary.totalRainfall.toFixed(1);}} MM</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.totalRainfallMM.toFixed(1) : weekly_weather_summary.totalRainfallInch.toFixed(1);}}  {{local.typeTemp=='C'?'MM':'In'}}</div>
                         <div class="glance-date">Next 7 days</div>
                     </div>
                 </div>
                 <div class="glance-row">
                     <div class="glance-left">Windiest</div>
                     <div class="glance-right">
-                        <div class="glance-temp">{{weekly_weather_summary.windiestMS}} M/S</div>
+                        <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.windiestMS :weekly_weather_summary.windiestMiles}} {{local.typeTemp=='C'?'M/S':'Mph'}}</div>
                         <div class="glance-date">{{weekly_weather_summary.windiestDay}}</div>
                     </div>
                 </div>
