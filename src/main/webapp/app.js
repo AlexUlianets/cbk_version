@@ -6,7 +6,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.example = "";
         $rootScope.local = {};
 
-        console.log($cookies.get('temp_val'))
         if($cookies.get('temp_val')===undefined){
             $cookies.put('temp_val', 'C');
             $rootScope.local.typeTemp = 'C';
