@@ -149,7 +149,6 @@ function readyGet(response, responseYear, type) {
     tempYear.forEach(function (tempYear) {
         type==='C'? tempMinDateYearArray.push(parseFloat(tempYear.mintempC)) : tempMinDateYearArray.push(parseFloat(tempYear.mintempF))
         type==='C'? tempMaxDateYearArray.push(parseFloat(tempYear.maxtempC)) : tempMaxDateYearArray.push(parseFloat(tempYear.maxtempF))
-        precipDateYearArray.push(parseFloat(tempYear.precipp))
         type==='C'? precipDateYearArray.push(parseFloat(tempYear.precipMM)) : precipDateYearArray.push(parseFloat(tempYear.precipInch))
 
     });
