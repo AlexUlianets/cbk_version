@@ -26,6 +26,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     $rootScope.get_recent_cities_tabs = msg;
                 });
             });
+            $('.tb-contant').removeClass('inner-html')
+
         }
 
         $rootScope.get_api_weather = function(){
@@ -71,7 +73,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         }
         $rootScope.selectCity = function(e){
             $('.search-dropdown').css({'display': 'none'})
-
             $rootScope.searchInput = '';
             $('.ht-search-input input').val('')
 

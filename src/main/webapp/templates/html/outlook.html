@@ -69,7 +69,7 @@
                                     <div class="tb-head-title">Pressure</div>
                                 </div>
                             </div>
-                            <div class="tb-contant inner-html" style="display: none;">
+                            <div class="tb-contant inner-html">
                                 <div class="tb-item" ng-repeat="temperatureDay in temperatureWeekly.data"  ng-init="sectionIndex = $index">
 
                                     <div class="tb-row" ng-repeat="day in temperatureDay" ng-if="day.time == 'Night' || day.time == 'Day'">
