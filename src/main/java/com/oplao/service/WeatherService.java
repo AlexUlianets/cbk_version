@@ -6,7 +6,6 @@ import com.oplao.Utils.MoonPhase;
 import com.oplao.Utils.MyJsonHelper;
 import com.oplao.model.*;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -83,40 +82,7 @@ public class WeatherService {
         EXT_STATES.put(392, WeatherStateExt.LightSnowStorm);
         EXT_STATES.put(395, WeatherStateExt.HeavySnowStorm);
     }
-    private String convertDayOfWeekShort(int day) {
 
-        switch (day) {
-            case DateTimeConstants.MONDAY
-                    :
-                return "Mon";
-            case DateTimeConstants.TUESDAY
-                    :
-                return "Tue";
-
-            case DateTimeConstants.WEDNESDAY
-                    :
-                return "Wed";
-
-            case DateTimeConstants.THURSDAY
-                    :
-                return "Thu";
-
-            case DateTimeConstants.FRIDAY
-                    :
-                return "Fri";
-
-            case DateTimeConstants.SATURDAY
-                    :
-                return "Sat";
-
-            case DateTimeConstants.SUNDAY
-                    :
-                return "Sun";
-            default:
-                return "wrong value for field 'day of week' ";
-
-        }
-    }
     public List<HashMap> getYearSummary(JSONObject city){
 
         String cityName = validateCityName((String)city.get("asciiName"));
@@ -235,8 +201,8 @@ public class WeatherService {
         HashMap<String, Object> dayMap = new HashMap<>();
         HashMap<String, Object> wholeDayMap = new HashMap<>();
         wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
-        wholeDayMap.put("monthOfYear",convertMonthOfYear(dateTime.getMonthOfYear()));
-        wholeDayMap.put("dayOfWeek", convertDayOfWeek(dateTime.getDayOfWeek()));
+        wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
+        wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
         wholeDayMap.put("weatherCode", weatherCode);
         wholeDayMap.put("maxTemperatureC", maxWholeDayC);
         wholeDayMap.put("maxTemperatureF", maxWholeDayF);
@@ -318,78 +284,7 @@ public class WeatherService {
     private Double parseDouble(Object o){
         return Double.parseDouble(String.valueOf(o));
     }
-    public static String convertDayOfWeek(int day) {
 
-
-        switch (day) {
-            case DateTimeConstants.MONDAY
-                    : return "Monday";
-            case DateTimeConstants.TUESDAY
-                    : return "Tuesday";
-
-            case DateTimeConstants.WEDNESDAY
-                    : return "Wednesday";
-
-            case DateTimeConstants.THURSDAY
-                    : return "Thursday";
-
-            case DateTimeConstants.FRIDAY
-                    : return "Friday";
-
-            case DateTimeConstants.SATURDAY
-                    : return "Saturday";
-
-            case DateTimeConstants.SUNDAY
-                    : return "Sunday";
-            default:return "wrong value for field 'day of week' ";
-
-        }
-    }
-    public static String convertMonthOfYear(int month) {
-
-
-        switch (month) {
-            case DateConstants.JANUARY
-                    :
-                return "January";
-
-            case DateConstants.FEBRUARY
-                    :
-                return "February";
-            case DateConstants.MARCH
-                    :
-                return "March";
-            case DateConstants.APRIL
-                    :
-                return "April";
-            case DateConstants.MAY
-                    :
-                return "May";
-            case DateConstants.JUNE
-                    :
-                return "June";
-            case DateConstants.JULY
-                    :
-                return "July";
-            case DateConstants.AUGUST
-                    :
-                return "August";
-            case DateConstants.SEPTEMBER
-                    :
-                return "September";
-            case DateConstants.OCTOBER
-                    :
-                return "October";
-            case DateConstants.NOVEMBER
-                    :
-                return "November";
-            case DateConstants.DECEMBER
-                    :
-                return "December";
-            default:
-                return "Wrong value for field 'month'";
-        }
-    }
 
      String moon_phase_name[] = { "New Moon", // 0
      "Waxing crescent", // 1
@@ -566,9 +461,9 @@ public class WeatherService {
 
         result.put("city", cityName.replaceAll("%20", " "));
         result.put("country", city.get("countryName"));
-        result.put("month", convertMonthOfYear(dateTime.getMonthOfYear()));
+        result.put("month", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
         result.put("day", dateTime.getDayOfMonth());
-        result.put("dayOfWeek", convertDayOfWeek(dateTime.getDayOfWeek()));
+        result.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
         result.put("hours", dateTime.getHourOfDay());
         result.put("minutes", dateTime.getMinuteOfHour());
         result.put("temp_c", currentConditions.get("temp_C"));
@@ -652,7 +547,7 @@ public class WeatherService {
         HashMap res = new HashMap();
         res.put("index",
                 ((HashMap)((ArrayList)map.get("weather")).get(0)).get("uvIndex"));
-        res.put("date", convertDayOfWeekShort(dateTime.getDayOfWeek())+" " +
+        res.put("date", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek())+" " +
                 dateTime.getDayOfMonth()+" "
                 + convertMonthOfYearShort(dateTime.getMonthOfYear()));
         return res;
@@ -717,7 +612,6 @@ public class WeatherService {
 
         List<HashMap> week = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-
             DateTime dt1 = dateTime.plusDays(i);
             JSONObject jsonObject = null;
             try {
@@ -740,36 +634,22 @@ public class WeatherService {
         IntSummaryStatistics mintempCavges = week.stream().mapToInt((value) ->
                 parseInt(value.get("mintempC"))).summaryStatistics();
 
-
         int maxTempC = maxtempCavges.getMax();
         int avgMaxTempC = (int)maxtempCavges.getAverage();
         int maxTempF = maxtempFavges.getMax();
         int avgMaxTempF = (int)maxtempFavges.getAverage();
-
         DateTime maxTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("maxtempC"))==maxTempC).findAny().get().get("date"));
         String maxTempDay = convertMonthOfYearShort(maxTempDateTime.getMonthOfYear()).toUpperCase() + "."+maxTempDateTime.getDayOfMonth();
-
-
         int minTempC = mintempCavges.getMin();
         int avgMinTempC = (int)mintempCavges.getAverage();
         int minTempF = mintempFavges.getMin();
         int avgMinTempF = (int)mintempFavges.getAverage();
-
         DateTime minTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("mintempC"))==minTempC).findAny().get().get("date"));
         String minTempDay = convertMonthOfYearShort(minTempDateTime.getMonthOfYear()).toUpperCase() + "."+minTempDateTime.getDayOfMonth();
-
-
         double totalRainfallMM = getTotalRainfall(week);
-
         double totalRainfallInch = new BigDecimal(totalRainfallMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-
         int windiestMiles = getWindiestMiles(week);
-
         int windiestMS = (int)Math.round(getWindiestKmph(week)*0.27777777777778);
-
-
-
-
         String foundWindiest = (String)getWindiestDay(week, windiestMiles).get("date");
         DateTime windiestDateTime = new DateTime(foundWindiest);
         String windiestDay = convertMonthOfYearShort(windiestDateTime.getMonthOfYear()).toUpperCase() + "."+windiestDateTime.getDayOfMonth();
@@ -791,18 +671,16 @@ public class WeatherService {
        results.put("maxTempDay", maxTempDay);
        results.put("minTempDay", minTempDay);
        results.put("windiestDay", windiestDay);
-
-        return results;
+       return results;
     }
 
     private double getTotalRainfall(List<HashMap> week){
         double total = 0;
         for (int i = 0; i < week.size(); i++) {
             ArrayList<HashMap> hourly = (ArrayList<HashMap>) week.get(i).get("hourly");
-
             DoubleSummaryStatistics maxPrecipMMs = getOneDayTotalRainfall(hourly);
-
             total+=maxPrecipMMs.getSum();
+
         }
         return total;
     }
@@ -813,44 +691,32 @@ public class WeatherService {
     }
 
     private HashMap getWindiestDay(List<HashMap> week, int windiestValue){
-
-        HashMap elem = null;
         for (int i = 0; i < week.size(); i++) {
-
             List<HashMap> hourlylist = new ArrayList<>();
             for (int j = 0; j < 24; j++) {
              hourlylist.add((HashMap)((ArrayList)week.get(i).get("hourly")).get(j));
             }
-
             try {
-                elem = hourlylist.stream().filter(hashMap -> hashMap.get("windspeedMiles").toString().equals(String.valueOf(windiestValue))).findAny().get();
+                HashMap elem = hourlylist.stream().filter(hashMap -> hashMap.get("windspeedMiles").toString().equals(String.valueOf(windiestValue))).findAny().get();
                 if(week.get(i).get("hourly").equals(hourlylist)){
                     return week.get(i);
                 }
             }catch (NoSuchElementException e){
                 continue;
             }
-
         }
-
-
         return null;
     }
     private int getWindiestKmph(List<HashMap> week){
         int theWindiestKmph = 0;
         for (int i = 0; i < week.size(); i++) {
             ArrayList<HashMap> hourly = (ArrayList<HashMap>) week.get(i).get("hourly");
-
             IntSummaryStatistics maxWindiestKmphs = hourly.stream().mapToInt((value) ->
                     parseInt(value.get("windspeedKmph"))).summaryStatistics();
-
-
             int windiestInDay = maxWindiestKmphs.getMax();
-
             if(windiestInDay > theWindiestKmph){
                 theWindiestKmph = windiestInDay;
             }
-
         }
         return theWindiestKmph;
     }
@@ -859,10 +725,8 @@ public class WeatherService {
         int theWindiestMiles = 0;
         for (int i = 0; i < week.size(); i++) {
             ArrayList<HashMap> hourly = (ArrayList<HashMap>) week.get(i).get("hourly");
-
             IntSummaryStatistics maxWindiestMMs = hourly.stream().mapToInt((value) ->
                     parseInt(value.get("windspeedMiles"))).summaryStatistics();
-
 
             int windiestInDay = maxWindiestMMs.getMax();
 

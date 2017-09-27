@@ -9,6 +9,7 @@ import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -26,8 +27,125 @@ import java.util.Objects;
 @Service
 public class SearchService {
     public static final String cookieName = "lastCitiesVisited";
+    public List<HashMap> findSearchOccurences(String searchRequest){
+        List list = null;
+        if((Character.isDigit(searchRequest.trim().charAt(0)) || Character.isDigit(searchRequest.trim().charAt(1))) && searchRequest.contains(",")){
+            String [] parsedRequest = searchRequest.split(",");
+            String lat = "";
+            String lon = "";
+            if(parsedRequest.length==4){
+                lat= parsedRequest[0].trim() + "." + parsedRequest[1].replaceAll("°", "").trim();
+                lon = parsedRequest[2].trim() +"." +parsedRequest[3].replaceAll("°", "").trim();
+            }else {
+                lat = parsedRequest[0].replace(",", ".").replaceAll("°", "").trim();
+                try {
+                    lon = parsedRequest[1].replaceAll(",", ".").replaceAll("°", "").trim();
+                }catch (ArrayIndexOutOfBoundsException e){
+                }
+            }
 
-    public static List<JSONObject> findByOccurences(String url) throws IOException, JSONException {
+            if(lat.contains(".")&& lon.contains(".")) {
+                list = findByCoordinates(lat, lon);
+            }else {
+                return null;
+            }
+        }else if(searchRequest.length()==3 && Objects.equals(searchRequest, searchRequest.toUpperCase())) {
+            list = findByAirports(searchRequest);
+        }
+        else {
+            try {
+                list = findByCity(searchRequest);
+            }catch (NullPointerException e){
+            }
+        }
+        try {
+            List<HashMap> maps = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                maps.add((HashMap) ((JSONObject) list.get(i)).toMap());
+            }
+            return maps;
+        }catch (NullPointerException e){
+        }
+        return new ArrayList<>();
+    }
+
+
+    public HttpStatus selectCity(int geonameId, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+        List<JSONObject> list = null;
+        JSONObject city = null;
+        try{
+            try {
+                list = findByGeonameId(geonameId);
+                city = list.get(0);
+            }catch (Exception e){
+                list = findByGeonameIdAirports(geonameId);
+                city = list.get(0);
+            }
+
+            city.put("status", "selected");
+            JSONArray arr = new JSONArray(currentCookieValue);
+            for (int i = 0; i < arr.length(); i++) {
+                arr.getJSONObject(i).put("status", "unselected");
+            }
+
+            if(checkDuplicateCookie(request, response,city) != 0) {
+                if(arr.length()>4){
+                    arr.remove(4);
+                    arr.put(4, city);
+                }else{
+                    arr.put(city);
+                }
+                clearCookies(request, response);
+
+                Cookie c = new Cookie(SearchService.cookieName, arr.toString());
+                c.setMaxAge(60 * 60 * 24);
+                c.setPath("/");
+                response.addCookie(c);
+
+                return HttpStatus.OK;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return HttpStatus.OK;
+    }
+
+
+    private int checkDuplicateCookie(HttpServletRequest request, HttpServletResponse response,
+                                     JSONObject city){
+        for (int i = 0; i < request.getCookies().length; i++) {
+            if(request.getCookies()[i].getName().equals(SearchService.cookieName)){
+                JSONArray array = new JSONArray(request.getCookies()[i].getValue());
+                for (int j = 0; j < array.length(); j++) {
+                    if(Objects.equals("" + (array.getJSONObject(j)).get("geonameId"),
+                            "" + city.get("geonameId"))){
+                        setCitySelected(array, j);
+                        clearCookies(request, response);
+
+                        Cookie c = new Cookie(SearchService.cookieName, array.toString());
+                        c.setMaxAge(60 * 60 * 24);
+                        c.setPath("/");
+                        response.addCookie(c);
+
+                        return 0;
+                    }
+                }
+            }
+        }
+        return 1;
+    }
+
+    private void setCitySelected(JSONArray array, int index){
+
+        for (int i = 0; i < array.length(); i++) {
+            array.getJSONObject(i).put("status", "unselected");
+        }
+
+        array.getJSONObject(index).put("status", "selected");
+    }
+
+    private static List<JSONObject> findByOccurences(String url) throws IOException, JSONException {
         InputStream is = null;
         try {
             is = new URL(url).openStream();
@@ -45,7 +163,7 @@ public class SearchService {
         }
     }
 
-    public List<JSONObject> findByCoordinates(String lat, String lon){
+    private List<JSONObject> findByCoordinates(String lat, String lon){
         List<JSONObject> list = null;
         try {
             list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&lat=" + lat + "&lng=" + lon);
@@ -55,7 +173,7 @@ public class SearchService {
         return list;
     }
 
-    public List<JSONObject> findByGeonameIdAirports(int geonameId){
+    private List<JSONObject> findByGeonameIdAirports(int geonameId){
         List<JSONObject> list = null;
         try {
             list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId + "&featureClass=S");
@@ -65,7 +183,7 @@ public class SearchService {
         return list;
     }
 
-    public List<JSONObject> findByGeonameId(int geonameId){
+    private List<JSONObject> findByGeonameId(int geonameId){
         List<JSONObject> list = null;
         try {
             list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId);
@@ -74,7 +192,7 @@ public class SearchService {
         }
         return list;
     }
-    public List<JSONObject> findByAirports(String name){
+    private List<JSONObject> findByAirports(String name){
         List<JSONObject> list = null;
         try {
             list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts="+name.trim()+"&featureClass=S");
@@ -85,7 +203,7 @@ public class SearchService {
     }
 
 
-    public List<JSONObject> findByCity(String city){
+    private List<JSONObject> findByCity(String city){
         List<JSONObject> list = null;
         try {
             list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20"));
@@ -94,7 +212,7 @@ public class SearchService {
         }
         return list;
     }
-   public void clearCookies(HttpServletRequest request, HttpServletResponse response){
+   private void clearCookies(HttpServletRequest request, HttpServletResponse response){
        for (int i = 0; i < request.getCookies().length; i++) {
                request.getCookies()[i].setPath("/");
                request.getCookies()[i].setValue("");
@@ -183,9 +301,7 @@ public class SearchService {
     }
 
     public Cookie deleteCity(String currentCookieValue, String geonameId, HttpServletRequest request, HttpServletResponse response){
-
         JSONArray array = new JSONArray(currentCookieValue);
-
         for (int i = 0; i < array.length(); i++) {
             if(String.valueOf(array.getJSONObject(i).get("geonameId")).equals(geonameId)){
                 array.remove(i);
@@ -196,8 +312,6 @@ public class SearchService {
                 return c;
             }
         }
-
         return null;
-
     }
 }
