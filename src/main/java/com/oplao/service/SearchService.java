@@ -118,7 +118,7 @@ public class SearchService {
           try {
               File database = new File("src\\main\\resources\\GeoLite2-City.mmdb");
               DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
-              cityResponse = dbReader.city(InetAddress.getByName("176.8.91.205"));
+              cityResponse = dbReader.city(InetAddress.getByName(AddressGetter.getCurrentIpAddress(request)));
            } catch (IOException | GeoIp2Exception e) {
                e.printStackTrace();
            }
