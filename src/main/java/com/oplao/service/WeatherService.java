@@ -559,7 +559,7 @@ public class WeatherService {
             HashMap weatherData = weather.get(0);
             ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
             HashMap hourlyHm = hourly.get(dateTime.getHourOfDay());
-
+            HashMap currentConditions = ((HashMap)((ArrayList)map.get("current_condition")).get(0));
 
 
         HashMap<String, Object> result = new HashMap<>();
@@ -571,20 +571,20 @@ public class WeatherService {
         result.put("dayOfWeek", convertDayOfWeek(dateTime.getDayOfWeek()));
         result.put("hours", dateTime.getHourOfDay());
         result.put("minutes", dateTime.getMinuteOfHour());
-        result.put("temp_c", hourlyHm.get("tempC"));
-        result.put("temp_f", hourlyHm.get("tempF"));
-        result.put("feelsLikeC", hourlyHm.get("FeelsLikeC"));
-        result.put("feelsLikeF", hourlyHm.get("FeelsLikeF"));
-        result.put("humidity", hourlyHm.get("humidity"));
-        result.put("pressurehPa", hourlyHm.get("pressure"));
-        result.put("pressureInch", new BigDecimal(parseInt(hourlyHm.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
-        result.put("windMph",  hourlyHm.get("windspeedMiles"));
-        result.put("windMs", (int)Math.round(parseInt(hourlyHm.get("windspeedKmph"))*0.27777777777778));
-        result.put("direction", hourlyHm.get("winddir16Point"));
-        result.put("windDegree", hourlyHm.get("winddirDegree"));
+        result.put("temp_c", currentConditions.get("temp_C"));
+        result.put("temp_f", currentConditions.get("temp_F"));
+        result.put("feelsLikeC", currentConditions.get("FeelsLikeC"));
+        result.put("feelsLikeF", currentConditions.get("FeelsLikeF"));
+        result.put("humidity", currentConditions.get("humidity"));
+        result.put("pressurehPa", currentConditions.get("pressure"));
+        result.put("pressureInch", new BigDecimal(parseInt(currentConditions.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+        result.put("windMph",  currentConditions.get("windspeedMiles"));
+        result.put("windMs", (int)Math.round(parseInt(currentConditions.get("windspeedKmph"))*0.27777777777778));
+        result.put("direction", currentConditions.get("winddir16Point"));
+        result.put("windDegree", currentConditions.get("winddirDegree"));
         result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
-        result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(hourlyHm.get("weatherCode")))));
+        result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
 
         return result;
     }
@@ -802,7 +802,7 @@ public class WeatherService {
 
             DoubleSummaryStatistics maxPrecipMMs = getOneDayTotalRainfall(hourly);
 
-            total+=maxPrecipMMs.getMax();
+            total+=maxPrecipMMs.getSum();
         }
         return total;
     }

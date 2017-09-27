@@ -1,6 +1,5 @@
 package com.oplao.Utils;
 
-import com.oplao.model.GeoLocation;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
