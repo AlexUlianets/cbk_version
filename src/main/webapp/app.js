@@ -25,6 +25,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $rootScope.$apply(function(){
                     $rootScope.get_recent_cities_tabs = msg;
                 });
+                var ln = $('.favorite-location .container')[0]['children'].length;
+                if ($(window).width() < 500) {
+                    $('#top-page').animate({height: (40+((ln) * 10) - 10)+'vh'});
+                }
             });
             $('.tb-contant').removeClass('inner-html')
 
@@ -100,13 +104,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }
                 $('.w' + $menuIndex).remove();
                 $('.w' + $menuIndex + '_li').remove();
-                if ($(window).width() > 480) {
-                    block_weater.css("width", 100 / ($item.length - 1) + '%');
-                    if (($item.length - 1) == 0) {
-                        $('#top-page').animate({height: '-=71px'});
-                    }
-                } else {
-                    $('#top-page').animate({height: '-=70px'});
+
+                var ln = $('.favorite-location .container')[0]['children'].length;
+                if ($(window).width() < 500) {
+                        $('#top-page').animate({height: (40+(ln * 10) - 10)+'vh'});
                 }
             })
         };
