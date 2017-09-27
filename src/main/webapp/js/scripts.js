@@ -4,7 +4,7 @@ $(document).ready(function () {
         $('.head-bot-mini').css({'display': 'block'});
         $('#top-page').find('.container').css({'display': 'block'});
         $('.tb-contant').removeClass('inner-html')
-    })}, 4000)
+    })}, 2000)
 
     $("head").append("<link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>");
     $('.temp-block').on('click', function (e) {
