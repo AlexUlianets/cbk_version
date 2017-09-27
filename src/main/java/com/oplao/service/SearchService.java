@@ -1,7 +1,9 @@
 package com.oplao.service;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
 import com.oplao.Utils.AddressGetter;
-import com.oplao.model.GeoLocation;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
@@ -13,10 +15,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -232,11 +232,18 @@ public class SearchService {
            }
        }
        }else {
-           GeoLocation geoLocation = GeoIPv4.getLocation(AddressGetter.getCurrentIpAddress(request));
+           CityResponse cityResponse = null;
+          try {
+              File database = new File("src\\main\\resources\\GeoLite2-City.mmdb");
+              DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
+              cityResponse = dbReader.city(InetAddress.getByName(AddressGetter.getCurrentIpAddress(request)));
+           } catch (IOException | GeoIp2Exception e) {
+               e.printStackTrace();
+           }
 
            List<JSONObject> list = null;
            try {
-               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + geoLocation.getCity());
+               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + cityResponse.getCity().getName());
                JSONObject obj = list.get(0);
                obj.put("status", "selected");
                JSONArray arr = new JSONArray("["+obj.toString()+"]");
