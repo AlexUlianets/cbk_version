@@ -17,6 +17,35 @@ public class DateConstants {
     public static final int NOVEMBER = 11;
     public static final int DECEMBER = 12;
 
+
+    public static String convertTimeToAmPm(int time){
+
+        if(time>=1200){
+            time = time-1200;
+
+            String timeStr = "" + time;
+
+            if(timeStr.length()==3){
+                return timeStr.substring(0,1) + " PM";
+            }else if(timeStr.length()==4){
+                return timeStr.substring(0,2) + " PM";
+            }
+            else if(timeStr.length()==1){
+                return "12 AM";
+            }
+        }else {
+            String timeStr = "" + time;
+
+            if(timeStr.length()==3){
+                return timeStr.substring(0,1) + " AM";
+            }else if(timeStr.length()==4){
+                return timeStr.substring(0,2) + " AM";
+            }else if(timeStr.length()==1){
+                return "12 PM";
+            }
+        }
+        return null;
+    }
     public static String convertDayOfWeekShort(int day) {
         switch (day) {
             case DateTimeConstants.MONDAY
