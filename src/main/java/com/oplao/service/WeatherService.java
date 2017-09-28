@@ -98,11 +98,13 @@ public class WeatherService {
         HashMap map = (HashMap) jsonObject.toMap().get("data");
         List months = ((ArrayList)((HashMap)((ArrayList)map.get("ClimateAverages")).get(0)).get("month"));
         List<HashMap> result = new ArrayList<>();
-
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         for (int i = 0; i < months.size(); i++) {
             HashMap res = new HashMap();
             HashMap elem = ((HashMap)months.get(i));
+            res.put("active", dateTime.getMonthOfYear() - 1 == i);
             res.put("month", "" + String.valueOf(elem.get("name")).substring(0,3));
+            res.put("fullMonthName", String.valueOf(elem.get("name")));
             res.put("maxtempC", elem.get("avgMaxTemp"));
             res.put("maxtempF", elem.get("avgMaxTemp_F"));
             res.put("mintempC", elem.get("avgMinTemp"));
@@ -418,7 +420,7 @@ public class WeatherService {
 
 
         HashMap dateMap = new HashMap();
-        int moonPhaseIndex = getMoonPhase();
+        int moonPhaseIndex = getMoonPhase(city);
 
         dateMap.put("dayOfMonth", dateTime.getDayOfMonth());
         dateMap.put("monthOfYear", convertMonthOfYearShort(dateTime.getMonthOfYear()));
@@ -431,18 +433,16 @@ public class WeatherService {
         return result;
     }
 
-    private int getMoonPhase(){
-        return new MoonPhase(Calendar.getInstance()).getPhaseIndex();
+    private int getMoonPhase(JSONObject city){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        return new MoonPhase(calendar).getPhaseIndex()-1;
     }
 
         public HashMap getRemoteData(JSONObject city){
 
-
             String cityName = validateCityName((String)city.get("asciiName"));
-
-
             DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
-
             JSONObject jsonObject = null;
         try {
           jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + cityName);
@@ -453,7 +453,6 @@ public class WeatherService {
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
             HashMap weatherData = weather.get(0);
             ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
-            HashMap hourlyHm = hourly.get(dateTime.getHourOfDay());
             HashMap currentConditions = ((HashMap)((ArrayList)map.get("current_condition")).get(0));
 
 
@@ -484,6 +483,38 @@ public class WeatherService {
         return result;
     }
 
+
+    public List<HashMap> getDetailedForecastForToday(JSONObject city){
+        String cityName = validateCityName((String)city.get("asciiName"));
+        JSONObject jsonObject = null;
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        try {
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + cityName);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
+        ArrayList<HashMap> hourly = ((ArrayList)((HashMap)((ArrayList)(map.get("weather"))).get(0)).get("hourly"));
+
+        String month = dateTime.getMonthOfYear() > 9? "" + dateTime.getMonthOfYear():"0" + dateTime.getMonthOfYear();
+        String day = dateTime.getDayOfMonth() > 9 ? "" + dateTime.getDayOfMonth():"0" + dateTime.getDayOfMonth();
+        String date = dateTime.getYear() + "-" +
+                month + "-" +
+                day;
+        List<HashMap> result = new ArrayList<>();
+        for (HashMap aHourly : hourly) {
+            HashMap m = new HashMap();
+            m.put("tempC", aHourly.get("tempC"));
+            m.put("tempF", aHourly.get("tempF"));
+            m.put("date", date);
+            m.put("precipMM", aHourly.get("precipMM"));
+            m.put("precipInch", new BigDecimal(parseDouble(aHourly.get("precipMM")) * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+            m.put("weatherIcon",  "" + EXT_STATES.get(parseInt(aHourly.get("weatherCode"))));
+            result.add(m);
+        }
+
+        return result;
+        }
 
     public List<DetailedForecastGraphMapping> getDetailedForecastMapping(JSONObject city){
             List<DetailedForecastGraphMapping> result = new ArrayList<>();
@@ -736,5 +767,70 @@ public class WeatherService {
 
         }
         return theWindiestMiles;
+    }
+
+    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather){
+        String cityName = validateCityName((String)city.get("asciiName"));
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+
+        List list = new ArrayList();
+        for (int i = 0; i < numOfDays; i++) {
+
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime.minusDays(i), cityName,
+                    pastWeather, false, numOfHours);
+
+            HashMap weather = ((HashMap)((ArrayList)apiWeatherFinder.findWeatherByDate().get("weather")).get(0));
+            ArrayList hourly = (ArrayList)weather.get("hourly");
+
+            List results = new ArrayList();
+
+            HashMap<String, Object> wholeDayMap = new HashMap<>();
+
+            wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
+            wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
+            wholeDayMap.put("year", dateTime.getYear());
+            wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
+            wholeDayMap.put("todaySign", "Today");
+            wholeDayMap.put("maxtempC", weather.get("maxtempC"));
+            wholeDayMap.put("mintempC", weather.get("mintempC"));
+            wholeDayMap.put("maxtempF", weather.get("maxtempF"));
+            wholeDayMap.put("mintempF", weather.get("mintempF"));
+
+            List<HashMap> oneWholeDayData = new ArrayList<>();
+
+            for (int j = 0; j < hourly.size(); j++) {
+                HashMap<String, Object> dayMap = new HashMap<>();
+                HashMap elem = (HashMap)hourly.get(j);
+
+                dayMap.put("time", DateConstants.convertTimeToAmPm(parseInt(elem.get("time"))));
+                dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
+                dayMap.put("tempC", elem.get("tempC"));
+                dayMap.put("tempF", elem.get("tempF"));
+                dayMap.put("feelsLikeC", elem.get("FeelsLikeC"));
+                dayMap.put("feelsLikeF", elem.get("FeelsLikeF"));
+                dayMap.put("precipChance", elem.get("chanceofrain"));
+                dayMap.put("precipMM", elem.get("precipMM"));
+                dayMap.put("precipInch", new BigDecimal(parseDouble(elem.get("precipMM")) * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+                dayMap.put("windMph", elem.get("windspeedMiles"));
+                dayMap.put("windMs", (int)Math.round(parseInt(elem.get("windspeedKmph"))*0.27777777777778));
+                dayMap.put("winddir", elem.get("winddir16Point"));
+                dayMap.put("windDegree", parseInt(elem.get("winddirDegree")) + 40);
+                dayMap.put("gustMph", elem.get("WindGustMiles"));
+                dayMap.put("gustMs", (int)Math.round(parseInt(elem.get("WindGustKmph"))*0.27777777777778));
+                dayMap.put("cloudCover", elem.get("cloudcover"));
+                dayMap.put("humidity", elem.get("humidity"));
+                dayMap.put("pressurehPa", elem.get("pressure"));
+                dayMap.put("pressureInch", new BigDecimal(parseInt(elem.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+                dayMap.put("isDay", parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800);
+                oneWholeDayData.add(dayMap);
+            }
+            results.add(oneWholeDayData);
+            results.add(wholeDayMap);
+
+            list.add(results);
+        }
+
+
+        return list;
     }
 }
