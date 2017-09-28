@@ -234,7 +234,8 @@ public class SearchService {
        }else {
            CityResponse cityResponse = null;
           try {
-              File database = new File("../resources/GeoLite2-City.mmdb");
+
+              File database = new File(System.getProperty("user.dir") + "/src/main/resources/GeoLite2-City.mmdb");
               DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
               cityResponse = dbReader.city(InetAddress.getByName(AddressGetter.getCurrentIpAddress(request)));
            } catch (IOException | GeoIp2Exception e) {
