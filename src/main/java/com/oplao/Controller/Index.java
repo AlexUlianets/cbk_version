@@ -7,8 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class Index {
-    @RequestMapping("/a")
-    public String get(){
-        return "redirect:/";
+    @Controller
+    static class Routes {
+
+        @RequestMapping({
+                "/today",
+                "/outlook"
+        })
+        public String index() {
+            return "forward:/index.html";
+        }
     }
 }
