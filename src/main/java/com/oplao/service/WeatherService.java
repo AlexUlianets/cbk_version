@@ -776,7 +776,8 @@ public class WeatherService {
         List list = new ArrayList();
         for (int i = 0; i < numOfDays; i++) {
 
-            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime.minusDays(i), cityName,
+            dateTime = dateTime.plusDays(i);
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
                     pastWeather, false, numOfHours);
 
             HashMap weather = ((HashMap)((ArrayList)apiWeatherFinder.findWeatherByDate().get("weather")).get(0));
@@ -790,11 +791,13 @@ public class WeatherService {
             wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
             wholeDayMap.put("year", dateTime.getYear());
             wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
-            wholeDayMap.put("todaySign", "Today");
+            wholeDayMap.put("todaySign", i==0?"Today":"Tomorrow");
             wholeDayMap.put("maxtempC", weather.get("maxtempC"));
             wholeDayMap.put("mintempC", weather.get("mintempC"));
             wholeDayMap.put("maxtempF", weather.get("maxtempF"));
             wholeDayMap.put("mintempF", weather.get("mintempF"));
+            wholeDayMap.put("sunrise", ((HashMap)((ArrayList)weather.get("astronomy")).get(0)).get("sunrise"));
+            wholeDayMap.put("sunset", ((HashMap)((ArrayList)weather.get("astronomy")).get(0)).get("sunset"));
 
             List<HashMap> oneWholeDayData = new ArrayList<>();
 
