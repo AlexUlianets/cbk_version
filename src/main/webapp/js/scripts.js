@@ -290,7 +290,10 @@ $(document).ready(function () {
             /*
              ** Connect the plugin calendar
              */
-            $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
+
+            if(!$.datepicker.initialized) {
+                $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
+            }
             $.datepicker._updateDatepicker = function (inst) {
                 $.datepicker._updateDatepicker_original(inst);
                 var afterShow = this._get(inst, 'afterShow');
@@ -306,12 +309,18 @@ $(document).ready(function () {
                 afterShow: function () {
                     $(".ui-datepicker select").styler();
 
-                }
-                /*onSelect: function () {
-                 var  selectedDate = $.datepicker.formatDate("MM d, yy, DD", $(this).datepicker('getDate'));
-                 console.log(selectedDate);
-                 }*/
+                },
+                onSelect: function () {
 
+                    // var  selectedDate = $.datepicker.formatDate("MM d, yy, DD", );
+                    var scope = angular.element("[ng-controller=past-weatherCtrl]").scope();
+                    var selectedDate = $(this).datepicker('getDate');
+                    var year = selectedDate.getFullYear();
+                    var day = parseInt(selectedDate.getDate())<10?'0'+ selectedDate.getDate():selectedDate.getDate();
+                    var month = parseInt(selectedDate.getMonth()) + 1<10?'0'+ (parseInt(selectedDate.getMonth())+1):parseInt(selectedDate.getMonth()) + 1;
+                    scope.showWeatherForDate( year + "-" + month  + "-" + day);
+
+                 }
             });
 
 

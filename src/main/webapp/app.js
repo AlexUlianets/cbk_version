@@ -142,6 +142,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               },{
                   name: 'tomorrow',
                   files: ['assets/js/tomorrow.js']
+              },{
+                  name: 'past-weather',
+                  files: ['assets/js/past-weather.js']
               }]
           });
 
@@ -182,6 +185,18 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         resolve: {
                             loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                                 return $ocLazyLoad.load('tomorrow');
+                            }]
+                        }
+                    }) .state('past-weather', {
+                        url: "/past-weather",
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/past-weather.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('past-weather');
                             }]
                         }
                     });

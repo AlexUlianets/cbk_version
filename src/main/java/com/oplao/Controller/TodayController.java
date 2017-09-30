@@ -31,9 +31,9 @@ public class TodayController {
     @RequestMapping("/get_dynamic_table_data")
     @ResponseBody
     public List getDynamicTableData(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
-                                             HttpServletRequest request, HttpServletResponse response, @RequestParam("numOfHours") int numOfHours,
+                                             HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "date", required = false) String date,@RequestParam("numOfHours") int numOfHours,
                                              @RequestParam("numOfDays") int numOfDays, @RequestParam("pastWeather") boolean pastWeather){
 
-        return weatherService.getDynamicTableData(searchService.findSelectedCity(request, response, currentCookieValue), numOfHours, numOfDays, pastWeather);
+        return weatherService.getDynamicTableData(searchService.findSelectedCity(request, response, currentCookieValue), numOfHours, numOfDays, pastWeather, date);
     }
 }
