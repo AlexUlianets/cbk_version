@@ -139,6 +139,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               }, {
                   name: 'today',
                   files: ['assets/js/today.js']
+              },{
+                  name: 'tomorrow',
+                  files: ['assets/js/tomorrow.js']
               }]
           });
 
@@ -168,8 +171,20 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                           return $ocLazyLoad.load('today');
                       }]
                   }
-              });
-
+              })
+                .state('tomorrow', {
+                        url: "/tomorrow",
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/tomorrow.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('tomorrow');
+                            }]
+                        }
+                    });
         $locationProvider.html5Mode(true)
   }]);
 
