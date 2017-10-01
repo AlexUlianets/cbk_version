@@ -306,6 +306,7 @@ $(document).ready(function () {
                 selectOtherMonths: true,
                 changeMonth: true,
                 changeYear: true,
+                maxDate: new Date(new Date().getTime() + 13 * 24 * 60 *60 * 1000), //disabling date for 14 + days
                 afterShow: function () {
                     $(".ui-datepicker select").styler();
 

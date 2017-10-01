@@ -1,6 +1,6 @@
  <div class="container section-margin-top" ng-controller="past-weatherCtrl">
         <div class="wrapper">
-            <div class="page-content">
+            <div class="page-content" ng-init="sendRequest(3,1,false)">
                 <section id="hour-by-hour-top" class="past-weather">
                     <h2>Hour by hour weather forecast</h2>
                     <div class="datepicker-wrap dr-wrapper">

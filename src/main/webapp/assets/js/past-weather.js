@@ -3,12 +3,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 // Enter page
 
 app.controller('past-weatherCtrl', function($scope, $http) {
-    $scope.hrs = 3;
+
+    $scope.past = false;
     $scope.showWeatherForDate = function (date) {
         var currentDate = new Date(date);
-        var past = currentDate < new Date();
+        $scope.past = currentDate < new Date();
         $scope.date = date;
-        $scope.sendRequest($scope.hrs, 1, past, date);
+        $scope.sendRequest($scope.hrs, 1, $scope.past, $scope.date);
     };
 
     $scope.refreshTableWithHours = function (hours) {
@@ -26,7 +27,7 @@ app.controller('past-weatherCtrl', function($scope, $http) {
             document.getElementById('hr-selector3').className="active";
         }
 
-       $scope.sendRequest($scope.hrs, 1, false, $scope.date);
+       $scope.sendRequest($scope.hrs, 1, $scope.past, $scope.date);
     };
 
     $scope.sendRequest = function (numOfHrs, days, pastWeath, date) {
@@ -42,11 +43,12 @@ app.controller('past-weatherCtrl', function($scope, $http) {
                 'Content-Type': 'application/json; charset=utf-8'
             }
         }
+        $scope.date = date;
+        $scope.hrs = numOfHrs;
 
         $http(sendingTableRequest).success(function (data) {
-            $scope.$parent.dynamicTableData = data;
+            $scope.dynamicTableData = data;
         })
 
     };
-    $scope.sendRequest($scope.hrs, 1, false);
 });
