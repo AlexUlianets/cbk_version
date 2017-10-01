@@ -13,7 +13,8 @@ public class Index {
         @RequestMapping({
                 "/today",
                 "/outlook",
-                "/tomorrow"
+                "/tomorrow",
+                "/past-weather"
         })
         public String index() {
             return "forward:/index.html";

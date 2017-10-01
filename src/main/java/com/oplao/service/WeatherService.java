@@ -769,9 +769,15 @@ public class WeatherService {
         return theWindiestMiles;
     }
 
-    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather){
+    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
+
         String cityName = validateCityName((String)city.get("asciiName"));
-        DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        DateTime dateTime = null;
+        if(date == null){
+           dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        }else{
+            dateTime = new DateTime(date);
+        }
 
         List list = new ArrayList();
         for (int i = 0; i < numOfDays; i++) {

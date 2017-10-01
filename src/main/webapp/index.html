@@ -32,6 +32,9 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/jquery.formstyler.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>
 </head>
 <body ng-app="main">
@@ -272,7 +275,7 @@
                 <li><a ui-sref="outlook" ng-class="{'active':$state.current.name=='outlook'}">Outlook</a></li>
                 <li><a ui-sref="today" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
                 <li><a ui-sref="tomorrow" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
-                <li><a href="past-weather.html">Past weather</a></li>
+                <li><a ui-sref="past-weather" ng-class="{'active':$state.current.name=='past-weather'}">Past weather</a></li>
                 <li><a href="temperature-map.html">Tempearture map</a></li>
             </ul>
 
@@ -456,6 +459,8 @@
     <script src="js/charts_init.js"></script>
     <script src="js/popup.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.formstyler.min.js"></script>
     <script src="assets/plugins/angularJS/angular.min.js"></script>
     <script src="assets/plugins/angularJS/angular-ui-router.min.js"></script>
     <script src="assets/plugins/angularJS/ocLazyLoad.min.js"></script>
