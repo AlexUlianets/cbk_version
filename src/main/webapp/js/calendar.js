@@ -2,11 +2,6 @@
 
 $(function () {
     if ($('#calendar').length) {
-        //html элемент существует
-        /*
-         ** Connect the plugin calendar
-         */
-
         if(!$.datepicker.initialized) {
             $.datepicker._updateDatepicker_original = $.datepicker._updateDatepicker;
         }
@@ -28,15 +23,14 @@ $(function () {
 
             },
             onSelect: function () {
-
-                // var  selectedDate = $.datepicker.formatDate("MM d, yy, DD", );
                 var scope = angular.element("[ng-controller=past-weatherCtrl]").scope();
                 var selectedDate = $(this).datepicker('getDate');
                 var year = selectedDate.getFullYear();
                 var day = parseInt(selectedDate.getDate())<10?'0'+ selectedDate.getDate():selectedDate.getDate();
                 var month = parseInt(selectedDate.getMonth()) + 1<10?'0'+ (parseInt(selectedDate.getMonth())+1):parseInt(selectedDate.getMonth()) + 1;
-                scope.showWeatherForDate( year + "-" + month  + "-" + day);
 
+                scope.showWeatherForDate( year + "-" + month  + "-" + day);
+                $('#dp-calendar').removeClass('visible-calendar');
             }
         });
 
@@ -55,7 +49,13 @@ $(function () {
             //e.stopPropagation();
 
             if (!$(e.target).is(".calendar-activator") && !$(e.target).parents(".ui-datepicker").length) {
-                //console.log($(e.target));
+                $('#dp-calendar').removeClass('visible-calendar');
+            }
+        });
+        $('.close-calendar').click(function (e) {
+            //e.stopPropagation();
+
+            if (!$(e.target).is(".calendar-activator") && !$(e.target).parents(".ui-datepicker").length) {
                 $('#dp-calendar').removeClass('visible-calendar');
             }
         });
