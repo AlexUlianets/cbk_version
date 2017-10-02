@@ -96,29 +96,14 @@ $(document).ready(function () {
 
     if ($("ul.tabs").length > 1) {
         $("ul.tabs").each(function (i) {
-            $(this).find('li').click(function () {
-                $(this).closest('.tb-tabs-header').parent().find('.tab_content').hide();
-                var activeTab = $(this).attr("rel");
-                $("#" + activeTab).fadeIn();
-                $(this).siblings().removeClass("active");
-                $(this).addClass("active");
-                $(".tab_drawer_heading").removeClass("d_active");
-                $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
-            });
+         //   $(this).find('li').click(function () {
+
+             //   console.log('here');
+           // });
         });
     } else {
-        $("ul.tabs li").click(function () {
-            $(".tab_content").hide();
-            var activeTab = $(this).attr("rel");
-            $("#" + activeTab).fadeIn();
-            $("ul.tabs li").removeClass("active");
-            $(this).addClass("active");
-            $(".tab_drawer_heading").removeClass("d_active");
-            $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
-        });
+
     }
-
-
     $(".tab_drawer_heading").click(function () {
         if ($('#' + ($(this).attr("rel"))).css('display') == 'none' && $(window).width() < 400) {
             $(".tab_content").hide();
@@ -282,3 +267,21 @@ $(document).ready(function () {
     });
 
 });
+
+function activateTab(index) {
+    var activeTab = "tab" + index;
+    $("#" + activeTab).fadeIn();
+    $("ul.tabs li").removeClass("active");
+    $(".tabclass" + index).addClass("active");
+    $(".tab_drawer_heading").removeClass("d_active");
+    $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
+}
+//
+// function activateTabHourly(index) {
+//     var activeTab = "tab" + index;
+//     $("#" + activeTab).fadeIn();
+//     $(this).siblings().removeClass("active");
+//     $(".tabclass" + index).addClass("active");
+//     $(".tab_drawer_heading").removeClass("d_active");
+//     $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
+// }

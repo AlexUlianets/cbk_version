@@ -145,6 +145,16 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               },{
                   name: 'past-weather',
                   files: ['assets/js/past-weather.js']
+              },{   name: 'three-days',
+                  files: ['assets/js/universal-days.js']
+              },{   name: 'seven-days',
+                  files: ['assets/js/universal-days.js']
+              },{   name: 'five-days',
+                  files: ['assets/js/not-universal-days.js']
+              },{   name: 'ten-days',
+                  files: ['assets/js/not-universal-days.js']
+              },{   name: 'hour-by-hour',
+                  files: ['assets/js/hour-by-hour.js']
               }]
           });
 
@@ -197,6 +207,86 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         resolve: {
                             loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                                 return $ocLazyLoad.load('past-weather');
+                            }]
+                        }
+                    }).state('three-days', {
+                        url: "/three-days",
+                        params:{
+                          "index":3,
+                            "tabClass" : "tabs tabs-three tb-tabs"
+                        },
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/universal-days.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('three-days');
+                            }]
+                        }
+                    }).state('seven-days', {
+                        url: "/seven-days",
+                        params:{
+                          "index":7,
+                           "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+                        },
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/universal-days.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('seven-days');
+                            }]
+                        }
+                    }).state('five-days', {
+                        url: "/five-days",
+                        params:{
+                          "index":5
+                            //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+                        },
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/not-universal-days.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('five-days');
+                            }]
+                        }
+                    }).state('ten-days', {
+                        url: "/ten-days",
+                        params:{
+                          "index":10
+                            //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+                        },
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/not-universal-days.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('ten-days');
+                            }]
+                        }
+                    }).state('hour-by-hour', {
+                        url: "/hour-by-hour",
+                        params:{
+                          "index":7
+                            //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+                        },
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/hour-by-hour.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('hour-by-hour');
                             }]
                         }
                     });

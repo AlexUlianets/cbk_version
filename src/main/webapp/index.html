@@ -276,18 +276,18 @@
                 <li><a ui-sref="today" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
                 <li><a ui-sref="tomorrow" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
                 <li><a ui-sref="past-weather" ng-class="{'active':$state.current.name=='past-weather'}">Past weather</a></li>
-                <li><a href="temperature-map.html">Tempearture map</a></li>
+                <li><a href="temperature-map.html">Temperature map</a></li>
             </ul>
 
         </nav>
         <nav class="pn-bot">
             <ul>
-                <li><a href="three-days.html">3 day</a></li>
-                <li><a href="five-days.html">5 day</a></li>
-                <li><a href="seven-days.html">7 day</a></li>
-                <li><a href="ten-days.html">10 day</a></li>
+                <li><a ui-sref="three-days" ng-class="{'active':$state.current.name=='three-days'}">3 day</a></li>
+                <li><a ui-sref="five-days" ng-class="{'active':$state.current.name=='five-days'}">5 day</a></li>
+                <li><a ui-sref="seven-days" ng-class="{'active':$state.current.name=='seven-days'}">7 day</a></li>
+                <li><a ui-sref="ten-days" ng-class="{'active':$state.current.name=='ten-days'}">10 day</a></li>
                 <li><a href="fourteen-days.html">14 day</a></li>
-                <li><a href="hour-by-hour.html">Hour by hour</a></li>
+                <li><a ui-sref="hour-by-hour" ng-class="{'active':$state.current.name=='hour-by-hour'}">Hour by hour</a></li>
             </ul>
         </nav>
     </div><!-- end page-nav -->

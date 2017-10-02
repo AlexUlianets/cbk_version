@@ -65,7 +65,7 @@ public class OutlookController {
 
     public HashMap<Integer, HashMap<String,HashMap>>  getWeeklyWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
 
-        return weatherService.getWeeklyWeatherReport(searchService.findSelectedCity(request, response, currentCookieValue));
+        return weatherService.getWeeklyWeatherReport(searchService.findSelectedCity(request, response, currentCookieValue), 7);
     }
 
     @RequestMapping("/get_year_summary")

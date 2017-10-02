@@ -1,0 +1,436 @@
+	<div class="container section-margin-top" ng-controller = "hour-by-hourCtrl">
+		<div class="wrapper">
+			<div class="page-content" ng-init="getData()">
+
+				<section id="hour-by-hour-top" class="past-weather">
+					<h2>Hour by hour weather forecast</h2>
+					<div class="tb-tabs-header">
+						<div class="tb-tabs-ul-wrap">
+							<ul class="tabs tb-tabs tb-tabs-full">
+								<li ng-repeat = "i in dynamicTableData track by $index" class="{{$index==0?'active':''}} tabclass{{$index+1}}"  rel="tab{{$index+1}}" ng-click="selectTab($index+1)">
+									<div class="wrn-block">
+										<div class="wrn-top">
+											<div class="wrn-today">{{$index==0?'Today':''}}</div>
+											{{i[1].dayOfMonth}} {{i[1].monthOfYear}}, {{i[1].dayOfWeek}}
+										</div>
+										<div class="wrn-bot">
+											<div class="wrn-img">
+												<span class="helper"></span>
+												<img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== false ">
+												<img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== true ">
+											</div>
+											<div class="wrn-temp">
+												<span class="wrm-temp-top">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
+												<span class="wrm-temp-bottom">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="tabs-tr">
+
+						<nav role='navigation' class="transformer-tabs date-tabs ht-nav tb-top-nav">
+							<ul>
+								<li><a id = "hr-selector1" ng-click="refreshTableWithHours(1)">1 hour</a></li>
+								<li><a id = "hr-selector3" ng-click="refreshTableWithHours(3)" class="active">3 hour</a></li>
+							</ul>
+						</nav>
+						<div id="h-tab-1" class="tab-hour-content">
+							<div class="tb-wrapper">
+								<div class="wather-table-wrap">
+									<div class="weather-tb 3days-tb no-date">
+										<div class="tb-head">
+											<div class="tb-time">
+												<div class="tb-head-icon">
+													<img src="img/time.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Time</div>
+											</div>
+											<div class="tb-weather">
+												<div class="tb-head-icon">
+													<img src="img/weather.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Weather</div>
+											</div>
+											<div class="tb-temperature">
+												<div class="tb-head-icon">
+													<img src="img/temperature.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Temperature</div>
+											</div>
+											<div class="tb-feels-like">
+												<div class="tb-head-icon">
+													<img src="img/feels_like.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Feels like</div>
+											</div>
+											<div class="tb-precip-chance">
+												<div class="tb-head-icon">
+													<img src="img/precip_chance.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Precip chance</div>
+											</div>
+											<div class="tb-precip">
+												<div class="tb-head-icon">
+													<img src="img/precip.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Precip</div>
+											</div>
+											<div class="tb-wind">
+												<div class="tb-head-icon">
+													<img src="img/wind.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Wind</div>
+											</div>
+											<div class="tb-gust">
+												<div class="tb-head-icon">
+													<img src="img/gust.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Gust</div>
+											</div>
+											<div class="tb-cloud">
+												<div class="tb-head-icon">
+													<img src="img/cloud.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Cloud</div>
+											</div>
+											<div class="tb-visibility">
+												<div class="tb-head-icon">
+													<img src="img/visibility.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Visibility</div>
+											</div>
+											<div class="tb-pressure">
+												<div class="tb-head-icon">
+													<img src="img/pressure.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Pressure</div>
+											</div>
+										</div>
+										<div class="tb-contant">
+											<div class="tb-item">
+												<div class="tb-row" ng-repeat="item in dynamicTableData[[[selectedTab-1]]][0]">
+													<div class="tb-time">
+														<div class="tb-text">{{item.time}}</div>
+													</div>
+													<div class="tb-weather">
+														<img ng-src="svg/wicons_svg/{{item[1].weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="item[1].isDay== false ">
+														<img ng-src="svg/wicons_svg/{{item[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="item[1].isDay== true ">
+
+													</div>
+													<div class="tb-temperature">
+														<div class="tb-text">{{local.typeTemp=='C'?item.tempC:item.tempF}}°{{local.typeTemp}}</div>
+													</div>
+													<div class="tb-feels-like">
+														<div class="tb-text">{{local.typeTemp=='C'?item.feelsLikeC:item.feelsLikeF}}°{{local.typeTemp}}</div>
+													</div>
+													<div class="tb-precip-chance">
+														<div class="tb-text">{{item.precipChance}}%</div>
+													</div>
+													<div class="tb-precip">
+														<div class="tb-count">{{local.typeTemp=='C'?item.precipMM:item.precipInch}}</div>
+														<div class="tb-meter">{{local.typeTemp=='C'?'mm':'in'}}</div>
+													</div>
+													<div class="tb-wind">
+														<i class="sprite-wind-tb" style="-ms-transform: rotate({{item.windDegree + 'deg'}});    -webkit-transform: rotate({{item.windDegree + 'deg'}});    transform: rotate({{item.windDegree + 'deg'}});"></i>
+														<div class="tb-count">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+														<div class="tb-meter">{{item.winddir}}</div>
+													</div>
+													<div class="tb-gust">
+														<div class="tb-count">{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
+														<div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
+													</div>
+													<div class="tb-cloud">
+														<div class="tb-text">{{item.cloudCover}}%</div>
+													</div>
+													<div class="tb-humidity">
+														<div class="tb-text">{{item.humidity}}%</div>
+													</div>
+													<div class="tb-pressure">
+														<div class="tb-count">{{local.typeTemp=='C'?item.pressurehPa:item.pressureInch}}</div>
+														<div class="tb-meter">{{local.typeTemp=='C'?'hPa':'in'}}</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="tb-more-info more-col-4">
+									<div class="text">
+										<span>Swipe</span>
+										<span>FOR</span>
+										<span>MORE</span>
+										<span>INFO</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="h-tab-2" class="tab-hour-content active">
+							<div class="tb-wrapper">
+								<div class="wather-table-wrap">
+									<div class="weather-tb 3days-tb no-date">
+										<div class="tb-head">
+											<div class="tb-time">
+												<div class="tb-head-icon">
+													<img src="img/time.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Time</div>
+											</div>
+											<div class="tb-weather">
+												<div class="tb-head-icon">
+													<img src="img/weather.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Weather</div>
+											</div>
+											<div class="tb-temperature">
+												<div class="tb-head-icon">
+													<img src="img/temperature.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Temperature</div>
+											</div>
+											<div class="tb-feels-like">
+												<div class="tb-head-icon">
+													<img src="img/feels_like.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Feels like</div>
+											</div>
+											<div class="tb-precip-chance">
+												<div class="tb-head-icon">
+													<img src="img/precip_chance.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Precip chance</div>
+											</div>
+											<div class="tb-precip">
+												<div class="tb-head-icon">
+													<img src="img/precip.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Precip</div>
+											</div>
+											<div class="tb-wind">
+												<div class="tb-head-icon">
+													<img src="img/wind.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Wind</div>
+											</div>
+											<div class="tb-gust">
+												<div class="tb-head-icon">
+													<img src="img/gust.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Gust</div>
+											</div>
+											<div class="tb-cloud">
+												<div class="tb-head-icon">
+													<img src="img/cloud.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Cloud</div>
+											</div>
+											<div class="tb-visibility">
+												<div class="tb-head-icon">
+													<img src="img/visibility.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Visibility</div>
+											</div>
+											<div class="tb-pressure">
+												<div class="tb-head-icon">
+													<img src="img/pressure.svg" alt="" height="25">
+												</div>
+												<div class="tb-head-title">Pressure</div>
+											</div>
+										</div>
+										<div class="tb-contant">
+											<div class="tb-item">
+												<div class="tb-row" ng-repeat="item in dynamicTableData[[[selectedTab-1]]][0]">
+													<div class="tb-time">
+														<div class="tb-text">{{item.time}}</div>
+													</div>
+													<div class="tb-weather">
+														<img ng-src="svg/wicons_svg/{{item.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="item.isDay== false ">
+														<img ng-src="svg/wicons_svg/{{item.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="item.isDay==true">
+
+													</div>
+													<div class="tb-temperature">
+														<div class="tb-text">{{local.typeTemp=='C'?item.tempC:item.tempF}}°{{local.typeTemp}}</div>
+													</div>
+													<div class="tb-feels-like">
+														<div class="tb-text">{{local.typeTemp=='C'?item.feelsLikeC:item.feelsLikeF}}°{{local.typeTemp}}</div>
+													</div>
+													<div class="tb-precip-chance">
+														<div class="tb-text">{{item.precipChance}}%</div>
+													</div>
+													<div class="tb-precip">
+														<div class="tb-count">{{local.typeTemp=='C'?item.precipMM:item.precipInch}}</div>
+														<div class="tb-meter">{{local.typeTemp=='C'?'mm':'in'}}</div>
+													</div>
+													<div class="tb-wind">
+														<i class="sprite-wind-tb" style="-ms-transform: rotate({{item.windDegree + 'deg'}});    -webkit-transform: rotate({{item.windDegree + 'deg'}});    transform: rotate({{item.windDegree + 'deg'}});"></i>
+														<div class="tb-count">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+														<div class="tb-meter">{{item.winddir}}</div>
+													</div>
+													<div class="tb-gust">
+														<div class="tb-count">{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
+														<div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
+													</div>
+													<div class="tb-cloud">
+														<div class="tb-text">{{item.cloudCover}}%</div>
+													</div>
+													<div class="tb-humidity">
+														<div class="tb-text">{{item.humidity}}%</div>
+													</div>
+													<div class="tb-pressure">
+														<div class="tb-count">{{local.typeTemp=='C'?item.pressurehPa:item.pressureInch}}</div>
+														<div class="tb-meter">{{local.typeTemp=='C'?'hPa':'in'}}</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="tb-more-info more-col-4">
+									<div class="text">
+										<span>Swipe</span>
+										<span>FOR</span>
+										<span>MORE</span>
+										<span>INFO</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="links-after">
+						<a href="#" class="active">Outlook</a>
+						<a href="#">Hourly weather</a>
+						<a href="#">Weather map</a>
+					</div>
+
+				</section>
+			</div>
+
+				</section><!-- end weeekly-report -->
+			<aside class="sidebar">
+				<img src="https://placehold.it/300x600" alt="alt" class="mob-hide">
+				<img src="https://placehold.it/300x250" alt="alt" class="mob-hide top20px">
+			</aside>
+		</div><!-- end page-content -->
+		</div><!-- end wrapper -->
+	</div><!-- end container -->
+	
+	<section id="detailed-tabs-wrap">
+		<div class="container">
+			<h2>Detailed forecast</h2>
+		</div><!-- end container -->
+
+		<div class="tabs-tr f-tabs-tr">
+		  
+		    <nav role='navigation' class="transformer-tabs forecast-tabs">
+			    <ul>
+			        <li><a href="#f-tab-1" class="active">20 aug, sat</a></li>
+			        <li><a href="#f-tab-2">21 aug, sat</a></li>
+			        <li><a href="#f-tab-3">22 aug, sat</a></li>
+			        <li><a href="#f-tab-4">23 aug, sat</a></li>
+			       	<li><a href="#f-tab-5">24 aug, sat</a></li>
+			       	<li><a href="#f-tab-6">25 aug, sat</a></li>
+		       		<li><a href="#f-tab-7">26 aug, sat</a></li>
+			    </ul>
+		    </nav>
+		  
+		  	<div id="f-tab-1" class="active tab-forecast-content blue-bg">
+				<div class="b30px-blue"></div>
+				<div id="weatherDetailed"></div><br/>
+				<div id="weatherDetailedIcon"><div class="wrp-icon"></div></div>
+		  	</div>
+		  	<div id="f-tab-2" class="tab-forecast-content blue-bg">
+		  		2
+				<div id="weatherDetailed"></div><br/>
+				<div id="weatherDetailedIcon"><div class="wrp-icon"></div></div>
+		  	</div>
+		  	<div id="f-tab-3" class="tab-forecast-content blue-bg">
+				3
+		  	</div>
+		  	<div id="f-tab-4" class="tab-forecast-content blue-bg">
+				4
+		  	</div>
+		  	<div id="f-tab-5" class="tab-forecast-content blue-bg">
+				5
+		  	</div>
+		  	<div id="f-tab-6" class="tab-forecast-content blue-bg">
+				6
+		  	</div>
+		  	<div id="f-tab-7" class="tab-forecast-content blue-bg">
+				7
+		  	</div>
+		  
+		</div><!-- end tabs-tr -->
+
+	</section><!-- end detailed-tabs-wrap -->
+
+	<div class="container section-margin-top">
+		<div class="wrapper">
+			<div class="page-content">
+
+				<section id="glance">
+
+					<h2>Weekly weather summary at a glance</h2>
+					<div class="glance-row">
+						<div class="glance-left">Max. temperature</div>
+						<div class="glance-right">
+							<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.maxTempC:weekly_weather_summary.maxTempF}}°{{local.typeTemp}}</div>
+							<div class="glance-date">{{weekly_weather_summary.maxTempDay}}</div>
+						</div>
+					</div>
+					<div class="glance-row">
+						<div class="glance-left">Min. temperature</div>
+						<div class="glance-right">
+							<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.minTempC:weekly_weather_summary.minTempF}}°{{local.typeTemp}}</div>
+							<div class="glance-date">{{weekly_weather_summary.minTempDay}}</div>
+						</div>
+					</div>
+					<div class="glance-row">
+						<div class="glance-left">Average max. temperature</div>
+						<div class="glance-right">
+							<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.avgMaxTempC:weekly_weather_summary.avgMaxTempF}}°{{local.typeTemp}}</div>
+							<div class="glance-date">Next 7 days</div>
+						</div>
+					</div>
+					<div class="glance-row">
+						<div class="glance-left">Average min. temperature</div>
+						<div class="glance-right">
+							<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.avgMinTempC:weekly_weather_summary.avgMinTempF}}°{{local.typeTemp}}</div>
+							<div class="glance-date">Next 7 days</div>
+						</div>
+					</div>
+					<div class="glance-row">
+						<div class="glance-left">Total rainfall</div>
+						<div class="glance-right">
+
+							<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.totalRainfallMM.toFixed(1) : weekly_weather_summary.totalRainfallInch.toFixed(1);}}  {{local.typeTemp=='C'?'MM':'In'}}</div>
+
+							<div class="glance-date">Next 7 days</div>
+						</div>
+					</div>
+					<div class="glance-row">
+						<div class="glance-left">Windiest</div>
+						<div class="glance-right">
+							<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.windiestMS :weekly_weather_summary.windiestMiles}} {{local.typeTemp=='C'?'M/S':'Mph'}}</div>
+							<div class="glance-date">{{weekly_weather_summary.windiestDay}}</div>
+						</div>
+					</div>
+					<p>Please also visit Minsk <a href="#">Historical weather</a> page. Historical or past weather
+						forecast page provides historical weather forecast from 1st July, 2008 till now in 3 and 1
+						hourly interval.</p>
+
+				</section><!-- end glance -->
+			</div><!-- end page-content -->
+			<aside class="sidebar top35px">
+				<img src="https://placehold.it/300x600" alt="alt" class="mob-hide">
+				<a href="#" class="top20px g-play">
+					<img src="images/bg/play-bg.png" alt="img">
+					<span>Oplao on Google Play</span>
+				</a>
+			</aside>
+		</div><!-- end wrapper -->
+	</div><!-- end container -->
+
+	<script src="js/scripts.js"></script>

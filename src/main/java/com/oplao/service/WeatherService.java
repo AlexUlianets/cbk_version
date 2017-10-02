@@ -122,7 +122,7 @@ public class WeatherService {
 
 
 
-    public HashMap<Integer, HashMap<String,HashMap>> getWeeklyWeatherReport(JSONObject city){
+    public HashMap<Integer, HashMap<String,HashMap>> getWeeklyWeatherReport(JSONObject city, int numOfDays){
 
         String cityName = validateCityName((String)city.get("asciiName"));
 
@@ -131,7 +131,7 @@ public class WeatherService {
 
        HashMap<Integer, HashMap<String,HashMap>> result = new HashMap<>();
 
-        for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+7 ; day++, count++) {
+        for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+numOfDays ; day++, count++) {
             result.put(count, getOneDayReportMapping(dateTime.plusDays(
                     count),
                     cityName));
@@ -640,10 +640,14 @@ public class WeatherService {
         String cityName = validateCityName((String)city.get("asciiName"));
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
-
+        DateTime dt1 = null;
         List<HashMap> week = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            DateTime dt1 = dateTime.plusDays(i);
+            if(i > 0){
+                dt1 = dt1.plusDays(i - (i-1));
+            }else{
+                dt1 = dateTime;
+            }
             JSONObject jsonObject = null;
             try {
                 jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+ dt1.getYear() + "-" + dt1.getMonthOfYear() + "-" + dt1.getDayOfMonth()+ "&q=" + cityName);
@@ -782,13 +786,15 @@ public class WeatherService {
         List list = new ArrayList();
         for (int i = 0; i < numOfDays; i++) {
 
-            dateTime = dateTime.plusDays(i);
+            if(i > 0){
+                dateTime = dateTime.plusDays(i - (i-1));
+            }
             APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
-                    pastWeather, false, numOfHours);
+                    pastWeather, true, numOfHours);
 
-            HashMap weather = ((HashMap)((ArrayList)apiWeatherFinder.findWeatherByDate().get("weather")).get(0));
+            HashMap data = apiWeatherFinder.findWeatherByDate();
+            HashMap weather = ((HashMap)((ArrayList)data.get("weather")).get(0));
             ArrayList hourly = (ArrayList)weather.get("hourly");
-
             List results = new ArrayList();
 
             HashMap<String, Object> wholeDayMap = new HashMap<>();
@@ -804,6 +810,8 @@ public class WeatherService {
             wholeDayMap.put("mintempF", weather.get("mintempF"));
             wholeDayMap.put("sunrise", ((HashMap)((ArrayList)weather.get("astronomy")).get(0)).get("sunrise"));
             wholeDayMap.put("sunset", ((HashMap)((ArrayList)weather.get("astronomy")).get(0)).get("sunset"));
+            wholeDayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(hourly.size()==8?(((HashMap)hourly.get(5)).get("weatherCode")):(((HashMap)hourly.get(15)).get("weatherCode")))));
+            wholeDayMap.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
 
             List<HashMap> oneWholeDayData = new ArrayList<>();
 
@@ -841,5 +849,83 @@ public class WeatherService {
 
 
         return list;
+    }
+
+    private String dayTimes[] = {"Night", "Morning", "Midday", "Evening"};
+    private int dayTimesHours[]= {2, 8, 14, 20};
+
+    public List getTableDataForDays(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
+
+        String cityName = validateCityName((String)city.get("asciiName"));
+        DateTime dateTime = null;
+        if(date == null){
+            dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        }else{
+            dateTime = new DateTime(date);
+        }
+
+        List list = new ArrayList();
+        for (int i = 0; i < numOfDays; i++) {
+            if(i > 0){
+                dateTime = dateTime.plusDays(i - (i-1));
+            }
+
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
+                    pastWeather, true, numOfHours);
+
+            HashMap data = apiWeatherFinder.findWeatherByDate();
+            HashMap weather = ((HashMap)((ArrayList)data.get("weather")).get(0));
+            HashMap currentCondition = (HashMap) ((ArrayList)(data).get("current_condition")).get(0);
+            ArrayList hourly = (ArrayList)weather.get("hourly");
+
+            List results = new ArrayList();
+
+            HashMap<String, Object> wholeDayMap = new HashMap<>();
+
+            wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
+            wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()).substring(0,3));
+            wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek()));
+            wholeDayMap.put("maxtempC", weather.get("maxtempC"));
+            wholeDayMap.put("mintempC", weather.get("mintempC"));
+            wholeDayMap.put("maxtempF", weather.get("maxtempF"));
+            wholeDayMap.put("mintempF", weather.get("mintempF"));
+            wholeDayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(currentCondition.get("weatherCode"))));
+            wholeDayMap.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
+
+            List<HashMap> oneWholeDayData = new ArrayList<>();
+
+            for (int dayTime = 0; dayTime < dayTimes.length; dayTime++) {
+                HashMap<String, Object> dayMap = new HashMap<>();
+                HashMap elem = (HashMap)hourly.get(dayTimesHours[dayTime]);
+
+                dayMap.put("time", dayTimes[dayTime]);
+                dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
+                dayMap.put("tempC", elem.get("tempC"));
+                dayMap.put("tempF", elem.get("tempF"));
+                dayMap.put("feelsLikeC", elem.get("FeelsLikeC"));
+                dayMap.put("feelsLikeF", elem.get("FeelsLikeF"));
+                dayMap.put("precipChance", elem.get("chanceofrain"));
+                dayMap.put("precipMM", elem.get("precipMM"));
+                dayMap.put("precipInch", new BigDecimal(parseDouble(elem.get("precipMM")) * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+                dayMap.put("windMph", elem.get("windspeedMiles"));
+                dayMap.put("windMs", (int)Math.round(parseInt(elem.get("windspeedKmph"))*0.27777777777778));
+                dayMap.put("winddir", elem.get("winddir16Point"));
+                dayMap.put("windDegree", parseInt(elem.get("winddirDegree")) + 40);
+                dayMap.put("gustMph", elem.get("WindGustMiles"));
+                dayMap.put("gustMs", (int)Math.round(parseInt(elem.get("WindGustKmph"))*0.27777777777778));
+                dayMap.put("pressurehPa", elem.get("pressure"));
+                dayMap.put("pressureInch", new BigDecimal(parseInt(elem.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+                dayMap.put("isDay", dayTimesHours[dayTime] == 14 || dayTimesHours[dayTime] == 8);
+                oneWholeDayData.add(dayMap);
+            }
+            results.add(oneWholeDayData);
+            results.add(wholeDayMap);
+
+            list.add(results);
+        }
+
+
+        return list;
+
     }
 }
