@@ -14,7 +14,13 @@ public class Index {
                 "/today",
                 "/outlook",
                 "/tomorrow",
-                "/past-weather"
+                "/past-weather",
+                "/three-days",
+                "/five-days",
+                "/seven-days",
+                "/ten-days",
+                "/fourteen-days",
+                "/hour-by-hour"
         })
         public String index() {
             return "forward:/index.html";
