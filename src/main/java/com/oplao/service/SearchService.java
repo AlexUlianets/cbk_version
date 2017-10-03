@@ -277,12 +277,11 @@ public class SearchService {
             e.printStackTrace();
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
-        HashMap hourly = ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("hourly")).get(dateTime.getHourOfDay()));
-
+        HashMap currentCondition = ((HashMap)((ArrayList)map.get("current_condition")).get(0));
         HashMap<String, Object> result = new HashMap<>();
-        result.put("weatherCode",(WeatherService.EXT_STATES.get(Integer.parseInt((String)hourly.get("weatherCode")))));
-        result.put("tempC", hourly.get("tempC"));
-        result.put("tempF", hourly.get("tempF"));
+        result.put("weatherCode",(WeatherService.EXT_STATES.get(Integer.parseInt((String)currentCondition.get("weatherCode")))));
+        result.put("tempC", currentCondition.get("temp_C"));
+        result.put("tempF", currentCondition.get("temp_F"));
         result.put("city", cityName.replace("%20", " "));
         result.put("countryCode", city.getString("countryCode"));
         result.put("geonameId", city.getInt("geonameId"));
