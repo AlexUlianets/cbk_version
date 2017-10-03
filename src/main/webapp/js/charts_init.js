@@ -1,4 +1,4 @@
-function readyGet(response, responseYear, type) {
+function readyGet(response, responseYear, type, page) {
 
     $(document).ready(function () {
         Highcharts.createElement('link', {
@@ -127,9 +127,6 @@ function readyGet(response, responseYear, type) {
         e.Modernizr = Modernizr
     }(window, document);
 
-    var temp = response.data;
-    var tempYear = responseYear.data;
-
     var tempArray = []
     var tempMinDateYearArray = []
     var tempMaxDateYearArray = []
@@ -139,13 +136,34 @@ function readyGet(response, responseYear, type) {
 
     var val_zn=type==='C'? 'mm':'inch';
 
-    temp.forEach(function (temp) {
-        type==='C'? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
-        type==='C'?  precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
-        weatherIcons.push(temp.weatherIcon)
-    });
+    if(page==='outlook' || page==='today')   {
+        var temp = response.data;
+        var tempYear = responseYear.data;
 
-    console.log(tempArray);
+        temp.forEach(function (temp) {
+            type==='C'? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
+            type==='C'?  precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
+            weatherIcons.push(temp.weatherIcon)
+        });
+    } else if (page==='hour-by-hour'){
+        var temp = response;
+
+        console.log(temp)
+        weatherIcons=[];
+        tempArray=[];
+        precipArray=[];
+        temp.forEach(function (temp) {
+
+            type==='C'? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
+            type==='C'?  precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
+            temp.isDay===false ?
+            weatherIcons.push(temp.weatherCode+"_night") :
+            weatherIcons.push(temp.weatherCode+"_day")
+        });
+
+    }
+
+
     if(tempYear!=undefined) {
         tempYear.forEach(function (tempYear) {
             type === 'C' ? tempMinDateYearArray.push(parseFloat(tempYear.mintempC)) : tempMinDateYearArray.push(parseFloat(tempYear.mintempF))
@@ -237,6 +255,7 @@ function readyGet(response, responseYear, type) {
         }
         t++;
     }
+    $('#weatherDetailedIcon .wrp-icon').html(' ')
     for (var i = 0; i <= 23; i++) {
         $('#weatherDetailedIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + iconDetailed[i] + '.svg"></span>');
     }

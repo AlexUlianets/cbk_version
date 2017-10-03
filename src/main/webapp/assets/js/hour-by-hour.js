@@ -8,6 +8,7 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
     $scope.$state = $state;
     $scope.$stateParams = $stateParams;
     $scope.selectedTab = 1;
+    $scope.selectedTabGraph = 1;
     $scope.tabClass = $scope.$state.params.tabClass;
     $scope.hrs = 3;
 
@@ -46,7 +47,28 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
 
         $http(sendingTableRequest).success(function (data) {
             $scope.dynamicTableData = data;
-            console.log($scope.dynamicTableData);
+        })
+    }
+
+    $scope.getDataForGraph = function () {
+
+        var sendingGraphRequest = {
+            method: 'GET',
+            url: '/get_dynamic_table_data',
+            params: {
+                numOfHours:1,
+                numOfDays:$scope.$state.params.index,
+                pastWeather:false
+            },
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }
+
+        $http(sendingGraphRequest).success(function (data) {
+            $scope.dynamicGraphData = data;
+            var response=data[[[$scope.selectedTabGraph-1]]][0];
+            readyGet(response, [], $scope.local.typeTemp, 'hour-by-hour')
         })
     }
 
@@ -57,27 +79,12 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
         $scope.getData();
     }
 
-    $scope.sendRequest = function (numOfHrs, days, pastWeath, date) {
-        var sendingTableRequest = {
-            method: 'GET',
-            url: '/get_dynamic_table_data',
-            params: {
-                numOfHours:numOfHrs,
-                numOfDays:days,
-                pastWeather:pastWeath,
-                date:date},
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        }
-        $scope.date = date;
-        $scope.hrs = numOfHrs;
-
-        $http(sendingTableRequest).success(function (data) {
-            $scope.dynamicTableData = data;
-        })
-
-    };
+    $scope.selectTabGraph = function (index) {
+        // console.log(index);
+        // activateTab(index);
+        $scope.selectedTabGraph = index;
+        $scope.getDataForGraph();
+    }
 
     $http.post('/get_weekly_weather_summary').then(function (response) {
         $scope.$parent.weekly_weather_summary = response.data;

@@ -10,7 +10,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           $scope.$parent.detailedTemp = response;
           $http.post('/get_year_summary').then(function (responseYear) {
               $scope.$parent.get_year_summary = responseYear;
-              readyGet(response, responseYear, $scope.local.typeTemp)
+              readyGet(response, responseYear, $scope.local.typeTemp, 'outlook')
           });
       });
 
