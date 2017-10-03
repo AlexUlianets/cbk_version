@@ -136,7 +136,7 @@ function readyGet(response, responseYear, type, page) {
 
     var val_zn = type === 'C' ? 'mm' : 'inch';
 
-    if (page === 'outlook' || page === 'today' || page === 'ten-days') {
+    if (page === 'outlook' || page === 'today' || page === 'ten-days' || page === 'seven-days') {
         var dateStart = response.data[0].date
 
         var temp = response.data;
@@ -169,24 +169,6 @@ function readyGet(response, responseYear, type, page) {
 
     } else if (page === 'five-days') {
         var temp = response;
-
-    } else if (page === 'seven-days') {
-        var temp = response;
-
-
-        // weatherIcons=[];
-        // tempArray=[];
-        // precipArray=[];
-        // temp.forEach(function (temp) {
-        //
-        //     console.log(temp)
-        //     type==='C'? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
-        //     type==='C'?  precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
-        //     temp.isDay===false ?
-        //         weatherIcons.push(temp.weatherCode+"_night") :
-        //         weatherIcons.push(temp.weatherCode+"_day")
-        // });
-
     }
 
 
@@ -205,8 +187,8 @@ function readyGet(response, responseYear, type, page) {
         precipDateTen = precipArray,
         tempDateFourteen = tempArray,
         precipDateFourteen = precipArray,
-        tempDateSeven = tempArray,
-        precipDateSeven = precipArray,
+        tempDateSeven = tempArray.slice(0, 7),
+        precipDateSeven = precipArray.slice(0, 7),
         tempDetailed = tempArray,
         precipDetailed = precipArray,
         categoriesYear = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
