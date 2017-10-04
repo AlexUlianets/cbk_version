@@ -50,7 +50,6 @@ $(function () {
             //e.stopPropagation();
 
             if (!$(e.target).is(".calendar-activator") && !$(e.target).parents(".ui-datepicker").length && !$(e.target).is(".calendar-activator .img ") && !$(e.target).is(".calendar-activator span#pickADate") ) {
-                console.log(1)
                 $('#dp-calendar').removeClass('visible-calendar');
             }
         });
