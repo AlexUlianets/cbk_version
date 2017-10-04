@@ -1,0 +1,104 @@
+<header>
+    <div class="blur">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-banner"></div>
+            </div>
+        </div><!-- end header-top -->
+    </div>
+    <div class="header-bot" id="fix-menu">
+        <div class="container">
+            <a href="front-page.html" class="h-logo"><img src="images/icons/logo.png" alt="img"></a>
+
+            <div class="header-bot-right" >
+
+                <a id="nav-toggle" href="#"><span></span><em></em></a>
+
+                <div class="temp-wrap">
+                    <div ng-if="local.typeTemp !== 'F'" class="temp-block tmp-cel"  ng-click="local.typeTemp = 'F'; updateTemp(local.typeTemp);">°F</div>
+                    <div ng-if="local.typeTemp !== 'C'" class="temp-block tmp-cel"  ng-click="local.typeTemp = 'C'; updateTemp(local.typeTemp);">°C</div>
+
+                    <div ng-if="local.typeTemp == 'F'" class="temp-block tmp-far active active-mob">°F</div>
+                    <div ng-if="local.typeTemp == 'C'" class="temp-block tmp-far active active-mob">°C</div>
+                </div><!-- end temp-wrap -->
+
+                <div id="h-share">
+                    <a href="#">
+                        <span class="helper"></span>
+                        <i class="icon share"></i>
+                    </a>
+                    <ul>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon vk"></i>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon facebook"></i>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon twitter"></i>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon google"></i>
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="h-settings">
+                    <a href="#settings-popup" data-effect="mfp-zoom-in" class="s-popup"><span class="helper"></span><i
+                            class="icon settings"></i></a>
+                </div>
+
+                <nav id="h-menu">
+                    <ul>
+                        <li><a href="#">Weather</a></li>
+                        <li><a href="#">Temperature map</a></li>
+                        <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup">Alerts <span></span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div><!-- end container -->
+
+        <div id="main-menu">
+            <div class="container">
+                <div class="main-menu-inner">
+                    <nav class="main-menu-block">
+                        <h3>Weather</h3>
+                        <ul>
+                            <li><a href="three-days.html">3 days weather forecast</a></li>
+                            <li><a href="five-days.html">5 days weather forecast</a></li>
+                            <li><a href="seven-days.html">7 days weather forecast</a></li>
+                            <li><a href="fourteen-days.html">14 days weather forecast</a></li>
+                            <li><a href="#">Hourly weather</a></li>
+                            <li><a href="#">Weather map</a></li>
+                            <li><a href="#">Weather history</a></li>
+                        </ul>
+                    </nav>
+
+                    <nav class="main-menu-block">
+                        <h3>Applications</h3>
+                        <ul>
+                            <li><a href="#">Android apps</a></li>
+                            <li><a href="#">Google play</a></li>
+                            <li><a href="#">Google Chrome weather extension</a></li>
+                            <li><a href="#">Firefox weather extension</a></li>
+                            <li><a href="#">Opera weather extension</a></li>
+                        </ul>
+                    </nav>
+
+                    <nav class="main-menu-block">
+                        <h3>Information</h3>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div><!-- end main-menu -->
+    </div><!-- end header-bot -->
+</header>
