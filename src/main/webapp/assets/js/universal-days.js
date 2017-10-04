@@ -22,9 +22,12 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
                 'Content-Type': 'application/json; charset=utf-8'
             }
         }
-
         $http(sendingTableRequest).success(function (data) {
             $scope.dynamicTableData = data;
+            if($scope.$state.params.page === 'three-days') {
+                console.log($scope.dynamicTableData);
+                readyGet($scope.dynamicTableData, [], $scope.local.typeTemp, $scope.$state.params.page)
+            }
         })
     }
 
@@ -32,10 +35,7 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
         $http.post('/get_detailed_forecast').then(function (response) {
             readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page)
         });
-    } else {
-        readyGet($scope.dynamicTableData, [], $scope.local.typeTemp, $scope.$state.params.page)
     }
-
     $scope.selectTab = function (index) {
         activateTab(index);
         $scope.selectedTab = index;

@@ -31,7 +31,7 @@ public class DateConstants {
                 return timeStr.substring(0,2) + " PM";
             }
             else if(timeStr.length()==1){
-                return "12 AM";
+                return "12 PM";
             }
         }else {
             String timeStr = "" + time;
@@ -41,7 +41,7 @@ public class DateConstants {
             }else if(timeStr.length()==4){
                 return timeStr.substring(0,2) + " AM";
             }else if(timeStr.length()==1){
-                return "12 PM";
+                return "12 AM";
             }
         }
         return null;
