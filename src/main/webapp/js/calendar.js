@@ -49,7 +49,7 @@ $(function () {
         $('html,body').click(function (e) {
             //e.stopPropagation();
 
-            if (!$(e.target).is(".calendar-activator") && !$(e.target).parents(".ui-datepicker").length) {
+            if (!$(e.target).is(".calendar-activator") && !$(e.target).parents(".ui-datepicker").length && !$(e.target).is(".calendar-activator .img ") && !$(e.target).is(".calendar-activator span#pickADate") ) {
                 $('#dp-calendar').removeClass('visible-calendar');
             }
         });
