@@ -47,7 +47,7 @@
 						</div>
 					</div>
 					<div class="tmr-main-info">
-						<div class="tomorrow-date">
+						<div ng-show="dynamicTableData[0][1].dayOfMonth" class="tomorrow-date">
 							{{dynamicTableData[0][1].dayOfMonth}} {{dynamicTableData[0][1].monthOfYear}}, {{dynamicTableData[0][1].year}}, {{dynamicTableData[0][1].dayOfWeek}} (TODAY)
 						</div>
 						<div class="tb-wrapper">
