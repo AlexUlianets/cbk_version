@@ -134,37 +134,45 @@ function readyGet(response, responseYear, type, page) {
     var precipDateYearArray = []
     var weatherIcons = []
 
-    var val_zn=type==='C'? 'mm':'inch';
+    var val_zn = type === 'C' ? 'mm' : 'inch';
 
-    if(page==='outlook' || page==='today')   {
+    if (page === 'outlook' || page === 'today' || page === 'ten-days' || page === 'seven-days') {
+        var dateStart = response.data[0].date
+
         var temp = response.data;
         var tempYear = responseYear.data;
 
         temp.forEach(function (temp) {
-            type==='C'? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
-            type==='C'?  precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
+            type === 'C' ? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
+            type === 'C' ? precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
             weatherIcons.push(temp.weatherIcon)
         });
-    } else if (page==='hour-by-hour'){
+    } else if (page === 'hour-by-hour') {
         var temp = response;
 
-        console.log(temp)
-        weatherIcons=[];
-        tempArray=[];
-        precipArray=[];
+        weatherIcons = [];
+        tempArray = [];
+        precipArray = [];
         temp.forEach(function (temp) {
 
-            type==='C'? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
-            type==='C'?  precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
-            temp.isDay===false ?
-            weatherIcons.push(temp.weatherCode+"_night") :
-            weatherIcons.push(temp.weatherCode+"_day")
+            type === 'C' ? tempArray.push(parseInt(temp.tempC)) : tempArray.push(parseInt(temp.tempF))
+            type === 'C' ? precipArray.push(parseFloat(temp.precipMM)) : precipArray.push(parseFloat(temp.precipInch))
+            temp.isDay === false ?
+                weatherIcons.push(temp.weatherCode + "_night") :
+                weatherIcons.push(temp.weatherCode + "_day")
         });
 
+    } else if (page === 'three-days') {
+        var temp = response;
+        var dateStart = temp
+
+
+    } else if (page === 'five-days') {
+        var temp = response;
     }
 
 
-    if(tempYear!=undefined) {
+    if (tempYear != undefined) {
         tempYear.forEach(function (tempYear) {
             type === 'C' ? tempMinDateYearArray.push(parseFloat(tempYear.mintempC)) : tempMinDateYearArray.push(parseFloat(tempYear.mintempF))
             type === 'C' ? tempMaxDateYearArray.push(parseFloat(tempYear.maxtempC)) : tempMaxDateYearArray.push(parseFloat(tempYear.maxtempF))
@@ -172,15 +180,15 @@ function readyGet(response, responseYear, type, page) {
 
         });
     }
-    var weatherJson = '{"t":13.773332595825195,"f":[{"mat":15,"uv":2,"d":"' + temp[0].date + '","h":[{"cc":100,"cop":99,"f":false,"wse":"LightRain","h":94,"hr":0,"wd":222,"flt":7,"p":1014,"wg":21,"t":9,"wsp":14,"v":7},{"cc":100,"cop":64,"f":false,"wse":"Overcast","h":95,"hr":6,"wd":272,"flt":8,"p":1012,"wg":28,"t":10,"wsp":15,"v":10},{"cc":93,"cop":69,"f":false,"wse":"ModeratePatchyRain","h":84,"hr":12,"wd":290,"flt":13,"p":1013,"wg":19,"t":14,"wsp":17,"v":10},{"cc":74,"cop":3,"f":false,"wse":"Fog","h":91,"hr":18,"wd":246,"flt":13,"p":1014,"wg":15,"t":14,"wsp":12,"v":7}],"mit":12,"dm":{"cc":92,"p":1013,"wg":18,"t":15,"wsp":18,"cop":100,"f":false,"v":10,"wse":"ModeratePatchyRain","h":79,"wd":287,"flt":15}},{"mat":20,"uv":2,"d":"2016-09-30","h":[{"cc":91,"cop":77,"f":false,"wse":"LightPatchyRain","h":93,"hr":0,"wd":213,"flt":10,"p":1012,"wg":28,"t":12,"wsp":16,"v":8},{"cc":64,"cop":0,"f":false,"wse":"Cloudy","h":95,"hr":6,"wd":229,"flt":12,"p":1010,"wg":27,"t":13,"wsp":18,"v":10},{"cc":68,"cop":1,"f":false,"wse":"Overcast","h":72,"hr":12,"wd":244,"flt":19,"p":1010,"wg":22,"t":19,"wsp":19,"v":10},{"cc":91,"cop":77,"f":false,"wse":"LightRain","h":89,"hr":18,"wd":265,"flt":17,"p":1012,"wg":17,"t":17,"wsp":13,"v":10}],"mit":12,"dm":{"cc":100,"p":1011,"wg":23,"t":20,"wsp":20,"cop":95,"f":false,"v":10,"wse":"Overcast","h":69,"wd":249,"flt":20}},{"mat":19,"uv":3,"d":"2016-10-01","h":[{"cc":100,"cop":0,"f":false,"wse":"Fog","h":98,"hr":0,"wd":228,"flt":11,"p":1013,"wg":17,"t":12,"wsp":8,"v":0},{"cc":73,"cop":89,"f":false,"wse":"ModeratePatchyRain","h":97,"hr":6,"wd":252,"flt":12,"p":1012,"wg":12,"t":13,"wsp":7,"v":9},{"cc":17,"cop":0,"f":false,"wse":"Mist","h":96,"hr":12,"wd":124,"flt":1,"p":1030,"wg":17,"t":3,"wsp":9,"v":2},{"cc":100,"cop":0,"f":false,"wse":"Fog","h":97,"hr":18,"wd":144,"flt":2,"p":1021,"wg":20,"t":5,"wsp":12,"v":0}],"mit":7,"dm":{"cc":23,"p":1015,"wg":10,"t":19,"wsp":9,"cop":98,"f":false,"v":10,"wse":"Clear","h":63,"wd":273,"flt":19}},{"mat":21,"uv":2,"d":"2016-10-02","h":[{"cc":50,"cop":0,"f":false,"wse":"Overcast","h":87,"hr":0,"wd":123,"flt":8,"p":1016,"wg":18,"t":8,"wsp":8,"v":10},{"cc":54,"cop":74,"f":false,"wse":"LightRain","h":95,"hr":6,"wd":135,"flt":10,"p":1015,"wg":19,"t":11,"wsp":11,"v":9},{"cc":11,"cop":2,"f":false,"wse":"Clear","h":74,"hr":12,"wd":173,"flt":19,"p":1014,"wg":16,"t":19,"wsp":14,"v":10},{"cc":26,"cop":6,"f":false,"wse":"PartlyCloudy","h":75,"hr":18,"wd":170,"flt":17,"p":1014,"wg":16,"t":17,"wsp":9,"v":10}],"mit":11,"dm":{"cc":9,"p":1014,"wg":16,"t":21,"wsp":14,"cop":76,"f":false,"v":10,"wse":"Clear","h":62,"wd":194,"flt":21}},{"mat":16,"uv":1,"d":"2016-10-03","h":[{"cc":37,"cop":1,"f":false,"wse":"PartlyCloudy","h":86,"hr":0,"wd":213,"flt":12,"p":1015,"wg":12,"t":12,"wsp":6,"v":10},{"cc":60,"cop":52,"f":false,"wse":"LightRain","h":92,"hr":6,"wd":330,"flt":11,"p":1015,"wg":13,"t":11,"wsp":6,"v":10},{"cc":83,"cop":58,"f":false,"wse":"ModeratePatchyRain","h":83,"hr":12,"wd":344,"flt":16,"p":1016,"wg":13,"t":16,"wsp":11,"v":5},{"cc":100,"cop":74,"f":false,"wse":"ModerateRain","h":92,"hr":18,"wd":338,"flt":13,"p":1016,"wg":10,"t":13,"wsp":7,"v":4}],"mit":10,"dm":{"cc":66,"p":1016,"wg":14,"t":16,"wsp":14,"cop":96,"f":false,"v":10,"wse":"ModeratePatchyRain","h":76,"wd":356,"flt":16}},{"mat":13,"uv":-999,"d":"2016-10-04","h":[{"cc":100,"cop":69,"f":false,"wse":"LightRain","h":96,"hr":0,"wd":328,"flt":9,"p":1016,"wg":21,"t":11,"wsp":14,"v":8},{"cc":100,"cop":17,"f":false,"wse":"ModeratePatchyRain","h":95,"hr":6,"wd":332,"flt":8,"p":1016,"wg":23,"t":10,"wsp":15,"v":10},{"cc":100,"cop":100,"f":false,"wse":"LightPatchyRain","h":91,"hr":12,"wd":331,"flt":10,"p":1017,"wg":21,"t":10,"wsp":18,"v":7},{"cc":100,"cop":70,"f":false,"wse":"LightPatchyRain","h":97,"hr":18,"wd":226,"flt":11,"p":1017,"wg":13,"t":12,"wsp":11,"v":8}],"mit":5,"dm":{"cc":100,"p":1016,"wg":20,"t":13,"wsp":18,"cop":100,"f":false,"v":2,"wse":"LightPatchyRain","h":91,"wd":334,"flt":11}},{"mat":8,"uv":-999,"d":"2016-10-05","h":[{"cc":90,"cop":69,"f":false,"wse":"LightPatchyRain","h":98,"hr":0,"wd":67,"flt":5,"p":1018,"wg":18,"t":7,"wsp":15,"v":7},{"cc":100,"cop":100,"f":false,"wse":"LightPatchyRain","h":96,"hr":6,"wd":61,"flt":3,"p":1021,"wg":20,"t":5,"wsp":17,"v":10},{"cc":99,"cop":18,"f":false,"wse":"ModeratePatchyRain","h":89,"hr":12,"wd":49,"flt":6,"p":1023,"wg":19,"t":8,"wsp":16,"v":10},{"cc":100,"cop":33,"f":false,"wse":"LightRain","h":91,"hr":18,"wd":40,"flt":8,"p":1025,"wg":20,"t":8,"wsp":18,"v":7}],"mit":4,"dm":{"cc":97,"p":1024,"wg":20,"t":8,"wsp":19,"cop":100,"f":false,"v":10,"wse":"ModeratePatchyRain","h":86,"wd":46,"flt":9}}],"y":"-1.1,-6.1,40.7;-0.4,-6.5,42.9;4.6,-3.5,46.3;12.5,2.2,50.3;18.3,6.8,63.3;21.9,10.8,62.1;24.0,13.2,81.5;23.1,12.1,69.1;16.9,7.4,48.9;10.2,3.1,47.2;2.8,-2.0,44.9;-1.1,-5.8,42.7","cn":{"cc":0,"p":1012,"wg":19,"t":17,"wsp":19,"cop":0,"f":false,"v":10,"wse":"PartlyCloudy","h":63,"wd":300,"flt":17}}',
+    var weatherJson = '{"t":13.773332595825195,"f":[{"mat":15,"uv":2,"d":"' + dateStart + '","h":[{"cc":100,"cop":99,"f":false,"wse":"LightRain","h":94,"hr":0,"wd":222,"flt":7,"p":1014,"wg":21,"t":9,"wsp":14,"v":7},{"cc":100,"cop":64,"f":false,"wse":"Overcast","h":95,"hr":6,"wd":272,"flt":8,"p":1012,"wg":28,"t":10,"wsp":15,"v":10},{"cc":93,"cop":69,"f":false,"wse":"ModeratePatchyRain","h":84,"hr":12,"wd":290,"flt":13,"p":1013,"wg":19,"t":14,"wsp":17,"v":10},{"cc":74,"cop":3,"f":false,"wse":"Fog","h":91,"hr":18,"wd":246,"flt":13,"p":1014,"wg":15,"t":14,"wsp":12,"v":7}],"mit":12,"dm":{"cc":92,"p":1013,"wg":18,"t":15,"wsp":18,"cop":100,"f":false,"v":10,"wse":"ModeratePatchyRain","h":79,"wd":287,"flt":15}},{"mat":20,"uv":2,"d":"2016-09-30","h":[{"cc":91,"cop":77,"f":false,"wse":"LightPatchyRain","h":93,"hr":0,"wd":213,"flt":10,"p":1012,"wg":28,"t":12,"wsp":16,"v":8},{"cc":64,"cop":0,"f":false,"wse":"Cloudy","h":95,"hr":6,"wd":229,"flt":12,"p":1010,"wg":27,"t":13,"wsp":18,"v":10},{"cc":68,"cop":1,"f":false,"wse":"Overcast","h":72,"hr":12,"wd":244,"flt":19,"p":1010,"wg":22,"t":19,"wsp":19,"v":10},{"cc":91,"cop":77,"f":false,"wse":"LightRain","h":89,"hr":18,"wd":265,"flt":17,"p":1012,"wg":17,"t":17,"wsp":13,"v":10}],"mit":12,"dm":{"cc":100,"p":1011,"wg":23,"t":20,"wsp":20,"cop":95,"f":false,"v":10,"wse":"Overcast","h":69,"wd":249,"flt":20}},{"mat":19,"uv":3,"d":"2016-10-01","h":[{"cc":100,"cop":0,"f":false,"wse":"Fog","h":98,"hr":0,"wd":228,"flt":11,"p":1013,"wg":17,"t":12,"wsp":8,"v":0},{"cc":73,"cop":89,"f":false,"wse":"ModeratePatchyRain","h":97,"hr":6,"wd":252,"flt":12,"p":1012,"wg":12,"t":13,"wsp":7,"v":9},{"cc":17,"cop":0,"f":false,"wse":"Mist","h":96,"hr":12,"wd":124,"flt":1,"p":1030,"wg":17,"t":3,"wsp":9,"v":2},{"cc":100,"cop":0,"f":false,"wse":"Fog","h":97,"hr":18,"wd":144,"flt":2,"p":1021,"wg":20,"t":5,"wsp":12,"v":0}],"mit":7,"dm":{"cc":23,"p":1015,"wg":10,"t":19,"wsp":9,"cop":98,"f":false,"v":10,"wse":"Clear","h":63,"wd":273,"flt":19}},{"mat":21,"uv":2,"d":"2016-10-02","h":[{"cc":50,"cop":0,"f":false,"wse":"Overcast","h":87,"hr":0,"wd":123,"flt":8,"p":1016,"wg":18,"t":8,"wsp":8,"v":10},{"cc":54,"cop":74,"f":false,"wse":"LightRain","h":95,"hr":6,"wd":135,"flt":10,"p":1015,"wg":19,"t":11,"wsp":11,"v":9},{"cc":11,"cop":2,"f":false,"wse":"Clear","h":74,"hr":12,"wd":173,"flt":19,"p":1014,"wg":16,"t":19,"wsp":14,"v":10},{"cc":26,"cop":6,"f":false,"wse":"PartlyCloudy","h":75,"hr":18,"wd":170,"flt":17,"p":1014,"wg":16,"t":17,"wsp":9,"v":10}],"mit":11,"dm":{"cc":9,"p":1014,"wg":16,"t":21,"wsp":14,"cop":76,"f":false,"v":10,"wse":"Clear","h":62,"wd":194,"flt":21}},{"mat":16,"uv":1,"d":"2016-10-03","h":[{"cc":37,"cop":1,"f":false,"wse":"PartlyCloudy","h":86,"hr":0,"wd":213,"flt":12,"p":1015,"wg":12,"t":12,"wsp":6,"v":10},{"cc":60,"cop":52,"f":false,"wse":"LightRain","h":92,"hr":6,"wd":330,"flt":11,"p":1015,"wg":13,"t":11,"wsp":6,"v":10},{"cc":83,"cop":58,"f":false,"wse":"ModeratePatchyRain","h":83,"hr":12,"wd":344,"flt":16,"p":1016,"wg":13,"t":16,"wsp":11,"v":5},{"cc":100,"cop":74,"f":false,"wse":"ModerateRain","h":92,"hr":18,"wd":338,"flt":13,"p":1016,"wg":10,"t":13,"wsp":7,"v":4}],"mit":10,"dm":{"cc":66,"p":1016,"wg":14,"t":16,"wsp":14,"cop":96,"f":false,"v":10,"wse":"ModeratePatchyRain","h":76,"wd":356,"flt":16}},{"mat":13,"uv":-999,"d":"2016-10-04","h":[{"cc":100,"cop":69,"f":false,"wse":"LightRain","h":96,"hr":0,"wd":328,"flt":9,"p":1016,"wg":21,"t":11,"wsp":14,"v":8},{"cc":100,"cop":17,"f":false,"wse":"ModeratePatchyRain","h":95,"hr":6,"wd":332,"flt":8,"p":1016,"wg":23,"t":10,"wsp":15,"v":10},{"cc":100,"cop":100,"f":false,"wse":"LightPatchyRain","h":91,"hr":12,"wd":331,"flt":10,"p":1017,"wg":21,"t":10,"wsp":18,"v":7},{"cc":100,"cop":70,"f":false,"wse":"LightPatchyRain","h":97,"hr":18,"wd":226,"flt":11,"p":1017,"wg":13,"t":12,"wsp":11,"v":8}],"mit":5,"dm":{"cc":100,"p":1016,"wg":20,"t":13,"wsp":18,"cop":100,"f":false,"v":2,"wse":"LightPatchyRain","h":91,"wd":334,"flt":11}},{"mat":8,"uv":-999,"d":"2016-10-05","h":[{"cc":90,"cop":69,"f":false,"wse":"LightPatchyRain","h":98,"hr":0,"wd":67,"flt":5,"p":1018,"wg":18,"t":7,"wsp":15,"v":7},{"cc":100,"cop":100,"f":false,"wse":"LightPatchyRain","h":96,"hr":6,"wd":61,"flt":3,"p":1021,"wg":20,"t":5,"wsp":17,"v":10},{"cc":99,"cop":18,"f":false,"wse":"ModeratePatchyRain","h":89,"hr":12,"wd":49,"flt":6,"p":1023,"wg":19,"t":8,"wsp":16,"v":10},{"cc":100,"cop":33,"f":false,"wse":"LightRain","h":91,"hr":18,"wd":40,"flt":8,"p":1025,"wg":20,"t":8,"wsp":18,"v":7}],"mit":4,"dm":{"cc":97,"p":1024,"wg":20,"t":8,"wsp":19,"cop":100,"f":false,"v":10,"wse":"ModeratePatchyRain","h":86,"wd":46,"flt":9}}],"y":"-1.1,-6.1,40.7;-0.4,-6.5,42.9;4.6,-3.5,46.3;12.5,2.2,50.3;18.3,6.8,63.3;21.9,10.8,62.1;24.0,13.2,81.5;23.1,12.1,69.1;16.9,7.4,48.9;10.2,3.1,47.2;2.8,-2.0,44.9;-1.1,-5.8,42.7","cn":{"cc":0,"p":1012,"wg":19,"t":17,"wsp":19,"cop":0,"f":false,"v":10,"wse":"PartlyCloudy","h":63,"wd":300,"flt":17}}',
         categoriesDate = ['NIGHT', 'MORN.', 'DAY', 'EVEN.', ' ', 'NIGHT', 'MORN.', 'DAY', 'EVEN.', ' ', 'NIGHT', 'MORN.', 'DAY', 'EVEN.', ' ', 'NIGHT', 'MORN.', 'DAY', 'EVEN.', ' ', 'NIGHT', 'MORN.', 'DAY', 'EVEN.', ' ', 'NIGHT', 'MORN.', 'DAY', 'EVEN.', ' ', 'NIGHT', 'MORN.', 'DAY', 'EVEN.'],
         iconDetailed = weatherIcons,
         tempDateTen = tempArray,
         precipDateTen = precipArray,
-        tempDateFourteen = [11, 12, 7, -4, 12, 12, 4, 6, 8, 8, 4, 12, 1, 10],
-        precipDateFourteen = [2, 11, 0, 0, 11, 36, 0, 0, 40, 54, 4, 12, 1, 10],
-        tempDateSeven = [-1, 12, 7, -4, 12, 12, 4],
-        precipDateSeven = [2, 11, 0, 0, 11, 36, 0],
+        tempDateFourteen = tempArray,
+        precipDateFourteen = precipArray,
+        tempDateSeven = tempArray.slice(0, 7),
+        precipDateSeven = precipArray.slice(0, 7),
         tempDetailed = tempArray,
         precipDetailed = precipArray,
         categoriesYear = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
@@ -219,41 +227,51 @@ function readyGet(response, responseYear, type, page) {
         categoriesDateSeven[i] = str.toUpperCase();
     }
     var t = 0;
-    for (var i = 0; i <= 4; i++) {
-        for (var j = 0; j <= 3; j++) {
-            if (colDate[i]['h'][j]) {
-                tempDateFive[t] = colDate[i]['h'][j]['flt'];
-                precipDateFive[t] = colDate[i]['h'][j]['cop'];
-                $('#weatherFiveIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + colDate[i]['h'][j]['wse'] + '.svg"></span>');
+    if (page === 'five-days') {
+        for (var i = 0; i <= 4; i++) {
+            for (var j = 0; j <= 3; j++) {
+
+                tempDateFive[t] = type === 'C' ? parseInt(temp[i][0][j]['tempC']) : parseInt(temp[i][0][j]['tempF']);
+                precipDateFive[t] = type === 'C' ? parseFloat(temp[i][0][j]['precipMM']) : parseInt(temp[i][0][j]['precipInch']);
+                var icon = j === 0 || j === 3 ? 'night' : 'day';
+                $('#weatherFiveIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + temp[i][0][j]['weatherCode'] + '_' + icon + '.svg"></span>');
+                deyDate[t] = ' ';
+                t++
+            }
+
+            str = temp[i][1]['dayOfMonth'] + " " + temp[i][1]['monthOfYear'] + ', ' + temp[i][1]['dayOfWeek'];
+            deyDate[t - 2] = str.toUpperCase();
+            if (i <= 3) {
+                tempDateFive[t] = null;
+                precipDateFive[t] = null;
+                $('#weatherFiveIcon .wrp-icon').append('<span class="icon"> </span>');
                 deyDate[t] = ' ';
             }
-            ;
-            if (i <= 2) {
-                tempDateThree[t] = colDate[i]['h'][j]['flt'];
-                precipDateThree[t] = colDate[i]['h'][j]['cop'];
-                $('#weatherThreeIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + colDate[i]['h'][j]['wse'] + '.svg"></span>');
-            }
-            ;
             t++;
         }
-        deyDateFirst = Date.parse(colDate[i]['d']);
-        theTitleDay = new Date(deyDateFirst).toDateString();
-        theTitleDay = theTitleDay.substr(0, theTitleDay.length - 4);
-        str = theTitleDay.slice(8) + theTitleDay.slice(4, 7) + ', ' + theTitleDay.slice(0, 3);
-        deyDate[t - 2] = str.toUpperCase();
-        if (i <= 1) {
-            tempDateThree[t] = null;
-            precipDateThree[t] = null;
-            $('#weatherThreeIcon .wrp-icon').append('<span class="icon"> </span>');
+    }
+    if (page === 'three-days') {
+        for (var i = 0; i <= 2; i++) {
+            for (var j = 0; j <= 3; j++) {
+
+                tempDateThree[t] = type === 'C' ? parseInt(temp[i][0][j]['tempC']) : parseInt(temp[i][0][j]['tempF']);
+                precipDateThree[t] = type === 'C' ? parseFloat(temp[i][0][j]['precipMM']) : parseInt(temp[i][0][j]['precipInch']);
+                var icon = j === 0 || j === 3 ? 'night' : 'day';
+                $('#weatherThreeIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + temp[i][0][j]['weatherCode'] + '_' + icon + '.svg"></span>');
+                deyDate[t] = ' ';
+
+                t++
+            }
+            str = temp[i][1]['dayOfMonth'] + " " + temp[i][1]['monthOfYear'] + ', ' + temp[i][1]['dayOfWeek'];
+            deyDate[t - 2] = str.toUpperCase();
+            if (i <= 1 && page === 'three-days') {
+                tempDateThree[t] = null;
+                precipDateThree[t] = null;
+                $('#weatherThreeIcon .wrp-icon').append('<span class="icon"> </span>');
+                deyDate[t] = ' ';
+            }
+            t++;
         }
-        ;
-        if (i <= 3) {
-            tempDateFive[t] = null;
-            precipDateFive[t] = null;
-            $('#weatherFiveIcon .wrp-icon').append('<span class="icon"> </span>');
-            deyDate[t] = ' ';
-        }
-        t++;
     }
     $('#weatherDetailedIcon .wrp-icon').html(' ')
     for (var i = 0; i <= 23; i++) {
@@ -269,10 +287,32 @@ function readyGet(response, responseYear, type, page) {
     for (var i = 0; i <= 6; i++) {
         $('#weatherSevenIcon .wrp-icon').append('<span class="icon"><img src="svg/wicons_svg_white/' + iconDetailed[i] + '.svg"></span>');
     }
-    minTempThree = Math.min(...tempDateThree
+    // console.log(parseInt(tempDateThree))
+
+    tempDateThreeNumbers=[];
+
+    tempDateThree.forEach( function (element) {
+
+        if(typeof element === 'number'){
+            tempDateThreeNumbers.push(element)
+        }
+
+    })
+
+    tempDateFiveNumbers=[];
+
+    tempDateFive.forEach( function (element) {
+
+        if(typeof element === 'number'){
+            tempDateFiveNumbers.push(element)
+        }
+
+    })
+
+    minTempThree = Math.min(...tempDateThreeNumbers
 )
     -4;
-    minTempFive = Math.min(...tempDateFive
+    minTempFive = Math.min(...tempDateFiveNumbers
 )
     -4;
     minTempTen = Math.min(...tempDateTen

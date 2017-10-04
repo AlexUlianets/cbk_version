@@ -1,4 +1,6 @@
- <div class="container section-margin-top" ng-controller="not-universal-daysCtrl">
+ <div ng-controller="not-universal-daysCtrl">
+
+<div class="container section-margin-top">
         <div class="wrapper">
             <div class="page-content" ng-init="getData()">
 
@@ -148,15 +150,15 @@
     </div><!-- end container -->
 
 
-    <section id="detailed-forecast">
+    <section id="detailed-forecast" ng-init="getDataGraph()">
         <div class="container">
             <h2>Detailed forecast</h2>
         </div>
         <div class="graff-wrap blue-bg">
             <div class="container ">
-                <div id="weatherFive"></div>
+                <div id="{{graph}}"></div>
                 <br/>
-                <div id="weatherFiveIcon">
+                <div id="{{graph}}Icon">
                     <div class="wrp-icon"></div>
                 </div>
             </div>
@@ -234,3 +236,4 @@
             </aside>
         </div><!-- end wrapper -->
     </div><!-- end container -->
+ </div>

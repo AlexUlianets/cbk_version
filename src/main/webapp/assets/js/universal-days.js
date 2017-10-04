@@ -6,6 +6,7 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
     $scope.$state = $state;
     $scope.$stateParams = $stateParams;
     $scope.selectedTab = 1;
+    $scope.graph = $scope.$state.params.graph;
     $scope.tabClass = $scope.$state.params.tabClass;
 
     $scope.getData = function () {
@@ -24,8 +25,15 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
 
         $http(sendingTableRequest).success(function (data) {
             $scope.dynamicTableData = data;
-            console.log($scope.dynamicTableData);
         })
+    }
+
+    if($scope.$state.params.page === 'seven-days') {
+        $http.post('/get_detailed_forecast').then(function (response) {
+            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page)
+        });
+    } else {
+        readyGet($scope.dynamicTableData, [], $scope.local.typeTemp, $scope.$state.params.page)
     }
 
     $scope.selectTab = function (index) {

@@ -1242,9 +1242,6 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 .weather-block-favorite:last-child{margin-bottom:0;}
 #top-page{height:500px;}
 }
-.inner-html {
-    display: none;
-}
 @media only screen and (max-width:700px){
     .pn-top ul li, .pn-bot ul li{width:100%;}
 }
@@ -1379,7 +1376,7 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 }
 #weatherTenIcon .wrp-icon .icon{width:140px;}
 #weatherFourteenIcon .wrp-icon .icon{width:75px;}
-#weatherSevenIcon .wrp-icon .icon{width:150px;}
+#weatherSevenIcon .wrp-icon .icon{width:170px;}
 #weatherSevenIcon .wrp-icon,
 #weatherTenIcon .wrp-icon,
 #weatherFourteenIcon .wrp-icon{padding:25px 0 0 0;border-top:1px solid #3ad4ff;margin:0 5.3%;}
@@ -3102,7 +3099,7 @@ a{
 
     .tb-slider.tb-tabs-full li,
     ul.tb-tabs-full li {
-        min-width: 70px;
+        min-width: 74px;
     }
     .tb-tabs .wrn-block .wrn-today{
         font-size: 12px;
