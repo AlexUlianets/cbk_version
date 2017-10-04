@@ -27,7 +27,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 });
                 var ln = $('.favorite-location .container')[0]['children'].length;
                 if ($(window).width() < 500) {
-                    $('#top-page').animate({height: (300+((ln) * 10) - 50)+'px'});
+                    $('#top-page').animate({height: (300+((ln) * 50))+'px'});
                 }
             });
             // $('.tb-contant').removeClass('inner-html')
@@ -107,7 +107,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
                 var ln = $('.favorite-location .container')[0]['children'].length;
                 if ($(window).width() < 500) {
-                        $('#top-page').animate({height: (300+(ln * 10) - 50)+'px'});
+                        $('#top-page').animate({height: (300+(ln * 50))+'px'});
                 }
             })
         };
