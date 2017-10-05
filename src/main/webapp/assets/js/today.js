@@ -4,6 +4,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
   app.controller('todayCtrl', function($scope, $http) {
 
+      $scope.graph = $scope.$state.params.graph;
+
       $http.post('/get_weekly_weather_summary').then(function (response) {
           $scope.$parent.weekly_weather_summary = response.data;
       });

@@ -41,6 +41,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             }).done(function( msg ) {
                 $rootScope.temperature = msg;
                 $rootScope.get_recent_cities_tabs_func();
+                loadScript();
+
             })
         }
         $rootScope.get_api_weather();
@@ -161,6 +163,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
           $stateProvider
               .state('outlook', {
                   url: "/",
+                  params:{
+                      "graph": "weatherTen"
+                  },
                   views: {
                       "": {
                           templateUrl: "templates/html/outlook.html"
@@ -174,6 +179,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               })
               .state('today', {
                   url: "/today",
+                  params:{
+                      "graph" : "weatherDetailed"
+                  },
                   views: {
                       "": {
                           templateUrl: "templates/html/today.html"
