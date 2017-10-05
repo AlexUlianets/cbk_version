@@ -529,7 +529,7 @@ public class WeatherService {
             List<DetailedForecastGraphMapping> result = new ArrayList<>();
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
-        for (int day = 0; day < 10; day++) {
+        for (int day = 0; day < 14; day++) {
             result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day), city));
         }
         return result;

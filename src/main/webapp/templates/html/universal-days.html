@@ -6,29 +6,31 @@
                 <section id="weekly-report">
                     <h2>Weekly weather report</h2>
 
-                    <div class="tb-tabs-header">
+                    <div  class="tb-tabs-header tb-slider-wrap" >
                         <div class="tb-tabs-ul-wrap">
-                            <ul class="{{tabClass}}">
-                                <li ng-repeat="i in dynamicTableData track by $index" class="{{$index==0?'active':''}} tabclass{{$index+1}}" rel="tab{{$index+1}}" ng-click="selectTab($index+1)">
+                            <slick class="slider" settings="slickConfig" ng-if="slickConfig1Loaded" dots="true">
+                                <li ng-repeat="i in dynamicTableData track by $index"  class="{{$index==0?'active':''}}" rel="tab1" ng-click="selectTab($index+1)">
+                                    <!--<li ng-repeat="i in dynamicTableData track by $index" class=" tabclass{{$index+1}}" rel="tab{{$index+1}}" >-->
                                     <div class="wrn-block">
-                                        <div class="wrn-top">
-                                            <div class="wrn-today">{{$index==0?'Today':''}}</div>
-                                            {{i[1].dayOfMonth}} {{i[1].monthOfYear}}, {{i[1].dayOfWeek}}
-                                        </div>
-                                        <div class="wrn-bot">
-                                            <div class="wrn-img">
-                                                <span class="helper"></span>
-                                                <img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== false ">
-                                                <img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== true ">
-                                            </div>
-                                            <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
-                                            </div>
-                                        </div>
+                                    <div class="wrn-top">
+                                    <div class="wrn-today">{{$index === 0 ? 'Today' : ''}}</div>
+                                    {{i[1].dayOfMonth}} {{i[1].monthOfYear}}, {{i[1].dayOfWeek}}
                                     </div>
-                                </li>
-                            </ul>
+                                    <div class="wrn-bot">
+                                    <div class="wrn-img">
+                                    <span class="helper"></span>
+                                    <img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== false ">
+                                    <img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== true ">
+                                    </div>
+                                    <div class="wrn-temp">
+                                    <span class="wrm-temp-top">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
+                                    <span class="wrm-temp-bottom">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    <!--</li>-->
+                        </li>
+                            </slick>
                         </div>
                         <div class="tb-header-more-info">
                             <div class="icon">icon</div>
@@ -183,4 +185,4 @@
         </div><!-- end wrapper -->
     </div><!-- end container -->
 </div>
-<script src="js/slick.min.js"></script>
+
