@@ -31,7 +31,7 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
         })
     }
 
-    if($scope.$state.params.page === 'seven-days') {
+    if($scope.$state.params.page === 'seven-days' || $scope.$state.params.page === 'fourteen-days') {
         $http.post('/get_detailed_forecast').then(function (response) {
             readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page)
         });
