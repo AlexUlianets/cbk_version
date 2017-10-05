@@ -1,5 +1,5 @@
 <div ng-controller="todayCtrl">
-<div class="container section-margin-top" >
+	<div class="container section-margin-top" >
 	<div class="wrapper">
 		<div class="page-content">
 			<section class="tomorrow tomorrow-list">
@@ -201,72 +201,12 @@
 	</div><!-- end wrapper -->
 </div><!-- end container -->
 
+	<div ng-include="'templates/graphic.html'"></div>
 
-<section id="detailed-forecast">
-	<div class="container">
-		<h2>Detailed forecast</h2>
-	</div>
-	<div class="graff-wrap blue-bg">
-		<div class="container ">
-			<div id="weatherDetailed"></div><br/>
-			<div id="weatherDetailedIcon"><div class="wrp-icon"></div></div>
-		</div>
-	</div>
-</section><!-- end detailed-forecast -->
-
-<div class="container section-margin-top">
+	<div class="container section-margin-top">
 	<div class="wrapper">
-		<div class="page-content">
-			<section id="glance">
-				
-				<h2>Weekly weather summary at a glance</h2>
-				<div class="glance-row">
-					<div class="glance-left">Max. temperature</div>
-					<div class="glance-right">
-						<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.maxTempC:weekly_weather_summary.maxTempF}}°{{local.typeTemp}}</div>
-						<div class="glance-date">{{weekly_weather_summary.maxTempDay}}</div>
-					</div>
-				</div>
-				<div class="glance-row">
-					<div class="glance-left">Min. temperature</div>
-					<div class="glance-right">
-						<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.minTempC:weekly_weather_summary.minTempF}}°{{local.typeTemp}}</div>
-						<div class="glance-date">{{weekly_weather_summary.minTempDay}}</div>
-					</div>
-				</div>
-				<div class="glance-row">
-					<div class="glance-left">Average max. temperature</div>
-					<div class="glance-right">
-						<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.avgMaxTempC:weekly_weather_summary.avgMaxTempF}}°{{local.typeTemp}}</div>
-						<div class="glance-date">Next 7 days</div>
-					</div>
-				</div>
-				<div class="glance-row">
-					<div class="glance-left">Average min. temperature</div>
-					<div class="glance-right">
-						<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.avgMinTempC:weekly_weather_summary.avgMinTempF}}°{{local.typeTemp}}</div>
-						<div class="glance-date">Next 7 days</div>
-					</div>
-				</div>
-				<div class="glance-row">
-					<div class="glance-left">Total rainfall</div>
-					<div class="glance-right">
+        <div ng-include="'templates/wth_glance.html'" class="page-content"></div>
 
-						<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.totalRainfallMM.toFixed(1) : weekly_weather_summary.totalRainfallInch.toFixed(1);}}  {{local.typeTemp=='C'?'MM':'In'}}</div>
-
-						<div class="glance-date">Next 7 days</div>
-					</div>
-				</div>
-				<div class="glance-row">
-					<div class="glance-left">Windiest</div>
-					<div class="glance-right">
-						<div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.windiestMS :weekly_weather_summary.windiestMiles}} {{local.typeTemp=='C'?'M/S':'Mph'}}</div>
-						<div class="glance-date">{{weekly_weather_summary.windiestDay}}</div>
-					</div>
-				</div>
-
-			</section><!-- end glance -->
-		</div><!-- end page-content -->
 		<aside class="sidebar top35px">
 			<!-- OLD -->
 			<!-- <div class="ad300-600 mob-hide"></div> -->
@@ -278,9 +218,7 @@
 	</div><!-- end wrapper -->
 </div><!-- end container -->
 
-
-
-<div class="container section-margin-top">
+	<div class="container section-margin-top">
 	<div class="wrapper">
 		<div class="page-content">
 			<section id="astronomy">

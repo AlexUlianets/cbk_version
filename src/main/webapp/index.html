@@ -23,7 +23,7 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <title>oplao</title>
+    <title>Oplao</title>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -164,32 +164,8 @@
             </div>
         </section><!-- end top page -->
 
-        <div class="page-nav">
-            <nav class="pn-top">
-                <ul>
-                    <li style="display: none" class="mob_weater"><a href="#">----</a></li>
-                    <li><a ui-sref="outlook" ng-class="{'active':$state.current.name=='outlook'}">Outlook</a></li>
-                    <li><a ui-sref="today" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
-                    <li><a ui-sref="tomorrow" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
-                    <li><a ui-sref="past-weather" ng-class="{'active':$state.current.name=='past-weather'}">Past weather</a></li>
-                    <li><a href="temperature-map.html">Temperature map</a></li>
-                </ul>
+        <div ng-include="'templates/body.html'"></div>
 
-            </nav>
-            <nav class="pn-bot">
-                <ul>
-                    <li><a ui-sref="three-days" ng-class="{'active':$state.current.name=='three-days'}">3 day</a></li>
-                    <li><a ui-sref="five-days" ng-class="{'active':$state.current.name=='five-days'}">5 day</a></li>
-                    <li><a ui-sref="seven-days" ng-class="{'active':$state.current.name=='seven-days'}">7 day</a></li>
-                    <li><a ui-sref="ten-days" ng-class="{'active':$state.current.name=='ten-days'}">10 day</a></li>
-                    <li><a href="fourteen-days.html">14 day</a></li>
-                    <li><a ui-sref="hour-by-hour" ng-class="{'active':$state.current.name=='hour-by-hour'}">Hour by hour</a></li>
-                </ul>
-            </nav>
-        </div><!-- end page-nav -->
-
-        <div ui-view></div>
-        <!--<div ng-include="'templates/body.html'"></div>-->
         <div ng-include="'templates/footer.html'"></div>
     </div>
 
