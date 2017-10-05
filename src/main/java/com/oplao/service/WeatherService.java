@@ -430,6 +430,7 @@ public class WeatherService {
         result.put("sunset", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunset"));
         result.put("moon_phase_index", moonPhaseIndex);
         result.put("moon_phase_name", convertMoonPhaseIndexToName(moonPhaseIndex));
+        result.put("moon_phase_state", getMoonState(city));
         return result;
     }
 
@@ -437,6 +438,14 @@ public class WeatherService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         return new MoonPhase(calendar).getPhaseIndex()-1;
+    }
+
+    private String getMoonState(JSONObject city){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        MoonPhase moonPhase = new MoonPhase(calendar);
+        double waningIndex = moonPhase.getPhase();
+        return waningIndex<0?"Waning":"Waxing";
     }
 
         public HashMap getRemoteData(JSONObject city){

@@ -172,35 +172,8 @@
 
     <div class="container section-margin-top">
         <div class="wrapper">
-            <div class="page-content">
-                <section id="astronomy">
-                    <h2>Astronomy</h2>
-                    <h3>{{astronomy.date.dayOfMonth}} {{astronomy.date.monthOfYear}} {{astronomy.date.year}}</h3>
-                    <div class="astronomy-row">
-                        <div class="astronomy-left">
-                            <div class="al-inner">
-                                <div class="al-block">
-                                    <div class="al-img">
-                                        <img src="images/svg/oplao_sunrise.svg" alt="img">
-                                    </div>
-                                    <span>{{astronomy.sunrise}}</span>
-                                </div>
-                                <div class="al-block">
-                                    <div class="al-img">
-                                        <img src="images/svg/oplao_sunset.svg" alt="img">
-                                    </div>
-                                    <span>{{astronomy.sunset}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="astronomy-right">
-                            <div class="ar-inner">
-                                <h5>{{astronomy.moon_phase_name}}</h5>
-                                <img alt="img" ng-repeat="n in [0, 1, 2, 3, 4, 5, 6, 7]" ng-src="svg/oplao_moon_{{n+1}}.svg" ng-class="{'op_full':moon_phase_index==n, 'op':moon_phase_index!=n}">
-                            </div>
-                        </div>
-                    </div>
-                </section>
+            <div class="page-content" ng-include="'templates/astronomy-sect.html'">
+
             </div>
             <aside href="#" class="sidebar">
                 <div>
