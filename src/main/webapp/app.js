@@ -157,6 +157,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/not-universal-days.js']
               },{   name: 'hour-by-hour',
                   files: ['assets/js/hour-by-hour.js']
+              },{   name: 'fourteen-days',
+                  files: ['assets/js/universal-days.js']
               }]
           });
 
@@ -302,6 +304,24 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         resolve: {
                             loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                                 return $ocLazyLoad.load('hour-by-hour');
+                            }]
+                        }
+                    }).state('fourteen-days', {
+                        url: "/fourteen-days",
+              params:{
+                  "index":14,
+                  "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
+                  "page": "fourteen-days",
+                  "graph" : "weatherFourteen"
+              },
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/universal-days.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('fourteen-days');
                             }]
                         }
                     });
