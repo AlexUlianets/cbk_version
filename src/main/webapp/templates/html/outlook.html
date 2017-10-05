@@ -191,42 +191,29 @@
             <h2>Climate in {{temperature.city}}</h2>
 
             <div class="climate-dropdown-wrap">
-                <div class="climate-dropdown-top">December</div>
+                <div class="climate-dropdown-top" ng-click="activeTabMobile()">{{climate.month}}</div>
                 <ul class="climate-dropdown-bot">
-                    <li><a href="#">January</a></li>
-                    <li><a href="#">February</a></li>
-                    <li><a href="#">March</a></li>
-                    <li><a href="#">April</a></li>
-                    <li><a href="#">May</a></li>
-                    <li><a href="#">June</a></li>
-                    <li><a href="#">July</a></li>
-                    <li><a href="#">August</a></li>
-                    <li><a href="#">Septemper</a></li>
-                    <li><a href="#">October</a></li>
-                    <li><a href="#">November</a></li>
-                    <li><a href="#">December</a></li>
+                    <li ng-repeat="month in get_year_summary.data track by $index"><a ng-click="getActiveClimate($index)">{{month.fullMonthName}}</a></li>
                 </ul>
             </div>
-            <div class="climate-in-top">
-                <div class="cit-block c-t-max">
+           <div class="cit-block c-t-max">
                     <span></span>
                     <i></i>
                     <em>T° max</em>
-                    <b>24°C</b>
+                    <b>{{local.typeTemp=='C'?climate.tempMaxC:climate.tempMaxF}}°{{local.typeTemp}}</b>
                 </div>
                 <div class="cit-block c-t-min">
                     <span></span>
                     <i></i>
                     <em>T° min</em>
-                    <b>24°C</b>
+                    <b>{{local.typeTemp=='C'?climate.tempMinC:climate.tempMinF}}°{{local.typeTemp}}</b>
                 </div>
                 <div class="cit-block c-t-prec">
                     <span></span>
                     <i></i>
                     <em>Precipitation</em>
-                    <b>94mm</b>
+                    <b>{{local.typeTemp=='C'?climate.precipMm:climate.precipIn}} {{local.typeTemp=='C'?'mm':'in'}}</b>
                 </div>
-            </div>
         </div>
         <div class="green-bg graff-wrap">
             <div class="container">
