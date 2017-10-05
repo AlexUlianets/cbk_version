@@ -147,9 +147,6 @@ function loadScript() {
                 })
             })
         }
-        $('.climate-dropdown-top').on('click', function () {
-            $('.climate-dropdown-bot').slideToggle();
-        });
         $(document).on("click", ".transformer-tabs a[href^='#']:not('.active')", function (event) {
             event.preventDefault();
             var $this = $(this);

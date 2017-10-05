@@ -1,7 +1,7 @@
 var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
   app.controller('outlookCtrl', ['$scope', '$http', function($scope, $http) {
-
+      $scope.climate=[];
       $scope.graph = $scope.$state.params.graph;
 
       $http.post('/get_weekly_weather').then(function (response) {
@@ -12,6 +12,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           $scope.$parent.detailedTemp = response;
           $http.post('/get_year_summary').then(function (responseYear) {
               $scope.$parent.get_year_summary = responseYear;
+              $scope.getActiveClimate(-1);
+
               readyGet(response, responseYear, $scope.local.typeTemp, 'outlook')
           });
       });
@@ -54,5 +56,33 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       });
 
 
+      $scope.activeTabMobile = function(){
+           $('.climate-dropdown-bot').slideToggle();
+      };
+      $scope.getActiveClimate = function(active){
+          var inpNum= -1;
+
+          if (active === -1) {
+              $scope.get_year_summary.data.forEach(function (element, index) {
+                if(element.active===true){
+                    inpNum = index
+                }
+              })
+          } else {
+              inpNum = active
+          }
+          $scope.get_year_summary.data.forEach(function (element, index) {
+              if(index === inpNum) {
+                  $scope.climate.month = element.fullMonthName;
+                  $scope.climate.tempMaxC = element.maxtempC;
+                  $scope.climate.tempMaxF = element.maxtempF;
+                  $scope.climate.tempMinC = element.mintempC;
+                  $scope.climate.tempMinF = element.mintempF;
+                  $scope.climate.precipMm = element.precipMM;
+                  $scope.climate.precipIn = element.precipInch;
+              }
+              $('.climate-dropdown-bot').fadeOut('slow');
+          })
+      }
 
   }]);
