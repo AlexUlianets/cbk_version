@@ -652,7 +652,7 @@ ul.tabs li.active .wrn-block{background-image:url('data:image/svg+xml;base64,PD9
 ul.tabs li.active .wrn-top{color:#fff;}
 ul.tabs li.active .wrn-temp{color:#fff;}
 .tab_container{clear:both;float:left;width:100%;background:#fff;}
-.tab_content{display:none;}
+/*.tab_content{display:none;}*/
 .tab_drawer_heading{display:none;}
 
 @media screen and (max-width:700px){
