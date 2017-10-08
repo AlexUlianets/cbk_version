@@ -898,7 +898,7 @@ ul.tabs li.active .wrn-temp{color:#fff;}
 .maps-sidebar-bot .top50px{margin-top:30px;}
 }
 @media only screen and (max-width:700px){#map-tab-one, #map-tab-two, #map-tab-three, #map-tab-four{height:460px;}
-.forecast-tabs, .f-tabs-tr{display:none;}
+/*.forecast-tabs, .f-tabs-tr{display:none;}*/
 }
 @media only screen and (max-width:480px){.mob-xs-hide{display:none;}
 }
@@ -3111,7 +3111,7 @@ a{
 
     .tb-slider.tb-tabs-full li,
     ul.tb-tabs-full li {
-        min-width: 74px;
+        min-width: 101px;
     }
     .tb-tabs .wrn-block .wrn-today{
         font-size: 12px;
