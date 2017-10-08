@@ -140,10 +140,14 @@ function loadScript() {
                 e.preventDefault();
 
                 if($('.pn-top ul li:not(:first), .pn-bot ul li').css('display') === 'list-item'){
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
+                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                        $(this).fadeOut("slow");
+                    })
 
                 }else {
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').fadeIn("slow");
+                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                        $(this).css({'display': 'list-item'})
+                    })
 
                 }
             });
