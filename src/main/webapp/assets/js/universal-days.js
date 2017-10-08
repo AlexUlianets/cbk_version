@@ -37,21 +37,26 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
             $(function () {
                 if ($('.tb-slider').length) {
                     if ($(window).width() >= '881') {
-                        $('.tb-slider').slick({
-                            infinite: false,
-                            //speed: 300,
-                            slide: 'li',
-                            slidesToShow: 7,
-                            slidesToScroll: 7,
-                            prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
-                            nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
-                        });
-                    }
+                        try {
+                            $('.tb-slider').slick({
+                                infinite: false,
+                                //speed: 300,
+                                slide: 'li',
+                                slidesToShow: 7,
+                                slidesToScroll: 7,
+                                prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
+                                nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
+                            });
+
+                        } catch (e) {
+                            console.log()
+                        }
+                                           }
                 }
             });
             $(window).resize()
 
-        }, 1000);
+        }, 950);
 
         $(window).resize()
 // setTimeout(function () {
