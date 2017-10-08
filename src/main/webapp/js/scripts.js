@@ -136,21 +136,32 @@ function loadScript() {
         $('ul.tabs li').last().addClass("tab_last");
         var $width = $(document).width();
         if ($width <= 700) {
-            $('.mob_weater a').on('click', function (e) {
+            $('.mob_weater').on('click', function (e) {
                 e.preventDefault();
-                $('.pn-top ul li:not(:first), .pn-bot ul li').slideToggle("slow");
+
+                if($('.pn-top ul li:not(:first), .pn-bot ul li').css('display') === 'list-item'){
+                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                        $(this).fadeOut("slow");
+                    })
+
+                }else {
+                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                        $(this).css({'display': 'list-item'})
+                    })
+
+                }
             });
             $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
                 $(this).click(function () {
                     $('.mob_weater a').html($(this).html())
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').slideToggle("slow");
+                    $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
                 })
             })
         }
-        $(document).on("click", ".transformer-tabs a[href^='#']:not('.active')", function (event) {
+        $(document).on("click", ".transformer-tabs a:not('.active')", function (event) {
             event.preventDefault();
             var $this = $(this);
-            var $hash = $(this).attr('href');
+            var $hash = $(this).attr('rel');
             $this.addClass('active').parent().siblings().find('a').removeClass('active');
             $($hash).addClass("active").siblings().removeClass("active");
             $this.closest("ul").toggleClass("open");

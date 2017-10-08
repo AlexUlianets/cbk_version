@@ -29,6 +29,9 @@
 								</li>
 							</ul>
 						</div>
+						<div class="tb-header-more-info">
+                                                    <div class="icon">icon</div>
+                                                </div>
 					</div>
 					<div class="tabs-tr">
 
@@ -326,7 +329,7 @@
 				<nav role='navigation' class="transformer-tabs forecast-tabs">
 					<ul>
 						<li ng-repeat = "i in dynamicTableData track by $index">
-							<a href="#f-tab-{{$index}}" ng-click="selectTabGraph($index+1)" class="{{$index==0?'active':''}}">{{i[1].dayOfMonth}} {{i[1].monthOfYear}}, {{i[1].dayOfWeek}}</a>
+							<a rel="#f-tab-{{$index}}" ng-click="selectTabGraph($index+1)" class="{{$index==0?'active':''}}">{{i[1].dayOfMonth}} {{i[1].monthOfYear}}, {{i[1].dayOfWeek}}</a>
 						</li>
 					</ul>
 				</nav>
