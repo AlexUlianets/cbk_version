@@ -27,7 +27,6 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
             $scope.dynamicTableData = data;
             console.log($scope.dynamicTableData)
             if($scope.$state.params.page === 'three-days') {
-                console.log($scope.dynamicTableData);
                 readyGet($scope.dynamicTableData, [], $scope.local.typeTemp, $scope.$state.params.page)
             }
         })
@@ -47,7 +46,6 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
                             prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
                             nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
                         });
-                        console.log('too')
                     }
                 }
             });
