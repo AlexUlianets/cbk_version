@@ -289,13 +289,13 @@ public class WeatherService {
 
 
      String moon_phase_name[] = { "New Moon", // 0
-     "Waxing crescent", // 1
+     "Crescent", // 1
      "First quarter", // 2
-     "Waxing gibbous", // 3
+     "Gibbous", // 3
      "Full Moon", // 4
-     "Waning gibbous", // 5
+     "Gibbous", // 5
      "Third quarter", // 6
-     "Waning crescent"}; //7
+     "Crescent"}; //7
 
     private String convertMoonPhaseIndexToName(int moonPhaseIndex){
         switch (moonPhaseIndex){
@@ -429,7 +429,7 @@ public class WeatherService {
         result.put("sunrise", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunset"));
         result.put("moon_phase_index", moonPhaseIndex);
-        result.put("moon_phase_name", convertMoonPhaseIndexToName(moonPhaseIndex));
+        result.put("moon_phase_name", convertMoonPhaseIndexToName(moonPhaseIndex+1));
         result.put("moon_phase_state", getMoonState(city));
         return result;
     }
@@ -884,7 +884,7 @@ public class WeatherService {
 
             HashMap data = apiWeatherFinder.findWeatherByDate();
             HashMap weather = ((HashMap)((ArrayList)data.get("weather")).get(0));
-            HashMap currentCondition = (HashMap) ((ArrayList)(data).get("current_condition")).get(0);
+           // HashMap currentCondition = (HashMap) ((ArrayList)(data).get("current_condition")).get(0);
             ArrayList hourly = (ArrayList)weather.get("hourly");
 
             List results = new ArrayList();
@@ -898,7 +898,7 @@ public class WeatherService {
             wholeDayMap.put("mintempC", weather.get("mintempC"));
             wholeDayMap.put("maxtempF", weather.get("maxtempF"));
             wholeDayMap.put("mintempF", weather.get("mintempF"));
-            wholeDayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(currentCondition.get("weatherCode"))));
+            wholeDayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(((HashMap)hourly.get(8)).get("weatherCode"))));
             wholeDayMap.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
 
             List<HashMap> oneWholeDayData = new ArrayList<>();

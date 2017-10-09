@@ -37,31 +37,49 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
             $(function () {
                 if ($('.tb-slider').length) {
                     if ($(window).width() >= '881') {
-                        $('.tb-slider').slick({
-                            infinite: false,
-                            //speed: 300,
-                            slide: 'li',
-                            slidesToShow: 7,
-                            slidesToScroll: 7,
-                            prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
-                            nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
-                        });
+                        try {
+                            $('.tb-slider').slick({
+                                infinite: false,
+                                //speed: 300,
+                                slide: 'li',
+                                slidesToShow: 7,
+                                slidesToScroll: 7,
+                                prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
+                                nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
+                            });
+
+                        } catch (e) {
+                            console.log()
+                        }
                     }
                 }
             });
-            $(window).resize()
-
+            $(window).resize();
         }, 1000);
 
         $(window).resize()
-// setTimeout(function () {
-//     $(window).resize();
-// },3000);
+setTimeout(function () {
+    $(".tb-tabs-header").css({"visibility" : "visible"});
+},2700);
 
         }
 
     };
 
+    function setIdle(cb, seconds) {
+        var timer;
+        var interval = seconds * 1000;
+        function refresh() {
+            clearInterval(timer);
+            timer = setTimeout(cb, interval);
+        };
+        $(document).on('keypress click', refresh);
+        refresh();
+    }
+
+    setIdle(function() {
+        location.href = location.href;
+    }, 15 * 60);
 
     if($scope.$state.params.page === 'seven-days' || $scope.$state.params.page === 'fourteen-days') {
         $http.post('/get_detailed_forecast').then(function (response) {

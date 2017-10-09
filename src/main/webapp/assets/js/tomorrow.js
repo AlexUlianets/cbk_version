@@ -19,6 +19,19 @@ app.controller('tomorrowCtrl', function($scope, $http) {
         console.log($scope.$parent.dynamicTableData)
     })
 
+    function setIdle(cb, seconds) {
+        var timer;
+        var interval = seconds * 1000;
+        function refresh() {
+            clearInterval(timer);
+            timer = setTimeout(cb, interval);
+        };
+        $(document).on('keypress click', refresh);
+        refresh();
+    }
 
+    setIdle(function() {
+        location.href = location.href;
+    }, 15 * 60);
 
 })

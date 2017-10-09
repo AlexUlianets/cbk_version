@@ -90,4 +90,18 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
         $scope.$parent.weekly_weather_summary = response.data;
     });
 
+    function setIdle(cb, seconds) {
+        var timer;
+        var interval = seconds * 1000;
+        function refresh() {
+            clearInterval(timer);
+            timer = setTimeout(cb, interval);
+        };
+        $(document).on('keypress click', refresh);
+        refresh();
+    }
+
+    setIdle(function() {
+        location.href = location.href;
+    }, 15 * 60);
 }]);
