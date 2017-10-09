@@ -1,7 +1,7 @@
 <div class="page-nav">
-    <nav class="pn-top">
+    <nav class="pn-top" >
         <ul>
-            <li style="display: none" class="mob_weater"><a href="#">----</a></li>
+            <li style="display: none" class="mob_weater"><a href="#">{{$state.params.day}}</a></li>
             <li><a ui-sref="outlook" ng-class="{'active':$state.current.name=='outlook'}">Outlook</a></li>
             <li><a ui-sref="today" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
             <li><a ui-sref="tomorrow" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
@@ -17,7 +17,7 @@
             <li><a ui-sref="seven-days" ng-class="{'active':$state.current.name=='seven-days'}">7 day</a></li>
             <li><a ui-sref="ten-days" ng-class="{'active':$state.current.name=='ten-days'}">10 day</a></li>
             <li><a ui-sref="fourteen-days" ng-class="{'active':$state.current.name=='fourteen-days'}">14 day</a></li>
-            <li><a ui-sref="hour-by-hour" ng-class="{'active':$state.current.name=='hour-by-hour'}">Hour by hour</a></li>
+            <li ><a ui-sref="hour-by-hour" ng-class="{'active':$state.current.name=='hour-by-hour'}">Hour by hour</a></li>
         </ul>
     </nav>
 </div><!-- end page-nav -->
