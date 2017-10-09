@@ -50,14 +50,15 @@ function loadScript() {
                         $('.pn-top ul li:first a').text(elem.text);
                     }
                 })
+                $('body').click(function (e) {
+                    if($(e.target)[0]['localName']!=='a') {
+                        $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
+                    }
+                });
             } else {
                 $('.mob_weater').css('display', 'none');
             }
-            $('body').click(function (e) {
-                if($(e.target)[0]['localName']!=='a') {
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
-                }
-            });
+
         };
         MenuChangeToResolution();
         $(window).resize(function () {
