@@ -3,6 +3,7 @@ function loadScript() {
 
         setTimeout(function () {
             $('.load_header').fadeOut("slow", function () {
+                $(this).css({'display': 'none'});
                 $('.head-bot-mini').css({'display': 'block'});
                 $('#top-page').find('.container').css({'display': 'block'});
                 // $('.tb-contant').removeClass('inner-html')
