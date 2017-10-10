@@ -20,5 +20,4 @@ app.controller('tomorrowCtrl', function($scope, $http) {
     })
 
 
-
 })

@@ -89,5 +89,4 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
     $http.post('/get_weekly_weather_summary').then(function (response) {
         $scope.$parent.weekly_weather_summary = response.data;
     });
-
 }]);

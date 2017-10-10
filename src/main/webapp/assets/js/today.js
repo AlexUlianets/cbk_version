@@ -36,5 +36,4 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       })
 
 
-
   });

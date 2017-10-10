@@ -5,8 +5,8 @@
 
                 <section id="weekly-report">
                     <h2>Weekly weather report</h2>
-                    <div class="tb-tabs-header" ng-if="page!='fourteen-days'">
-                        <div class="tb-tabs-ul-wrap">
+                    <div class="{{page=='three-days'?'':'tb-tabs-header'}}" ng-if="page!='fourteen-days'">
+                        <div class="{{page=='three-days'?'':'tb-tabs-ul-wrap'}}">
                             <ul class="{{tabClass}}">
                                 <li ng-repeat="i in dynamicTableData track by $index" class="{{$index==0?'active':''}} tabclass{{$index+1}}" rel="tab{{$index+1}}" ng-click="selectTab($index+1)">
                                     <div class="wrn-block">
@@ -28,11 +28,11 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="tb-header-more-info">
+                        <div class="tb-header-more-info" ng-if="page!='three-days'">
                             <div class="icon">icon</div>
                         </div>
                     </div>
-                    <div class="tb-tabs-header tb-slider-wrap" ng-if="page=='fourteen-days'">
+                    <div class="tb-tabs-header tb-slider-wrap" ng-if="page=='fourteen-days'" style="visibility: hidden;">
                         <div class="tb-tabs-ul-wrap">
                             <ul class="tb-slider tabs tb-tabs tb-tabs-full">
                                 <li class="active tabclass1" rel="tab1" ng-click="selectTab(1)">
@@ -370,11 +370,7 @@
 
                     </div>
                     <!-- .tab_container -->
-                    <div class="links-after">
-                        <a href="#" class="active">Outlook</a>
-                        <a href="#">Hourly weather</a>
-                        <a href="#">Weather map</a>
-                    </div>
+                    <div class="links-after" ng-include="'templates/links.html'"></div>
                 </section><!-- end weeekly-report -->
             </div><!-- end page-content -->
             <aside class="sidebar">
