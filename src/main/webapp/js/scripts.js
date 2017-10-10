@@ -9,7 +9,6 @@ function loadScript() {
                 // $('.tb-contant').removeClass('inner-html')
             })
         }, 1000)
-
         $("head").append("<link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>");
         $('.temp-block').on('click', function (e) {
             $this = $(this);
@@ -52,9 +51,15 @@ function loadScript() {
                         $('.pn-top ul li:first a').text(elem.text);
                     }
                 })
+                $('body').click(function (e) {
+                    if($(e.target)[0]['localName']!=='a') {
+                        $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
+                    }
+                });
             } else {
                 $('.mob_weater').css('display', 'none');
             }
+
         };
         MenuChangeToResolution();
         $(window).resize(function () {
@@ -201,24 +206,26 @@ function loadScript() {
             $this.addClass('active').siblings().removeClass('active');
         });
         var $dropdown = $('.search-dropdown');
-        $('.ht-search-input input, .ht-search-input i').on('click', function () {
-            $dropdown.slideToggle();
+        $('.ht-search-input, .ht-search-input i').on('click', function () {
+            if($('.search-dropdown').css('display') === 'block') {
+                $('.search-dropdown').css({'display': 'none'})
+            }else {
+                $('.search-dropdown').css({'display': 'block'})
+
+            }
         });
         $('.dropdown-top').on('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
             $dropdown.slideUp();
         });
-        $('.search-dropdown ul li a span').on('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            $(this).parent().slideUp();
-        });
-        $('body').click(function () {
-            $dropdown.slideUp();
-        });
-        $('.dropdown-top,.ht-search-input i, .ht-search-input input, .search-dropdown, .search-dropdown ul li a span').click(function (event) {
-            event.stopPropagation();
+        $('body').click(function (e) {
+            if($(e.target)[0]['localName']!=='input') {
+                $('.search-dropdown').css({'display': 'none'})
+            }else {
+                $('.search-dropdown').css({'display': 'block'})
+
+            }
         });
         $(window).on('scroll resize', function () {
             if ($(window).width() > 767) {
