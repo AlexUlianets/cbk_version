@@ -66,21 +66,6 @@ setTimeout(function () {
 
     };
 
-    function setIdle(cb, seconds) {
-        var timer;
-        var interval = seconds * 1000;
-        function refresh() {
-            clearInterval(timer);
-            timer = setTimeout(cb, interval);
-        };
-        $(document).on('keypress click', refresh);
-        refresh();
-    }
-
-    setIdle(function() {
-        location.href = location.href;
-    }, 15 * 60);
-
     if($scope.$state.params.page === 'seven-days' || $scope.$state.params.page === 'fourteen-days') {
         $http.post('/get_detailed_forecast').then(function (response) {
             readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page)
