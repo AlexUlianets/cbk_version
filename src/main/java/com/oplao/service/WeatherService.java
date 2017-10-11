@@ -185,8 +185,8 @@ public class WeatherService {
         String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(12).get("weatherCode")));
         String dayWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(14).get("weatherCode")));
         String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode")));
-        int windDegreeDay = getAVGIntParam(hourly, "winddirDegree", dayTimeValues) + 40;
-        int windDegreeNight = getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40;
+        int windDegreeDay = getAVGIntParam(hourly, "winddirDegree", dayTimeValues) + 40 + 180;
+        int windDegreeNight = getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40 + 180;
         double avgPressureInchDay = new BigDecimal(avgPressureDay * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
         double avgPressureInchNight = new BigDecimal(avgPressureNight * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
         int avgWindMsDay = (int)Math.round(avgWindKmhDay*0.27777777777778);
@@ -840,7 +840,7 @@ public class WeatherService {
                 dayMap.put("windMph", elem.get("windspeedMiles"));
                 dayMap.put("windMs", (int)Math.round(parseInt(elem.get("windspeedKmph"))*0.27777777777778));
                 dayMap.put("winddir", elem.get("winddir16Point"));
-                dayMap.put("windDegree", parseInt(elem.get("winddirDegree")) + 40);
+                dayMap.put("windDegree", parseInt(elem.get("winddirDegree")) + 40 + 180);
                 dayMap.put("gustMph", elem.get("WindGustMiles"));
                 dayMap.put("gustMs", (int)Math.round(parseInt(elem.get("WindGustKmph"))*0.27777777777778));
                 dayMap.put("cloudCover", elem.get("cloudcover"));
@@ -919,7 +919,7 @@ public class WeatherService {
                 dayMap.put("windMph", elem.get("windspeedMiles"));
                 dayMap.put("windMs", (int)Math.round(parseInt(elem.get("windspeedKmph"))*0.27777777777778));
                 dayMap.put("winddir", elem.get("winddir16Point"));
-                dayMap.put("windDegree", parseInt(elem.get("winddirDegree")) + 40);
+                dayMap.put("windDegree", parseInt(elem.get("winddirDegree")) + 40 + 180);
                 dayMap.put("gustMph", elem.get("WindGustMiles"));
                 dayMap.put("gustMs", (int)Math.round(parseInt(elem.get("WindGustKmph"))*0.27777777777778));
                 dayMap.put("pressurehPa", elem.get("pressure"));
