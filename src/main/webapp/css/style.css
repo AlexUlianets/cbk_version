@@ -400,7 +400,7 @@ img.mfp-img{width:auto;max-width:100%;height:auto;display:block;line-height:0;bo
 .search-dropdown{display:none;border-bottom:1px solid #ebebeb;background:#fff;border-left-bottom-radius:3px;max-width:550px;padding-top:80px;position:absolute;top:50px;left:0;right:0;width:100%;padding:0px 20px 00px 20px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;border-top:1px solid #fff;z-index:100;}
 .search-dropdown ul li a{font:400 1.4em/48px "FiraSans-Book", sans-serif;height:48px;color:#4c4c4c;padding-left:20px;position:relative; width: 92%;}
 .search-dropdown ul li span{    display: block;    right: 27px;    width: 12px;    height: 13px;    float: right;    margin-top: 20px;}
-.search-dropdown ul li:hover{background:#ebebeb;}
+.search-dropdown ul li:hover{background:#ebebeb;    cursor: pointer;}
 .search-dropdown ul li span:hover {cursor: pointer; opacity: 0.6;}
 .search-dropdown ul li a.active{color:#0880d5;}
 .dropdown-top{height:50px;display:block;position:relative;}
@@ -2805,6 +2805,18 @@ a{
 }/*END 800*/
 
 @media (max-width: 768px){
+    .v-year-item img{
+        vertical-align: middle;
+        margin-top: 14px !important;
+    }
+    .links-after a {
+
+        margin-right: 36px;
+        cursor: pointer;
+        margin-bottom: 17px;
+        float: left;
+        width: 39%;
+    }
     .wather-table-wrap{
         margin-right: 22px;
     }

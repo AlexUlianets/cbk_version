@@ -249,7 +249,7 @@
                     <div class="v-year-list">
                         <div class="v-year-item" ng-repeat="year in five_years_average">
                             <div class="v-year">{{year.year}}</div>
-                            <img ng-src="svg/wicons_svg_white/{{year.weatherCode}}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
+                            <img class="v-img" ng-src="svg/wicons_svg_white/{{year.weatherCode}}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
                             <div class="temperature">
                                 <span class="count">{{local.typeTemp=='C'?year.tempC:year.tempF}}</span>
                                 <span class="mark">°{{local.typeTemp}}</span>

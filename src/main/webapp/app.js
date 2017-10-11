@@ -88,6 +88,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             }).done(function( msg ) {
                 $state.reload();
                 $rootScope.get_api_weather();
+                $('html, body').animate({
+                    scrollTop: $('body').offset().top
+                }, 1000);
             })
 
         };
