@@ -25,5 +25,10 @@ public class Index {
         public String index() {
             return "forward:/index.html";
         }
+
+        @RequestMapping({"/", "/weather"})
+        public String mainPage() {
+            return "forward:/templates/front-page.html";
+        }
     }
 }

@@ -25,7 +25,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $rootScope.$apply(function(){
                     $rootScope.get_recent_cities_tabs = msg;
                 });
-                var ln = $('.favorite-location .container')[0]['children'].length;
+                if($('.favorite-location .container')[0]!= undefined) {
+                    var ln = $('.favorite-location .container')[0]['children'].length;
+                }
                 if ($(window).width() < 500) {
                     $('#top-page').animate({height: (300+((ln) * 50))+'px'});
                 }
@@ -42,6 +44,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $rootScope.temperature = msg;
                 $rootScope.get_recent_cities_tabs_func();
                 loadScript();
+                console.log(msg);
 
             })
         }
@@ -161,12 +164,31 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/hour-by-hour.js']
               },{   name: 'fourteen-days',
                   files: ['assets/js/universal-days.js']
+              },{   name: 'front-page',
+                  files: ['assets/js/universal-days.js']
               }]
           });
 
           $stateProvider
+              .state('front-page', {
+                  url: "/weather",
+                  params:{
+                      "graph": "",
+                      "day": "front-page"
+                  },
+                  views: {
+                      "": {
+                          templateUrl: "templates/front-page.html"
+                      }
+                  },
+                  resolve: {
+                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                          return $ocLazyLoad.load('front-page');
+                      }]
+                  }
+              })
               .state('outlook', {
-                  url: "/",
+                  url: "/outlook",
                   params:{
                       "graph": "weatherTen",
                       "day": "Outlook"
@@ -343,6 +365,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     });
-        $locationProvider.html5Mode(true)
+        $locationProvider.html5Mode({
+            enabled: true,
+            rewriteLinks: false
+        })
   }]);
 

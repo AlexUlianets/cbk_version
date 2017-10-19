@@ -1,7 +1,11 @@
 package com.oplao.service;
 
 import com.oplao.Utils.AddressGetter;
-import com.oplao.model.GeoLocation;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
@@ -16,10 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class SearchService {
@@ -229,11 +230,17 @@ public class SearchService {
            }
        }
        }else {
-           GeoLocation geoLocation = GeoIPv4.getLocation(AddressGetter.getCurrentIpAddress(request));
+           JSONObject location = null;
 
+               while(location == null) {
+                   try {
+                       location = WeatherService.readJsonFromUrl("http://api.ipinfodb.com/v3/ip-city/?key=3b83e3cd0aa958682a0a0e43710b624c067bfef60689d8d7c6ecd2f93f0e80cd&ip=" + AddressGetter.getCurrentIpAddress(request) + "&format=json");
+                   } catch (IOException e) {
+                   }
+               }
            List<JSONObject> list = null;
            try {
-               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + geoLocation.getCity());
+               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + location.get("cityName"));
                JSONObject obj = list.get(0);
                obj.put("status", "selected");
                JSONArray arr = new JSONArray("["+obj.toString()+"]");
@@ -302,5 +309,52 @@ public class SearchService {
             }
         }
         return null;
+    }
+
+    public List<String> getTopHolidaysDestinations() throws IOException{
+
+            String excelFilePath = System.getProperty("user.dir") + "\\src\\main\\resources\\Top_Holiday_Destinations.xlsx";
+            FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
+
+            List<String> list = new ArrayList<>();
+            Workbook workbook = new XSSFWorkbook(inputStream);
+            Sheet firstSheet = workbook.getSheetAt(0);
+            Iterator<Row> iterator = firstSheet.iterator();
+
+            while (iterator.hasNext()) {
+                Row nextRow = iterator.next();
+                Iterator<Cell> cellIterator = nextRow.cellIterator();
+
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+
+                    switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_STRING:
+                            list.add(cell.getStringCellValue());
+                            break;
+                    }
+                }
+            }
+
+            workbook.close();
+            inputStream.close();
+
+            return validateTopHolidaysDestinations(list);
+        }
+
+    private List<String> validateTopHolidaysDestinations(List<String> destinations){
+
+        List<String> cities = new ArrayList<>();
+        for (int i = 5; i < destinations.size(); i+=3) {
+            cities.add(destinations.get(i));
+        }
+        Random random = new Random();
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < 23; i++) {
+            int index = random.nextInt(cities.size());
+            result.add(cities.get(index));
+            cities.remove(index);
+        }
+        return result;
     }
 }

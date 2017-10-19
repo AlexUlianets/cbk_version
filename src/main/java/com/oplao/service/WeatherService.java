@@ -484,7 +484,7 @@ public class WeatherService {
         result.put("windMph",  currentConditions.get("windspeedMiles"));
         result.put("windMs", (int)Math.round(parseInt(currentConditions.get("windspeedKmph"))*0.27777777777778));
         result.put("direction", currentConditions.get("winddir16Point"));
-        result.put("windDegree", currentConditions.get("winddirDegree"));
+        result.put("windDegree", parseInt(currentConditions.get("winddirDegree"))+180);
         result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
         result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
@@ -834,7 +834,7 @@ public class WeatherService {
                 dayMap.put("tempF", elem.get("tempF"));
                 dayMap.put("feelsLikeC", elem.get("FeelsLikeC"));
                 dayMap.put("feelsLikeF", elem.get("FeelsLikeF"));
-                dayMap.put("precipChance", elem.get("chanceofrain"));
+                dayMap.put("precipChance", pastWeather?"0":elem.get("chanceofrain"));
                 dayMap.put("precipMM", elem.get("precipMM"));
                 dayMap.put("precipInch", new BigDecimal(parseDouble(elem.get("precipMM")) * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue());
                 dayMap.put("windMph", elem.get("windspeedMiles"));
