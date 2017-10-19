@@ -20,7 +20,8 @@ public class Index {
                 "/seven-days",
                 "/ten-days",
                 "/fourteen-days",
-                "/hour-by-hour"
+                "/hour-by-hour",
+                "/about"
         })
         public String index() {
             return "forward:/index.html";
