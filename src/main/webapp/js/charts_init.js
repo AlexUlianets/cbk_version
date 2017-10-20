@@ -331,8 +331,15 @@ function readyGet(response, responseYear, type, page) {
 )
     -4;
     $(function () {
+        var zoomVar='';
+        if ($(document).width() <= 700) {
+            zoomVar='';
+        } else {
+            zoomVar='xy';
+        }
+
         $('#weatherThree').highcharts({
-            chart: {zoomType: 'xy', marginLeft: 60, marginRight: 60},
+            chart: {zoomType: zoomVar, marginLeft: 60, marginRight: 60},
             title: {text: 'Weather for 3 days'},
             xAxis: [{
                 type: 'datetime',
@@ -412,7 +419,7 @@ function readyGet(response, responseYear, type, page) {
             }]
         });
         $('#weatherFive').highcharts({
-            chart: {zoomType: 'xy', marginLeft: 60, marginRight: 60},
+            chart: {zoomType: zoomVar, marginLeft: 60, marginRight: 60},
             title: {text: 'Weather for 5 days'},
             xAxis: [{
                 type: 'datetime',
@@ -492,7 +499,7 @@ function readyGet(response, responseYear, type, page) {
             }]
         });
         $('#weatherSeven').highcharts({
-            chart: {zoomType: 'xy', marginLeft: 60, marginRight: 60},
+            chart: {zoomType: zoomVar, marginLeft: 60, marginRight: 60},
             title: {text: 'Weather for 7 days'},
             xAxis: [{
                 type: 'datetime',
@@ -566,7 +573,7 @@ function readyGet(response, responseYear, type, page) {
             }]
         });
         $('#weatherFourteen').highcharts({
-            chart: {zoomType: 'xy', marginLeft: 60, marginRight: 60},
+            chart: {zoomType: zoomVar, marginLeft: 60, marginRight: 60},
             title: {text: 'Weather for 14 days'},
             xAxis: [{
                 type: 'datetime',
@@ -640,7 +647,7 @@ function readyGet(response, responseYear, type, page) {
             }]
         });
         $('#weatherTen').highcharts({
-            chart: {zoomType: 'xy', marginLeft: 60, marginRight: 60},
+            chart: {zoomType: zoomVar, marginLeft: 60, marginRight: 60},
             title: {text: 'Weather for 10 days'},
             xAxis: [{
                 type: 'datetime',
@@ -714,7 +721,7 @@ function readyGet(response, responseYear, type, page) {
             }]
         });
         $('#weatherDetailed').highcharts({
-            chart: {zoomType: 'xy', marginLeft: 60, marginRight: 60},
+            chart: {zoomType: zoomVar, marginLeft: 60, marginRight: 60},
             title: {text: 'Weather for Detailed day'},
             xAxis: [{
                 type: 'datetime',
@@ -789,7 +796,7 @@ function readyGet(response, responseYear, type, page) {
         });
         $('#weatherYear').highcharts({
             chart: {
-                zoomType: 'xy',
+                zoomType: zoomVar,
                 margin: 60,
                 backgroundColor: '#01CAA8',
                 style: {fontFamily: "'Unica One', sans-serif"},
