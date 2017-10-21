@@ -44,7 +44,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $rootScope.temperature = msg;
                 $rootScope.get_recent_cities_tabs_func();
                 loadScript();
-                console.log(msg);
 
             })
         }
@@ -165,20 +164,20 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               },{   name: 'fourteen-days',
                   files: ['assets/js/universal-days.js']
               },{   name: 'front-page',
-                  files: ['assets/js/universal-days.js']
+                  files: ['assets/js/front-page.js']
               }]
           });
 
           $stateProvider
               .state('front-page', {
-                  url: "/weather",
+                  url: "/",
                   params:{
                       "graph": "",
                       "day": "front-page"
                   },
                   views: {
                       "": {
-                          templateUrl: "templates/front-page.html"
+                          templateUrl: "templates/html/front-page.html"
                       }
                   },
                   resolve: {

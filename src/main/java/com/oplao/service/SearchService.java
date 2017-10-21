@@ -279,8 +279,8 @@ public class SearchService {
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         JSONObject jsonObject = null;
         try {
-            jsonObject = WeatherService.readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + cityName);
-        }catch (IOException e){
+            jsonObject = WeatherService.readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat") + "," + String.valueOf(city.get("lng"))));
+        } catch (IOException e) {
             e.printStackTrace();
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
@@ -291,6 +291,7 @@ public class SearchService {
         result.put("tempF", currentCondition.get("temp_F"));
         result.put("city", cityName.replace("%20", " "));
         result.put("countryCode", city.getString("countryCode"));
+        result.put("countryName", city.getString("countryName"));
         result.put("geonameId", city.getInt("geonameId"));
         result.put("hours", dateTime.getHourOfDay());
         return result;
@@ -311,7 +312,7 @@ public class SearchService {
         return null;
     }
 
-    public List<String> getTopHolidaysDestinations() throws IOException{
+    public List<String> getTopHolidaysDestinations(int numOfCities) throws IOException{
 
             String excelFilePath = System.getProperty("user.dir") + "\\src\\main\\resources\\Top_Holiday_Destinations.xlsx";
             FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
@@ -339,10 +340,10 @@ public class SearchService {
             workbook.close();
             inputStream.close();
 
-            return validateTopHolidaysDestinations(list);
+            return validateTopHolidaysDestinations(list, numOfCities);
         }
 
-    private List<String> validateTopHolidaysDestinations(List<String> destinations){
+    private List<String> validateTopHolidaysDestinations(List<String> destinations, int numOfCities){
 
         List<String> cities = new ArrayList<>();
         for (int i = 5; i < destinations.size(); i+=3) {
@@ -350,11 +351,78 @@ public class SearchService {
         }
         Random random = new Random();
         List<String> result = new ArrayList<>();
-        for (int i = 0; i < 23; i++) {
+        for (int i = 0; i < numOfCities; i++) {
             int index = random.nextInt(cities.size());
             result.add(cities.get(index));
             cities.remove(index);
         }
         return result;
+    }
+
+    public List<HashMap> getCountryWeather(JSONObject city) {
+
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&countryCode=" + String.valueOf(city.get("countryCode")) + "&featureCode=PPLA");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        DateTime dateTime = new DateTime(DateTimeZone.forID((String) ((JSONObject) city.get("timezone")).get("timeZoneId")));
+
+        return jsonArray.length() >= 6 ? validateCountryWeather(jsonArray, dateTime, city, 6) : validateCountryWeather(jsonArray, dateTime, city, jsonArray.length());
+
+    }
+
+    private List<HashMap> validateCountryWeather(JSONArray jsonArray, DateTime dateTime, JSONObject city, int numOfCities) {
+
+        List<HashMap> result = new ArrayList<>();
+        for (int i = 0; i < numOfCities; i++) {
+            HashMap map = (HashMap) jsonArray.getJSONObject(i).toMap();
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
+                    false, true, 6, String.valueOf(map.get("lat")), String.valueOf(map.get("lng")));
+            HashMap weather = apiWeatherFinder.findWeatherByDate();
+            HashMap currentConditions = ((HashMap) ((ArrayList) weather.get("current_condition")).get(0));
+            map.put("temp_C", currentConditions.get("temp_C"));
+            map.put("temp_F", currentConditions.get("temp_F"));
+            map.put("weatherCode", WeatherService.EXT_STATES.get(Integer.parseInt("" + (currentConditions.get("weatherCode")))));
+            map.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
+            result.add(map);
+        }
+        return result;
+    }
+
+    public List<HashMap> getHolidaysWeather(JSONObject city) {
+        List<String> cities = new ArrayList<>();
+        try {
+            cities = getTopHolidaysDestinations(6);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        List<HashMap> result = new ArrayList<>();
+        for (int i = 0; i < cities.size(); i++) {
+            HashMap hm = new HashMap();
+            DateTime dateTime = new DateTime(DateTimeZone.forID((String) ((JSONObject) city.get("timezone")).get("timeZoneId")));
+            try {
+                hm = findSearchOccurences(cities.get(i)).get(0);
+            }catch (IndexOutOfBoundsException e){
+                System.out.println(findSearchOccurences(cities.get(i)));
+            }
+            APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
+                    false, true, 6, String.valueOf(hm.get("lat")), String.valueOf(hm.get("lng")));
+            HashMap weather = apiWeatherFinder.findWeatherByDate();
+            HashMap currentConditions = ((HashMap) ((ArrayList) weather.get("current_condition")).get(0));
+            hm.put("temp_C", currentConditions.get("temp_C"));
+            hm.put("temp_F", currentConditions.get("temp_F"));
+            hm.put("weatherCode", WeatherService.EXT_STATES.get(Integer.parseInt("" + (currentConditions.get("weatherCode")))));
+            hm.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
+            result.add(hm);
+        }
+
+
+
+        return result;
+
     }
 }

@@ -1,16 +1,52 @@
 var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
-app.controller('front-pageCtrl', ['$scope', '$http', function($scope, $http) {
+app.controller('front-pageCtrl', ['$scope', '$http','$rootScope', function($scope, $http, $rootScope) {
 
-    $scope.get_api_weather = function(){
+
+    $http.get("get_top_holidays_destinations").success(function (data) {
+        $scope.top_holidays_destinations = data;
+    })
+
+    $http.get("get_holidays_weather").success(function (data) {
+        $scope.holidays_weather = data;
+    })
+
+    $http.get("get_country_weather").success(function (data) {
+        $scope.country_weather = data;
+    })
+
+    var sendingTableRequest = {
+        method: 'GET',
+        url: '/get_table_data_for_days',
+        params: {
+            numOfHours:1,
+            numOfDays:3,
+            pastWeather:false
+        },
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }
+    $http(sendingTableRequest).success(function (data) {
+        $scope.header_tabs = data;
+    })
+
+    $http.get("get_recent_cities_tabs").success(function (data) {
+        $scope.recent_tabs = data;
+    })
+
+    $scope.select_holiday_destination = function (index) {
+        var destination = $(".destination"+index).text();
+
         $.ajax({
             method: "POST",
-            url: "/get_api_weather"
+            url: "/find_occurences/"+destination
         }).done(function( msg ) {
-            $scope.temperature = msg;
-            $scope.get_recent_cities_tabs_func();
-            loadScript();
-            console.log(msg)
-        })
+            if(msg.length>0){
+                $rootScope.selectCity(msg[0].geonameId);
+            }else{
+                alert("Requested city is not found");
+            }
+        });
     }
 }]);
