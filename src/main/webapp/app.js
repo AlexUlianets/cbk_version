@@ -161,6 +161,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/hour-by-hour.js']
               },{   name: 'fourteen-days',
                   files: ['assets/js/universal-days.js']
+              },{   name: 'about',
+                  files: ['assets/js/universal-days.js']
               }]
           });
 
@@ -340,6 +342,19 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         resolve: {
                             loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                                 return $ocLazyLoad.load('fourteen-days');
+                            }]
+                        }
+                    }).state('about', {
+                        url: "/about",
+
+                        views: {
+                            "": {
+                                templateUrl: "templates/html/about.html"
+                            }
+                        },
+                        resolve: {
+                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                return $ocLazyLoad.load('about');
                             }]
                         }
                     });
