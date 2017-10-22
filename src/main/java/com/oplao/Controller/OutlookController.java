@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -109,5 +110,27 @@ public class OutlookController {
             }
 
        return HttpStatus.OK;
+    }
+
+    @RequestMapping("get_top_holidays_destinations")
+    @ResponseBody
+    public List<String> getTopHolidaysDestinations() throws IOException {
+
+        return searchService.getTopHolidaysDestinations(23);
+
+
+    }
+
+    @RequestMapping("get_country_weather")
+    @ResponseBody
+    public List<HashMap> getCountryWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        return searchService.getCountryWeather(searchService.findSelectedCity(request, response, currentCookieValue));
+    }
+    @RequestMapping("get_holidays_weather")
+    @ResponseBody
+    public List<HashMap> getHolidaysWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        return searchService.getHolidaysWeather(searchService.findSelectedCity(request, response, currentCookieValue));
     }
     }

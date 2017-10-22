@@ -25,7 +25,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $rootScope.$apply(function(){
                     $rootScope.get_recent_cities_tabs = msg;
                 });
-                var ln = $('.favorite-location .container')[0]['children'].length;
+                if($('.favorite-location .container')[0]!= undefined) {
+                    var ln = $('.favorite-location .container')[0]['children'].length;
+                }
                 if ($(window).width() < 500) {
                     $('#top-page').animate({height: (300+((ln) * 50))+'px'});
                 }
@@ -163,12 +165,31 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/universal-days.js']
               },{   name: 'about',
                   files: ['assets/js/universal-days.js']
+              },{   name: 'front-page',
+                  files: ['assets/js/front-page.js']
               }]
           });
 
           $stateProvider
-              .state('outlook', {
+              .state('front-page', {
                   url: "/",
+                  params:{
+                      "graph": "",
+                      "day": "front-page"
+                  },
+                  views: {
+                      "": {
+                          templateUrl: "templates/html/front-page.html"
+                      }
+                  },
+                  resolve: {
+                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                          return $ocLazyLoad.load('front-page');
+                      }]
+                  }
+              })
+              .state('outlook', {
+                  url: "/outlook",
                   params:{
                       "graph": "weatherTen",
                       "day": "Outlook"
@@ -358,6 +379,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     });
-        $locationProvider.html5Mode(true)
+        $locationProvider.html5Mode({
+            enabled: true,
+            rewriteLinks: false
+        })
   }]);
 
