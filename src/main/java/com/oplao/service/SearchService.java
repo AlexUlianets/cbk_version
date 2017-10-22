@@ -425,4 +425,24 @@ public class SearchService {
         return result;
 
     }
+
+    public String generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+
+        String city = location.substring(0, location.indexOf('_'));
+        String countryCode = location.substring(location.indexOf('_')+1, location.length());
+
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts="+city+"&countryCode="+countryCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject obj = jsonArray.getJSONObject(0);
+        if(obj != null){
+            selectCity(obj.getInt("geonameId"), currentCookieValue, request, response);
+        }
+
+        return null;
+    }
 }

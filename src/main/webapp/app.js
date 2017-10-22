@@ -161,7 +161,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/not-universal-days.js']
               },{   name: 'hour-by-hour',
                   files: ['assets/js/hour-by-hour.js']
-              },{   name: 'fourteen-days',
+              },{   name: '14',
                   files: ['assets/js/universal-days.js']
               },{   name: 'about',
                   files: ['assets/js/universal-days.js']
@@ -172,7 +172,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
           $stateProvider
               .state('front-page', {
-                  url: "/",
+                  url: "/en/weather",
                   params:{
                       "graph": "",
                       "day": "front-page"
@@ -189,7 +189,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
               .state('outlook', {
-                  url: "/outlook",
+                  url: "/en/weather/outlook",
                   params:{
                       "graph": "weatherTen",
                       "day": "Outlook"
@@ -206,7 +206,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
               .state('today', {
-                  url: "/today",
+                  url: "en/forecast/today",
                   params:{
                       "graph" : "weatherDetailed",
                       "day": "Today"
@@ -223,7 +223,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
                 .state('tomorrow', {
-                        url: "/tomorrow",
+                        url: "en/forecast/tomorrow",
                         params:{
                             "graph" : "none",
                             "day": "Tomorrow"
@@ -239,7 +239,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }) .state('past-weather', {
-                        url: "/past-weather",
+                        url: "en/weather/history3",
                           params:{
                               "graph" : "none",
                               "day": "Past weather"
@@ -255,7 +255,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('three-days', {
-                        url: "/three-days",
+                        url: "en/forecast/3",
                         params:{
                             "index":3,
                             "tabClass" : "tabs tabs-three tb-tabs",
@@ -274,7 +274,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('seven-days', {
-                        url: "/seven-days",
+                        url: "en/forecast/7",
                         params:{
                           "index":7,
                            "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
@@ -293,7 +293,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('five-days', {
-                        url: "/five-days",
+                        url: "en/forecast/5",
                         params:{
                           "index":5,
                             "page": "five-days",
@@ -312,7 +312,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('ten-days', {
-                        url: "/ten-days",
+                        url: "/en/forecast/10",
                         params:{
                           "index":10,
                             "page": "ten-days",
@@ -330,7 +330,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('hour-by-hour', {
-                        url: "/hour-by-hour",
+                        url: "/en/forecast/hour-by-hour3",
                         params:{
                           "index":7,
                             "day": "Hour by hour"
@@ -346,8 +346,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                                 return $ocLazyLoad.load('hour-by-hour');
                             }]
                         }
-                    }).state('fourteen-days', {
-                        url: "/fourteen-days",
+                    }).state('14', {
+                        url: "en/forecast/14",
                           params:{
                               "index":14,
                               "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
@@ -366,7 +366,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('about', {
-                        url: "/about",
+                        url: "/en/about",
 
                         views: {
                             "": {
