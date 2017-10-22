@@ -18,18 +18,37 @@ public class APIWeatherFinder {
     boolean weatherForPast;
     boolean currentConditions;
     int hourDifference;
+    String lat;
+    String lng;
 
-    public APIWeatherFinder(DateTime dateTime, String city, boolean weatherForPast, boolean currentConditions, int hourDifference) {
+    public APIWeatherFinder(DateTime dateTime, String city, boolean weatherForPast, boolean currentConditions, int hourDifference, String lat, String lng) {
         this.dateTime = dateTime;
         this.city = city;
         this.weatherForPast = weatherForPast;
         this.currentConditions = currentConditions;
         this.hourDifference = hourDifference;
+        this.lat = lat;
+        this.lng = lng;
     }
     public APIWeatherFinder(){
 
     }
 
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
 
     public static String getBaseUrl() {
         return BASE_URL;
@@ -136,7 +155,7 @@ class UrlBuilder{
                  +month + "-" + day
         );
 
-        builder.append("&q=" + concatMultiWordCity(finder.getCity()));
+        builder.append("&q=" + finder.getLat()+ "," + finder.getLng());
 
 
 
