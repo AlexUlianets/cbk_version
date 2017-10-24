@@ -1,6 +1,6 @@
  <div class="container section-margin-top" ng-controller="past-weatherCtrl">
         <div class="wrapper">
-            <div class="page-content" ng-init="sendRequest(3,1,false)">
+            <div class="page-content">
                 <section id="hour-by-hour-top" class="past-weather">
                     <h2>Hour by hour weather forecast</h2>
                     <div class="datepicker-wrap dr-wrapper">
@@ -24,7 +24,7 @@
                         <nav role='navigation' class="transformer-tabs date-tabs ht-nav tb-top-nav">
                             <ul>
                                 <li><a id = "hr-selector1" ng-click="refreshTableWithHours(1)">1 hour</a></li>
-                                <li><a id = "hr-selector3" ng-click="refreshTableWithHours(3)" class="active">3 hour</a></li>
+                                <li><a id = "hr-selector3" ng-click="refreshTableWithHours(3)">3 hour</a></li>
                             </ul>
                         </nav>
                         <div id="h-tab-1" class="tab-hour-content">
