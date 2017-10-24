@@ -18,12 +18,12 @@ public class AddressGetter {
             ip = request.getRemoteAddr();
         }
 
-//        if(ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")){
+        if(ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")){
             return "94.126.240.2";
-//        }
-//        else{
-//            return ip;
-//        }
+        }
+        else{
+            return ip;
+        }
 
     }
     }
