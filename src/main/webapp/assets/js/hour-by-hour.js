@@ -10,25 +10,32 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
     $scope.selectedTab = 1;
     $scope.selectedTabGraph = 1;
     $scope.tabClass = $scope.$state.params.tabClass;
-    $scope.hrs = 3;
+    $scope.hrs = $scope.$state.params.hrs
+    if($scope.hrs === 1){
+        document.getElementById('hr-selector3').className="";
+        document.getElementById('hr-selector1').className="active";
+        document.getElementById('h-tab-2').className = "tab-hour-content";
+        document.getElementById('h-tab-1').className = document.getElementById('h-tab-1').className+ " active";
 
-
+    }else {
+        document.getElementById('h-tab-1').className = "tab-hour-content";
+        document.getElementById('h-tab-2').className = document.getElementById('h-tab-2').className+ " active";
+        document.getElementById('hr-selector1').className="";
+        document.getElementById('hr-selector3').className="active";
+    }
+    var path = window.location.pathname;
+    var url = path.split('/');
+    console.log(url)
     $scope.refreshTableWithHours = function (hours) {
         $scope.hrs = hours;
-        if($scope.hrs === 1){
-            document.getElementById('hr-selector3').className="";
-            document.getElementById('hr-selector1').className="active";
-            document.getElementById('h-tab-2').className = "tab-hour-content";
-            document.getElementById('h-tab-1').className = document.getElementById('h-tab-1').className+ " active";
-
-        }else {
-            document.getElementById('h-tab-1').className = "tab-hour-content";
-            document.getElementById('h-tab-2').className = document.getElementById('h-tab-2').className+ " active";
-            document.getElementById('hr-selector1').className="";
-            document.getElementById('hr-selector3').className="active";
+        var path = window.location.pathname;
+        var url = path.split('/');
+        console.log(url)
+        if(!path.includes('_')){
+            window.location.pathname = path.replace(path.charAt(path.length-2), hours);
+        }else{
+             window.location.pathname = path.replace(path.charAt(25), hours);
         }
-
-        $scope.getData();
     };
     $scope.getData = function () {
 

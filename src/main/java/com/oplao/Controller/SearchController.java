@@ -26,12 +26,19 @@ public class SearchController {
         return searchService.findSearchOccurences(searchRequest);
       }
 
+    @RequestMapping(value = "get_selected_city")
+    @ResponseBody
+    public String getSelectedCity( @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue) {
+
+        return searchService.getSelectedCity(currentCookieValue);
+      }
+
+
     @RequestMapping(value = "/select_city/{geonameId}", method = RequestMethod.POST)
     @ResponseBody
-    public HttpStatus selectCity(@PathVariable("geonameId") int geonameId, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request,
-                               HttpServletResponse response) {
+    public HashMap selectCity(@PathVariable("geonameId") int geonameId, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request,
+                              HttpServletResponse response) {
         return searchService.selectCity(geonameId, currentCookieValue, request, response);
 
     }
-
 }

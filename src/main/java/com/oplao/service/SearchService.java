@@ -68,7 +68,7 @@ public class SearchService {
     }
 
 
-    public HttpStatus selectCity(int geonameId, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public HashMap selectCity(int geonameId, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
         List<JSONObject> list = null;
         JSONObject city = null;
         try{
@@ -100,13 +100,13 @@ public class SearchService {
                 c.setPath("/");
                 response.addCookie(c);
 
-                return HttpStatus.OK;
+                return (HashMap)city.toMap();
             }
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return HttpStatus.OK;
+        return (HashMap)city.toMap();
     }
 
 
@@ -257,17 +257,19 @@ public class SearchService {
    }
 
 
-    public List<HashMap> createRecentCitiesTabs(String currentCookieValue){
+    public List<HashMap> createRecentCitiesTabs(String currentCookieValue) {
 
-       JSONArray array = new JSONArray(currentCookieValue);
+        if (!currentCookieValue.equals("")) {
+            JSONArray array = new JSONArray(currentCookieValue);
 
-       ArrayList<HashMap> data = new ArrayList<>();
-        for (int i = 0; i < array.length(); i++) {
-            data.add(getRecentCityInfo(array.getJSONObject(i)));
+            ArrayList<HashMap> data = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                data.add(getRecentCityInfo(array.getJSONObject(i)));
+            }
+            return data;
         }
-       return data;
+        return null;
     }
-
 
     private HashMap getRecentCityInfo(JSONObject city){
 
@@ -424,5 +426,48 @@ public class SearchService {
 
         return result;
 
+    }
+
+    public String generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+
+        if(!location.equals("undefined")) {
+            String city = location.substring(0, location.indexOf('_'));
+            String countryCode = location.substring(location.indexOf('_') + 1, location.length());
+
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city + "&countryCode=" + countryCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            JSONObject obj = null;
+            if (jsonArray != null) {
+                if (!jsonArray.toString().equals("[]")) {
+                    obj = jsonArray.getJSONObject(0);
+
+                } else {
+                    obj = findByCity(city.substring(0, city.length() - 1)).get(0);
+                }
+            }
+
+            if (obj != null) {
+                selectCity(obj.getInt("geonameId"), currentCookieValue, request, response);
+            }
+        }
+
+        return null;
+    }
+
+    public String getSelectedCity(String currentCookieValue){
+        JSONArray array = new JSONArray(currentCookieValue);
+        if(currentCookieValue!="") {
+            for (int i = 0; i < array.length(); i++) {
+                if (array.getJSONObject(i).getString("status").equals("selected")) {
+
+                    return array.getJSONObject(i).getString("asciiName")+ "_" + array.getJSONObject(i).getString("countryCode");
+                }
+            }
+        }
+        return null;
     }
 }
