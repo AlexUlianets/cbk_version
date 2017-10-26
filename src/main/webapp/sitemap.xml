@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://localhost:8080/en/weather/history3/Minsk_BY</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+        
+    <lastmod>Fri Oct 27 01:38:45 MSK 2017</lastmod></url>
+    <url>
+        <loc>https://localhost:8080/en/weather/history3/Amsterdam_NL</loc>
+        
+        <priority>0.5</priority>
+        <lastmod>Fri Oct 27 01:45:53 MSK 2017</lastmod></url>
+    <url>
+        <loc>https://localhost:8080/en/weather/history3/Lviv_UA</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.5</priority>
+        
+    <lastmod>Fri Oct 27 01:36:51 MSK 2017</lastmod></url>
+<url><loc>https://localhost:8080/en/weather/Amsterdam_NL</loc><changefreq>weekly</changefreq><priority>0.5</priority><lastmod>Fri Oct 27 01:46:17 MSK 2017</lastmod></url><url><loc>https://localhost:8080/en/weather/outlook/Amsterdam_NL</loc><changefreq>weekly</changefreq><priority>0.5</priority><lastmod>Fri Oct 27 01:43:30 MSK 2017</lastmod></url><url><loc>https://localhost:8080/en/weather/</loc><changefreq>weekly</changefreq><priority>0.5</priority><lastmod>Fri Oct 27 01:46:45 MSK 2017</lastmod></url></urlset>

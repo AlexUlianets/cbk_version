@@ -84,9 +84,20 @@ public class WeatherService {
         EXT_STATES.put(395, WeatherStateExt.HeavySnowStorm);
     }
 
-    public List<HashMap> getYearSummary(JSONObject city){
+    public static String getWindSpeedColor(int speed) {
+        if (speed >= 54) {
+            return "#660000";
+        } else if (speed >= 35) {
+            return "#970000";
+        } else if (speed >= 18) {
+            return "#DBA000";
+        } else {
+            return "";
+        }
+    }
 
-        String cityName = validateCityName((String)city.get("asciiName"));
+
+    public List<HashMap> getYearSummary(JSONObject city){
 
         JSONObject jsonObject = null;
 
@@ -124,9 +135,6 @@ public class WeatherService {
 
 
     public HashMap<Integer, HashMap<String,HashMap>> getWeeklyWeatherReport(JSONObject city, int numOfDays){
-
-        String cityName = validateCityName((String)city.get("asciiName"));
-
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
@@ -198,6 +206,10 @@ public class WeatherService {
         double precipNightIn = new BigDecimal(precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         String winddirDay = "" + hourly.get(14).get("winddir16Point");
         String winddirNight = "" + hourly.get(2).get("winddir16Point");
+        String windSpeedColorDay = getWindSpeedColor(avgWindKmhDay);
+        String windSpeedColorNight = getWindSpeedColor(avgWindKmhNight);
+        String windGustColorDay = getWindSpeedColor(maxGustKmhDay);
+        String windGustColorNight = getWindSpeedColor(maxGustKmhNight);
 
 
         HashMap<String, HashMap> result = new HashMap<>();
@@ -229,6 +241,8 @@ public class WeatherService {
         dayMap.put("windDegree", windDegreeDay);
         dayMap.put("weatherCode", dayWeatherCode);
         dayMap.put("winddir", winddirDay);
+        dayMap.put("windspeedColor", windSpeedColorDay);
+        dayMap.put("windgustColor", windGustColorDay);
 
         HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
@@ -248,6 +262,8 @@ public class WeatherService {
         nightMap.put("windDegree", windDegreeNight);
         nightMap.put("weatherCode", nightWeatherCode);
         nightMap.put("winddir", winddirNight);
+        nightMap.put("windspeedColor", windSpeedColorNight);
+        nightMap.put("windgustColor", windGustColorNight);
 
         result.put("wholeDay", wholeDayMap);
         result.put("Day", dayMap);
@@ -405,8 +421,6 @@ public class WeatherService {
         return cityName;
     }
     public HashMap getAstronomy(JSONObject city){
-        String cityName = validateCityName((String)city.get("asciiName"));
-
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         JSONObject jsonObject = null;
@@ -451,7 +465,7 @@ public class WeatherService {
 
         public HashMap getRemoteData(JSONObject city){
 
-            String cityName = validateCityName((String)city.get("asciiName"));
+            String cityName = validateCityName((String)city.get("name"));
             DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
             JSONObject jsonObject = null;
         try {
@@ -590,7 +604,7 @@ public class WeatherService {
 
     public List getFiveYearsAverage(JSONObject city){
 
-        String cityName = validateCityName((String)city.get("asciiName"));
+        String cityName = validateCityName((String)city.get("name"));
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
@@ -787,7 +801,7 @@ public class WeatherService {
 
     public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
 
-        String cityName = validateCityName((String)city.get("asciiName"));
+        String cityName = validateCityName((String)city.get("name"));
         DateTime dateTime = null;
         if(date == null){
            dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
@@ -831,6 +845,8 @@ public class WeatherService {
                 HashMap<String, Object> dayMap = new HashMap<>();
                 HashMap elem = (HashMap)hourly.get(j);
 
+                String windSpeedColorDay = getWindSpeedColor(parseInt(elem.get("windspeedKmph")));
+                String windGustColorDay = getWindSpeedColor(parseInt(elem.get("WindGustKmph")));
                 dayMap.put("time", DateConstants.convertTimeToAmPm(parseInt(elem.get("time"))));
                 dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
                 dayMap.put("tempC", elem.get("tempC"));
@@ -850,6 +866,8 @@ public class WeatherService {
                 dayMap.put("humidity", elem.get("humidity"));
                 dayMap.put("pressurehPa", elem.get("pressure"));
                 dayMap.put("pressureInch", new BigDecimal(parseInt(elem.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+                dayMap.put("windspeedColor", windSpeedColorDay);
+                dayMap.put("windgustColor", windGustColorDay);
                 dayMap.put("isDay", parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800);
                 oneWholeDayData.add(dayMap);
             }
@@ -868,7 +886,7 @@ public class WeatherService {
 
     public List getTableDataForDays(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
 
-        String cityName = validateCityName((String)city.get("asciiName"));
+        String cityName = validateCityName((String)city.get("name"));
         DateTime dateTime = null;
         if(date == null){
             dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
@@ -910,6 +928,8 @@ public class WeatherService {
                 HashMap<String, Object> dayMap = new HashMap<>();
                 HashMap elem = (HashMap)hourly.get(dayTimesHours[dayTime]);
 
+                String windSpeedColorDay = getWindSpeedColor(parseInt(elem.get("windspeedKmph")));
+                String windGustColorDay = getWindSpeedColor(parseInt(elem.get("WindGustKmph")));
                 dayMap.put("time", dayTimes[dayTime]);
                 dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
                 dayMap.put("tempC", elem.get("tempC"));
@@ -928,6 +948,8 @@ public class WeatherService {
                 dayMap.put("pressurehPa", elem.get("pressure"));
                 dayMap.put("pressureInch", new BigDecimal(parseInt(elem.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
                 dayMap.put("isDay", dayTimesHours[dayTime] == 14 || dayTimesHours[dayTime] == 8);
+                dayMap.put("windspeedColor", windSpeedColorDay);
+                dayMap.put("windgustColor", windGustColorDay);
                 oneWholeDayData.add(dayMap);
             }
             results.add(oneWholeDayData);

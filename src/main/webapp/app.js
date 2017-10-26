@@ -98,18 +98,18 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 var url = window.location.pathname.split('/');
                 console.log(msg);
 
-                $rootScope.selectedCity = msg.asciiName+"_"+msg.countryCode;
+                $rootScope.selectedCity = msg.name+"_"+msg.countryCode;
                 if(url.length>2){
                     if(window.location.pathname.includes('_')){
-                        url[url.length-1]=url[url.length-1].replace(url[url.length-1], msg.asciiName+"_"+msg.countryCode);
+                        url[url.length-1]=url[url.length-1].replace(url[url.length-1], msg.name+"_"+msg.countryCode);
                         window.location.pathname = url.join('/').replace('//','/')
                      }else{
-                        url.push(msg.asciiName+"_"+msg.countryCode)
+                        url.push(msg.name+"_"+msg.countryCode)
                         console.log(url.join('/').replace('//','/',1))
                         window.location.pathname = url.join('/').replace('//','/');
                     }
                 }else{
-                    window.location.pathname = "/en/weather/"+msg.asciiName+"_"+msg.countryCode;
+                    window.location.pathname = "/en/weather/"+msg.name+"_"+msg.countryCode;
                 }
                 $('html, body').animate({
                     scrollTop: $('body').offset().top
