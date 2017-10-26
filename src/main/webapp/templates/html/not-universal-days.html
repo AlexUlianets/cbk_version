@@ -109,11 +109,11 @@
                                         </div>
                                         <div class="tb-wind">
                                             <i class="sprite-wind-tb" style="    -ms-transform: rotate({{day.windDegree + 'deg'}});    -webkit-transform: rotate({{day.windDegree + 'deg'}});    transform: rotate({{day.windDegree + 'deg'}});"></i>
-                                            <div class="tb-count">{{local.typeTemp=='C'?day.windMs:day.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                            <div class="tb-count" style="color:{{day.windspeedColor}}">{{local.typeTemp=='C'?day.windMs:day.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                             <div class="tb-meter">{{day.winddir}}</div>
                                         </div>
                                         <div class="tb-gust">
-                                            <div class="tb-count">{{local.typeTemp=='C'?day.gustMs:day.gustMph}}</div>
+                                            <div class="tb-count" style="color:{{day.windgustColor}}">{{local.typeTemp=='C'?day.gustMs:day.gustMph}}</div>
                                             <div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                         </div>
                                         <div class="tb-pressure">

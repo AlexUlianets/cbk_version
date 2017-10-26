@@ -273,7 +273,7 @@ public class SearchService {
 
     private HashMap getRecentCityInfo(JSONObject city){
 
-        String cityName = city.getString("asciiName");
+        String cityName = city.getString("name");
         if(cityName.contains("'")){
             cityName = cityName.replace("'", "");
         }
@@ -436,7 +436,7 @@ public class SearchService {
 
             JSONArray jsonArray = null;
             try {
-                jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city + "&countryCode=" + countryCode);
+                jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20") + "&countryCode=" + countryCode);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -464,7 +464,7 @@ public class SearchService {
             for (int i = 0; i < array.length(); i++) {
                 if (array.getJSONObject(i).getString("status").equals("selected")) {
 
-                    return array.getJSONObject(i).getString("asciiName")+ "_" + array.getJSONObject(i).getString("countryCode");
+                    return array.getJSONObject(i).getString("name")+ "_" + array.getJSONObject(i).getString("countryCode");
                 }
             }
         }
