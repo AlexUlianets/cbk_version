@@ -212,10 +212,12 @@ public class SearchService {
     }
    private void clearCookies(HttpServletRequest request, HttpServletResponse response){
        for (int i = 0; i < request.getCookies().length; i++) {
+           if(request.getCookies()[i].getName().equals(cookieName)) {
                request.getCookies()[i].setPath("/");
                request.getCookies()[i].setValue("");
                request.getCookies()[i].setMaxAge(0);
                response.addCookie(request.getCookies()[i]);
+           }
        }
    }
 
