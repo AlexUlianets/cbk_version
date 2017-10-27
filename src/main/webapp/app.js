@@ -55,7 +55,23 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             })
         }
         $rootScope.get_api_weather();
+        $rootScope.generate_meta_title = function () {
 
+            var sendingTableRequest = {
+                method: 'GET',
+                url: '/generate_meta_title',
+                params: {
+                    path:location.pathname
+                },
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }}
+
+            $http(sendingTableRequest).success(function (data) {
+                $rootScope.metaData = data;
+            })
+        }
+        $rootScope.generate_meta_title();
         $rootScope.searchHint = function(){
             $('.search-dropdown ul').css({'display': 'none'})
             $('.search-dropdown img').css({'display': 'block'})
@@ -97,7 +113,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             }).done(function( msg ) {
                 var url = window.location.pathname.split('/');
                 console.log(msg);
-
                 $rootScope.selectedCity = msg.name+"_"+msg.countryCode;
                 if(url.length>2){
                     if(window.location.pathname.includes('_')){
@@ -197,7 +212,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   params:{
                       city: {squash: true, value: null},
                       "graph": "",
-                      "day": "front-page"
+                      "day": "front-page",
+                      "pos": "slash"
                   },
                   views: {
                       "": {
@@ -215,7 +231,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   params:{
                       city: {squash: true, value: null},
                       "graph": "",
-                      "day": "front-page"
+                      "day": "front-page",
+                      "pos": "main"
                   },
                   views: {
                       "": {
