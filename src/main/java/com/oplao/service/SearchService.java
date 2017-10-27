@@ -25,6 +25,7 @@ import java.util.*;
 @Service
 public class SearchService {
     public static final String cookieName = "lastCitiesVisited";
+    public static final List<String> cities = Arrays.asList(new String[]{"Hong Kong", " Singapore", " Bangkok", " London", " Macau", " Kuala Lumpur", " Shenzhen", " New York City", " Antalya", " Paris", " Istanbul", " Rome", " Dubai", " Guangzhou", " Phuket", " Mecca", " Pattaya", " Taipei City", " Prague", " Shanghai", " Las Vegas", " Miami", " Barcelona", " Moscow", " Beijing", " Los Angeles", " Budapest", " Vienna", " Amsterdam", " Sofia", " Madrid", " Orlando", " Ho Chi Minh City", " Lima", " Berlin", " Tokyo", " Warsaw", " Chennai", " Cairo", " Nairobi", " Hangzhou", " Milan", " San Francisco", " Buenos Aires", " Venice", " Mexico City", " Dublin", " Seoul", " Mugla", " Mumbai", " Denpasar", " Delhi", " Toronto", " Zhuhai", " St Petersburg", " Burgas", " Sydney", " Djerba", " Munich", " Johannesburg", " Cancun", " Edirne", " Suzhou", " Bucharest", " Punta Cana", " Agra", " Jaipur", " Brussels", " Nice", " Chiang Mai", " Sharm el-Sheikh", " Lisbon", " Porto", " East Province", " Marrakech", " Jakarta", " Manama", " Honolulu", " Vietnam", " Manila", " Guilin", " Auckland", " Siem Reap", " Sousse", " Amman", " Vancouver", " Abu Dhabi", " Kiev", " Doha", " Florence", " Rio de Janeiro", " Melbourne", " Washington D.C.", " Riyadh", " Christchurch", " Frankfurt", " Baku", " Sao Paulo", " Harare", " Kolkata", " Nanjing", " Athens", " Copenhagen", " Edinburgh", " Stockholm", " Oslo", " Oxford", " Cannes", " Helsinki", " Bruges", " Hamburg", " Pisa", " Dubrovnik", " Tallinn", " Granada", " Salzburg", " Bilbao", " Strasbourg", " Reykjavik", " Naples", " Monaco", " Riga", " Liverpool", " Luxembourg City", " Cologne", " Krakow", " Malaga", " Verona", " Thessaloniki", " Zurich", " Seville", " Geneva", " Marseille", " Palma De Mallorca", " Valencia", " Gdansk", " Glasgow", " Mykonos", " Dresden", " Palermo", " Bali", " Crete", " Roatan", " Kathmandu", " Bora Bora", " Cusco", " Corsica", " Lyon", " Bordeaux", " Beaune", " Sorrento", " Hurghada", " Alexandria", " St. Moritz", " Madeira", " Faro", " Utrecht", " Rotterdam", " Goa", " Varanasi", " Rishikesh", " Kyoto", " Osaka", " Kiso Valley", " Hokkaido", " Port Douglas", " Darwin", " Brisbane", " Perth", " Lhasa", " Split", " Budva", " Cape Town", " Vilamendhoo", " Maui", " Hilo", " Victoria", " Costa Del Sol", " Bergen", " Lysefjord", " Whitsundays", " Antigua & Barbuda", " Bathsheba", " Grand Bahama", "  Zermatt", " Hoi An", " Versailles", " Grindelwald", " Cascais", " Sao Miguel", " Luxor", " Bremen", " Larnaca", " Tunisia", " Tel Aviv", " New Orleans", " Grandvalira", " Unawatuna", " Mirissa", "Tenerife"});
     public List<HashMap> findSearchOccurences(String searchRequest){
         List list = null;
         if((Character.isDigit(searchRequest.trim().charAt(0)) || Character.isDigit(searchRequest.trim().charAt(1))) && searchRequest.contains(",")){
@@ -321,42 +322,16 @@ public class SearchService {
         return null;
     }
 
-    public List<String> getTopHolidaysDestinations(int numOfCities) throws IOException{
+    public List<String> getTopHolidaysDestinations(int numOfCities){
 
-            String excelFilePath = System.getProperty("user.dir") + "\\src\\main\\resources\\Top_Holiday_Destinations.xlsx";
-            FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
-
-            List<String> list = new ArrayList<>();
-            Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet firstSheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = firstSheet.iterator();
-
-            while (iterator.hasNext()) {
-                Row nextRow = iterator.next();
-                Iterator<Cell> cellIterator = nextRow.cellIterator();
-
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-
-                    switch (cell.getCellType()) {
-                        case Cell.CELL_TYPE_STRING:
-                            list.add(cell.getStringCellValue());
-                            break;
-                    }
-                }
-            }
-
-            workbook.close();
-            inputStream.close();
-
-            return validateTopHolidaysDestinations(list, numOfCities);
+            return validateTopHolidaysDestinations(cities, numOfCities);
         }
 
     private List<String> validateTopHolidaysDestinations(List<String> destinations, int numOfCities){
 
         List<String> cities = new ArrayList<>();
         for (int i = 5; i < destinations.size(); i+=3) {
-            cities.add(destinations.get(i));
+            cities.add(destinations.get(i).trim());
         }
         Random random = new Random();
         List<String> result = new ArrayList<>();
@@ -403,11 +378,7 @@ public class SearchService {
 
     public List<HashMap> getHolidaysWeather(JSONObject city) {
         List<String> cities = new ArrayList<>();
-        try {
             cities = getTopHolidaysDestinations(6);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         List<HashMap> result = new ArrayList<>();
         for (int i = 0; i < cities.size(); i++) {
