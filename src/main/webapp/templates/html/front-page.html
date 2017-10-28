@@ -13,8 +13,8 @@
 						max <em>{{local.typeTemp=='C'?elem[1].maxtempC:elem[1].maxtempF}}° <span>{{local.typeTemp}}</span></em>
 					</div>
 					<!-- <img src="images/svg-icons/cloud-sm.svg" alt=""> -->
-					<img ng-src="svg/wicons_svg/{{elem[1].weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem[1].isDay== false ">
-					<img ng-src="svg/wicons_svg/{{elem[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem[1].isDay== true ">
+					<img class="green_tabs_header_icon" ng-src="svg/wicons_svg/{{elem[1].weatherCode}}_night.svg" style="   text-align: center;    margin: auto;" ng-if="elem[1].isDay== false ">
+					<img class="green_tabs_header_icon" ng-src="svg/wicons_svg/{{elem[1].weatherCode}}_day.svg" style="    text-align: center;    margin: auto;" ng-if="elem[1].isDay== true ">
 				</div>
 			</div>
 		</div>

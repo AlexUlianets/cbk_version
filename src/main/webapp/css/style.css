@@ -2199,6 +2199,10 @@ ul.tb-tabs-full li{
     line-height: 33px;
     margin-bottom: 12px;
 }
+.green_tabs_header_icon {
+    max-width: 45px;
+    height: 40px;
+}
 
 .blue-bg-full{
     display: block;
@@ -3088,6 +3092,12 @@ a{
 
 }/*END 640*/
 @media (max-width: 530px) {
+    .green_tabs_header_icon {
+        height: 40px;
+        margin-top: 23px !important;
+        max-width: 45px;
+    }
+
     .tb-tabs .wrn-block{
         display: block;
         min-height: 90px;

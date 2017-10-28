@@ -37,7 +37,8 @@ public class Index {
                 "/forecast/14",
                 "/forecast/hour-by-hour1",
                 "/forecast/hour-by-hour3",
-                "/about"
+                "/about",
+                "/widgets"
         })
         public String index(HttpServletRequest request) {
             try {

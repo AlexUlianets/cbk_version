@@ -50,7 +50,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     console.log(data)
                     $rootScope.selectedCity = data;
                 })
-                loadScript();
+                setTimeout(function () {
+                    loadScript();
+                }, 1000)
 
             })
         }
@@ -203,6 +205,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/universal-days.js']
               },{   name: 'front-page',
                   files: ['assets/js/front-page.js']
+              }, {
+                  name: 'widgets',
+                  files: ['assets/js/widgets.js']
               }]
           });
 
@@ -484,7 +489,20 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                                 return $ocLazyLoad.load('about');
                             }]
                         }
-                    });
+                    }).state('widgets', {
+                          url: "/en/widgets",
+
+                          views: {
+                              "": {
+                                  templateUrl: "templates/html/widgets.html"
+                              }
+                          },
+                          resolve: {
+                              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                  return $ocLazyLoad.load('widgets');
+                              }]
+                          }
+                      });
         $locationProvider.html5Mode({
             enabled: true,
             rewriteLinks: false
