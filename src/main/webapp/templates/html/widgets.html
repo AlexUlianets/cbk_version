@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>oplao</title>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=latin-ext"
+          rel="stylesheet">
+    <link href="css/jquery.formstyler.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/wg_font.css">
+    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="scss/widget.css">
+</head>
+<body>
+<header>
+    <div class="blur">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-banner"></div>
+            </div>
+        </div><!-- end header-top -->
+    </div>
+    <div class="header-bot" id="fix-menu">
+        <div class="container relative">
+            <a href="front-page.html" class="h-logo"><img src="images/icons/logo.png" alt="img"></a>
+
+            <div class="header-bot-right">
+
+                <a id="nav-toggle" href="#"><span></span><em></em></a>
+
+                <div class="temp-wrap">
+                    <div class="temp-block  tmp-cel">°C</div>
+                    <div class="temp-block active active-mob tmp-far">°F</div>
+                </div><!-- end temp-wrap -->
+
+                <div id="h-share">
+                    <a href="#">
+                        <span class="helper"></span>
+                        <i class="icon share"></i>
+                    </a>
+                    <ul>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon vk"></i>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon facebook"></i>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon twitter"></i>
+                        </a></li>
+                        <li><a href="#">
+                            <span class="helper"></span>
+                            <i class="icon google"></i>
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="h-settings">
+                    <a href="#settings-popup" data-effect="mfp-zoom-in" class="s-popup"><span class="helper"></span><i
+                            class="icon settings"></i></a>
+                </div>
+
+                <nav id="h-menu">
+                    <ul>
+                        <li><a href="#">Weather</a></li>
+                        <li><a href="#">Temperature map</a></li>
+                        <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup">Alerts <span></span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div><!-- end container -->
+
+        <div id="main-menu">
+            <div class="container">
+                <div class="main-menu-inner">
+                    <nav class="main-menu-block">
+                        <h3>Weather</h3>
+                        <ul>
+                            <li><a href="three-days.html">3 days weather forecast</a></li>
+                            <li><a href="five-days.html">5 days weather forecast</a></li>
+                            <li><a href="seven-days.html">7 days weather forecast</a></li>
+                            <li><a href="fourteen-days.html">14 days weather forecast</a></li>
+                            <li><a href="#">Hourly weather</a></li>
+                            <li><a href="#">Weather map</a></li>
+                            <li><a href="#">Weather history</a></li>
+                        </ul>
+                    </nav>
+
+                    <nav class="main-menu-block">
+                        <h3>Applications</h3>
+                        <ul>
+                            <li><a href="#">Android apps</a></li>
+                            <li><a href="#">Google play</a></li>
+                            <li><a href="#">Google Chrome weather extension</a></li>
+                            <li><a href="#">Firefox weather extension</a></li>
+                            <li><a href="#">Opera weather extension</a></li>
+                        </ul>
+                    </nav>
+
+                    <nav class="main-menu-block">
+                        <h3>Information</h3>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div><!-- end main-menu -->
+    </div><!-- end header-bot -->
+</header>
+
+<div class="blur">
+    <section id="top-page">
+        <div class="container">
+            <div class="head-top">
+                <div class="ht-search">
+                    <form class="ht-search-wrap">
+                        <div class="ht-search-inner">
+                            <div class="ht-search-input">
+                                <i></i>
+                                <input type="text" value="City/Town, Post/Zip code, LAT, LON"
+                                       placeholder="City/Town, Post/Zip code, LAT, LON">
+                            </div>
+                            <!--<div class="ht-search-ico"><input type="submit" value=""></div> \-->
+                            <div class="ht-search-autoloc"><span></span></div>
+                        </div>
+                        <div class="search-dropdown">
+                            <ul>
+                                <li><a href="#" id="w0" class="active">Minsk, Belarus <span></span></a></li>
+                                <li><a href="#" id="w1">London, Great Britain <span></span></a></li>
+                                <li><a href="#" id="w2">New Your, United States <span></span></a></li>
+                                <li><a href="#" id="w3">Moscow, Russia <span></span></a></li>
+                                <li><a href="#" id="w4">Berlin, Germany <span></span></a></li>
+                            </ul>
+                            <a href="#" class="dropdown-top"></a>
+                        </div>
+                    </form>
+                </div>
+                <div class="ht-location">
+                    <dl>
+                        <dt><i class="icon location"></i><span class="search-text1">Minsk</span> weather, <span
+                                class="search-text2">Belarus</span></dt>
+                        <dd>Today. August 19. Friday. <span>12:10 AM</span></dd>
+                    </dl>
+                </div>
+
+
+            </div><!-- end head-top -->
+
+            <div class="head-bot-mini">
+                <div class="hb-inner">
+                    <div class="weather-now">
+                        <img src="images/svg-icons/weather-ico1.svg" alt="img">
+                        <div><b>18</b><em>C</em><span>/<strong>75</strong>F</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="favorite-location">
+                <div class="inner">
+                    <a href="#" class="weather-block-favorite w0">
+                        <div class="wb-left">
+                            <i class="icon blizzard-white"></i>
+                            <div class="wbl-temp">24 <span>C</span></div>
+                        </div>
+                        <div class="wb-right">
+                            <div>
+                                <h3>Minsk<span>,&nbsp;</span></h3>
+                                <h4>BU</h4>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="weather-block-favorite w1">
+                        <div class="wb-left">
+                            <i class="icon clear_day-white"></i>
+                            <div class="wbl-temp">24 <span>C</span></div>
+                        </div>
+                        <div class="wb-right">
+                            <div>
+                                <h3>London<span>,&nbsp;</span></h3>
+                                <h4>GB</h4>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="weather-block-favorite w2">
+                        <div class="wb-left">
+                            <i class="icon clear_night"></i>
+                            <div class="wbl-temp">24 <span>C</span></div>
+                        </div>
+                        <div class="wb-right">
+                            <div>
+                                <h3>Belford Roxo<span>,&nbsp;</span></h3>
+                                <h4>BR</h4>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="weather-block-favorite w3">
+                        <div class="wb-left">
+                            <i class="icon cloudy-white"></i>
+                            <div class="wbl-temp">24 <span>C</span></div>
+                        </div>
+                        <div class="wb-right">
+                            <div>
+                                <h3>Chelyabinsk<span>,&nbsp;</span></h3>
+                                <h4>RU</h4>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="weather-block-favorite w4">
+                        <div class="wb-left">
+                            <i class="icon blizzard-white"></i>
+                            <div class="wbl-temp">24 <span>C</span></div>
+                        </div>
+                        <div class="wb-right">
+                            <div>
+                                <h3>New York<span>,&nbsp;</span></h3>
+                                <h4>US</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div><!-- end container -->
+
+
+    </section><!-- end top page -->
+
+
+    <div class="page-nav">
+        <nav class="pn-top">
+            <ul>
+                <li style="display: none" class="mob_weater"><a href="#">----</a></li>
+                <li><a href="outlook.html">Outlook</a></li>
+                <li><a class="active" href="today.html">Today</a></li>
+                <li><a href="tomorrow.html">Tomorrow</a></li>
+                <li><a href="past-weather.html">Past weather</a></li>
+                <li><a href="temperature-map.html">Tempearture map</a></li>
+            </ul>
+
+        </nav>
+        <nav class="pn-bot">
+            <ul>
+                <li><a href="three-days.html">3 day</a></li>
+                <li><a href="five-days.html">5 day</a></li>
+                <li><a href="seven-days.html">7 day</a></li>
+                <li><a href="ten-days.html">10 day</a></li>
+                <li><a href="fourteen-days.html">14 day</a></li>
+                <li><a href="hour-by-hour.html">Hour by hour</a></li>
+            </ul>
+        </nav>
+    </div><!-- end page-nav -->
+
+    <div class="theme-wrapper">
+
+        <section class="widget_carusel_wrap section-margin-top">
+            <div class="container">
+                <div class="inner">
+                    <h2 class="section-title">Weather Widgets For Web Applications</h2>
+                    <div id="widget_carusel">
+
+                        <div class="widget_item">
+                            <div class="widget widget_1">
+                                <div class="wg_top">Donetsk, UA</div>
+
+                                <div class="wg_content">
+                                    <div class="wg_weather">
+                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                        <div class="wg_clarity">Clear</div>
+                                    </div>
+                                    <div class="wg_info">
+                                        <div class="wg_temp"><span>+24 </span><sup>°C</sup></div>
+                                        <div class="wg_feels">
+                                            <div class="title">Feels like</div>
+                                            <div class="wg_temp_feels"><span>+28 </span><sup>°C</sup></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item">5 day weather forecast</a>
+                                        <a href="#" class="wg_links_item">10 day weather forecast</a>
+                                    </div>
+
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 1-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_2">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+
+                                <div class="wg_content">
+                                    <div class="wg_weather">
+                                        <div class="wg_img_wrap">
+                                            <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            <div class="wg_clarity">Clear</div>
+                                        </div>
+                                    </div>
+                                    <div class="wg_info">
+                                        <div class="wg_temp"><span>+24 </span><sup>°C</sup></div>
+                                        <div class="wg_feels">
+                                            <div class="title">Feels like</div>
+                                            <div class="wg_temp_feels"><span>+28 </span><sup>°C</sup></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item">5 day</a>
+                                        <a href="#" class="wg_links_item">10 day</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 2-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_3">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+
+                                <div class="wg_content">
+                                    <div class="wg_weather">
+                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                        <div class="wg_clarity">Clear</div>
+                                    </div>
+                                    <div class="wg_info">
+                                        <div class="wg_info_inner">
+                                            <div class="wg_temp"><span>+24 </span><sup>°C</sup></div>
+                                            <div class="wg_sub_info">
+                                                <div class="wg_feels">
+                                                    <div class="title">Feels like</div>
+                                                    <div class="wg_descr">
+                                                        <span>+28 </span><sup>°C</sup>
+                                                    </div>
+                                                </div>
+                                                <div class="wind">
+                                                    <div class="title">Wind</div>
+                                                    <div class="wg_descr">
+                                                        <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
+                                                        <span>2 m/s</span>
+                                                    </div>
+                                                </div>
+                                                <div class="gust">
+                                                    <div class="title">Gust</div>
+                                                    <div class="wg_descr">
+                                                        <span>3 mph</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item"><span>5 day</span></a>
+                                        <a href="#" class="wg_links_item"><span>10 day</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 3-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_4">
+                                <div class="wg_content">
+                                    <div class="wg_top">
+                                        <div class="wg_title">Donetsk, UA</div>
+                                    </div>
+                                    <div class="wg_top_cont">
+                                        <div class="wg_weather">
+                                            <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            <div class="wg_clarity">Clear</div>
+                                        </div>
+                                        <div class="wg_temp_wrap">
+                                            <div class="wg_temp">
+                                                <span>+24 </span><sup>°C</sup>
+                                            </div>
+                                        </div>
+                                        <div class="wg_info">
+                                            <div class="wg_feels">
+                                                <div class="title">Feels like</div>
+                                                <div class="wg_descr">
+                                                    <span>+28 </span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                            <div class="wind">
+                                                <div class="title">Wind</div>
+                                                <div class="wg_descr">
+                                                    <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
+                                                    <span>2 m/s</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--/wg_top_cont-->
+                                    <div class="wg_bottom_cont">
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">morning</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+24 </span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">day</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+24 </span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">evening</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+24 </span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">night</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+24 </span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                    </div><!--/wg_bottom_cont-->
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item"><span>5 day</span></a>
+                                        <a href="#" class="wg_links_item"><span>10 day</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 4-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_5">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+
+                                <div class="wg_content">
+                                    <div class="wg_left_info wg_info_list">
+                                        <div class="wg_info_item wg_top_item">
+                                            <div class="wg_title">gust</div>
+                                            <div class="wg_count">3 mph</div>
+                                        </div>
+                                        <div class="wg_info_item wg_bottom_item">
+                                            <div class="wg_title">Wind</div>
+                                            <div class="wg_count wg_sub_text">
+                                                <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
+                                                <div>2 m/s</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="wg_weather">
+                                        <div class="wg_img_wrap">
+                                            <div class="wg_clarity">Clear</div>
+                                            <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                        </div>
+                                    </div>
+
+                                    <div class="wg_right_info wg_info_list">
+                                        <div class="wg_info_item wg_top_item">
+                                            <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                        </div>
+                                        <div class="wg_info_item wg_bottom_item">
+                                            <div class="wg_title">Feels like</div>
+                                            <div class="wg_count">
+                                                <span>+28</span><sup>°C</sup>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item">5 day</a>
+                                        <a href="#" class="wg_links_item">10 day</a>
+                                    </div>
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 5-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_6">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+
+                                <div class="wg_content">
+                                    <div class="wg_info_list">
+                                        <div class="wg_info_item">
+                                            <div class="wg_date_wrap">
+                                                <div class="wg_date">15 may</div>
+                                                <div class="wg_day">mon</div>
+                                            </div>
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            </div>
+                                            <div class="wg_temp_wrap">
+                                                <div class="wg_clarity">Clear</div>
+                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                        <div class="wg_info_item">
+                                            <div class="wg_date_wrap">
+                                                <div class="wg_date">16 may</div>
+                                                <div class="wg_day">tue</div>
+                                            </div>
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            </div>
+                                            <div class="wg_temp_wrap">
+                                                <div class="wg_clarity">Clear</div>
+                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                        <div class="wg_info_item">
+                                            <div class="wg_date_wrap">
+                                                <div class="wg_date">17 may</div>
+                                                <div class="wg_day">wed</div>
+                                            </div>
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            </div>
+                                            <div class="wg_temp_wrap">
+                                                <div class="wg_clarity">Clear</div>
+                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                    </div>
+
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item">5 day</a>
+                                        <a href="#" class="wg_links_item">10 day</a>
+                                    </div>
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 6-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_7">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+
+                                <div class="wg_content">
+                                    <div class="wg_top_cont">
+                                        <div class="wg_date_wrap">
+                                            <div class="wg_date">16 may</div>
+                                            <div class="wg_day">tuesday</div>
+                                        </div>
+
+                                        <div class="wg_weather">
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_temp_wrap">
+                                                    <div class="wg_clarity">Clear</div>
+                                                    <div class="wg_temp">
+                                                        <span>+24 </span><sup>°C</sup>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="wg_feels">
+                                            <div class="title">Feels like</div>
+                                            <div class="wg_descr">
+                                                <span>+28 </span><sup>°C</sup>
+                                            </div>
+                                        </div>
+
+                                    </div><!--/wg_top_cont-->
+
+                                    <div class="wg_info_list">
+                                        <div class="wg_info_item">
+                                            <div class="wg_date_wrap">
+                                                <div class="wg_date">15 may</div>
+                                                <div class="wg_day">mon</div>
+                                            </div>
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            </div>
+                                            <div class="wg_temp_wrap">
+                                                <div class="wg_clarity">Clear</div>
+                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                        <div class="wg_info_item">
+                                            <div class="wg_date_wrap">
+                                                <div class="wg_date">16 may</div>
+                                                <div class="wg_day">tue</div>
+                                            </div>
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            </div>
+                                            <div class="wg_temp_wrap">
+                                                <div class="wg_clarity">Clear</div>
+                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                        <div class="wg_info_item">
+                                            <div class="wg_date_wrap">
+                                                <div class="wg_date">17 may</div>
+                                                <div class="wg_day">wed</div>
+                                            </div>
+                                            <div class="wg_img_wrap">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                            </div>
+                                            <div class="wg_temp_wrap">
+                                                <div class="wg_clarity">Clear</div>
+                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                    </div><!--/wg_info_list-->
+
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links wg_link_top">
+                                        <a href="#" class="wg_links_item">5 day</a>
+                                    </div>
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                    <div class="wg_links wg_link_bottom">
+                                        <a href="#" class="wg_links_item">10 day</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 7-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_8">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+
+                                <div class="wg_content">
+                                    <div class="wg_date_wrap">
+                                        <div class="wg_date">16 may</div>
+                                        <div class="wg_time">14:10</div>
+                                    </div>
+                                    <div class="wg_info_list">
+                                        <div class="wg_info_item wg_info_sub_group wg_info_left">
+                                            <div class="wg_hours_item">
+                                                <div class="wg_h_title">morning</div>
+                                                <div class="wg_h_count">
+                                                    <div class="wg_img_wrap">
+                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                             alt="">
+                                                    </div>
+                                                    <div class="wg_temp"><span>+16</span><sup>°C</sup></div>
+                                                </div>
+                                            </div>
+                                            <div class="wg_hours_item">
+                                                <div class="wg_h_title">day</div>
+                                                <div class="wg_h_count">
+                                                    <div class="wg_img_wrap">
+                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                             alt="">
+                                                    </div>
+                                                    <div class="wg_temp"><span>+25</span><sup>°C</sup></div>
+                                                </div>
+                                            </div>
+                                            <div class="wg_footer">
+                                                <a href="#" class="wg_links_item">5 day</a>
+                                            </div>
+
+
+                                        </div><!--/wg_info_item-->
+
+                                        <div class="wg_info_item wg_info_current">
+                                            <div class="wg_inner">
+                                                <div class="wg_current_top_info">
+                                                    <div class="wg_img_wrap">
+                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                             alt="">
+                                                    </div>
+                                                    <div class="wg_temp_wrap">
+                                                        <div class="wg_clarity">Clear</div>
+                                                        <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="wg_sub_info">
+                                                    <div class="wg_feels">
+                                                        <div class="wg_sub_icon">
+                                                            <img src="img/widget/wg_temp.png" alt="">
+                                                        </div>
+                                                        <div class="wg_sub_title">Feels Like</div>
+                                                        <div class="wg_descr">
+                                                            <span>+28 </span><sup>°C</sup>
+                                                        </div>
+                                                    </div>
+                                                    <div class="wg_wind">
+                                                        <div class="wg_sub_icon">
+                                                            <img src="img/widget/wg_wind_sub.png" alt="">
+                                                        </div>
+                                                        <div class="wg_sub_title">Wind</div>
+                                                        <div class="wg_descr">
+                                                            <img class="wind_icon" src="img/widget/wg_8_wind.png"
+                                                                 alt="">
+                                                            <span>0 m/s</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="wg_footer">
+                                                    <a href="https://oplao.com/">
+                                                        <img src="img/widget/oplao_logo.png" alt="">
+                                                        <span>Oplao.com</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_info_item-->
+
+                                        <div class="wg_info_item wg_info_sub_group wg_info_right">
+                                            <div class="wg_hours_item">
+                                                <div class="wg_h_title">evening</div>
+                                                <div class="wg_h_count">
+                                                    <div class="wg_img_wrap">
+                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                             alt="">
+                                                    </div>
+                                                    <div class="wg_temp"><span>+21</span><sup>°C</sup></div>
+                                                </div>
+                                            </div>
+                                            <div class="wg_hours_item wg_hours_item_day">
+                                                <div class="wg_h_title">day</div>
+                                                <div class="wg_h_count">
+                                                    <div class="wg_img_wrap">
+                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                             alt="">
+                                                    </div>
+                                                    <div class="wg_temp"><span>+25</span><sup>°C</sup></div>
+                                                </div>
+                                            </div>
+                                            <div class="wg_hours_item">
+                                                <div class="wg_h_title">night</div>
+                                                <div class="wg_h_count">
+                                                    <div class="wg_img_wrap">
+                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                             alt="">
+                                                    </div>
+                                                    <div class="wg_temp"><span>+14</span><sup>°C</sup></div>
+                                                </div>
+                                            </div>
+                                            <div class="wg_footer">
+                                                <a href="#" class="wg_links_item wg_5_day">5 day</a>
+                                                <a href="#" class="wg_links_item">10 day</a>
+                                            </div>
+
+
+                                        </div><!--/wg_info_item-->
+
+                                    </div>
+
+                                </div>
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item">5 day</a>
+                                        <a href="#" class="wg_links_item">10 day</a>
+                                    </div>
+
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div><!--/widget_item 8-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_9">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+                                <div class="wg_content">
+                                    <div class="wg_top_cont">
+                                        <div class="wg_weather_wrap">
+                                            <div class="wg_weather">
+                                                <div class="wg_inner">
+                                                    <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                    <div class="wg_clarity">Clear</div>
+                                                </div>
+                                            </div>
+                                            <div class="wg_temp">
+                                                <span>+24</span><sup>°C</sup>
+                                            </div>
+                                        </div>
+                                        <div class="wg_info">
+                                            <div class="wg_feels">
+                                                <div class="wg_title">Feels like</div>
+                                                <div class="wg_descr">
+                                                    <div class="wg_temp">
+                                                        <span>+28</span><sup>°C</sup>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="wind">
+                                                <div class="wg_title">Wind</div>
+                                                <div class="wg_descr">
+                                                    <span>2 m/s</span>
+                                                    <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
+                                                </div>
+                                            </div>
+                                            <div class="wg_gust">
+                                                <div class="wg_title">gust</div>
+                                                <div class="wg_descr">
+                                                    <span>3 mph</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--/wg_top_cont-->
+                                    <div class="wg_bottom_cont">
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">morning</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+16</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">day</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+25</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">evening</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+21</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                        <div class="wg_bottom_item">
+                                            <div class="wg_item_title">night</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+14</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_bottom_item-->
+
+                                    </div><!--/wg_bottom_cont-->
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links wg_link_top">
+                                        <a href="#" class="wg_links_item" tabindex="0">5 day</a>
+                                    </div>
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                    <div class="wg_links wg_link_bottom">
+                                        <a href="#" class="wg_links_item" tabindex="0">10 day</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 9-->
+
+                        <div class="widget_item">
+                            <div class="widget widget_10">
+                                <div class="wg_top">
+                                    <div class="wg_title">Donetsk, UA</div>
+                                </div>
+                                <div class="wg_content">
+                                    <div class="wg_sub_cont">
+                                        <div class="wg_sub_item">
+                                            <div class="wg_item_title">morning</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+16</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_sub_item-->
+
+                                        <div class="wg_sub_item">
+                                            <div class="wg_item_title">day</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+25</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_sub_item-->
+
+                                        <div class="wg_sub_item">
+                                            <div class="wg_item_title">evening</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+21</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_sub_item-->
+
+                                        <div class="wg_sub_item">
+                                            <div class="wg_item_title">night</div>
+                                            <div class="wg_item_cont">
+                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr">
+                                                    <span>+14</span><sup>°C</sup>
+                                                </div>
+                                            </div>
+                                        </div><!--/wg_sub_item-->
+
+                                    </div><!--/wg_sub_cont-->
+
+                                    <div class="wg_top_cont">
+                                        <div class="wg_cont_inner">
+                                            <div class="wg_weather">
+                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_clarity">Clear</div>
+                                            </div>
+                                            <div class="wg_temp">
+                                                <span>+24 </span><sup>°C</sup>
+                                            </div>
+                                            <div class="wg_info">
+                                                <div class="wg_feels">
+                                                    <div class="wg_title">Feels like</div>
+                                                    <div class="wg_descr">
+                                                        <span>+28 </span><sup>°C</sup>
+                                                    </div>
+                                                </div>
+                                                <div class="wg_wind">
+                                                    <div class="wg_title">Wind</div>
+                                                    <div class="wg_descr">
+                                                        <span>2 m/s</span>
+                                                        <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
+                                                    </div>
+                                                </div>
+                                                <div class="wg_gust">
+                                                    <div class="wg_title">gust</div>
+                                                    <div class="wg_descr">
+                                                        <span>3 mph</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--/wg_top_cont-->
+
+                                </div>
+
+                                <div class="wg_bottom_wrap">
+                                    <div class="wg_links">
+                                        <a href="#" class="wg_links_item">5 day</a>
+                                        <a href="#" class="wg_links_item">10 day</a>
+                                    </div>
+                                    <div class="wg_bottom">
+                                        <a href="https://oplao.com/">
+                                            <img src="img/widget/oplao_logo.png" alt="">
+                                            <span>Oplao.com</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/widget_item 10-->
+
+                    </div>
+                </div>
+            </div>
+        </section><!--/widget_carusel_wrap-->
+
+        <div class="widget_option_wrap">
+            <div class="container">
+                <div class="inner">
+                    <div class="wg_choice_wrap">
+                        <h4 class="local_title">Choose Widget Size</h4>
+                        <div class="response_settings">
+                            <span class="size">Size:</span>
+                            <input type="text" id="wg_width" value="" class="theme_control">
+                            <span class="text">x</span>
+                            <input type="text" id="wg_height" value="" class="theme_control">
+                        </div>
+                        <div class="wg_response_wrap">
+                            <div class="wg_respons_box">
+                                <div class="respons_handles handles_right">
+                                    <span class="handles_bar"></span>
+                                    <span class="handles_bar"></span>
+                                    <span class="handles_bar"></span>
+                                </div>
+                                <div class="respons_handles handles_bottom">
+                                    <span class="handles_bar"></span>
+                                    <span class="handles_bar"></span>
+                                    <span class="handles_bar"></span>
+                                </div>
+                                <div class="wg_respons_content">
+                                    <div class="current_widget widget_nav">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--/wg_response_wrap-->
+                    </div><!--/wg_choice_wrap-->
+
+                    <div class="wg_local_wrap">
+                        <form action="#" id="wg_widget_form">
+                            <div class="wg_form_list">
+                                <div class="wg_form_group">
+                                    <div class="wg_form_title">Choose your location</div>
+                                    <div class="wg_form_resault_wrap">
+                                        <div class="wg_form_search">
+                                            <div class="wg_search_keys">
+                                                <input type="text" placeholder="City/Town, Post/Zip code, LAT, LON">
+                                            </div>
+                                            <button type="submit" id="wg_search_btn">
+                                                Search
+                                            </button>
+                                        </div>
+                                        <div class="wg_form_resault">
+                                            <ul>
+                                                <li class="active">Abidjan</li>
+                                                <li>Adana</li>
+                                                <li>Abidjan</li>
+                                                <li>Addis Ababa</li>
+                                                <li>Abidjan</li>
+                                                <li>Abidjan</li>
+                                                <li>Abidjan</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div><!--/wg_form_group-->
+
+                                <div class="wg_form_group">
+                                    <div class="wg_form_title">Select language</div>
+                                    <div class="wg_form_lang">
+                                        <div class="wg_f_lang_item">
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_lang_radio" id="wg_lang_radio1"
+                                                           value="option1" checked>
+                                                    English
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_lang_radio" id="wg_lang_radio2"
+                                                           value="option2">
+                                                    Russian
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_lang_radio" id="wg_lang_radio3"
+                                                           value="option3">
+                                                    Ukrainian
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="wg_f_lang_item">
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_lang_radio" id="wg_lang_radio4"
+                                                           value="option4">
+                                                    Dutch
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_lang_radio" id="wg_lang_radio5"
+                                                           value="option5">
+                                                    Italian
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_lang_radio" id="wg_lang_radio6"
+                                                           value="option6">
+                                                    French
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--/wg_form_group-->
+                            </div>
+
+                            <div class="wg_form_list">
+                                <div class="wg_form_group">
+                                    <div class="wg_form_title">Customize parametres</div>
+                                    <div class="wg_form_param">
+                                        <div class="wg_f_param_item">
+                                            <div class="wg_form_sub_title">Wind</div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_wind_radio" id="wg_wind_radio1"
+                                                           value="option1" checked>
+                                                    m/s
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_wind_radio" id="wg_wind_radio2"
+                                                           value="option2">
+                                                    mph
+                                                </label>
+                                            </div>
+                                        </div><!--/wg_f_param_item-->
+
+                                        <div class="wg_f_param_item">
+                                            <div class="wg_form_sub_title">Temperature</div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_temp_radio" id="wg_temp_radio1"
+                                                           value="option1" checked>
+                                                    C°
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_temp_radio" id="wg_temp_radio2"
+                                                           value="option2">
+                                                    F°
+                                                </label>
+                                            </div>
+                                        </div><!--/wg_f_param_item-->
+
+                                        <div class="wg_f_param_item">
+                                            <div class="wg_form_sub_title">Pressure</div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_press_radio" id="wg_press_radio1"
+                                                           value="option1" checked>
+                                                    hPa
+                                                </label>
+                                            </div>
+                                            <div class="wg_radio">
+                                                <label>
+                                                    <input type="radio" name="wg_press_radio" id="wg_press_radio2"
+                                                           value="option2">
+                                                    in
+                                                </label>
+                                            </div>
+                                        </div><!--/wg_f_param_item-->
+
+                                    </div>
+                                </div><!--/wg_form_group-->
+
+                                <div class="wg_form_group">
+                                    <div class="wg_form_title">Re-captcha:</div>
+                                    <div class="wg_captcha">
+                                        <div class="wg_captcha_item">
+                                            <label for="wg_captcha_input">Type text from image</label>
+                                            <input type="text" id="wg_captcha_input">
+                                            <div class="wg_captcha_refresh">Refresh image</div>
+                                        </div>
+                                        <div class="wg_captcha_item">
+                                            <img class="wg_captcha_img" src="img/widget/wg_captcha.jpg" alt="">
+                                        </div>
+                                    </div>
+                                </div><!--/wg_form_group-->
+                            </div>
+                            <div class="wg_form_group wg_group_code">
+                                <div id="wg_copy_code">Copy code</div>
+                                <textarea class="wg_textarea"></textarea>
+
+                                <div class="wg_btn_wrap">
+                                    <button type="submit" class="wg_btn">Get the code</button>
+                                    <div class="wg_sub_text">Adopting the terms of use.</div>
+                                </div>
+                            </div><!--/wg_form_group-->
+
+
+                        </form>
+                    </div><!--/wg_local_wrap-->
+                </div>
+            </div>
+        </div><!--/widget_option_wrap-->
+    </div><!--/theme-wrapper-->
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="main-menu-inner">
+                    <nav class="main-menu-block">
+                        <h3>Weather</h3>
+                        <ul>
+                            <li><a href="#">3 days weather forecast</a></li>
+                            <li><a href="#">5 days weather forecast</a></li>
+                            <li><a href="#">7 days weather forecast</a></li>
+                            <li><a href="#">14 days weather forecast</a></li>
+                            <li><a href="#">Hourly weather</a></li>
+                            <li><a href="#">Weather map</a></li>
+                            <li><a href="#">Weather history</a></li>
+                        </ul>
+                    </nav>
+
+                    <nav class="main-menu-block">
+                        <h3>Applications</h3>
+                        <ul>
+                            <li><a href="#">Android apps</a></li>
+                            <li><a href="#">Google play</a></li>
+                            <li><a href="#">Google Chrome weather extension</a></li>
+                            <li><a href="#">Firefox weather extension</a></li>
+                            <li><a href="#">Opera weather extension</a></li>
+                        </ul>
+                    </nav>
+
+                    <nav class="main-menu-block">
+                        <h3>Information</h3>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blog</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <nav class="footer-soc">
+                    <a href="#"><img src="images/svg-icons/feedback.svg" alt=""><em>Feedback</em></a>
+                    <a target="_blank" href="https://vk.com/oplao"><i class="icon vk"></i></a>
+                    <a target="_blank" href="https://www.facebook.com/Oplao"><i class="icon facebook"></i></a>
+                    <a target="_blank" href="https://twitter.com/Oplaoweather"><i class="icon twitter"></i></a>
+                    <a target="_blank" href="https://plus.google.com/u/0/b/111062725555627000569/+Oplaoweather/posts"><i
+                            class="icon google"></i></a>
+                    <a target="_blank" href="https://www.youtube.com/channel/UC1rtXk9LSRD-pJb253pN0lg"><i
+                            class="icon youtube"></i></a>
+                </nav>
+            </div>
+        </div><!-- end footer-top -->
+        <div class="footer-bot">
+            2016. Oplao, All right reserved
+        </div>
+    </footer>
+
+
+    <!-- Popup -->
+    <div id="alert-popup" class="alert-popup mfp-with-anim mfp-hide">
+        <div class="alert-popup-top">
+            <div class="apt-left">Alerts</div>
+        </div>
+        <div class="alert-popup-bot">
+            <h2>Severity</h2>
+            <div class="severity-block"></div>
+            <h2>Text Weather</h2>
+            <p>The <em>maximum temperature</em> for Brighton over the next 7 day will be 30°C(or 86°F) on Wednesday 24th
+                August at around 5 pm. In the same week the <em>minimum temperature</em> will be 13°C (or 56°F) on
+                Tuesday 23rd August at around 5 am. Our Brighton weather forecaster is reporting Thursday 25th August to
+                be the wettest day in the coming week with around 2.70mm (or 0.1 inches) of rainfall. Make sure to carry
+                an umbrella if you are out and about in Brighton.</p>
+            <a href="#settings-popup" data-effect="mfp-zoom-in" class="alert-settings s-popup">Settings
+                <span></span></a>
+        </div><!-- end alert-popup-bot -->
+    </div>
+    <!-- Popup -->
+    <div id="settings-popup" class="settings-popup mfp-with-anim mfp-hide">
+        <div class="settings-popup-top">
+            <div class="spt-left">Settings</div>
+        </div>
+        <div class="settings-popup-md">
+            <div class="popup-lang-wrap">
+                <h2>Language</h2>
+                <ul class="popup-lang">
+                    <li><a href="#">En</a></li>
+                    <li><a href="#">En</a></li>
+                    <li><a href="#">De</a></li>
+                    <li><a href="#">Fr</a></li>
+                    <li><a href="#">It</a></li>
+                    <li><a href="#">Uk</a></li>
+                    <li><a href="#">Be</a></li>
+                </ul>
+            </div>
+
+            <div class="set-popup-row">
+                <div class="spr-block popup-units">
+                    <h2>Units Preference</h2>
+                    <a href="#" class="spr-item">°C</a>
+                    <a href="#" class="spr-item">°F</a>
+                </div>
+                <div class="spr-block popup-time">
+                    <h2>Time Format</h2>
+                    <a href="#" class="spr-item">12 hours</a>
+                    <a href="#" class="spr-item">24 hours</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="set-pop-bot">
+            <div class="alerts_block">
+                <div class="alerts_text">Alerts</div>
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                    <label class="onoffswitch-label" for="myonoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/charts_init.js"></script>
+<script src="js/popup.js"></script>
+<script src="js/slick.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery.formstyler.min.js"></script>
+<script src="js/scripts.js"></script>
+</body>
+</html>
