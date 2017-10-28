@@ -130,6 +130,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     var newurl = window.location.protocol + "//" + window.location.host + url;
                     window.history.pushState({path:newurl},'',newurl);
                 }
+                $state.reload();
+                $rootScope.get_api_weather();
                 $('html, body').animate({
                     scrollTop: $('body').offset().top
                 }, 1000);
