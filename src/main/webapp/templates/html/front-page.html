@@ -75,7 +75,7 @@
 								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
 							</div>
 							<div class="wb-right">
-								<a ng-click="selectCity(elem.geonameId)"><h3>{{elem.name}}</h3></a>
+								<a  href="/en/weather/outlook/{{elem.name+'_'+elem.countryCode}}"><h3>{{elem.name}}</h3></a>
 							</div>
 						</div>
 
@@ -152,13 +152,13 @@
 								<img ng-src="svg/wicons_svg/{{elem.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem.isDay== false ">
 								<img ng-src="svg/wicons_svg/{{elem.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem.isDay== true ">
 								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
-							</div>	
+							</div>
 							<div class="wb-right">
-								<a ng-click="selectCity(elem.geonameId)">
+								<a href="/en/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
 									<h3>{{elem.name}}</h3>
 									<h4>{{elem.countryName}}</h4>
 								</a>
-							</div>	
+							</div>
 						</div>
 
 					</div>

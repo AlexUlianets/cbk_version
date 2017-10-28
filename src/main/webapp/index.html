@@ -54,7 +54,7 @@
                         <form class="ht-search-wrap">
                             <div class="ht-search-inner">
                                 <div class="ht-search-input">
-                                    <i></i>
+                                    <i ng-click="searchHint()"  ng-model="searchInput"></i>
                                     <input type="text" value=""
                                            placeholder="City/Town, Post/Zip code, LAT, LON" ng-click="searchHint()" ng-keyup="searchHint()" ng-model="searchInput">
                                 </div>
