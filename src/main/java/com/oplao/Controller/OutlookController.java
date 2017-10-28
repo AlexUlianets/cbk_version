@@ -112,9 +112,9 @@ public class OutlookController {
        return HttpStatus.OK;
     }
 
-    @RequestMapping("get_top_holidays_destinations")
+    @RequestMapping(value = "/get_top_holidays_destinations", produces = "application/json")
     @ResponseBody
-    public List<String> getTopHolidaysDestinations() throws IOException {
+    public List<String> getTopHolidaysDestinations() {
 
         return searchService.getTopHolidaysDestinations(23);
 
@@ -127,7 +127,7 @@ public class OutlookController {
 
         return searchService.getCountryWeather(searchService.findSelectedCity(request, response, currentCookieValue));
     }
-    @RequestMapping("get_holidays_weather")
+    @RequestMapping(value = "/get_holidays_weather", produces = "application/json")
     @ResponseBody
     public List<HashMap> getHolidaysWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) throws IOException {
 

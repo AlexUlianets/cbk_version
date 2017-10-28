@@ -5,6 +5,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 app.controller('past-weatherCtrl', function($scope, $http) {
 
     $scope.past = false;
+    $scope.graph = $scope.$state.params.graph;
     $scope.showWeatherForDate = function (date) {
         var currentDate = new Date(date);
         $scope.past = currentDate < new Date();
@@ -71,4 +72,8 @@ app.controller('past-weatherCtrl', function($scope, $http) {
         })
 
     };
+    $http.post('/get_detailed_forecast_today').then(function (response) {
+        $scope.$parent.detailedTemp = response;
+        readyGet(response, [], $scope.local.typeTemp, 'today')
+    });
 });
