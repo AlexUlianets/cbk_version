@@ -126,11 +126,11 @@
                                                     </div>
                                                     <div class="tb-wind">
                                                         <i class="sprite-wind-tb" style="-ms-transform: rotate({{item.windDegree + 'deg'}});    -webkit-transform: rotate({{item.windDegree + 'deg'}});    transform: rotate({{item.windDegree + 'deg'}});"></i>
-                                                        <div class="tb-count" style="color:{{item.windspeedColor}}">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                                        <div class="tb-count" style="color:{{item.windspeedColor}}; font-weight:{{item.boldSpeed}}">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                                         <div class="tb-meter">{{item.winddir}}</div>
                                                     </div>
                                                     <div class="tb-gust">
-                                                        <div class="tb-count" style="color:{{item.windgustColor}}">{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
+                                                        <div class="tb-count" style="color:{{item.windgustColor}}; font-weight:{{item.boldGust}}">{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
                                                         <div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                                     </div>
                                                     <div class="tb-cloud">
@@ -257,11 +257,11 @@
                                                     </div>
                                                     <div class="tb-wind">
                                                         <i class="sprite-wind-tb" style="-ms-transform: rotate({{item.windDegree + 'deg'}});    -webkit-transform: rotate({{item.windDegree + 'deg'}});    transform: rotate({{item.windDegree + 'deg'}});"></i>
-                                                        <div class="tb-count" style="color:{{item.windspeedColor}}">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                                        <div class="tb-count" style="color:{{item.windspeedColor}} ; font-weight:{{item.boldSpeed}}">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                                         <div class="tb-meter">{{item.winddir}}</div>
                                                     </div>
                                                     <div class="tb-gust">
-                                                        <div class="tb-count" style="color:{{item.windgustColor}}">{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
+                                                        <div class="tb-count" style="color:{{item.windgustColor}}; font-weight:{{item.boldGust}}" >{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
                                                         <div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
                                                     </div>
                                                     <div class="tb-cloud">

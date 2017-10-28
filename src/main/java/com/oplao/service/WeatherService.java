@@ -208,9 +208,12 @@ public class WeatherService {
         String winddirNight = "" + hourly.get(2).get("winddir16Point");
         String windSpeedColorDay = getWindSpeedColor(avgWindKmhDay);
         String windSpeedColorNight = getWindSpeedColor(avgWindKmhNight);
+        String boldDaySpeed = !windSpeedColorDay.equals("") ?"bold":"";
+        String boldNightSpeed = !windSpeedColorNight.equals("") ?"bold":"";
         String windGustColorDay = getWindSpeedColor(maxGustKmhDay);
         String windGustColorNight = getWindSpeedColor(maxGustKmhNight);
-
+        String boldDayGust = !windGustColorDay.equals("") ?"bold":"";
+        String boldNightGust = !windGustColorNight.equals("") ?"bold":"";
 
         HashMap<String, HashMap> result = new HashMap<>();
         HashMap<String, Object> dayMap = new HashMap<>();
@@ -243,6 +246,8 @@ public class WeatherService {
         dayMap.put("winddir", winddirDay);
         dayMap.put("windspeedColor", windSpeedColorDay);
         dayMap.put("windgustColor", windGustColorDay);
+        dayMap.put("boldSpeed", boldDaySpeed);
+        dayMap.put("boldGust", boldDayGust);
 
         HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
@@ -264,7 +269,8 @@ public class WeatherService {
         nightMap.put("winddir", winddirNight);
         nightMap.put("windspeedColor", windSpeedColorNight);
         nightMap.put("windgustColor", windGustColorNight);
-
+        nightMap.put("boldSpeed", boldNightSpeed);
+        nightMap.put("boldGust", boldNightGust);
         result.put("wholeDay", wholeDayMap);
         result.put("Day", dayMap);
         result.put("Night", nightMap);
@@ -847,6 +853,8 @@ public class WeatherService {
 
                 String windSpeedColorDay = getWindSpeedColor(parseInt(elem.get("windspeedKmph")));
                 String windGustColorDay = getWindSpeedColor(parseInt(elem.get("WindGustKmph")));
+                String windSpeedBoldDay = !windSpeedColorDay.equals("") ?"bold":"";
+                String windGustBoldDay = !windGustColorDay.equals("") ?"bold":"";
                 dayMap.put("time", DateConstants.convertTimeToAmPm(parseInt(elem.get("time"))));
                 dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
                 dayMap.put("tempC", elem.get("tempC"));
@@ -869,6 +877,8 @@ public class WeatherService {
                 dayMap.put("windspeedColor", windSpeedColorDay);
                 dayMap.put("windgustColor", windGustColorDay);
                 dayMap.put("isDay", parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800);
+                dayMap.put("boldSpeed", windSpeedBoldDay);
+                dayMap.put("boldGust", windGustBoldDay);
                 oneWholeDayData.add(dayMap);
             }
             results.add(oneWholeDayData);
@@ -930,6 +940,8 @@ public class WeatherService {
 
                 String windSpeedColorDay = getWindSpeedColor(parseInt(elem.get("windspeedKmph")));
                 String windGustColorDay = getWindSpeedColor(parseInt(elem.get("WindGustKmph")));
+                String boldDaySpeed = !windSpeedColorDay.equals("") ?"bold":"";
+                String boldDayGust = !windGustColorDay.equals("") ?"bold":"";
                 dayMap.put("time", dayTimes[dayTime]);
                 dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
                 dayMap.put("tempC", elem.get("tempC"));
@@ -950,6 +962,8 @@ public class WeatherService {
                 dayMap.put("isDay", dayTimesHours[dayTime] == 14 || dayTimesHours[dayTime] == 8);
                 dayMap.put("windspeedColor", windSpeedColorDay);
                 dayMap.put("windgustColor", windGustColorDay);
+                dayMap.put("boldSpeed", boldDaySpeed);
+                dayMap.put("boldGust", boldDayGust);
                 oneWholeDayData.add(dayMap);
             }
             results.add(oneWholeDayData);
