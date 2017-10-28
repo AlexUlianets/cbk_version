@@ -50,8 +50,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     console.log(data)
                     $rootScope.selectedCity = data;
                 })
-                loadScript();
-
+                    loadScript();
             })
         }
         $rootScope.get_api_weather();
@@ -111,21 +110,25 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             method: "POST",
                 url: "/select_city/"+e
             }).done(function( msg ) {
-                var url = window.location.pathname.split('/');
-                console.log(msg);
+                var url = document.location.pathname.split("/");
                 $rootScope.selectedCity = msg.name+"_"+msg.countryCode;
                 if(url.length>2){
-                    if(window.location.pathname.includes('_')){
+                    if(document.URL.includes('_')){
                         url[url.length-1]=url[url.length-1].replace(url[url.length-1], msg.name+"_"+msg.countryCode);
-                        window.location.pathname = url.join('/').replace('//','/')
-                     }else{
+                        url = url.join('/').replace('//','/')
+                    }else{
                         url.push(msg.name+"_"+msg.countryCode)
-                        console.log(url.join('/').replace('//','/',1))
-                        window.location.pathname = url.join('/').replace('//','/');
+                        url = url.join('/').replace('//','/');
                     }
                 }else{
-                    window.location.pathname = "/en/weather/"+msg.name+"_"+msg.countryCode;
+                    url = "/en/weather/"+msg.name+"_"+msg.countryCode;
                 }
+                if (history.pushState) {
+                    var newurl = window.location.protocol + "//" + window.location.host + url;
+                    window.history.pushState({path:newurl},'',newurl);
+                }
+                $state.reload();
+                $rootScope.get_api_weather();
                 $('html, body').animate({
                     scrollTop: $('body').offset().top
                 }, 1000);
@@ -203,6 +206,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   files: ['assets/js/universal-days.js']
               },{   name: 'front-page',
                   files: ['assets/js/front-page.js']
+              }, {
+                  name: 'widgets',
+                  files: ['assets/js/widgets.js']
               }]
           });
 
@@ -484,7 +490,20 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                                 return $ocLazyLoad.load('about');
                             }]
                         }
-                    });
+                    }).state('widgets', {
+                          url: "/en/widgets",
+
+                          views: {
+                              "": {
+                                  templateUrl: "templates/html/widgets.html"
+                              }
+                          },
+                          resolve: {
+                              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                  return $ocLazyLoad.load('widgets');
+                              }]
+                          }
+                      });
         $locationProvider.html5Mode({
             enabled: true,
             rewriteLinks: false

@@ -220,13 +220,14 @@ function loadScript() {
 
             }
         });
+
         $('.dropdown-top').on('click', function (e) {
             e.stopPropagation();
             e.preventDefault();
             $dropdown.slideUp();
         });
         $('body').click(function (e) {
-            if($(e.target)[0]['localName']!=='input') {
+            if($(e.target)[0]['localName']!=='input' && $(e.target)[0]['localName']!=='i') {
                 $('.search-dropdown').css({'display': 'none'})
             }else {
                 $('.search-dropdown').css({'display': 'block'})
@@ -279,9 +280,6 @@ function loadScript() {
         $(window).resize(function () {
             adaptiveWidth('.page-content', '.tb-slider-wrap', 20);
         });
-
-        //slick slider for tab
-
     });
 
     function setIdle(cb, seconds) {
@@ -298,6 +296,7 @@ function loadScript() {
     setIdle(function() {
         location.href = location.href;
     }, 15 * 60);
+
 }
 function activateTab(index) {
     var activeTab = "tab" + index;
