@@ -15,6 +15,9 @@ function loadScript() {
                 // $('.tb-contant').removeClass('inner-html')
             })
         }, 100)
+        $('.mob_weater').click(function (e) {
+            e.preventDefault()
+        });
         $("head").append("<link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>");
         $('.temp-block').on('click', function (e) {
             $this = $(this);
