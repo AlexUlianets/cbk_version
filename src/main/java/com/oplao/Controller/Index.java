@@ -49,6 +49,35 @@ public class Index {
             return "forward:/index.html";
         }
 
+        @RequestMapping("/forecast/outlook/{locationRequest:.+}")
+        public String outlookRedirect(HttpServletRequest request, HttpServletResponse response){
+            String[] arr = request.getRequestURI().split("/");
+            String loc = arr[arr.length-1];
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", "/en/weather/outlook/"+loc);
+
+            return null;
+        }
+
+        @RequestMapping("/forecast/detailed3/{locationRequest:.+}")
+        public String hour3Redirect(HttpServletRequest request, HttpServletResponse response){
+            String[] arr = request.getRequestURI().split("/");
+            String loc = arr[arr.length-1];
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", "/en/forecast/hour-by-hour3/"+loc);
+
+            return null;
+        }
+
+        @RequestMapping("/forecast/detailed1/{locationRequest:.+}")
+        public String hour1Redirect(HttpServletRequest request, HttpServletResponse response){
+            String[] arr = request.getRequestURI().split("/");
+            String loc = arr[arr.length-1];
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", "/en/forecast/hour-by-hour1/"+loc);
+
+            return null;
+        }
         @RequestMapping({
                 "/",
                 "/weather/{locationRequest:.+}",
