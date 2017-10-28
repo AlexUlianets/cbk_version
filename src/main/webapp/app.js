@@ -50,10 +50,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     console.log(data)
                     $rootScope.selectedCity = data;
                 })
-                setTimeout(function () {
                     loadScript();
-                }, 1000)
-
             })
         }
         $rootScope.get_api_weather();
