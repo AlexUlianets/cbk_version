@@ -368,7 +368,7 @@ img.mfp-img{width:auto;max-width:100%;height:auto;display:block;line-height:0;bo
 .head-top:after{content:"";display:table;clear:both;}
 .ht-location{width:50%;margin-right:50%;}
 .ht-location dl{float:left;}
-.ht-location dt{font:400 2.2em/1 "Fira Sans", sans-serif;color:#fff;padding-left:33px;position:relative;text-align:left;}
+.ht-location dt{font:400 2.8em/1 "Fira Sans", sans-serif;color:#fff;padding-left:33px;position:relative;text-align:left;}
 .ht-location dt i{position:absolute;left:0;top:0px;}
 .ht-location dd{color:#8db3db;padding-left:33px;font:400 1.6em/1 "Fira Sans", sans-serif;margin-top:15px;text-align:left;}
 .ht-location dd span{color:#fff !important;}
@@ -522,7 +522,7 @@ div.arrow_box img{display:inline-block;margin-top:6px;}
 .text-weather-tab{margin-top:30px;}
 .text-weather-tab p{font:300 1.6em/22px "Fira Sans", sans-serif;color:#4c4c4c;}
 .text-weather-tab p b{font-weight:500;}
-#holiday-weather-section h2{font:500 2.4em/1 "Fira Sans", sans-serif;color:#4c4c4c;}
+#holiday-weather-section h3{font:500 1.9em/1 "Fira Sans", sans-serif;color:#4c4c4c;}
 .holiday-weather{margin-top:37px;}
 .holiday-weather:after{content:"";display:table;clear:both;}
 .holiday-weather .weather-block{border-bottom:1px solid #ebebeb;float:left;display:table;width:33.33%;height:88px;}
@@ -539,7 +539,7 @@ div.arrow_box img{display:inline-block;margin-top:6px;}
 .g-play span{font:300 1.6em/1 "Fira Sans", sans-serif;color:#4c4c4c;width:100%;display:block;text-align:center;top:150px;position:absolute;}
 .g-play:hover{opacity:.8;}
 #top-holiday-dest{padding-top:38px;}
-#top-holiday-dest h3{text-transform:uppercase;color:#4c4c4c;font:500 1.6em/1 "Fira Sans", sans-serif;}
+#top-holiday-dest h4{text-transform:uppercase;color:#4c4c4c;font:500 1.3em/1 "Fira Sans", sans-serif;}
 #top-holiday-dest ul{margin-top:20px;}
 #top-holiday-dest ul:after{content:"";display:table;clear:both;}
 #top-holiday-dest ul li{float:left;}
@@ -745,14 +745,14 @@ ul.tabs li.active .wrn-temp{color:#fff;}
 .c-t-prec b{color:#4c4c4c;}
 #coordinates{padding-top:75px;}
 #coordinates:after{content:"";display:table;clear:both;}
-#coordinates h2{font:500 2.4em/33px "Fira Sans", sans-serif;color:#4c4c4c;}
+#coordinates h2{font:500 1.6em/1 "Fira Sans", sans-serif;color:#4c4c4c;}
 #coordinates p{margin-top:28px;color:#4c4c4c;font:1.6em/22px "Fira Sans", sans-serif;}
 #coordinates p a{color:#0880d5;}
 #coordinates p a:hover{color:#0662a4;}
 #coordinates p b{font-weight:500;}
 #uv-index{padding-top:75px;}
 #uv-index:after{content:"";display:table;clear:both;}
-#uv-index h2{font:500 2.4em/33px "Fira Sans", sans-serif;color:#4c4c4c;}
+#uv-index h4{font:500 1.6em/1 "Fira Sans", sans-serif;color:#4c4c4c;}
 .uv-top{display:flex;margin-top:40px;margin-bottom:38px;}
 .uv-top:after{content:"";display:table;clear:both;}
 .uv-top-block{float:left;margin-right:38px;}
@@ -2185,12 +2185,15 @@ ul.tb-tabs-full li{
 }
 
 .theme-wrapper{
-    font: 400 1.6em/22px "Fira Sans", sans-serif;
+    font: 500 1.6em/1 "Fira Sans", sans-serif;
     color: #4c4c4c;
 }
+#theme-wrapper h4{font: 500 1.6em/1 "Fira Sans", sans-serif;
+    color: #4c4c4c;}
 
 .theme-block{
     padding-top: 75px;
+    margin-top: 10px;
 }
 
 .title-block{
@@ -2236,6 +2239,10 @@ ul.tb-tabs-full li{
 .last-info-wrap .v-date .img-wrap img{
     display: inline-block;
     vertical-align: bottom;
+}
+
+.last-year-five{
+    margin-bottom: 10px;
 }
 
 .last-year5 .last-info-wrap,
