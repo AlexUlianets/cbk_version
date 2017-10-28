@@ -43,7 +43,8 @@ app.controller('front-pageCtrl', ['$scope', '$http','$rootScope', function($scop
             url: "/find_occurences/"+destination
         }).done(function( msg ) {
             if(msg.length>0){
-                $rootScope.selectCity(msg[0].geonameId);
+                msg = msg[0]
+                window.location.pathname="/en/weather/outlook/"+msg.name+"_"+msg.countryCode
             }else{
                 alert("Requested city is not found");
             }
