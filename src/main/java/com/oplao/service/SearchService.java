@@ -1,17 +1,12 @@
 package com.oplao.service;
 
+import com.oplao.Application;
 import com.oplao.Utils.AddressGetter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -21,6 +16,7 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class SearchService {
@@ -39,7 +35,7 @@ public class SearchService {
                 lat = parsedRequest[0].replace(",", ".").replaceAll("°", "").trim();
                 try {
                     lon = parsedRequest[1].replaceAll(",", ".").replaceAll("°", "").trim();
-                }catch (ArrayIndexOutOfBoundsException e){
+                }catch (ArrayIndexOutOfBoundsException ignored){
                 }
             }
 
@@ -52,20 +48,13 @@ public class SearchService {
             list = findByAirports(searchRequest);
         }
         else {
-            try {
                 list = findByCity(searchRequest);
-            }catch (NullPointerException e){
-            }
         }
-        try {
             List<HashMap> maps = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
                 maps.add((HashMap) ((JSONObject) list.get(i)).toMap());
             }
             return maps;
-        }catch (NullPointerException e){
-        }
-        return new ArrayList<>();
     }
 
 
@@ -245,13 +234,21 @@ public class SearchService {
        }
        }else {
            JSONObject location = null;
-
-               while(location == null) {
+           Application.log.info("generating location...");
+           while(location == null) {
                    try {
                        location = WeatherService.readJsonFromUrl("http://api.ipinfodb.com/v3/ip-city/?key=3b83e3cd0aa958682a0a0e43710b624c067bfef60689d8d7c6ecd2f93f0e80cd&ip=" + AddressGetter.getCurrentIpAddress(request) + "&format=json");
                    } catch (IOException e) {
+                       e.printStackTrace();
+                       Application.log.warning(e.toString());
                    }
+               try {
+                   Thread.sleep(1500);
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
                }
+           }
+               Application.log.info("generated.");
            List<JSONObject> list = null;
            try {
                list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + location.get("cityName"));
@@ -391,8 +388,7 @@ public class SearchService {
             DateTime dateTime = new DateTime(DateTimeZone.forID((String) ((JSONObject) city.get("timezone")).get("timeZoneId")));
             try {
                 hm = findSearchOccurences(cities.get(i)).get(0);
-            }catch (IndexOutOfBoundsException e){
-                System.out.println(findSearchOccurences(cities.get(i)));
+            }catch (IndexOutOfBoundsException ignored){
             }
             APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
                     false, true, 6, String.valueOf(hm.get("lat")), String.valueOf(hm.get("lng")));

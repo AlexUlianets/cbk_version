@@ -1,5 +1,6 @@
 package com.oplao.service;
 
+import com.oplao.Application;
 import com.oplao.model.GoogleSitemap;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -52,6 +53,7 @@ public final class SitemapService {
         } else {
             sitemap.addUrl(url);
             sitemap.write(inputFile);
+            Application.log.info("url written to sitemap");
         }
         return null;
     }
@@ -72,6 +74,7 @@ private void refreshLink(Document xmlDoc, int index){
     node.appendChild(lastmodNode);
 
     refreshDoc(xmlDoc);
+    Application.log.info("url refreshed in sitemap");
 }
     private void addLink(Document xmlDoc, String requestUrl, GoogleSitemap.Url url) {
 
