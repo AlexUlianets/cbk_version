@@ -239,7 +239,6 @@ public class SearchService {
                    try {
                        location = WeatherService.readJsonFromUrl("http://api.ipinfodb.com/v3/ip-city/?key=3b83e3cd0aa958682a0a0e43710b624c067bfef60689d8d7c6ecd2f93f0e80cd&ip=" + AddressGetter.getCurrentIpAddress(request) + "&format=json");
                    } catch (IOException e) {
-                       e.printStackTrace();
                        Application.log.warning(e.toString());
                    }
                try {
