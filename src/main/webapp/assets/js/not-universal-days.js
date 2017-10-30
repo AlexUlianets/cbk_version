@@ -4,7 +4,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$stateParams', function($scope, $http, $state, $stateParams) {
     $scope.graph = $scope.$state.params.graph;
-
+    $scope.page = $scope.$state.params.page;
+    $scope.graphTitle = $scope.$state.params.graphTitle;
     $scope.getData = function () {
         var sendingTableRequest = {
             method: 'POST',
@@ -40,12 +41,12 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
 
             $http(sendingTableRequest).success(function (data) {
                 console.log(1)
-                readyGet(data, [], $scope.local.typeTemp, $scope.$state.params.page)
+                readyGet(data, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle)
             })
         }
     } else if($scope.$state.params.page === 'ten-days') {
         $http.post('/get_detailed_forecast').then(function (response) {
-            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page)
+            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle)
         });
     }
 

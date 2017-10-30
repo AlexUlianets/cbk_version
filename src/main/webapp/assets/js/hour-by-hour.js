@@ -10,7 +10,8 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
     $scope.selectedTab = 1;
     $scope.selectedTabGraph = 1;
     $scope.tabClass = $scope.$state.params.tabClass;
-    $scope.hrs = $scope.$state.params.hrs
+    $scope.hrs = $scope.$state.params.hrs;
+    $scope.graphTitle = $scope.$state.params.graphTitle;
     if($scope.hrs === 1){
         document.getElementById('hr-selector3').className="";
         document.getElementById('hr-selector1').className="active";
@@ -75,7 +76,7 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
         $http(sendingGraphRequest).success(function (data) {
             $scope.dynamicGraphData = data;
             var response=data[[[$scope.selectedTabGraph-1]]][0];
-            readyGet(response, [], $scope.local.typeTemp, 'hour-by-hour')
+            readyGet(response, [], $scope.local.typeTemp, 'hour-by-hour', $scope.graphTitle)
         })
     }
 

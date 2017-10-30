@@ -5,7 +5,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
   app.controller('todayCtrl', function($scope, $http) {
 
       $scope.graph = $scope.$state.params.graph;
-
+      $scope.day = $scope.$state.params.day;
+      $scope.graphTitle = $scope.$state.params.graphTitle;
       $http.post('/get_weekly_weather_summary').then(function (response) {
           $scope.$parent.weekly_weather_summary = response.data;
       });
@@ -18,7 +19,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
       $http.post('/get_detailed_forecast_today').then(function (response) {
           $scope.$parent.detailedTemp = response;
-          readyGet(response, [], $scope.local.typeTemp, 'today')
+          readyGet(response, [], $scope.local.typeTemp, 'today',$scope.graphTitle)
       });
 
       var sendingTableRequest = {

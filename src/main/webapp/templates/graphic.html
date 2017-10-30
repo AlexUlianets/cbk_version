@@ -1,6 +1,13 @@
 <section id="detailed-tabs-wrap" ng-init="getDataGraph()">
     <div class="container padding-bottom">
-        <h2>Detailed forecast</h2>
+        <h2 ng-if="day=='Outlook'">10 day weather forecast</h2>
+        <h2 ng-if="day=='Today'">Hourly weather for today</h2>
+        <h2 ng-if="day=='Tomorrow'">Weather for tomorrow</h2>
+        <h2 ng-if="page=='three-days'||page=='five-days'">Detailed forecast</h2>
+        <h2 ng-if="page=='seven-days'">7 day weather forecast</h2>
+        <h2 ng-if="page=='fourteen-days'">Weather chart</h2>
+        <h2 ng-if="page=='ten-days'">Detailed weather</h2>
+        <h2 ng-if="day=='Hour by hour'"><W></W>eather chart</h2>
     </div>
 
     <div class="tb-wrapper">
