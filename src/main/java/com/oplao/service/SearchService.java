@@ -409,12 +409,16 @@ public class SearchService {
     public String generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
 
         if(!location.equals("undefined")) {
+            boolean airport = false;
+            if(location.contains("airport")||location.contains("Airport")){
+                airport = true;
+            }
             String city = location.substring(0, location.indexOf('_'));
             String countryCode = location.substring(location.indexOf('_') + 1, location.length());
 
             JSONArray jsonArray = null;
             try {
-                jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20") + "&countryCode=" + countryCode);
+                jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20").concat(airport?"&featureClass=S":"&countryCode=" + countryCode));
             } catch (IOException e) {
                 e.printStackTrace();
             }
