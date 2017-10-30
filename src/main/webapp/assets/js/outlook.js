@@ -3,6 +3,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
   app.controller('outlookCtrl', ['$scope', '$http', function($scope, $http) {
       $scope.climate=[];
       $scope.graph = $scope.$state.params.graph;
+      $scope.day=$scope.$state.params.day;
+      $scope.graphTitle=$scope.$state.params.graphTitle;
 
       $http.post('/get_weekly_weather').then(function (response) {
          $scope.$parent.temperatureWeekly = response;
@@ -14,7 +16,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
               $scope.$parent.get_year_summary = responseYear;
               $scope.getActiveClimate(-1);
 
-              readyGet(response, responseYear, $scope.local.typeTemp, 'outlook')
+              readyGet(response, responseYear, $scope.local.typeTemp, 'outlook', $scope.graphTitle)
           });
       });
 

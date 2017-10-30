@@ -256,7 +256,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   params:{
                       city: {squash: true, value: null},
                       "graph": "weatherTen",
-                      "day": "Outlook"
+                      "day": "Outlook",
+                      "graphTitle":"Detailed weather for 10 days"
                   },
                   views: {
                       "": {
@@ -274,7 +275,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   params:{
                       city: {squash: true, value: null},
                       "graph" : "weatherDetailed",
-                      "day": "Today"
+                      "day": "Today",
+                      "graphTitle":"Hour by hour weather"
                   },
                   views: {
                       "": {
@@ -348,7 +350,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             "tabClass" : "tabs tabs-three tb-tabs",
                             "page": "three-days",
                             "graph" : "weatherThree",
-                            "day": "3 day"
+                            "day": "3 day",
+                            "graphTitle": "weather for 3 days"
                         },
                         views: {
                             "": {
@@ -368,7 +371,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                            "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
                             "page": "seven-days",
                             "graph" : "weatherSeven",
-                            "day": "7 day"
+                            "day": "7 day",
+                            "graphTitle": "weather for 7 days"
                         },
                         views: {
                             "": {
@@ -387,7 +391,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                           "index":5,
                             "page": "five-days",
                             "graph": "weatherFive",
-                            "day": "5 day"
+                            "day": "5 day",
+                            "graphTitle":"Weather for 5 days"
 
                         },
                         views: {
@@ -407,7 +412,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                           "index":10,
                             "page": "ten-days",
                             "graph": "weatherTen",
-                            "day": "10 day"
+                            "day": "10 day",
+                            "graphTitle":"Weather for 10 days"
                         },
                         views: {
                             "": {
@@ -425,7 +431,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             city: {squash: true, value: null},
                           "index":7,
                             "day": "Hour by hour",
-                            "hrs":3
+                            "hrs":3,
+                            "graphTitle":"Hour by hour weather"
                             //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
                         },
                         views: {
@@ -444,7 +451,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             city: {squash: true, value: null},
                           "index":7,
                             "day": "Hour by hour",
-                            "hrs":1
+                            "hrs":1,
+                            "graphTitle":"Hour by hour weather"
                             //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
                         },
                         views: {
@@ -465,7 +473,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                               "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
                               "page": "fourteen-days",
                               "graph" : "weatherFourteen",
-                              "day": "14 day"
+                              "day": "14 day",
+                              "graphTitle":"Long term weather"
                           },
                         views: {
                             "": {

@@ -4,7 +4,8 @@
         <div class="page-content" ng-init="getData()">
 
             <section id="weekly-report">
-                <h2>Weekly weather report</h2>
+                <h2 ng-if="page=='five-days'">5 day weather</h2>
+                <h2 ng-if="page=='ten-days'">10 day weather</h2>
                 <div class="tb-wrapper">
                     <div class="wather-table-wrap">
                         <div class="weather-tb 5days-tb">
