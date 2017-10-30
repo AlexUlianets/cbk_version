@@ -463,7 +463,7 @@ public class WeatherService {
     private int getMoonPhase(JSONObject city){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
-        return new MoonPhase(calendar).getPhaseIndex()-1;
+        return new MoonPhase(calendar).getPhaseIndex();
     }
 
     private String getMoonState(JSONObject city){
