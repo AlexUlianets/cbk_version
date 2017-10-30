@@ -1,5 +1,6 @@
 package com.oplao.service;
 
+import com.oplao.Application;
 import com.oplao.Utils.AddressGetter;
 import com.oplao.model.GeoLocation;
 import org.joda.time.DateTime;
@@ -232,38 +233,12 @@ public class SearchService {
                }
            }
        } else {
-           GeoLocation geoLocation = GeoIPv4.getLocation(AddressGetter.getCurrentIpAddress(request));
-
-           List<JSONObject> list = null;
-           try {
-               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + geoLocation.getCity());
-               JSONObject obj = list.get(0);
-               obj.put("status", "selected");
-               JSONArray arr = new JSONArray("["+obj.toString()+"]");
-               Cookie c = new Cookie(cookieName,arr.toString());
-               c.setMaxAge(60 * 60 * 24);
-               c.setPath("/");
-               response.addCookie(c);
-               return obj;
-           } catch (IOException e) {
-               e.printStackTrace();
-           }
-       }
-       return null;
-   }
-
-//    private JSONObject findGeolocation(HttpServletRequest request, HttpServletResponse response){
-//           JSONObject location = null;
-//           Application.log.info("generating location...");
-//           try {
-//               location = WeatherService.readJsonFromUrl("http://api.ipinfodb.com/v3/ip-city/?key=3b83e3cd0aa958682a0a0e43710b624c067bfef60689d8d7c6ecd2f93f0e80cd&ip=" + AddressGetter.getCurrentIpAddress(request) + "&format=json");
-//           } catch (IOException e) {
-//               Application.log.warning(e.toString());
-//           }
-//           Application.log.info("generated.");
+           return findGeolocation(request,response);
+//           GeoLocation geoLocation = GeoIPv4.getLocation(AddressGetter.getCurrentIpAddress(request));
+//
 //           List<JSONObject> list = null;
 //           try {
-//               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + location.get("cityName"));
+//               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + geoLocation.getCity());
 //               JSONObject obj = list.get(0);
 //               obj.put("status", "selected");
 //               JSONArray arr = new JSONArray("["+obj.toString()+"]");
@@ -275,8 +250,35 @@ public class SearchService {
 //           } catch (IOException e) {
 //               e.printStackTrace();
 //           }
-//        return null;
-//       }
+       }
+       return null;
+   }
+
+    private JSONObject findGeolocation(HttpServletRequest request, HttpServletResponse response){
+           JSONObject location = null;
+           Application.log.info("generating location...");
+           try {
+               location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/"+AddressGetter.getCurrentIpAddress(request));
+           } catch (IOException e) {
+               Application.log.warning(e.toString());
+           }
+           Application.log.info("generated.");
+           List<JSONObject> list = null;
+           try {
+               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + location.get("city"));
+               JSONObject obj = list.get(0);
+               obj.put("status", "selected");
+               JSONArray arr = new JSONArray("["+obj.toString()+"]");
+               Cookie c = new Cookie(cookieName,arr.toString());
+               c.setMaxAge(60 * 60 * 24);
+               c.setPath("/");
+               response.addCookie(c);
+               return obj;
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+        return null;
+       }
 
 
     public List<HashMap> createRecentCitiesTabs(String currentCookieValue) {
