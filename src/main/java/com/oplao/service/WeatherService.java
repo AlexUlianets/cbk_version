@@ -1,5 +1,6 @@
 package com.oplao.service;
 
+import com.oplao.Application;
 import com.oplao.Utils.CityToTimeZoneConverter;
 import com.oplao.Utils.DateConstants;
 import com.oplao.Utils.MoonPhase;
@@ -105,6 +106,7 @@ public class WeatherService {
             jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))) + "&cc=no&fx=yes&num_of_days=1&tp=24&showlocaltime=no");
         }catch (IOException e){
             e.printStackTrace();
+            Application.log.warning("Year summary data request error");
         }
 
         HashMap map = (HashMap) jsonObject.toMap().get("data");
@@ -158,6 +160,8 @@ public class WeatherService {
             jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth()  + "&q=" + city);
         }catch (IOException e){
             e.printStackTrace();
+            Application.log.warning("One day report mapping request error");
+
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
@@ -434,6 +438,7 @@ public class WeatherService {
         try{
            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
         }catch (IOException e){
+            Application.log.warning("Astronomy request error");
             e.printStackTrace();
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
@@ -477,6 +482,7 @@ public class WeatherService {
         try {
           jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
         }catch (IOException e){
+            Application.log.warning("Header data request error");
             e.printStackTrace();
         }
             HashMap map = (HashMap)jsonObject.toMap().get("data");
@@ -520,6 +526,8 @@ public class WeatherService {
             jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
         }catch (IOException e){
             e.printStackTrace();
+            Application.log.warning("Detailed forecast request error");
+
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> hourly = ((ArrayList)((HashMap)((ArrayList)(map.get("weather"))).get(0)).get("hourly"));
@@ -560,6 +568,7 @@ public class WeatherService {
             jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
         }catch (IOException e){
             e.printStackTrace();
+            Application.log.warning("Detailed forecast request error");
         }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> hourly2PmData = ((ArrayList)((HashMap)((ArrayList)(map.get("weather"))).get(0)).get("hourly"));
@@ -596,6 +605,7 @@ public class WeatherService {
                 jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q="+ String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
             }catch (IOException e){
                 e.printStackTrace();
+                Application.log.warning("Uv index request error");
             }
         HashMap map = (HashMap)jsonObject.toMap().get("data");
 

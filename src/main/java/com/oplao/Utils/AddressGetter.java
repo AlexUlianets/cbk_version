@@ -1,5 +1,7 @@
 package com.oplao.Utils;
 
+import com.oplao.Application;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class AddressGetter {
@@ -19,9 +21,11 @@ public class AddressGetter {
         }
 
         if(ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")){
+            Application.log.info("connected by ip " + ip);
             return "94.126.240.2";
         }
         else{
+            Application.log.info("connected by ip " + ip);
             return ip;
         }
 

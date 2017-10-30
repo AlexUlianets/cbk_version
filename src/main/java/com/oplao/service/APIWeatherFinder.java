@@ -1,5 +1,6 @@
 package com.oplao.service;
 
+import com.oplao.Application;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
@@ -109,6 +110,7 @@ public class APIWeatherFinder {
             try {
                 jsonObject = readJsonFromUrl(urlBuilder.buildUrl(this));
             }catch (IOException e){
+                Application.log.warning("url-generated request error");
                 e.printStackTrace();
             }
         return (HashMap)jsonObject.toMap().get("data");
