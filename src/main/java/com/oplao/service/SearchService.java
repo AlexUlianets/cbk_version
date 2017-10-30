@@ -223,31 +223,30 @@ public class SearchService {
    }
 
 
-   public JSONObject findSelectedCity(HttpServletRequest request, HttpServletResponse response, String currentCookieValue){
+   public JSONObject findSelectedCity(HttpServletRequest request, HttpServletResponse response, String currentCookieValue) {
 
-       if(!Objects.equals(currentCookieValue, "")){
-       JSONArray array = new JSONArray(currentCookieValue);
-       for (int i = 0; i < array.length(); i++) {
-           if(array.getJSONObject(i).get("status").equals("selected")){
-               return array.getJSONObject(i);
-           }
-       }
-       }else {
-           JSONObject location = null;
-           Application.log.info("generating location...");
-           while(location == null) {
-                   try {
-                       location = WeatherService.readJsonFromUrl("http://api.ipinfodb.com/v3/ip-city/?key=3b83e3cd0aa958682a0a0e43710b624c067bfef60689d8d7c6ecd2f93f0e80cd&ip=" + AddressGetter.getCurrentIpAddress(request) + "&format=json");
-                   } catch (IOException e) {
-                       Application.log.warning(e.toString());
-                   }
-               try {
-                   Thread.sleep(1500);
-               } catch (InterruptedException e) {
-                   e.printStackTrace();
+       if (!Objects.equals(currentCookieValue, "")) {
+           JSONArray array = new JSONArray(currentCookieValue);
+           for (int i = 0; i < array.length(); i++) {
+               if (array.getJSONObject(i).get("status").equals("selected")) {
+                   return array.getJSONObject(i);
                }
            }
-               Application.log.info("generated.");
+       } else {
+           return findGeolocation(request, response);
+       }
+       return null;
+   }
+
+    private JSONObject findGeolocation(HttpServletRequest request, HttpServletResponse response){
+           JSONObject location = null;
+           Application.log.info("generating location...");
+           try {
+               location = WeatherService.readJsonFromUrl("http://api.ipinfodb.com/v3/ip-city/?key=3b83e3cd0aa958682a0a0e43710b624c067bfef60689d8d7c6ecd2f93f0e80cd&ip=" + AddressGetter.getCurrentIpAddress(request) + "&format=json");
+           } catch (IOException e) {
+               Application.log.warning(e.toString());
+           }
+           Application.log.info("generated.");
            List<JSONObject> list = null;
            try {
                list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + location.get("cityName"));
@@ -262,9 +261,8 @@ public class SearchService {
            } catch (IOException e) {
                e.printStackTrace();
            }
+        return null;
        }
-       return null;
-   }
 
 
     public List<HashMap> createRecentCitiesTabs(String currentCookieValue) {
@@ -425,8 +423,15 @@ public class SearchService {
             JSONObject obj = null;
             if (jsonArray != null) {
                 if (!jsonArray.toString().equals("[]")) {
-                    obj = jsonArray.getJSONObject(0);
-
+                    List<JSONObject> results = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        results.add(jsonArray.getJSONObject(i));
+                    }
+                    if(!jsonArray.getJSONObject(0).getString("countryCode").equals(countryCode)) {
+                        obj = results.stream().filter(jsonObject -> jsonObject.getString("countryCode").equals(countryCode)).findFirst().get();
+                    }else{
+                        obj = jsonArray.getJSONObject(0);
+                    }
                 } else {
                     obj = findByCity(city.substring(0, city.length() - 1)).get(0);
                 }

@@ -463,7 +463,7 @@ public class WeatherService {
     private int getMoonPhase(JSONObject city){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(TimeZone.getTimeZone((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
-        return new MoonPhase(calendar).getPhaseIndex()-1;
+        return new MoonPhase(calendar).getPhaseIndex();
     }
 
     private String getMoonState(JSONObject city){
@@ -514,11 +514,54 @@ public class WeatherService {
         result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
         result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
+        result.put("geonameId", city.getInt("geonameId"));
 
         return result;
     }
 
+    public List<HashMap> getDetailedForecastForPast(JSONObject city, boolean past, String date){
+        JSONObject jsonObject = null;
+        DateTime dateTime = null;
+        if(date == null){
+            dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+        }else{
+            dateTime = new DateTime(date);
+        }
+        try {
+            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/".concat(past?"past-weather":"weather")+".ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
+        }catch (IOException e){
+            e.printStackTrace();
+            Application.log.warning("Detailed forecast request error");
 
+        }
+        HashMap map = (HashMap)jsonObject.toMap().get("data");
+        ArrayList<HashMap> hourly = ((ArrayList)((HashMap)((ArrayList)(map.get("weather"))).get(0)).get("hourly"));
+
+        String month = dateTime.getMonthOfYear() > 9? "" + dateTime.getMonthOfYear():"0" + dateTime.getMonthOfYear();
+        String day = dateTime.getDayOfMonth() > 9 ? "" + dateTime.getDayOfMonth():"0" + dateTime.getDayOfMonth();
+        String date1 = dateTime.getYear() + "-" +
+                month + "-" +
+                day;
+
+
+
+        return fulfilHourly(hourly, date1);
+    }
+
+    private List<HashMap> fulfilHourly(ArrayList<HashMap> hourly, String date){
+        List<HashMap> result = new ArrayList<>();
+        for (HashMap aHourly : hourly) {
+            HashMap m = new HashMap();
+            m.put("tempC", aHourly.get("tempC"));
+            m.put("tempF", aHourly.get("tempF"));
+            m.put("date", date);
+            m.put("precipMM", aHourly.get("precipMM"));
+            m.put("precipInch", new BigDecimal(parseDouble(aHourly.get("precipMM")) * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue());
+            m.put("weatherIcon",  "" + EXT_STATES.get(parseInt(aHourly.get("weatherCode"))));
+            result.add(m);
+        }
+        return result;
+    }
     public List<HashMap> getDetailedForecastForToday(JSONObject city){
         JSONObject jsonObject = null;
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
@@ -537,19 +580,9 @@ public class WeatherService {
         String date = dateTime.getYear() + "-" +
                 month + "-" +
                 day;
-        List<HashMap> result = new ArrayList<>();
-        for (HashMap aHourly : hourly) {
-            HashMap m = new HashMap();
-            m.put("tempC", aHourly.get("tempC"));
-            m.put("tempF", aHourly.get("tempF"));
-            m.put("date", date);
-            m.put("precipMM", aHourly.get("precipMM"));
-            m.put("precipInch", new BigDecimal(parseDouble(aHourly.get("precipMM")) * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue());
-            m.put("weatherIcon",  "" + EXT_STATES.get(parseInt(aHourly.get("weatherCode"))));
-            result.add(m);
-        }
 
-        return result;
+
+        return fulfilHourly(hourly, date);
         }
 
     public List<DetailedForecastGraphMapping> getDetailedForecastMapping(JSONObject city){

@@ -28,6 +28,11 @@ public class TodayController {
         return weatherService.getDetailedForecastForToday(searchService.findSelectedCity(request, response, currentCookieValue));
     }
 
+    @RequestMapping("/get_detailed_forecast_for_past")
+    @ResponseBody
+    public List<HashMap> getDetailedForecastForPast(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response,@RequestParam(value = "date", required = false) String date,@RequestParam("pastWeather") boolean pastWeather){
+        return weatherService.getDetailedForecastForPast(searchService.findSelectedCity(request, response, currentCookieValue), pastWeather, date);
+    }
     @RequestMapping("/get_dynamic_table_data")
     @ResponseBody
     public List getDynamicTableData(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,

@@ -1,6 +1,7 @@
 package com.oplao.Controller;
 
 
+import com.oplao.Application;
 import com.oplao.service.SearchService;
 import com.oplao.service.SitemapService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,12 @@ public class Index {
                 "/about",
                 "/widgets"
         })
-        public String index(HttpServletRequest request) {
+        public String index(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue) {
+            try{
+                searchService.findSelectedCity(request, response, currentCookieValue);
+            }catch (Exception e){
+                Application.log.warning(e.toString());
+            }
             try {
                 sitemapService.addToSitemap(request.getRequestURI());
             } catch (Exception e) {
