@@ -423,8 +423,15 @@ public class SearchService {
             JSONObject obj = null;
             if (jsonArray != null) {
                 if (!jsonArray.toString().equals("[]")) {
-                    obj = jsonArray.getJSONObject(0);
-
+                    List<JSONObject> results = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        results.add(jsonArray.getJSONObject(i));
+                    }
+                    if(!jsonArray.getJSONObject(0).getString("countryCode").equals(countryCode)) {
+                        obj = results.stream().filter(jsonObject -> jsonObject.getString("countryCode").equals(countryCode)).findFirst().get();
+                    }else{
+                        obj = jsonArray.getJSONObject(0);
+                    }
                 } else {
                     obj = findByCity(city.substring(0, city.length() - 1)).get(0);
                 }

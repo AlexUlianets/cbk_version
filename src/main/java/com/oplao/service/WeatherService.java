@@ -514,6 +514,7 @@ public class WeatherService {
         result.put("sunrise", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
         result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
+        result.put("geonameId", city.getInt("geonameId"));
 
         return result;
     }
