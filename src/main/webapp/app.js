@@ -326,7 +326,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         url: "/en/weather/history1/:city",
                           params:{
                               city: {squash: true, value: null},
-                              "graph" : "none",
+                              "graph" : "weatherDetailed",
                               "day": "Past weather",
                               "hrs":1
                           },
