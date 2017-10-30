@@ -4,13 +4,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 app.controller('past-weatherCtrl', function($scope, $http) {
 
-    $scope.past = false;
+    $scope.past = new Date(localStorage.getItem("date"))<new Date();
     $scope.graph = $scope.$state.params.graph;
     $scope.showWeatherForDate = function (date) {
         var currentDate = new Date(date);
         $scope.past = currentDate < new Date();
-        $scope.date = date;
-        $scope.sendRequest($scope.$state.params.hrs, 1, $scope.past, $scope.date);
+        localStorage.setItem("date", date)
+        $scope.sendRequest($scope.$state.params.hrs, 1, $scope.past, localStorage.getItem("date"));
+        $scope.sendGraphRequest(1, 1, $scope.past, localStorage.getItem("date"));
     };
 
     if($scope.$state.params.hrs === 1){
@@ -42,7 +43,7 @@ app.controller('past-weatherCtrl', function($scope, $http) {
             numOfHours:$scope.$state.params.hrs,
             numOfDays:1,
             pastWeather:$scope.past,
-            date:$scope.date},
+            date:localStorage.getItem("date")},
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         }
@@ -50,6 +51,26 @@ app.controller('past-weatherCtrl', function($scope, $http) {
 
     $http(sendingTableRequest).success(function (data) {
         $scope.dynamicTableData = data;
+    })
+
+    var sendingGraphRequest = {
+        method: 'GET',
+        url: '/get_detailed_forecast_for_past',
+        params: {
+            numOfHours:1,
+            numOfDays:1,
+            pastWeather:$scope.past,
+            date:localStorage.getItem("date")},
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }
+
+    $http(sendingGraphRequest).then(function (response) {
+        $scope.$parent.detailedTemp = response;
+        console.log(response)
+            readyGet(response, [], $scope.local.typeTemp, 'today')
+
     })
 
     $scope.sendRequest = function (numOfHrs, days, pastWeath, date) {
@@ -65,15 +86,31 @@ app.controller('past-weatherCtrl', function($scope, $http) {
                 'Content-Type': 'application/json; charset=utf-8'
             }
         }
-        $scope.date = date;
 
         $http(sendingTableRequest).success(function (data) {
             $scope.dynamicTableData = data;
         })
 
     };
-    $http.post('/get_detailed_forecast_today').then(function (response) {
-        $scope.$parent.detailedTemp = response;
-        readyGet(response, [], $scope.local.typeTemp, 'today')
-    });
+
+    $scope.sendGraphRequest = function (numOfHrs, days, pastWeath, date) {
+        var sendingGraphRequest = {
+            method: 'GET',
+            url: '/get_detailed_forecast_for_past',
+            params: {
+                numOfHours:numOfHrs,
+                numOfDays:days,
+                pastWeather:pastWeath,
+                date:date},
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }
+
+        $http(sendingGraphRequest).then(function (response) {
+            $scope.$parent.detailedTemp = response;
+            readyGet(response, [], $scope.local.typeTemp, 'today')
+        })
+
+    };
 });
