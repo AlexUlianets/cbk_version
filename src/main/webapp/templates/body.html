@@ -3,8 +3,8 @@
         <ul>
             <li style="display: none" class="mob_weater"><a href="#">{{$state.params.day}}</a></li>
             <li><a href="/en/weather/outlook/{{selectedCity}}" ng-class="{'active':$state.current.name=='outlook'}">Outlook</a></li>
-            <li><a href="/en/forecast/today/{{selectedCity}}" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
-            <li><a href="/en/forecast/tomorrow/{{selectedCity}}" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
+            <li><a href="/en/weather/today/{{selectedCity}}" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
+            <li><a href="/en/weather/tomorrow/{{selectedCity}}" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
             <li><a href="/en/weather/history3/{{selectedCity}}" ng-class="{'active':$state.current.name=='past-weather'||$state.current.name=='past-weather1'}">Past weather</a></li>
             <li><a href="temperature-map.html">Temperature map</a></li>
         </ul>
@@ -12,12 +12,12 @@
     </nav>
     <nav class="pn-bot">
         <ul>
-            <li><a href="/en/forecast/3/{{selectedCity}}" ng-class="{'active':$state.current.name=='three-days'}">3 day</a></li>
-            <li><a href="/en/forecast/5/{{selectedCity}}" ng-class="{'active':$state.current.name=='five-days'}">5 day</a></li>
-            <li><a href="/en/forecast/7/{{selectedCity}}" ng-class="{'active':$state.current.name=='seven-days'}">7 day</a></li>
-            <li><a href="/en/forecast/10/{{selectedCity}}" ng-class="{'active':$state.current.name=='ten-days'}">10 day</a></li>
-            <li><a href="/en/forecast/14/{{selectedCity}}" ng-class="{'active':$state.current.name=='fourteen-days'}">14 day</a></li>
-            <li><a href="/en/forecast/hour-by-hour3/{{selectedCity}}" ng-class="{'active':$state.current.name=='hour-by-hour'||$state.current.name=='hour-by-hour1'}">Hour by hour</a></li>
+            <li><a href="/en/weather/3/{{selectedCity}}" ng-class="{'active':$state.current.name=='three-days'}">3 day</a></li>
+            <li><a href="/en/weather/5/{{selectedCity}}" ng-class="{'active':$state.current.name=='five-days'}">5 day</a></li>
+            <li><a href="/en/weather/7/{{selectedCity}}" ng-class="{'active':$state.current.name=='seven-days'}">7 day</a></li>
+            <li><a href="/en/weather/10/{{selectedCity}}" ng-class="{'active':$state.current.name=='ten-days'}">10 day</a></li>
+            <li><a href="/en/weather/14/{{selectedCity}}" ng-class="{'active':$state.current.name=='fourteen-days'}">14 day</a></li>
+            <li><a href="/en/weather/hour-by-hour3/{{selectedCity}}" ng-class="{'active':$state.current.name=='hour-by-hour'||$state.current.name=='hour-by-hour1'}">Hour by hour</a></li>
         </ul>
     </nav>
 </div><!-- end page-nav -->
