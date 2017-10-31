@@ -312,7 +312,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                               city: {squash: true, value: null},
                               "graph" : "weatherDetailed",
                               "day": "Past weather",
-                              "hrs":3
+                              "hrs":3,
+                              "graphTitle":"Weather for detailed day"
                           },
                         views: {
                             "": {
@@ -330,7 +331,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                               city: {squash: true, value: null},
                               "graph" : "weatherDetailed",
                               "day": "Past weather",
-                              "hrs":1
+                              "hrs":1,
+                              "graphTitle":"Weather for detailed day"
                           },
                         views: {
                             "": {

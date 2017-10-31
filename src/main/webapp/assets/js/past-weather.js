@@ -4,8 +4,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 app.controller('past-weatherCtrl', function($scope, $http) {
 
-    $scope.past = new Date(localStorage.getItem("date"))<new Date();
+    $scope.past = localStorage.getItem("date")==null?false:new Date(localStorage.getItem("date"))<new Date();
     $scope.graph = $scope.$state.params.graph;
+    $scope.day = $scope.$state.params.day;
+    $scope.graphTitle = $scope.$state.params.graphTitle;
     $scope.showWeatherForDate = function (date) {
         var currentDate = new Date(date);
         $scope.past = currentDate < new Date();
@@ -69,7 +71,7 @@ app.controller('past-weatherCtrl', function($scope, $http) {
     $http(sendingGraphRequest).then(function (response) {
         $scope.$parent.detailedTemp = response;
         console.log(response)
-            readyGet(response, [], $scope.local.typeTemp, 'today')
+            readyGet(response, [], $scope.local.typeTemp, 'today', $scope.graphTitle)
 
     })
 
@@ -109,7 +111,7 @@ app.controller('past-weatherCtrl', function($scope, $http) {
 
         $http(sendingGraphRequest).then(function (response) {
             $scope.$parent.detailedTemp = response;
-            readyGet(response, [], $scope.local.typeTemp, 'today')
+            readyGet(response, [], $scope.local.typeTemp, 'today', $scope.graphTitle)
         })
 
     };
