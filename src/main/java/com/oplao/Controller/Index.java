@@ -4,6 +4,7 @@ package com.oplao.Controller;
 import com.oplao.Application;
 import com.oplao.service.SearchService;
 import com.oplao.service.SitemapService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,24 +27,38 @@ public class Index {
         @RequestMapping({
                 "/",
                 "/weather",
+                "/forecast",
                 "/forecast/today",
+                "/weather/today",
                 "/weather/outlook",
+                "/forecast/outlook",
                 "/forecast/tomorrow",
+                "/weather/tomorrow",
                 "/weather/history1",
+                "/forecast/history1",
                 "/weather/history3",
+                "/forecast/history3",
                 "/forecast/3",
+                "/weather/3",
                 "/forecast/5",
+                "/weather/5",
                 "/forecast/7",
+                "/weather/7",
                 "/forecast/10",
+                "/weather/10",
                 "/forecast/14",
+                "/weather/14",
                 "/forecast/hour-by-hour1",
+                "/weather/hour-by-hour1",
                 "/forecast/hour-by-hour3",
+                "/weather/hour-by-hour3",
                 "/about",
                 "/widgets"
         })
         public String index(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue) {
-            try{
-                searchService.findSelectedCity(request, response, currentCookieValue);
+            JSONObject currentCity = null;
+             try{
+                currentCity = searchService.findSelectedCity(request, response, currentCookieValue);
             }catch (Exception e){
                 Application.log.warning(e.toString());
             }
@@ -52,53 +67,40 @@ public class Index {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            String reqUrl = request.getRequestURI();
+
+            if(reqUrl.contains("forecast")) {
+                response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                response.setHeader("Location", reqUrl.replace("forecast", "weather"));
+            }
             return "forward:/index.html";
-        }
-
-        @RequestMapping("/forecast/outlook/{locationRequest:.+}")
-        public String outlookRedirect(HttpServletRequest request, HttpServletResponse response){
-            String[] arr = request.getRequestURI().split("/");
-            String loc = arr[arr.length-1];
-            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            response.setHeader("Location", "/en/weather/outlook/"+loc);
-
-            return null;
-        }
-
-        @RequestMapping("/forecast/detailed3/{locationRequest:.+}")
-        public String hour3Redirect(HttpServletRequest request, HttpServletResponse response){
-            String[] arr = request.getRequestURI().split("/");
-            String loc = arr[arr.length-1];
-            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            response.setHeader("Location", "/en/forecast/hour-by-hour3/"+loc);
-
-            return null;
-        }
-
-        @RequestMapping("/forecast/detailed1/{locationRequest:.+}")
-        public String hour1Redirect(HttpServletRequest request, HttpServletResponse response){
-            String[] arr = request.getRequestURI().split("/");
-            String loc = arr[arr.length-1];
-            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            response.setHeader("Location", "/en/forecast/hour-by-hour1/"+loc);
-
-            return null;
         }
         @RequestMapping({
                 "/",
                 "/weather/{locationRequest:.+}",
+                "/forecast/{locationRequest:.+}",
                 "/forecast/today/{locationRequest:.+}",
+                "/weather/today/{locationRequest:.+}",
                 "/weather/outlook/{locationRequest:.+}",
+                "/forecast/outlook/{locationRequest:.+}",
                 "/forecast/tomorrow/{locationRequest:.+}",
+                "/weather/tomorrow/{locationRequest:.+}",
                 "/weather/history1/{locationRequest:.+}",
                 "/weather/history3/{locationRequest:.+}",
                 "/forecast/3/{locationRequest:.+}",
+                "/weather/3/{locationRequest:.+}",
                 "/forecast/5/{locationRequest:.+}",
+                "/weather/5/{locationRequest:.+}",
                 "/forecast/7/{locationRequest:.+}",
+                "/weather/7/{locationRequest:.+}",
                 "/forecast/10/{locationRequest:.+}",
+                "/weather/10/{locationRequest:.+}",
                 "/forecast/14/{locationRequest:.+}",
+                "/weather/14/{locationRequest:.+}",
                 "/forecast/hour-by-hour1/{locationRequest:.+}",
+                "/weather/hour-by-hour1/{locationRequest:.+}",
                 "/forecast/hour-by-hour3/{locationRequest:.+}",
+                "/weather/hour-by-hour3/{locationRequest:.+}",
         })
         public String index(@PathVariable(value = "locationRequest") String locationRequest, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) {
             searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response);
@@ -106,6 +108,11 @@ public class Index {
                 sitemapService.addToSitemap(request.getRequestURI());
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            String reqUrl = request.getRequestURI();
+            if(reqUrl.contains("forecast")){
+                response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
             return "forward:/index.html";
         }

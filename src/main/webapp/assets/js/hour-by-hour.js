@@ -35,7 +35,7 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
         if(!path.includes('_')){
             window.location.pathname = path.replace(path.charAt(path.length-2), hours);
         }else{
-             window.location.pathname = path.replace(path.charAt(25), hours);
+             window.location.pathname = path.replace(parseInt(hours)==1?"hour-by-hour3":"hour-by-hour1", "hour-by-hour"+hours);
         }
     };
     $scope.getData = function () {
