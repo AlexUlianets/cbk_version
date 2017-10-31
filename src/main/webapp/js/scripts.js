@@ -218,19 +218,16 @@ function loadScript() {
         $('body').click(function (e) {
             if($(e.target)[0]['localName']!=='input'
                 && $(e.target)[0]['localName']!=='i'
-                && $(e.target)[0]['className']!=='ht-search-input') {
+                && $(e.target)[0]['className']!=='ht-search-input'
+                && $(e.target)[0]['className']!=='searchIco') {
+                $('.search-dropdown').removeClass('opened');
                 $('.search-dropdown').css({'display': 'none'})
-            }else {
-                $('.search-dropdown').css({'display': 'block'})
-
             }
         })
-        $('.ht-search-input, .ht-search-input i').on('click', function () {
-            if($('.search-dropdown').css('display') === 'block') {
-                $('.search-dropdown').css({'display': 'none'})
-            }else {
+        $('.ht-search-input input').click(function (e) {
+            if(!$('.search-dropdown').hasClass('opened')) {
+                $('.search-dropdown').addClass('opened');
                 $('.search-dropdown').css({'display': 'block'})
-
             }
         });
 
@@ -238,8 +235,10 @@ function loadScript() {
             e.stopPropagation();
             e.preventDefault();
             $dropdown.slideUp();
+            $('.search-dropdown').removeClass('opened');
+            $('.search-dropdown').css({'display': 'none'})
         });
-       ;
+
         $(window).on('scroll resize', function () {
             if ($(window).width() > 767) {
                 var HeaderTop = 111;
@@ -321,3 +320,12 @@ function activateTab(index) {
 //     $(".tab_drawer_heading").removeClass("d_active");
 //     $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
 // }
+function onIcoSearch() {
+    if(!$('.search-dropdown').hasClass('opened')) {
+        $('.search-dropdown').addClass('opened');
+        $('.search-dropdown').css({'display': 'block'})
+    } else {
+        $('.search-dropdown').removeClass('opened');
+        $('.search-dropdown').css({'display': 'none'})
+    }
+}

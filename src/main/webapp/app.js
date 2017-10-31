@@ -29,7 +29,12 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     var ln = $('.favorite-location .container')[0]['children'].length;
                 }
                 if ($(window).width() < 500) {
-                    $('#top-page').animate({height: (300+((ln) * 50))+'px'});
+                    if($stateParams.day === "front-page"){
+
+                        $('#top-main').animate({height: '580px'});
+                    }else {
+                        $('#top-page').animate({height: (300+((ln) * 60))+'px'});
+                    }
                 }
             });
             // $('.tb-contant').removeClass('inner-html')
@@ -74,7 +79,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.searchHint = function(){
             $('.search-dropdown ul').css({'display': 'none'})
             $('.search-dropdown img').css({'display': 'block'})
-            $('.search-dropdown').css({'display': 'block'})
+            // $('.search-dropdown').css({'display': 'block'})
                 if($rootScope.searchInput.length > 1){
 
                      $.ajax({
@@ -96,12 +101,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         $('.search-dropdown img').css({'display': 'none'})
                         $('.search-dropdown ul').css({'display': 'block'})
                       if($rootScope.get_recent_cities_tabs===undefined){
-                          $('.search-dropdown').css({'display': 'none'})
+                          // $('.search-dropdown').css({'display': 'none'})
 
                       }
                 }
         }
         $rootScope.selectCity = function(e){
+            $('.search-dropdown').removeClass('opened');
             $('.search-dropdown').css({'display': 'none'})
             $rootScope.searchInput = '';
             $('.ht-search-input input').val('')
@@ -154,6 +160,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 var ln = $('.favorite-location .container')[0]['children'].length;
                 if ($(window).width() < 500) {
                         $('#top-page').animate({height: (300+(ln * 50))+'px'});
+                    $('#top-main').animate({height: '580px'});
                 }
             })
         };

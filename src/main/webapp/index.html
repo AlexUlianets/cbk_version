@@ -53,10 +53,12 @@
                     <div class="ht-search">
                         <form class="ht-search-wrap">
                             <div class="ht-search-inner">
-                                <div class="ht-search-input">
-                                    <i ng-click="searchHint()"  ng-model="searchInput"></i>
+                                <div class="ht-search-input" ng-click="searchHint()"  ng-model="searchInput">
+                                    <div class="searchIco" onclick="onIcoSearch()">
+                                        <i></i>
+                                    </div>
                                     <input type="text" value=""
-                                           placeholder="City/Town, Post/Zip code, LAT, LON" ng-click="searchHint()" ng-keyup="searchHint()" ng-model="searchInput">
+                                           placeholder="City/Town, Post/Zip code, LAT, LON" ng-keyup="searchHint()">
                                 </div>
                                 <!--<div class="ht-search-ico"><input type="submit" value=""></div> \-->
                                 <div class="ht-search-autoloc"><span></span></div>

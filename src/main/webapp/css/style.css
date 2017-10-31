@@ -2624,6 +2624,13 @@ ul.tb-tabs-full li{
 .ht-search-input{
     padding-right: 32px;
 }
+.searchIco {
+    position: absolute;
+    right: 0;
+    width: 6%;
+    height: 33px;
+    border-style: solid;
+}
 .ht-search-input input{
     padding-right: 0;
 }
