@@ -151,27 +151,7 @@ function loadScript() {
         $('ul.tabs li').last().addClass("tab_last");
         var $width = $(document).width();
         if ($width <= 700) {
-            $('.mob_weater').on('click', function (e) {
-                e.preventDefault();
-
-                if($('.pn-top ul li:not(:first), .pn-bot ul li').css('display') === 'list-item'){
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
-                        $(this).fadeOut("slow");
-                    })
-
-                }else {
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
-                        $(this).css({'display': 'list-item'})
-                    })
-
-                }
-            });
-            $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
-                $(this).click(function () {
-                    $('.mob_weater a').html($(this).html())
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
-                })
-            })
+          
         }
         $(document).on("click", ".transformer-tabs a:not('.active')", function (event) {
             event.preventDefault();
@@ -312,12 +292,17 @@ function activateTab(index) {
     $(".tab_drawer_heading").removeClass("d_active");
     $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
 }
-//
-// function activateTabHourly(index) {
-//     var activeTab = "tab" + index;
-//     $("#" + activeTab).fadeIn();
-//     $(this).siblings().removeClass("active");
-//     $(".tabclass" + index).addClass("active");
-//     $(".tab_drawer_heading").removeClass("d_active");
-//     $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
-// }
+function activeMenu() {
+    var $width = $(document).width();
+    if ($width <= 700) {
+        if ($('.pn-top ul li:not(:first), .pn-bot ul li').css('display') === 'list-item') {
+            $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                $(this).fadeOut("slow");
+            })
+        } else {
+            $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                $(this).css({'display': 'list-item'})
+            })
+        }
+    }
+}
