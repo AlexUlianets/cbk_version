@@ -16,7 +16,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
               $scope.$parent.get_year_summary = responseYear;
               $scope.getActiveClimate(-1);
 
-              readyGet(response, responseYear, $scope.local.typeTemp, 'outlook', $scope.graphTitle)
+              readyGet(response, responseYear, $scope.local.typeTemp, 'outlook', $scope.graphTitle, $scope.local.timeRange)
           });
       });
 
