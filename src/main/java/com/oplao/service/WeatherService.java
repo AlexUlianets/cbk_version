@@ -477,6 +477,7 @@ public class WeatherService {
         public HashMap getRemoteData(JSONObject city){
 
             String cityName = validateCityName((String)city.get("name"));
+            String countryCode = city.getString("countryCode").toLowerCase();
             DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
             JSONObject jsonObject = null;
         try {
@@ -495,6 +496,7 @@ public class WeatherService {
 
         result.put("city", cityName.replaceAll("%20", " "));
         result.put("country", city.get("countryName"));
+        result.put("countryCode", Arrays.asList(SearchService.validCountryCodes).contains(countryCode)?countryCode:"en");
         result.put("month", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
         result.put("day", dateTime.getDayOfMonth());
         result.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));

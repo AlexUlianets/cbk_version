@@ -5,7 +5,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.$stateParams = $stateParams;
         $rootScope.example = "";
         $rootScope.local = {};
-
+        $rootScope.currentCountryCode = $cookies.get('langCookieCode');
         if($cookies.get('temp_val')===undefined){
             $cookies.put('temp_val', 'C');
             $rootScope.local.typeTemp = 'C';
@@ -53,13 +53,18 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             // $('.tb-contant').removeClass('inner-html')
 
         }
-
         $rootScope.get_api_weather = function(){
             $.ajax({
                 method: "POST",
                 url: "/get_api_weather"
             }).done(function( msg ) {
                 $rootScope.temperature = msg;
+
+                if($cookies.get('langCookieCode') == undefined){
+                    console.log('generated')
+                    $rootScope.currentCountryCode = $rootScope.temperature.countryCode;
+                    $cookies.put('langCookieCode', msg.countryCode);
+                }
                 $rootScope.get_recent_cities_tabs_func();
                 $.ajax({
                     method: "GET",
@@ -70,6 +75,24 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 })
                     loadScript();
             })
+        }
+        $rootScope.get_recent_cities_tabs_func = function(){
+            $.ajax({
+                method: "POST",
+                url: "/get_recent_cities_tabs"
+            }).done(function( msg ) {
+                $rootScope.$apply(function(){
+                    $rootScope.get_recent_cities_tabs = msg;
+                });
+                if($('.favorite-location .container')[0]!= undefined) {
+                    var ln = $('.favorite-location .container')[0]['children'].length;
+                }
+                if ($(window).width() < 500) {
+                    $('#top-page').animate({height: (300+((ln) * 50))+'px'});
+                }
+            });
+            // $('.tb-contant').removeClass('inner-html')
+
         }
         $rootScope.get_api_weather();
         $rootScope.generate_meta_title = function () {
@@ -177,6 +200,15 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }
             })
         };
+        $rootScope.selectLanguage = function (lan) {
+            var curUrl = location.pathname.split('/');
+            if(curUrl[1].length==2){
+                location.pathname = location.pathname.replace(curUrl[1], lan);
+            }else{
+                $cookies.put('langCookieCode', lan);
+                document.location.reload(true);
+            }
+        }
         $rootScope.updateTemp = function(val){
             if(val===$cookies.get('temp_val')){
 
@@ -272,8 +304,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
               .state('front-page', {
-                  url: "/en/weather/:city",
+                  url: "/:lang/weather/:city",
                   params:{
+                      lang:{squash: true, value: null},
                       city: {squash: true, value: null},
                       "graph": "",
                       "day": "front-page",
@@ -291,8 +324,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
               .state('outlook', {
-                  url: "/en/weather/outlook/:city",
+                  url: "/:lang/weather/outlook/:city",
                   params:{
+                      lang:{squash: true, value: null},
                       city: {squash: true, value: null},
                       "graph": "weatherTen",
                       "day": "Outlook",
@@ -310,8 +344,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
               .state('today', {
-                  url: "/en/weather/today/:city",
+                  url: "/:lang/weather/today/:city",
                   params:{
+                      lang:{squash: true, value: null},
                       city: {squash: true, value: null},
                       "graph" : "weatherDetailed",
                       "day": "Today",
@@ -329,8 +364,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                   }
               })
                 .state('tomorrow', {
-                        url: "/en/weather/tomorrow/:city",
+                        url: "/:lang/weather/tomorrow/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                             "graph" : "none",
                             "day": "Tomorrow"
@@ -346,8 +382,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }) .state('past-weather', {
-                        url: "/en/weather/history3/:city",
+                        url: "/:lang/weather/history3/:city",
                           params:{
+                              lang:{squash: true, value: null},
                               city: {squash: true, value: null},
                               "graph" : "weatherDetailed",
                               "day": "Past weather",
@@ -365,8 +402,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('past-weather1', {
-                        url: "/en/weather/history1/:city",
+                        url: "/:lang/weather/history1/:city",
                           params:{
+                              lang:{squash: true, value: null},
                               city: {squash: true, value: null},
                               "graph" : "weatherDetailed",
                               "day": "Past weather",
@@ -384,8 +422,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('three-days', {
-                        url: "/en/weather/3/:city",
+                        url: "/:lang/weather/3/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                             "index":3,
                             "tabClass" : "tabs tabs-three tb-tabs",
@@ -405,8 +444,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('seven-days', {
-                        url: "/en/weather/7/:city",
+                        url: "/:lang/weather/7/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                           "index":7,
                            "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
@@ -426,8 +466,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('five-days', {
-                        url: "/en/weather/5/:city",
+                        url: "/:lang/weather/5/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                           "index":5,
                             "page": "five-days",
@@ -447,8 +488,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('ten-days', {
-                        url: "/en/weather/10/:city",
+                        url: "/:lang/weather/10/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                           "index":10,
                             "page": "ten-days",
@@ -467,8 +509,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('hour-by-hour', {
-                        url: "/en/weather/hour-by-hour3/:city",
+                        url: "/:lang/weather/hour-by-hour3/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                           "index":7,
                             "day": "Hour by hour",
@@ -487,8 +530,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('hour-by-hour1', {
-                        url: "/en/weather/hour-by-hour1/:city",
+                        url: "/:lang/weather/hour-by-hour1/:city",
                         params:{
+                            lang:{squash: true, value: null},
                             city: {squash: true, value: null},
                           "index":7,
                             "day": "Hour by hour",
@@ -507,8 +551,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('fourteen-days', {
-                        url: "/en/weather/14/:city",
+                        url: "/:lang/weather/14/:city",
                           params:{
+                              lang:{squash: true, value: null},
                               city: {squash: true, value: null},
                               "index":14,
                               "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
@@ -528,8 +573,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                             }]
                         }
                     }).state('about', {
-                        url: "/en/about",
-
+                        url: "/:lang/about",
+                        params:{
+                            lang:{squash: true, value: null}
+                        },
                         views: {
                             "": {
                                 templateUrl: "templates/html/about.html"
