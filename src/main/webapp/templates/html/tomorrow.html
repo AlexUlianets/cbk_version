@@ -13,7 +13,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey">Sunrise</div>
-										<div class="count">{{dynamicTableData[1][1].sunrise}}</div>
+										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunrise)"></div>
 									</div>
 								</div>
 								<div class="tmr-sunset">
@@ -22,7 +22,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey">Sunset</div>
-										<div class="count">{{dynamicTableData[1][1].sunset}}</div>
+										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunset)"></div>
 									</div>
 								</div>
 							</div>
@@ -126,7 +126,7 @@
 											<div class="tb-item">
 												<div class="tb-row" ng-repeat="item in dynamicTableData[1][0]">
 													<div class="tb-time">
-														<div class="tb-text">{{item.time}}</div>
+														<div class="tb-text" ng-bind="getTime(item.time)">{{item.time}}</div>
 													</div>
 													<div class="tb-weather">
 														<img ng-src="svg/wicons_svg/{{item.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="item.isDay== false ">
@@ -192,7 +192,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey">Sunrise</div>
-										<div class="count">{{dynamicTableData[0][1].sunrise}}</div>
+										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunrise)"></div>
 									</div>
 								</div>
 								<div class="tmr-sunset">
@@ -201,7 +201,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey">Sunset</div>
-										<div class="count">{{dynamicTableData[0][1].sunset}}</div>
+										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunset)"></div>
 									</div>
 								</div>
 							</div>
@@ -305,7 +305,7 @@
 											<div class="tb-item">
 												<div class="tb-row" ng-repeat="item in dynamicTableData[0][0]">
 													<div class="tb-time">
-														<div class="tb-text">{{item.time}}</div>
+														<div class="tb-text" ng-bind="getTime(item.time)"></div>
 													</div>
 													<div class="tb-weather">
 														<img ng-src="svg/wicons_svg/{{item.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="item.isDay== false ">

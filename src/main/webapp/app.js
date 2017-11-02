@@ -13,10 +13,46 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             $rootScope.local.typeTemp = $cookies.get('temp_val').toString();
 
         }
+        if($cookies.get('time_val')===undefined){
+            $cookies.put('time_val', 24);
+            $rootScope.local.typeTime = 24;
+        }else {
+            $rootScope.local.typeTime = $cookies.get('time_val').toString();
+
+        }
+
+        if(parseInt($cookies.get('time_val'))===24){
+            $rootScope.local.timeRange = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
+        }else {
+            $rootScope.local.timeRange = ['12 AM', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM', '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM'];
+        }
         $rootScope.searchInput = '';
         $rootScope.searchList = [];
         $rootScope.result = 0;
 
+        $rootScope.get_recent_cities_tabs_func = function(){
+            $.ajax({
+                  method: "POST",
+                url: "/get_recent_cities_tabs"
+            }).done(function( msg ) {
+                $rootScope.$apply(function(){
+                    $rootScope.get_recent_cities_tabs = msg;
+                });
+                if($('.favorite-location .container')[0]!= undefined) {
+                    var ln = $('.favorite-location .container')[0]['children'].length;
+                }
+                if ($(window).width() < 500) {
+                    if($stateParams.day === "front-page"){
+
+                        $('#top-main').animate({height: '580px'});
+                    }else {
+                        $('#top-page').animate({height: (300+((ln) * 60))+'px'});
+                    }
+                }
+            });
+            // $('.tb-contant').removeClass('inner-html')
+
+        }
         $rootScope.get_api_weather = function(){
             $.ajax({
                 method: "POST",
@@ -79,7 +115,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.searchHint = function(){
             $('.search-dropdown ul').css({'display': 'none'})
             $('.search-dropdown img').css({'display': 'block'})
-            $('.search-dropdown').css({'display': 'block'})
+            // $('.search-dropdown').css({'display': 'block'})
                 if($rootScope.searchInput.length > 1){
 
                      $.ajax({
@@ -101,12 +137,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         $('.search-dropdown img').css({'display': 'none'})
                         $('.search-dropdown ul').css({'display': 'block'})
                       if($rootScope.get_recent_cities_tabs===undefined){
-                          $('.search-dropdown').css({'display': 'none'})
+                          // $('.search-dropdown').css({'display': 'none'})
 
                       }
                 }
         }
         $rootScope.selectCity = function(e){
+            $('.search-dropdown').removeClass('opened');
             $('.search-dropdown').css({'display': 'none'})
             $rootScope.searchInput = '';
             $('.ht-search-input input').val('')
@@ -159,6 +196,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 var ln = $('.favorite-location .container')[0]['children'].length;
                 if ($(window).width() < 500) {
                         $('#top-page').animate({height: (300+(ln * 50))+'px'});
+                    $('#top-main').animate({height: '580px'});
                 }
             })
         };
@@ -185,6 +223,25 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }
                 document.location.reload(true);
             }
+        }
+        $rootScope.updateTime = function(val){
+            if(val===$cookies.get('time_val')){
+
+            }
+            else {
+                if (parseInt($cookies.get('time_val')) === 24) {
+                    $cookies.put('time_val', 12);
+
+                } else {
+                    $cookies.put('time_val', 24);
+
+                }
+                document.location.reload(true);
+            }
+
+        }
+        $rootScope.getTime = function(str){
+            return changeTimeFormat(str.toString(), $rootScope.local.typeTime)
         }
     }]);
     app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider, $locationProvider) {

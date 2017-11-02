@@ -151,27 +151,7 @@ function loadScript() {
         $('ul.tabs li').last().addClass("tab_last");
         var $width = $(document).width();
         if ($width <= 700) {
-            $('.mob_weater').on('click', function (e) {
-                e.preventDefault();
-
-                if($('.pn-top ul li:not(:first), .pn-bot ul li').css('display') === 'list-item'){
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
-                        $(this).fadeOut("slow");
-                    })
-
-                }else {
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
-                        $(this).css({'display': 'list-item'})
-                    })
-
-                }
-            });
-            $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
-                $(this).click(function () {
-                    $('.mob_weater a').html($(this).html())
-                    $('.pn-top ul li:not(:first), .pn-bot ul li').fadeOut("slow");
-                })
-            })
+          
         }
         $(document).on("click", ".transformer-tabs a:not('.active')", function (event) {
             event.preventDefault();
@@ -218,19 +198,16 @@ function loadScript() {
         $('body').click(function (e) {
             if($(e.target)[0]['localName']!=='input'
                 && $(e.target)[0]['localName']!=='i'
-                && $(e.target)[0]['className']!=='ht-search-input') {
+                && $(e.target)[0]['className']!=='ht-search-input'
+                && $(e.target)[0]['className']!=='searchIco') {
+                $('.search-dropdown').removeClass('opened');
                 $('.search-dropdown').css({'display': 'none'})
-            }else {
-                $('.search-dropdown').css({'display': 'block'})
-
             }
         })
-        $('.ht-search-input, .ht-search-input i').on('click', function () {
-            if($('.search-dropdown').css('display') === 'block') {
-                $('.search-dropdown').css({'display': 'none'})
-            }else {
+        $('.ht-search-input input').click(function (e) {
+            if(!$('.search-dropdown').hasClass('opened')) {
+                $('.search-dropdown').addClass('opened');
                 $('.search-dropdown').css({'display': 'block'})
-
             }
         });
 
@@ -238,8 +215,10 @@ function loadScript() {
             e.stopPropagation();
             e.preventDefault();
             $dropdown.slideUp();
+            $('.search-dropdown').removeClass('opened');
+            $('.search-dropdown').css({'display': 'none'})
         });
-       ;
+
         $(window).on('scroll resize', function () {
             if ($(window).width() > 767) {
                 var HeaderTop = 111;
@@ -312,6 +291,20 @@ function activateTab(index) {
     $(".tab_drawer_heading").removeClass("d_active");
     $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
 }
+function activeMenu() {
+    var $width = $(document).width();
+    if ($width <= 700) {
+        if ($('.pn-top ul li:not(:first), .pn-bot ul li').css('display') === 'list-item') {
+            $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                $(this).fadeOut("slow");
+            })
+        } else {
+            $('.pn-top ul li:not(:first), .pn-bot ul li').each(function () {
+                $(this).css({'display': 'list-item'})
+            })
+        }
+    }
+}
 //
 // function activateTabHourly(index) {
 //     var activeTab = "tab" + index;
@@ -321,3 +314,67 @@ function activateTab(index) {
 //     $(".tab_drawer_heading").removeClass("d_active");
 //     $(".tab_drawer_heading[rel^='" + activeTab + "']").addClass("d_active");
 // }
+function onIcoSearch() {
+    if(!$('.search-dropdown').hasClass('opened')) {
+        $('.search-dropdown').addClass('opened');
+        $('.search-dropdown').css({'display': 'block'})
+    } else {
+        $('.search-dropdown').removeClass('opened');
+        $('.search-dropdown').css({'display': 'none'})
+    }
+}
+function changeTimeFormat(str, timeFormat) {
+
+    if( parseInt(timeFormat) === 24 ){
+        var option=1;
+        var tokens = /([10]?\d):([0-5]\d) ([ap]m)/i.exec(str);
+        if (tokens == null) {
+            tokens = /([10]?\d) ([ap]m)/i.exec(str)
+            option=2;
+        }
+        if (tokens == null) {
+            return str;
+        }
+        if(option===2){
+            if (tokens[2].toLowerCase() === 'pm' && tokens[1] !== '12') {
+                tokens[1] = '' + (12 + (+tokens[1]));
+            } else if (tokens[2].toLowerCase() === 'am' && tokens[1] === '12') {
+                tokens[1] = '00';
+            }
+            return tokens[1] + ':00';
+        }else {
+            if (tokens[3].toLowerCase() === 'pm' && tokens[1] !== '12') {
+                tokens[1] = '' + (12 + (+tokens[1]));
+            } else if (tokens[3].toLowerCase() === 'am' && tokens[1] === '12') {
+                tokens[1] = '00';
+            }
+            return tokens[1] + ':' + tokens[2];
+        }
+
+
+    }else {
+
+        var time =  toDate(str,"h:m");
+        if (time == 'Invalid Date') { return str; }
+
+        var hours = time.getHours() > 12 ? time.getHours() - 12 : time.getHours();
+        var am_pm = time.getHours() >= 12 ? "PM" : "AM";
+        hours = hours < 10 ? "0" + hours : hours;
+        var minutes = time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes();
+
+        time = hours + ":" + minutes + " " + am_pm;
+
+        return time;
+    }
+}
+
+function toDate(dStr,format) {
+    var now = new Date();
+    if (format == "h:m") {
+        now.setHours(dStr.substr(0,dStr.indexOf(":")));
+        now.setMinutes(dStr.substr(dStr.indexOf(":")+1));
+        now.setSeconds(0);
+        return now;
+    }else
+        return "Invalid Format";
+}

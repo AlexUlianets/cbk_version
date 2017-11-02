@@ -71,7 +71,7 @@ app.controller('past-weatherCtrl', function($scope, $http) {
     $http(sendingGraphRequest).then(function (response) {
         $scope.$parent.detailedTemp = response;
         console.log(response)
-            readyGet(response, [], $scope.local.typeTemp, 'today', $scope.graphTitle)
+            readyGet(response, [], $scope.local.typeTemp, 'today', $scope.graphTitle, $scope.local.timeRange)
 
     })
 
@@ -111,7 +111,7 @@ app.controller('past-weatherCtrl', function($scope, $http) {
 
         $http(sendingGraphRequest).then(function (response) {
             $scope.$parent.detailedTemp = response;
-            readyGet(response, [], $scope.local.typeTemp, 'today', $scope.graphTitle)
+            readyGet(response, [], $scope.local.typeTemp, 'today', $scope.graphTitle, $scope.local.timeRange)
         })
 
     };

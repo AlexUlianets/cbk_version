@@ -53,10 +53,12 @@
                     <div class="ht-search">
                         <form class="ht-search-wrap">
                             <div class="ht-search-inner">
-                                <div class="ht-search-input">
-                                    <i ng-click="searchHint()"  ng-model="searchInput"></i>
+                                <div class="ht-search-input" ng-click="searchHint()"  ng-model="searchInput">
+                                    <div class="searchIco" onclick="onIcoSearch()">
+                                        <i></i>
+                                    </div>
                                     <input type="text" value=""
-                                           placeholder="City/Town, Post/Zip code, LAT, LON" ng-click="searchHint()" ng-keyup="searchHint()" ng-model="searchInput">
+                                           placeholder="City/Town, Post/Zip code, LAT, LON" ng-keyup="searchHint()">
                                 </div>
                                 <!--<div class="ht-search-ico"><input type="submit" value=""></div> \-->
                                 <div class="ht-search-autoloc"><span></span></div>
@@ -76,7 +78,7 @@
                         <dl>
                             <dt><i class="icon location"></i><span class="search-text1">{{temperature.city}}</span> weather, <span
                                     class="search-text2">{{temperature.country}}</span></dt>
-                            <dd>Today. {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span>{{("0" + temperature.hours).slice(-2)}}:{{("0" + temperature.minutes).slice(-2)}}</span></dd>
+                            <dd>Today. {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span  ng-bind="getTime(('0' + temperature.hours).slice(-2)+':'+('0' + temperature.minutes).slice(-2))"></span></dd>
                         </dl>
                     </div>
 
@@ -219,7 +221,7 @@
                                                 <span class="helper"></span>
                                                 <img src="images/svg-sprite/sunrise-weather-symbol.svg" alt="" style="width: 35px;">
                                             </div>
-                                            <div class="wt-time">{{temperature.sunrise}}</div>
+                                            <div class="wt-time"  ng-bind="getTime(temperature.sunrise)"></div>
                                         </div>
                                         <div class="weather-time-block">
                                             <div class="wtb-img">
@@ -227,7 +229,7 @@
                                                 <!-- <i class="icon pm"></i> -->
                                                 <img src="images/svg-sprite/sunset-fill-interface-symbol.svg" alt="" style="width: 35px;">
                                             </div>
-                                            <div class="wt-time">{{temperature.sunset}}</div>
+                                            <div class="wt-time"  ng-bind="getTime(temperature.sunset)"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -373,5 +375,33 @@
             <!--htmlMarker.setMap(map);-->
         <!--}-->
     <!--</script>-->
+       <script type="text/javascript">
+            window.doorbellOptions = {
+                hideButton: true,
+                appKey: 'BGzSckphD3XdH71dyC32xiriWxSN0BfLyPnVJUz8VWTn6UgnCznMYoZnQXZq0tuS',
+                onInitialized: function() {
+                }
+            };
+            (function(w, d, t) {
+                var hasLoaded = false;
+                function l() { if (hasLoaded) { return; }
+                hasLoaded = true;
+
+                window.doorbellOptions.windowLoaded = true;
+                var g = d.createElement(t);
+                g.id = 'doorbellScript';
+                g.type = 'text/javascript';
+                g.async = true;
+                g.src = 'https://embed.doorbell.io/button/1291?t='+(new Date().getTime());
+                (d.getElementsByClassName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g); }
+                if (w.attachEvent) { w.attachEvent('onload', l); } else if (w.addEventListener) { w.addEventListener('load', l, false); } else { l(); }
+                if (d.readyState == 'complete') { l(); }
+            }(window, document, 'script'));
+            function showDoorbellModal() {
+                doorbell.show(); // The doorbell object gets created by the doorbell.js script
+              }
+
+        </script>
 </body>
+
 </html>
