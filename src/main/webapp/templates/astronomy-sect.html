@@ -8,13 +8,13 @@
                     <div class="al-img">
                         <img src="images/svg/oplao_sunrise.svg" alt="img"></img>
                     </div>
-                    <span>{{astronomy.sunrise}}</span>
+                    <span ng-bind="getTime(astronomy.sunrise)"></span>
                 </div>
                 <div class="al-block">
                     <div class="al-img">
                         <img src="images/svg/oplao_sunset.svg" alt="img"></img>
                     </div>
-                    <span>{{astronomy.sunset}}</span>
+                    <span ng-bind="getTime(astronomy.sunset)"></span>
                 </div>
             </div>
         </div>

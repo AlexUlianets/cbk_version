@@ -41,12 +41,12 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
 
             $http(sendingTableRequest).success(function (data) {
                 console.log(1)
-                readyGet(data, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle)
+                readyGet(data, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle, $scope.local.timeRange)
             })
         }
     } else if($scope.$state.params.page === 'ten-days') {
         $http.post('/get_detailed_forecast').then(function (response) {
-            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle)
+            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle, $scope.local.timeRange)
         });
     }
 
