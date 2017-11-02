@@ -119,13 +119,13 @@
         <div class="set-popup-row">
             <div class="spr-block popup-units">
                 <h2>Units Preference</h2>
-                <a href="#" class="spr-item">°C</a>
-                <a href="#" class="spr-item">°F</a>
+                <a href="#" class="spr-item" ng-class="{active:local.typeTemp == 'C'}" ng-click="local.typeTemp = 'C'; updateTemp(local.typeTemp);">°C</a>
+                <a href="#" class="spr-item" ng-class="{active:local.typeTemp == 'F'}" ng-click="local.typeTemp = 'F'; updateTemp(local.typeTemp);">°F</a>
             </div>
             <div class="spr-block popup-time">
                 <h2>Time Format</h2>
-                <a href="#" class="spr-item">12 hours</a>
-                <a href="#" class="spr-item">24 hours</a>
+                <a href="#" class="spr-item" ng-class="{active:local.typeTime == 12}" ng-click="local.typeTime = 12; updateTime(local.typeTime);">12 hours</a>
+                <a href="#" class="spr-item" ng-class="{active:local.typeTime == 24}" ng-click="local.typeTime = 24; updateTime(local.typeTime);">24 hours</a>
             </div>
         </div>
     </div>

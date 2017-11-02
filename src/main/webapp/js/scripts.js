@@ -329,3 +329,58 @@ function onIcoSearch() {
         $('.search-dropdown').css({'display': 'none'})
     }
 }
+function changeTimeFormat(str, timeFormat) {
+
+    if( parseInt(timeFormat) === 24 ){
+        var option=1;
+        var tokens = /([10]?\d):([0-5]\d) ([ap]m)/i.exec(str);
+        if (tokens == null) {
+            tokens = /([10]?\d) ([ap]m)/i.exec(str)
+            option=2;
+        }
+        if (tokens == null) {
+            return str;
+        }
+        if(option===2){
+            if (tokens[2].toLowerCase() === 'pm' && tokens[1] !== '12') {
+                tokens[1] = '' + (12 + (+tokens[1]));
+            } else if (tokens[2].toLowerCase() === 'am' && tokens[1] === '12') {
+                tokens[1] = '00';
+            }
+            return tokens[1] + ':00';
+        }else {
+            if (tokens[3].toLowerCase() === 'pm' && tokens[1] !== '12') {
+                tokens[1] = '' + (12 + (+tokens[1]));
+            } else if (tokens[3].toLowerCase() === 'am' && tokens[1] === '12') {
+                tokens[1] = '00';
+            }
+            return tokens[1] + ':' + tokens[2];
+        }
+
+
+    }else {
+
+        var time =  toDate(str,"h:m");
+        if (time == 'Invalid Date') { return str; }
+
+        var hours = time.getHours() > 12 ? time.getHours() - 12 : time.getHours();
+        var am_pm = time.getHours() >= 12 ? "PM" : "AM";
+        hours = hours < 10 ? "0" + hours : hours;
+        var minutes = time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes();
+
+        time = hours + ":" + minutes + " " + am_pm;
+
+        return time;
+    }
+}
+
+function toDate(dStr,format) {
+    var now = new Date();
+    if (format == "h:m") {
+        now.setHours(dStr.substr(0,dStr.indexOf(":")));
+        now.setMinutes(dStr.substr(dStr.indexOf(":")+1));
+        now.setSeconds(0);
+        return now;
+    }else
+        return "Invalid Format";
+}
