@@ -34,13 +34,13 @@
                 <nav class="main-menu-block">
                     <h3>Weather</h3>
                     <ul>
-                        <li><a href="/en/weather/3/{{selectedCity}}">3 days weather forecast</a></li>
-                        <li><a href="/en/weather/5/{{selectedCity}}">5 days weather forecast</a></li>
-                        <li><a href="/en/weather/7/{{selectedCity}}">7 days weather forecast</a></li>
-                        <li><a href="/en/weather/14/{{selectedCity}}">14 days weather forecast</a></li>
-                        <li><a href="/en/weather/hour-by-hour3/{{selectedCity}}">Hourly weather</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}">3 days weather forecast</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}">5 days weather forecast</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}">7 days weather forecast</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}">14 days weather forecast</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}">Hourly weather</a></li>
                         <li><a href="#">Weather map</a></li>
-                        <li><a href="/en/weather/history3/{{selectedCity}}">Weather history</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}">Weather history</a></li>
                     </ul>
                 </nav>
 
@@ -57,7 +57,7 @@
                 <nav class="main-menu-block">
                     <h3>Information</h3>
                     <ul>
-                        <li><a href="/en/about">About</a></li>
+                        <li><a href="/{{currentCountryCode}}/about">About</a></li>
                         <li><a href="#">Blog</a></li>
                     </ul>
                 </nav>
@@ -106,13 +106,13 @@
         <div class="popup-lang-wrap">
             <h2>Language</h2>
             <ul class="popup-lang">
-                <li><a href="#">En</a></li>
-                <li><a href="#">En</a></li>
-                <li><a href="#">De</a></li>
-                <li><a href="#">Fr</a></li>
-                <li><a href="#">It</a></li>
-                <li><a href="#">Uk</a></li>
-                <li><a href="#">Be</a></li>
+                <li><a ng-click="selectLanguage('en')">En</a></li>
+                <li><a ng-click="selectLanguage('us')">Us</a></li>
+                <li><a ng-click="selectLanguage('de')">De</a></li>
+                <li><a ng-click="selectLanguage('fr')">Fr</a></li>
+                <li><a ng-click="selectLanguage('it')">It</a></li>
+                <li><a ng-click="selectLanguage('ua')">Ua</a></li>
+                <li><a ng-click="selectLanguage('by')">By</a></li>
             </ul>
         </div>
 
