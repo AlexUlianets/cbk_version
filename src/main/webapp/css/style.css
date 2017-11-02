@@ -2624,6 +2624,32 @@ ul.tb-tabs-full li{
 .ht-search-input{
     padding-right: 32px;
 }
+.searchIco {
+    position: absolute;
+    right: 0;
+    width: 6%;
+    height: 33px;
+    border-style: solid;
+}
+#doorbell-button {
+    all: unset!important;
+    display: table-cell!important;
+    vertical-align: middle!important;
+    height: 70px!important;
+    background: #23272b!important;
+    border-right: 1px solid #1a1e22!important;
+    text-align: center!important;
+    font-size: inherit!important;
+}
+#doorbell-powered-by{
+    display: none!important;
+}
+#doorbell .buttons button {
+    background-image: linear-gradient(45deg, #004fa4, #00c5ff);
+    border: none;
+    padding: 10px;
+    color: white;
+}
 .ht-search-input input{
     padding-right: 0;
 }
