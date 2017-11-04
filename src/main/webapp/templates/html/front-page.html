@@ -80,7 +80,7 @@
 								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
 							</div>
 							<div class="wb-right">
-								<a  href="/en/weather/outlook/{{elem.name+'_'+elem.countryCode}}"><h3>{{elem.name}}</h3></a>
+								<a  href="/{{currentCountryCode}}/weather/outlook/{{elem.name+'_'+elem.countryCode}}"><h3>{{elem.name}}</h3></a>
 							</div>
 						</div>
 
@@ -159,7 +159,7 @@
 								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
 							</div>
 							<div class="wb-right">
-								<a href="/en/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
+								<a href="/{{currentCountryCode}}/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
 									<h3>{{elem.name}}</h3>
 									<h4>{{elem.countryName}}</h4>
 								</a>
