@@ -21,8 +21,8 @@
 												<img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== true ">
 											</div>
 											<div class="wrn-temp">
-												<span class="wrm-temp-top">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
-												<span class="wrm-temp-bottom">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
+												<span class="min-temperature">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
+												<span class="max-temperature">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
 											</div>
 										</div>
 									</div>
