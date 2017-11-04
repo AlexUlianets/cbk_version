@@ -84,6 +84,8 @@ public class Index {
                 "/weather/today/{locationRequest:.+}",
                 "/weather/outlook/{locationRequest:.+}",
                 "/forecast/outlook/{locationRequest:.+}",
+                "/weather/map/{locationRequest:.+}",
+                "/forecast/map/{locationRequest:.+}",
                 "/forecast/tomorrow/{locationRequest:.+}",
                 "/weather/tomorrow/{locationRequest:.+}",
                 "/weather/history1/{locationRequest:.+}",

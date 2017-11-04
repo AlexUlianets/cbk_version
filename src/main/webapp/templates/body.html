@@ -6,7 +6,7 @@
             <li><a href="/en/weather/today/{{selectedCity}}" ng-class="{'active':$state.current.name=='today'}">Today</a></li>
             <li><a href="/en/weather/tomorrow/{{selectedCity}}" ng-class="{'active':$state.current.name=='tomorrow'}">Tomorrow</a></li>
             <li><a href="/en/weather/history3/{{selectedCity}}" ng-class="{'active':$state.current.name=='past-weather'||$state.current.name=='past-weather1'}">Past weather</a></li>
-            <li><a href="temperature-map.html">Temperature map</a></li>
+            <li><a href="/en/weather/map/{{selectedCity}}" ng-class="{'active':$state.current.name=='map'}">Temperature map</a></li>
         </ul>
 
     </nav>

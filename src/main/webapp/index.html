@@ -153,7 +153,7 @@
                                     <span class="helper"></span>
                                     <img src="images/svg-sprite/sunrise-weather-symbol.svg" alt="" style="width: 35px;">
                                 </div>
-                                <div class="wt-time">{{temperature.sunrise}}</div>
+                                <div class="wt-time"  ng-bind="getTime(temperature.sunrise)">{{temperature.sunrise}}</div>
                             </div>
                             <div class="weather-time-block">
                                 <div class="wtb-img">
@@ -161,7 +161,7 @@
                                     <!-- <i class="icon pm"></i> -->
                                     <img src="images/svg-sprite/sunset-fill-interface-symbol.svg" alt="" style="width: 35px;">
                                 </div>
-                                <div class="wt-time">{{temperature.sunset}}</div>
+                                <div class="wt-time" ng-bind="getTime(temperature.sunset)">{{temperature.sunset}}</div>
                             </div>
                         </div>
                     </div>

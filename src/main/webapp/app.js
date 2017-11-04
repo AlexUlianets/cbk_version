@@ -248,6 +248,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               }, {
                   name: 'widgets',
                   files: ['assets/js/widgets.js']
+              },{   name: 'map',
+                  files: ['assets/js/temp-map.js']
               }]
           });
 
@@ -512,9 +514,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                               city: {squash: true, value: null},
                               "index":7,
                               "day": "Map",
-                              "hrs":1,
-                              "graphTitle":"Hour by hour weather"
-                              //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+                              "hrs":1
                           },
                           views: {
                               "": {
@@ -523,7 +523,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                           },
                           resolve: {
                               loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                  return $ocLazyLoad.load('hour-by-hour');
+                                  return $ocLazyLoad.load('map');
                               }]
                           }
                       }).state('fourteen-days', {

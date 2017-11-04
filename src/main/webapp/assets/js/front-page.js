@@ -149,8 +149,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
     .directive('mapMarker', function () {
         return {
             restrict: 'E',
-            controller: 'MapMarkerCtrl',
-            files: ['assets/js/map.js']
+            controller: 'MapMarkerCtrl'
         };
     })
     .factory('locationsModel', function() {
