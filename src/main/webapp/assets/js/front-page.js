@@ -113,13 +113,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
                 }]
             };
             const gmap = new google.maps.Map(mapEl, mapOptions);
-            
-            var aNorth  =   gmap.getBounds().getNorthEast().lat();
-            var aEast   =   gmap.getBounds().getNorthEast().lng();
-            var aSouth  =   gmap.getBounds().getSouthWest().lat();
-            var aWest   =   gmap.getBounds().getSouthWest().lng();
 
-            console.log(aNorth, aEast, aSouth, aWest)
+            // var aNorth  =   gmap.getBounds().getNorthEast().lat();
+            // var aEast   =   gmap.getBounds().getNorthEast().lng();
+            // var aSouth  =   gmap.getBounds().getSouthWest().lat();
+            // var aWest   =   gmap.getBounds().getSouthWest().lng();
+            //
+            // console.log(aNorth, aEast, aSouth, aWest)
 
             $scope.gmap = gmap;
             $scope.locations = locationsModel;
