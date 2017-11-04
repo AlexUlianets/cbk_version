@@ -47,8 +47,8 @@ app.controller('MapMarkerCtrl', function($scope, $element, mapMarkerConstructor)
             panes.overlayImage.appendChild(this.element[0]);
 
             if (point) {
-                this.element.css('left', point.x -40 + 'px');
-                this.element.css('top', point.y -40 + 'px');
+                this.element.css('left', point.x -20 + 'px');
+                this.element.css('top', point.y -70 + 'px');
             }
         };
         GoogleOverlayView.prototype.onRemove = function() {};

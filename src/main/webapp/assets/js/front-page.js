@@ -114,15 +114,36 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
             };
             const gmap = new google.maps.Map(mapEl, mapOptions);
 
-            // var aNorth  =   gmap.getBounds().getNorthEast().lat();
-            // var aEast   =   gmap.getBounds().getNorthEast().lng();
-            // var aSouth  =   gmap.getBounds().getSouthWest().lat();
-            // var aWest   =   gmap.getBounds().getSouthWest().lng();
-            //
-            // console.log(aNorth, aEast, aSouth, aWest)
+            google.maps.event.addListener(gmap, 'bounds_changed', function() {
 
-            $scope.gmap = gmap;
-            $scope.locations = locationsModel;
+                var aNorth  =   gmap.getBounds().getNorthEast().lat();
+                var aEast   =   gmap.getBounds().getNorthEast().lng();
+                var aSouth  =   gmap.getBounds().getSouthWest().lat();
+                var aWest   =   gmap.getBounds().getSouthWest().lng();
+
+                var sendingTableRequest = {
+                    method: 'POST',
+                    url: '/get_map_weather',
+                    params: {
+                        max: 10,
+                        north: aNorth,
+                        west: aWest,
+                        south: aSouth,
+                        east: aEast
+                    },
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
+                };
+
+                $http(sendingTableRequest).success(function () {
+                    $scope.gmap = gmap;
+                    $scope.locations = response.data;
+                }).error(function () {
+                    $scope.gmap = gmap;
+                    $scope.locations = locationsModel;
+                })
+            })
         });
     }])
     .directive('mapMarker', function () {
@@ -135,18 +156,18 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
     .factory('locationsModel', function() {
         const locationsModel = [{
             img: 'PartlyCloudy',
-            temp_C: 36,
+            temp_C: 6,
             temp_F: 90,
             day: "night",
-            lat: 34.077796,
-            lng: -118.331151
+            lat: 49.84,
+            lng: 24.02
         },{
             img: 'Clear',
             temp_C: 10,
             temp_F: 60,
             day: "day",
-            lat: 34.077146,
-            lng: -118.327805
+            lat: 50.45,
+            lng: 30.52
         }];
 
         return locationsModel;
