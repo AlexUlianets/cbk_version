@@ -22,8 +22,8 @@
                                                 <img ng-src="svg/wicons_svg/{{i[1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="i[1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?i[1].mintempC:i[1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?i[1].maxtempC:i[1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -49,8 +49,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[0][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[0][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[0][1].maxtempC:dynamicTableData[0][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[0][1].maxtempC:dynamicTableData[0][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -64,8 +64,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[1][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[1][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[1][1].mintempC:dynamicTableData[1][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[1][1].maxtempC:dynamicTableData[1][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[1][1].mintempC:dynamicTableData[1][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[1][1].maxtempC:dynamicTableData[1][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -79,8 +79,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[2][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[2][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[2][1].mintempC:dynamicTableData[2][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[2][1].maxtempC:dynamicTableData[2][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[2][1].mintempC:dynamicTableData[2][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[2][1].maxtempC:dynamicTableData[2][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -94,8 +94,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[3][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[3][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[3][1].mintempC:dynamicTableData[3][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[3][1].maxtempC:dynamicTableData[3][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[3][1].mintempC:dynamicTableData[3][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[3][1].maxtempC:dynamicTableData[3][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -109,8 +109,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[4][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[4][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[4][1].mintempC:dynamicTableData[4][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[4][1].maxtempC:dynamicTableData[4][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[4][1].mintempC:dynamicTableData[4][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[4][1].maxtempC:dynamicTableData[4][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -124,8 +124,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[5][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[5][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[5][1].mintempC:dynamicTableData[5][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[5][1].maxtempC:dynamicTableData[5][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[5][1].mintempC:dynamicTableData[5][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[5][1].maxtempC:dynamicTableData[5][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -139,8 +139,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[6][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[6][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[6][1].mintempC:dynamicTableData[6][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[6][1].maxtempC:dynamicTableData[6][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[6][1].mintempC:dynamicTableData[6][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[6][1].maxtempC:dynamicTableData[6][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -154,8 +154,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[7][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[7][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[7][1].mintempC:dynamicTableData[7][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[7][1].maxtempC:dynamicTableData[7][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[7][1].mintempC:dynamicTableData[7][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[7][1].maxtempC:dynamicTableData[7][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -169,8 +169,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[8][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[8][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[8][1].mintempC:dynamicTableData[8][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[8][1].maxtempC:dynamicTableData[8][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[8][1].mintempC:dynamicTableData[8][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[8][1].maxtempC:dynamicTableData[8][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -184,8 +184,8 @@
                                                 <i class="icon rain_light_patchy_cloudy-grey"></i>
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[9][1].mintempC:dynamicTableData[9][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[9][1].maxtempC:dynamicTableData[9][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[9][1].mintempC:dynamicTableData[9][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[9][1].maxtempC:dynamicTableData[9][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -199,8 +199,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[10][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[10][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[10][1].mintempC:dynamicTableData[10][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[10][1].maxtempC:dynamicTableData[10][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[10][1].mintempC:dynamicTableData[10][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[10][1].maxtempC:dynamicTableData[10][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -214,8 +214,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[11][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[11][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[11][1].mintempC:dynamicTableData[11][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[11][1].maxtempC:dynamicTableData[11][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[11][1].mintempC:dynamicTableData[11][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[11][1].maxtempC:dynamicTableData[11][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -229,8 +229,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[12][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[12][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[12][1].mintempC:dynamicTableData[12][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[12][1].maxtempC:dynamicTableData[12][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[12][1].mintempC:dynamicTableData[12][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[12][1].maxtempC:dynamicTableData[12][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -244,8 +244,8 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[13][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[13][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="wrm-temp-top">{{local.typeTemp=='C'?dynamicTableData[13][1].mintempC:dynamicTableData[13][1].mintempF}} {{local.typeTemp}}</span>
-                                                <span class="wrm-temp-bottom">{{local.typeTemp=='C'?dynamicTableData[13][1].maxtempC:dynamicTableData[13][1].maxtempF}} {{local.typeTemp}}</span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[13][1].mintempC:dynamicTableData[13][1].mintempF}} {{local.typeTemp}}</span>
+                                                <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[13][1].maxtempC:dynamicTableData[13][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -1715,6 +1715,16 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
     font-size: 20px;
 }
 
+.max-temperature{
+    font-size:20px;
+    color:#970100;
+}
+
+.min-temperature{
+    font-size:20px;
+    color:#0B6D76;
+}
+
 .tb-item .tb-row .tb-wind .tb-meter{
     color: #b7b7b7;
 }
@@ -1835,6 +1845,7 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 .tb-tabs.tb-tabs-full .wrn-block .wrn-top{
     margin: 0 5px;
     line-height: 22px;
+    font-size:14px;
 }
 
 .tb-tabs.tb-tabs-full .wrn-block .wrn-bot{
@@ -1860,12 +1871,6 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 #weekly-report .tb-tabs.tb-tabs-full .wrn-block .wrn-bot .wrn-img{
     margin-bottom: 0;
     margin-right: 12px;
-}
-.tb-tabs .wrn-block .wrm-temp-top{
-    color: #b4b4b4;
-}
-ul.tb-tabs  li.active .wrn-block .wrm-temp-top{
-    color: #c9ede4;
 }
 
 ul.tabs li{
