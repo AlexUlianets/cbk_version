@@ -56,12 +56,6 @@ public class Index {
                 "/widgets"
         })
         public String index(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, @CookieValue(value = SearchService.langCookieCode, defaultValue = "") String languageCookieCode) {
-            JSONObject currentCity = null;
-             try{
-                currentCity = searchService.findSelectedCity(request, response, currentCookieValue);
-            }catch (Exception e){
-                Application.log.warning(e.toString());
-            }
             try {
                 sitemapService.addToSitemap(request.getRequestURI());
             } catch (Exception e) {
