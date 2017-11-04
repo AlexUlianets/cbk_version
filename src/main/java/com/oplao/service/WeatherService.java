@@ -97,6 +97,19 @@ public class WeatherService {
         }
     }
 
+    public static String getPrecipColor(double precip){
+        String res = "";
+
+        if (precip >= 8) {
+            res = res.concat("#660000");
+        }
+            if (precip > 16) {
+               res = res.concat("; font-weight:bold;");
+            }
+
+            return res;
+        }
+
 
     public List<HashMap> getYearSummary(JSONObject city){
 
@@ -924,6 +937,7 @@ public class WeatherService {
                 dayMap.put("isDay", parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800);
                 dayMap.put("boldSpeed", windSpeedBoldDay);
                 dayMap.put("boldGust", windGustBoldDay);
+                dayMap.put("precipStyle", getPrecipColor(parseDouble(elem.get("precipMM"))));
                 oneWholeDayData.add(dayMap);
             }
             results.add(oneWholeDayData);
