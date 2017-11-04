@@ -209,7 +209,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
         }
         $rootScope.getTime = function(str){
-            return changeTimeFormat(str.toString(), $rootScope.local.typeTime)
+            return changeTimeFormat(str, $rootScope.local.typeTime)
         }
     }]);
     app.config(['$ocLazyLoadProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', function($ocLazyLoadProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
@@ -506,7 +506,27 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                                 return $ocLazyLoad.load('hour-by-hour');
                             }]
                         }
-                    }).state('fourteen-days', {
+                    }).state('map', {
+                          url: "/en/weather/map/:city",
+                          params:{
+                              city: {squash: true, value: null},
+                              "index":7,
+                              "day": "Map",
+                              "hrs":1,
+                              "graphTitle":"Hour by hour weather"
+                              //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+                          },
+                          views: {
+                              "": {
+                                  templateUrl: "templates/html/map.html"
+                              }
+                          },
+                          resolve: {
+                              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                                  return $ocLazyLoad.load('hour-by-hour');
+                              }]
+                          }
+                      }).state('fourteen-days', {
                         url: "/en/weather/14/:city",
                           params:{
                               city: {squash: true, value: null},

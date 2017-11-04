@@ -52,6 +52,7 @@ public class Index {
                 "/weather/hour-by-hour1",
                 "/forecast/hour-by-hour3",
                 "/weather/hour-by-hour3",
+                "/weather/map",
                 "/about",
                 "/widgets"
         })
