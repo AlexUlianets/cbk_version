@@ -83,9 +83,9 @@
 
                                         <div class="tb-date" ng-if="day.time == 'Day'">
                                             <div class="tb-img">
-                                                <img ng-src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;">
+                                                <img ng-src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px; margin-bottom:10px">
                                             </div>
-                                            <div class="tb-temp">{{local.typeTemp=='C'?temperatureDay.wholeDay.minTemperatureC:temperatureDay.wholeDay.minTemperatureF}}°{{local.typeTemp}}/{{local.typeTemp=='C'?temperatureDay.wholeDay.maxTemperatureC:temperatureDay.wholeDay.maxTemperatureF}}°{{local.typeTemp}}</div>
+                                            <div class="tb-temp"><span class="min-temperature">{{local.typeTemp=='C'?temperatureDay.wholeDay.minTemperatureC:temperatureDay.wholeDay.minTemperatureF}}°{{local.typeTemp}}</span>/<span class="max-temperature">{{local.typeTemp=='C'?temperatureDay.wholeDay.maxTemperatureC:temperatureDay.wholeDay.maxTemperatureF}}°{{local.typeTemp}}</span></div>
                                         </div>
 
                                         <div class="tb-time">

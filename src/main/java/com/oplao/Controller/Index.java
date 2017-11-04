@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Index {
 
     @Controller
-    @RequestMapping("/en")
+    @RequestMapping("/{lang}")
     static class Routes {
 
         @Autowired
@@ -56,13 +56,7 @@ public class Index {
                 "/about",
                 "/widgets"
         })
-        public String index(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue) {
-            JSONObject currentCity = null;
-             try{
-                currentCity = searchService.findSelectedCity(request, response, currentCookieValue);
-            }catch (Exception e){
-                Application.log.warning(e.toString());
-            }
+        public String index(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, @CookieValue(value = SearchService.langCookieCode, defaultValue = "") String languageCookieCode) {
             try {
                 sitemapService.addToSitemap(request.getRequestURI());
             } catch (Exception e) {
@@ -74,6 +68,7 @@ public class Index {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
+            searchService.selectLanguage(reqUrl, request, response, languageCookieCode);
             return "forward:/index.html";
         }
         @RequestMapping({
@@ -103,7 +98,11 @@ public class Index {
                 "/forecast/hour-by-hour3/{locationRequest:.+}",
                 "/weather/hour-by-hour3/{locationRequest:.+}",
         })
-        public String index(@PathVariable(value = "locationRequest") String locationRequest, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) {
+        public String index(@PathVariable(value = "locationRequest") String locationRequest,
+                            @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                            HttpServletRequest request, HttpServletResponse response,
+                            @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode) {
+
             searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response);
             try {
                 sitemapService.addToSitemap(request.getRequestURI());
@@ -115,6 +114,7 @@ public class Index {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
+            searchService.selectLanguage(reqUrl, request, response, languageCookieCode);
             return "forward:/index.html";
         }
     }

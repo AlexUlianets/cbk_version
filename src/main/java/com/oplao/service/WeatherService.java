@@ -97,6 +97,19 @@ public class WeatherService {
         }
     }
 
+    public static String getPrecipColor(double precip){
+        String res = "";
+
+        if (precip >= 8) {
+            res = res.concat("#660000");
+        }
+            if (precip > 16) {
+               res = res.concat("; font-weight:bold;");
+            }
+
+            return res;
+        }
+
 
     public List<HashMap> getYearSummary(JSONObject city){
 
@@ -477,6 +490,7 @@ public class WeatherService {
         public HashMap getRemoteData(JSONObject city){
 
             String cityName = validateCityName((String)city.get("name"));
+            String countryCode = city.getString("countryCode").toLowerCase();
             DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
             JSONObject jsonObject = null;
         try {
@@ -495,6 +509,7 @@ public class WeatherService {
 
         result.put("city", cityName.replaceAll("%20", " "));
         result.put("country", city.get("countryName"));
+        result.put("countryCode", Arrays.asList(SearchService.validCountryCodes).contains(countryCode)?countryCode:"en");
         result.put("month", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
         result.put("day", dateTime.getDayOfMonth());
         result.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
@@ -922,6 +937,7 @@ public class WeatherService {
                 dayMap.put("isDay", parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800);
                 dayMap.put("boldSpeed", windSpeedBoldDay);
                 dayMap.put("boldGust", windGustBoldDay);
+                dayMap.put("precipStyle", getPrecipColor(parseDouble(elem.get("precipMM"))));
                 oneWholeDayData.add(dayMap);
             }
             results.add(oneWholeDayData);
