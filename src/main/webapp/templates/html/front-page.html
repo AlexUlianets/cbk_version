@@ -75,7 +75,7 @@
 								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
 							</div>
 							<div class="wb-right">
-								<a  href="/en/weather/outlook/{{elem.name+'_'+elem.countryCode}}"><h3>{{elem.name}}</h3></a>
+								<a  href="/{{currentCountryCode}}/weather/outlook/{{elem.name+'_'+elem.countryCode}}"><h3>{{elem.name}}</h3></a>
 							</div>
 						</div>
 
@@ -154,7 +154,7 @@
 								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
 							</div>
 							<div class="wb-right">
-								<a href="/en/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
+								<a href="/{{currentCountryCode}}/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
 									<h3>{{elem.name}}</h3>
 									<h4>{{elem.countryName}}</h4>
 								</a>
@@ -165,10 +165,7 @@
 				</section><!-- end holiday-weather-section -->
 			</div><!-- end page-content -->
 			<aside class="sidebar">
-				<a href="https://play.google.com/store/apps/developer?id=Oplao" class="top30px g-play">
-					<img src="images/bg/play-bg.png" alt="Oplao – Professional weather for Android">
-					<span>Oplao on Google Play</span>
-				</a>
+				<a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>
 			</aside>
 		</div>
 	</div><!-- end container -->
