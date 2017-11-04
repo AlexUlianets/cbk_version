@@ -52,6 +52,7 @@ public class Index {
                 "/weather/hour-by-hour1",
                 "/forecast/hour-by-hour3",
                 "/weather/hour-by-hour3",
+                "/weather/map",
                 "/about",
                 "/widgets"
         })
@@ -78,6 +79,8 @@ public class Index {
                 "/weather/today/{locationRequest:.+}",
                 "/weather/outlook/{locationRequest:.+}",
                 "/forecast/outlook/{locationRequest:.+}",
+                "/weather/map/{locationRequest:.+}",
+                "/forecast/map/{locationRequest:.+}",
                 "/forecast/tomorrow/{locationRequest:.+}",
                 "/weather/tomorrow/{locationRequest:.+}",
                 "/weather/history1/{locationRequest:.+}",

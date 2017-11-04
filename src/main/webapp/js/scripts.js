@@ -352,9 +352,9 @@ function changeTimeFormat(str, timeFormat) {
         }
 
 
-    }else {
-
+    }else if(str!=undefined && str!=='0:0'){
         var time =  toDate(str,"h:m");
+
         if (time == 'Invalid Date') { return str; }
 
         var hours = time.getHours() > 12 ? time.getHours() - 12 : time.getHours();
