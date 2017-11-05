@@ -136,9 +136,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
                     }
                 };
 
-                $http(sendingTableRequest).success(function () {
+                $http(sendingTableRequest).success(function (data) {
                     $scope.gmap = gmap;
-                    $scope.locations = response.data;
+                    $scope.locations = data;
                 }).error(function () {
                     $scope.gmap = gmap;
                     $scope.locations = locationsModel;
