@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="tb-weather">
                                         <div class="tb-head-icon">
-                                            <img src="img/weather.svg" alt="" height="25">
+                                            <img src="img/weath.svg" alt="" height="25">
                                         </div>
                                         <div class="tb-head-title">Weather</div>
                                     </div>
@@ -82,7 +82,7 @@
 
                                             <div class="tb-date" ng-if="day.time == 'Day'">
                                                 <div class="tb-img">
-                                                    <img ng-src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;margin-bottom:10px">
+                                                    <img ng-src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;margin-bottom:6px">
                                                 </div>
                                                 <div class="tb-temp"><span class="min-temperature">{{local.typeTemp=='C'?temperatureDay.wholeDay.minTemperatureC:temperatureDay.wholeDay.minTemperatureF}}°{{local.typeTemp}}</span>/<span class="max-temperature">{{local.typeTemp=='C'?temperatureDay.wholeDay.maxTemperatureC:temperatureDay.wholeDay.maxTemperatureF}}°{{local.typeTemp}}</span></div>
                                             </div>

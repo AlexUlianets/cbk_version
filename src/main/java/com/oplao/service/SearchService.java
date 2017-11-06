@@ -139,7 +139,7 @@ public class SearchService {
         array.getJSONObject(index).put("status", "selected");
     }
 
-    private static List<JSONObject> findByOccurences(String url) throws IOException, JSONException {
+    public static List<JSONObject> findByOccurences(String url) throws IOException, JSONException {
         InputStream is = null;
         try {
             is = new URL(url).openStream();

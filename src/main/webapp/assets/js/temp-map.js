@@ -4,30 +4,22 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       $scope.currentTabMap="";
 
       $http.post('/get_4_days_tabs').success(function (response) {
-         $scope.currentTabMap = response.data[0];
-      }).error(function () {
-          var response = [
-              {'time':"03_11_2017_now",
-              'name':"Now"},
-              {'time':'03_11_2017',
-              'name':"Today"},
-              {"time":"04_11_2017",
-              'name':"Tomorrow"},
-              {"time":"05_11_2017",
-              "name":"04 AUG, SAT"}
-              ];
-          $scope.tabs=response
+          $scope.tabs=response;
           if($cookies.get('currentTabMap')==undefined){
               $cookies.put('currentTabMap', response[0].time);
               $scope.currentTabMap = response[0].time;
           }
-          else {
-
+          else if((response.some(function (value) { return $cookies.get('currentTabMap')==value.time}))==false) {
+              $cookies.put('currentTabMap', response[0].time);
+              $scope.currentTabMap = response[0].time;
+          }
+            else {
               $scope.currentTabMap = $cookies.get('currentTabMap');
           }
 
-      });
+      }).error(function () {
 
+      });
       $http.post('/get_weekly_weather').then(function (response) {
           $scope.temperatureWeekly = response;
       });
@@ -124,10 +116,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
                   }
               };
 
-              $http(sendingTableRequest).success(function () {
+              $http(sendingTableRequest).success(function (data) {
                   $scope.gmap = gmap;
-                  $scope.locations = response.data;
-                  alert(1)
+                  $scope.locations = data;
               }).error(function () {
                   $scope.gmap = gmap;
                   $scope.locations = locationsModel;
