@@ -61,12 +61,12 @@ public class OutlookController {
     public List<DetailedForecastGraphMapping> getDetailedForecastMapping(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
         return weatherService.getDetailedForecastMapping(searchService.findSelectedCity(request, response, currentCookieValue));
     }
-    @RequestMapping("/get_weekly_weather")
+    @RequestMapping("/get_weekly_weather/{langCode}")
     @ResponseBody
 
-    public HashMap<Integer, HashMap<String,HashMap>>  getWeeklyWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
+    public Map<Integer, Map<String,Map>> getWeeklyWeather(@PathVariable("langCode") String langCode, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
 
-        return weatherService.getWeeklyWeatherReport(searchService.findSelectedCity(request, response, currentCookieValue), 7);
+        return weatherService.getWeeklyWeatherReport(searchService.findSelectedCity(request, response, currentCookieValue), 7, langCode);
     }
 
     @RequestMapping("/get_year_summary")
