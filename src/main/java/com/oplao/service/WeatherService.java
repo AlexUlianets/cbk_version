@@ -146,41 +146,66 @@ public class WeatherService {
     }
     List<Integer> dayTimeValues = Arrays.asList(1200, 1300, 1400, 1500, 1600, 1700, 1800);
     List<Integer> nightTimeValues = Arrays.asList(0,100,200,300,400,500,600);
+    List<String> enCountries = Arrays.asList("en", "fr", "it", "de", "us");
 
 
-
-    public HashMap<Integer, HashMap<String,HashMap>> getWeeklyWeatherReport(JSONObject city, int numOfDays){
+    public HashMap<Integer, Map<String,Map>> getWeeklyWeatherReport(JSONObject city, int numOfDays, String countryCode){
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
-       HashMap<Integer, HashMap<String,HashMap>> result = new HashMap<>();
+       HashMap<Integer, Map<String,Map>> result = new HashMap<>();
 
         for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+numOfDays ; day++, count++) {
             result.put(count, getOneDayReportMapping(dateTime.plusDays(
                     count),
-                    String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng")))));
+                    String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))), countryCode, city.getString("lat"), city.getString("lng")));
         }
 
 
         return result;
     }
 
-    private HashMap<String, HashMap> getOneDayReportMapping(DateTime dateTime, String city){
+    private Map<String, Map> getOneDayReportMapping(DateTime dateTime, String city, String countryCode, String lat, String lng){
+        APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
+                false, true, 1, lat, lng);
+        HashMap map = apiWeatherFinder.findWeatherByDate();
+        apiWeatherFinder = new APIWeatherFinder(dateTime.plusDays(1), "",
+                false, true, 1, lat, lng);
+        HashMap tomorrowMap = apiWeatherFinder.findWeatherByDate();
 
-        JSONObject jsonObject = null;
 
-        try{
-            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth()  + "&q=" + city);
-        }catch (IOException e){
-            e.printStackTrace();
-            Application.log.warning("One day report mapping request error");
 
-        }
-        HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
         HashMap weatherData = weather.get(0);
         ArrayList<HashMap> hourly = (ArrayList<HashMap>)weatherData.get("hourly");
 
+
+        ArrayList<HashMap> weatherTomorrow = (ArrayList<HashMap>)tomorrowMap.get("weather");
+        HashMap weatherDataTomorrow = weatherTomorrow.get(0);
+        ArrayList<HashMap> hourlyTomorrow = (ArrayList<HashMap>)weatherDataTomorrow.get("hourly");
+        boolean countrySpecific = enCountries.contains(countryCode);
+        int avgNightC = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow, "tempC"):getAVGIntParam(hourly, "tempC", nightTimeValues);
+        int avgNightF = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"tempF"):getAVGIntParam(hourly, "tempF", nightTimeValues);
+        int maxFeelLikeNightC = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"FeelsLikeC"):getAVGIntParam(hourly, "FeelsLikeC", nightTimeValues);
+        int maxFeelLikeNightF = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"FeelsLikeF"):getAVGIntParam(hourly, "FeelsLikeF", nightTimeValues);
+        int precipeChanceNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"chanceofrain"):getAVGIntParam(hourly, "chanceofrain", nightTimeValues);
+        double precipNightMM = new BigDecimal(countrySpecific?getNightSumDoubleParam(hourly, hourlyTomorrow,"precipMM"):getSumDoubleParam(hourly, "precipMM", nightTimeValues)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+        int avgWindMNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"windspeedMiles"):getAVGIntParam(hourly, "windspeedMiles", nightTimeValues);
+        int avgWindKmhNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"windspeedKmph"):getAVGIntParam(hourly, "windspeedKmph", nightTimeValues);
+        int maxGustMNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow, "WindGustMiles"):getAVGIntParam(hourly, "WindGustMiles", nightTimeValues);
+        int maxGustKmhNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow, "WindGustKmph"):getAVGIntParam(hourly, "WindGustKmph", nightTimeValues);
+        int avgPressureNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"pressure"):getAVGIntParam(hourly, "pressure", nightTimeValues);
+        double avgPressureInchNight = new BigDecimal(avgPressureNight * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
+        int windDegreeNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"winddirDegree"):getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40 + 180;
+        String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode")));
+        int avgWindMsNight = (int)Math.round(avgWindKmhNight * 0.27777777777778);
+        int maxGustMsNight = (int)Math.round(maxGustKmhNight * 0.27777777777778);
+        double precipNightIn = new BigDecimal(precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+        String winddirNight = "" + hourly.get(2).get("winddir16Point");
+        String windSpeedColorNight = getWindSpeedColor(avgWindKmhNight);
+        String boldNightSpeed = !windSpeedColorNight.equals("") ?"bold":"";
+        String windGustColorNight = getWindSpeedColor(maxGustKmhNight);
+        String boldNightGust = !windGustColorNight.equals("") ?"bold":"";
 
         int maxWholeDayC = parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("maxtempC"));
         int maxWholeDayF = parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("maxtempF"));
@@ -188,53 +213,43 @@ public class WeatherService {
         int minWholeDayF =  parseInt(((HashMap)((ArrayList)map.get("weather")).get(0)).get("mintempF"));
         int avgDayC = getAVGIntParam(hourly, "tempC", dayTimeValues);
         int avgDayF = getAVGIntParam(hourly, "tempF", dayTimeValues);
-        int avgNightC = getAVGIntParam(hourly, "tempC", nightTimeValues);
-        int avgNightF = getAVGIntParam(hourly, "tempF", nightTimeValues);
         int maxFeelLikeDayC = getAVGIntParam(hourly,"FeelsLikeC", dayTimeValues);
         int maxFeelLikeDayF = getAVGIntParam(hourly,"FeelsLikeF", dayTimeValues);
-        int maxFeelLikeNightC = getAVGIntParam(hourly,"FeelsLikeC", nightTimeValues);
-        int maxFeelLikeNightF = getAVGIntParam(hourly,"FeelsLikeF", nightTimeValues);
         int precipeChanceDay = getAVGIntParam(hourly, "chanceofrain",dayTimeValues);
-        int precipeChanceNight = getAVGIntParam(hourly, "chanceofrain",nightTimeValues);
         double precipDayMM  = new BigDecimal(getSumDoubleParam(hourly,"precipMM", dayTimeValues)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-        double precipNightMM = new BigDecimal(getSumDoubleParam(hourly,"precipMM", nightTimeValues)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         int avgWindMDay = getAVGIntParam(hourly,"windspeedMiles", dayTimeValues);
         int avgWindKmhDay = getAVGIntParam(hourly,"windspeedKmph", dayTimeValues);
-        int avgWindMNight = getAVGIntParam(hourly,"windspeedMiles", nightTimeValues);
-        int avgWindKmhNight = getAVGIntParam(hourly, "windspeedKmph" ,nightTimeValues);
         int maxGustMDay = getAVGIntParam(hourly, "WindGustMiles", dayTimeValues);
         int maxGustKmhDay = getAVGIntParam(hourly,"WindGustKmph", dayTimeValues);
-        int maxGustMNight = getAVGIntParam(hourly, "WindGustMiles", nightTimeValues);
-        int maxGustKmhNight = getAVGIntParam(hourly, "WindGustKmph", nightTimeValues);
         int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
-        int avgPressureNight = getAVGIntParam(hourly, "pressure", nightTimeValues);
         String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(12).get("weatherCode")));
         String dayWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(14).get("weatherCode")));
-        String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode")));
         int windDegreeDay = getAVGIntParam(hourly, "winddirDegree", dayTimeValues) + 40 + 180;
-        int windDegreeNight = getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40 + 180;
         double avgPressureInchDay = new BigDecimal(avgPressureDay * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
-        double avgPressureInchNight = new BigDecimal(avgPressureNight * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
         int avgWindMsDay = (int)Math.round(avgWindKmhDay*0.27777777777778);
-        int avgWindMsNight = (int)Math.round(avgWindKmhNight * 0.27777777777778);
         int maxGustMsDay = (int)Math.round(maxGustKmhDay * 0.27777777777778);
-        int maxGustMsNight = (int)Math.round(maxGustKmhNight * 0.27777777777778);
         double precipDayIn = new BigDecimal(precipDayMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-        double precipNightIn = new BigDecimal(precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         String winddirDay = "" + hourly.get(14).get("winddir16Point");
-        String winddirNight = "" + hourly.get(2).get("winddir16Point");
         String windSpeedColorDay = getWindSpeedColor(avgWindKmhDay);
-        String windSpeedColorNight = getWindSpeedColor(avgWindKmhNight);
         String boldDaySpeed = !windSpeedColorDay.equals("") ?"bold":"";
-        String boldNightSpeed = !windSpeedColorNight.equals("") ?"bold":"";
         String windGustColorDay = getWindSpeedColor(maxGustKmhDay);
-        String windGustColorNight = getWindSpeedColor(maxGustKmhNight);
         String boldDayGust = !windGustColorDay.equals("") ?"bold":"";
-        String boldNightGust = !windGustColorNight.equals("") ?"bold":"";
+        Map<String, Map> result = null;
+        Map<String, Object> dayMap = null;
+        Map<String, Object> nightMap = null;
 
-        HashMap<String, HashMap> result = new HashMap<>();
-        HashMap<String, Object> dayMap = new HashMap<>();
-        HashMap<String, Object> wholeDayMap = new HashMap<>();
+        Map<String, Object> wholeDayMap = null;
+        if(enCountries.contains(countryCode)){
+            result = new TreeMap<>();
+            dayMap = new TreeMap<>();
+            nightMap = new TreeMap<>();
+            wholeDayMap = new TreeMap<>();
+        }else{
+            result = new HashMap<>();
+            dayMap = new HashMap<>();
+            nightMap = new HashMap<>();
+            wholeDayMap = new HashMap<>();
+        }
         wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
         wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
         wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
@@ -266,7 +281,6 @@ public class WeatherService {
         dayMap.put("boldSpeed", boldDaySpeed);
         dayMap.put("boldGust", boldDayGust);
 
-        HashMap<String, Object> nightMap = new HashMap<>();
         nightMap.put("time", "Night");
         nightMap.put("avgTempC", avgNightC);
         nightMap.put("avgTempF", avgNightF);
@@ -319,6 +333,36 @@ public class WeatherService {
                 parseInt(value.get(paramName))).summaryStatistics();
         return (int)Math.round(params.getAverage());
     }
+
+    private double getNightSumDoubleParam(List<HashMap> hourly, List<HashMap> tomorrowHourly, String paramName){
+
+        List<HashMap> list = new ArrayList<>();
+        for (int i = 20; i < 24; i++) {
+            list.add(hourly.get(i));
+        }
+        for (int i = 0; i < 3; i++) {
+            list.add(tomorrowHourly.get(i));
+        }
+
+        DoubleSummaryStatistics params = hourly.stream().mapToDouble((value) ->
+                parseDouble(value.get(paramName))).summaryStatistics();
+        return params.getSum();
+
+    }
+        private Integer getAVGNightIntParam(List<HashMap> hourly, List<HashMap> tomorrowHourly,  String paramName){
+        List<HashMap> list = new ArrayList<>();
+            for (int i = 20; i < 24; i++) {
+                list.add(hourly.get(i));
+            }
+            for (int i = 0; i < 3; i++) {
+                list.add(tomorrowHourly.get(i));
+            }
+
+
+                IntSummaryStatistics params = list.stream().mapToInt((value) ->
+                        parseInt(value.get(paramName))).summaryStatistics();
+                return (int)Math.round(params.getAverage());
+            }
 
     private Integer parseInt(Object o){
         return Integer.parseInt(String.valueOf(o));

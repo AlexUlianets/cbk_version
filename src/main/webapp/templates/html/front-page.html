@@ -48,8 +48,8 @@
 			<div class="page-content">
 				<section id="temperature-map">
 					<div class="temperature-heading">
-						<h2>Temperature map</h2>
-						<a href="#" class="t-view-map">view map</a>
+						<h2 ng-bind="pageContent.temperatureMap"></h2>
+						<a href="#" class="t-view-map" ng-bind="pageContent.viewMap"></a>
 					</div>
                     <figure id="map">
                       <div id="gmap"></div>
@@ -71,7 +71,7 @@
 		<div class="wrapper">
 			<div class="page-content">
 				<section id="country-weather-section">
-					<h2>{{country_weather[0].countryName}} weather</h2>
+					<h2 ng-bind="pageContent.locationWeather"></h2>
 					<div class="country-weather">
 						<div ng-repeat="elem in country_weather" class="weather-block">
 							<div class="wb-left">
@@ -150,7 +150,7 @@
 		<div class="wrapper">
 			<div class="page-content">
 				<section id="holiday-weather-section">
-					<h3>Holiday weather</h3>
+					<h3 ng-bind="pageContent.holidayWeather"></h3>
 					<div class="holiday-weather">
 						<div ng-repeat="elem in holidays_weather" class="weather-block">
 							<div class="wb-left">
@@ -177,7 +177,7 @@
 
 	<section id="top-holiday-dest">
 		<div class="container">
-			<h4>Top holiday destinations</h4>
+			<h4 ng-bind="pageContent.topHolidayDestinations"></h4>
 			<ul>
 				<li ng-repeat="elem in top_holidays_destinations track by $index">
 					<a class = "destination{{$index}}" ng-click="select_holiday_destination($index)">{{elem}}<span>/</span></a></li>

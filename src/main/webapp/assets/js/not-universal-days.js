@@ -6,10 +6,16 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
     $scope.graph = $scope.$state.params.graph;
     $scope.page = $scope.$state.params.page;
     $scope.graphTitle = $scope.$state.params.graphTitle;
+    var slav = ["ua", "by", "ru"];
+    if(slav.includes(location.pathname.split("/")[1])){
+        $scope.outTable = "slavTable";
+    }else{
+        $scope.outTable = "enTable"
+    }
     $scope.getData = function () {
         var sendingTableRequest = {
             method: 'POST',
-            url: '/get_not_universal_table_data',
+            url: '/get_not_universal_table_data/'+ location.pathname.split("/")[1],
             params: {
                 numOfDays:$scope.$state.params.index
             },
@@ -18,9 +24,8 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
             }
         };
 
-        $http(sendingTableRequest).success(function (data) {
-            $scope.temperatureWeekly = data;
-
+        $http(sendingTableRequest).then(function (response) {
+            $scope.$parent.temperatureWeekly = response;
         })
     }
 
