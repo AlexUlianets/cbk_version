@@ -68,8 +68,8 @@
   padding: 25px;
   background: #c3c3c4; }
 
-.ui-resizable .wg_respons_content {
-  background: #fff;
+.wg_respons_box .wg_respons_content {
+    background-color: transparent;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -2577,7 +2577,7 @@ sup {
     .wg_height_250 .widget.widget_2 .wg_content .wg_weather .wg_weather_img,
     .wg_height_350 .widget.widget_2 .wg_content .wg_weather .wg_weather_img {
       width: 54px;
-      height: 54px; }
+      height: auto; }
     .wg_height_250 .widget.widget_2 .wg_content .wg_weather .wg_clarity,
     .wg_height_350 .widget.widget_2 .wg_content .wg_weather .wg_clarity {
       margin-top: 6px; }
@@ -18991,3 +18991,6 @@ sup {
       margin-bottom: 20px; } }
 
 /*# sourceMappingURL=widget.css.map */
+.wg_weather_img {
+    height: auto!important;
+}

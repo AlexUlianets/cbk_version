@@ -6,6 +6,11 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.example = "";
         $rootScope.local = {};
         $rootScope.currentCountryCode = $cookies.get('langCookieCode');
+        $rootScope.el='';
+        $rootScope.el1='';
+        $rootScope.el2='';
+
+
         if($cookies.get('temp_val')===undefined){
             $cookies.put('temp_val', 'C');
             $rootScope.local.typeTemp = 'C';
@@ -72,8 +77,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }).done(function (data) {
                     console.log(data)
                     $rootScope.selectedCity = data;
+
                 })
+
+                setTimeout(function () {
                     loadScript();
+                }, 1000)
+
             })
         }
         $rootScope.get_recent_cities_tabs_func = function(){
@@ -83,6 +93,15 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             }).done(function( msg ) {
                 $rootScope.$apply(function(){
                     $rootScope.get_recent_cities_tabs = msg;
+                    for(var i=0; i<msg.length; i++){
+
+                        if(msg[i].city === $rootScope.temperature.city.toString()){
+                            $rootScope.el=msg[i].geonameId;
+                            $rootScope.el1=msg[i].city;
+                            $rootScope.el2=msg[i].countryName;
+                        }
+                    }
+
                 });
                 if($('.favorite-location .container')[0]!= undefined) {
                     var ln = $('.favorite-location .container')[0]['children'].length;
@@ -142,11 +161,18 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                       }
                 }
         }
-        $rootScope.selectCity = function(e){
+
+
+
+        $rootScope.selectCity = function(e, e1, e2){
             $('.search-dropdown').removeClass('opened');
             $('.search-dropdown').css({'display': 'none'})
             $rootScope.searchInput = '';
             $('.ht-search-input input').val('')
+
+            $rootScope.el=e;
+            $rootScope.el1=e1;
+            $rootScope.el2=e2;
 
             $.ajax({
             method: "POST",

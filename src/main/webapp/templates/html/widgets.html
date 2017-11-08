@@ -1,4 +1,4 @@
-<div ng-controller="widgets" class="theme-wrapper">
+<div ng-controller="widgets" class="theme-wrapper" ng-init="selectCityWidget(el, el1, el2)">
 
         <section class="widget_carusel_wrap section-margin-top">
             <div class="container">
@@ -8,7 +8,9 @@
 
                         <div class="widget_item">
                             <div class="widget widget_1">
-                                <div class="wg_top">Donetsk, UA</div>
+                                <div class="wg_top">
+                                <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
+</div>
 
                                 <div class="wg_content">
                                     <div class="wg_weather">
@@ -43,7 +45,7 @@
                         <div class="widget_item">
                             <div class="widget widget_2">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
 
                                 <div class="wg_content">
@@ -80,7 +82,7 @@
                         <div class="widget_item">
                             <div class="widget widget_3">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
 
                                 <div class="wg_content">
@@ -94,20 +96,20 @@
                                             <div class="wg_sub_info">
                                                 <div class="wg_feels">
                                                     <div class="title">Feels like</div>
-                                                    <div class="wg_descr">
+                                                    <div class="wg_descr wg_temp_feels">
                                                         <span>+28 </span><sup>°C</sup>
                                                     </div>
                                                 </div>
                                                 <div class="wind">
                                                     <div class="title">Wind</div>
-                                                    <div class="wg_descr">
+                                                    <div class="wg_descr wg_wind">
                                                         <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                         <span>2 m/s</span>
                                                     </div>
                                                 </div>
                                                 <div class="gust">
-                                                    <div class="title">Gust</div>
-                                                    <div class="wg_descr">
+                                                    <div class="title">Pressure</div>
+                                                    <div class="wg_descr wg_pressure">
                                                         <span>3 mph</span>
                                                     </div>
                                                 </div>
@@ -135,7 +137,7 @@
                             <div class="widget widget_4">
                                 <div class="wg_content">
                                     <div class="wg_top">
-                                        <div class="wg_title">Donetsk, UA</div>
+                                        <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                     </div>
                                     <div class="wg_top_cont">
                                         <div class="wg_weather">
@@ -150,13 +152,13 @@
                                         <div class="wg_info">
                                             <div class="wg_feels">
                                                 <div class="title">Feels like</div>
-                                                <div class="wg_descr">
+                                                <div class="wg_descr wg_temp_feels">
                                                     <span>+28 </span><sup>°C</sup>
                                                 </div>
                                             </div>
                                             <div class="wind">
                                                 <div class="title">Wind</div>
-                                                <div class="wg_descr">
+                                                <div class="wg_descr wg_wind">
                                                     <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                     <span>2 m/s</span>
                                                 </div>
@@ -168,8 +170,8 @@
                                         <div class="wg_bottom_item">
                                             <div class="wg_item_title">morning</div>
                                             <div class="wg_item_cont">
-                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
-                                                <div class="wg_descr">
+                                                <img class="wg_mini_img img1" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr temp1">
                                                     <span>+24 </span><sup>°C</sup>
                                                 </div>
                                             </div>
@@ -178,8 +180,8 @@
                                         <div class="wg_bottom_item">
                                             <div class="wg_item_title">day</div>
                                             <div class="wg_item_cont">
-                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
-                                                <div class="wg_descr">
+                                                <img class="wg_mini_img img2" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr temp2">
                                                     <span>+24 </span><sup>°C</sup>
                                                 </div>
                                             </div>
@@ -188,8 +190,8 @@
                                         <div class="wg_bottom_item">
                                             <div class="wg_item_title">evening</div>
                                             <div class="wg_item_cont">
-                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
-                                                <div class="wg_descr">
+                                                <img class="wg_mini_img img3" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr temp3">
                                                     <span>+24 </span><sup>°C</sup>
                                                 </div>
                                             </div>
@@ -198,8 +200,8 @@
                                         <div class="wg_bottom_item">
                                             <div class="wg_item_title">night</div>
                                             <div class="wg_item_cont">
-                                                <img class="wg_mini_img" src="img/widget/wg_1_sun.png" alt="">
-                                                <div class="wg_descr">
+                                                <img class="wg_mini_img img4" src="img/widget/wg_1_sun.png" alt="">
+                                                <div class="wg_descr temp4">
                                                     <span>+24 </span><sup>°C</sup>
                                                 </div>
                                             </div>
@@ -226,18 +228,18 @@
                         <div class="widget_item">
                             <div class="widget widget_5">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
 
                                 <div class="wg_content">
                                     <div class="wg_left_info wg_info_list">
                                         <div class="wg_info_item wg_top_item">
-                                            <div class="wg_title">gust</div>
-                                            <div class="wg_count">3 mph</div>
+                                            <div class="wg_title">pressure</div>
+                                            <div class="wg_count wg_pressure">3 mph</div>
                                         </div>
                                         <div class="wg_info_item wg_bottom_item">
                                             <div class="wg_title">Wind</div>
-                                            <div class="wg_count wg_sub_text">
+                                            <div class="wg_count wg_sub_text wg_wind">
                                                 <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                 <div>2 m/s</div>
                                             </div>
@@ -257,7 +259,7 @@
                                         </div>
                                         <div class="wg_info_item wg_bottom_item">
                                             <div class="wg_title">Feels like</div>
-                                            <div class="wg_count">
+                                            <div class="wg_count wg_temp_feels">
                                                 <span>+28</span><sup>°C</sup>
                                             </div>
                                         </div>
@@ -283,7 +285,7 @@
                         <div class="widget_item">
                             <div class="widget widget_6">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
 
                                 <div class="wg_content">
@@ -304,29 +306,29 @@
 
                                         <div class="wg_info_item">
                                             <div class="wg_date_wrap">
-                                                <div class="wg_date">16 may</div>
-                                                <div class="wg_day">tue</div>
+                                                <div class="wg_date wg_date2">16 may</div>
+                                                <div class="wg_day wg_day2">tue</div>
                                             </div>
                                             <div class="wg_img_wrap">
-                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <img class="wg_weather_img wg_weather_img2" src="img/widget/wg_1_sun.png" alt="">
                                             </div>
                                             <div class="wg_temp_wrap">
-                                                <div class="wg_clarity">Clear</div>
-                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                                <div class="wg_clarity wg_clarity2">Clear</div>
+                                                <div class="wg_temp wg_temp2"><span>+24</span><sup>°C</sup></div>
                                             </div>
                                         </div><!--/wg_info_item-->
 
                                         <div class="wg_info_item">
                                             <div class="wg_date_wrap">
-                                                <div class="wg_date">17 may</div>
-                                                <div class="wg_day">wed</div>
+                                                <div class="wg_date wg_date3">17 may</div>
+                                                <div class="wg_day wg_day3">wed</div>
                                             </div>
                                             <div class="wg_img_wrap">
-                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <img class="wg_weather_img wg_weather_img3" src="img/widget/wg_1_sun.png" alt="">
                                             </div>
                                             <div class="wg_temp_wrap">
-                                                <div class="wg_clarity">Clear</div>
-                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                                <div class="wg_clarity wg_clarity3">Clear</div>
+                                                <div class="wg_temp wg_temp3"><span>+24</span><sup>°C</sup></div>
                                             </div>
                                         </div><!--/wg_info_item-->
 
@@ -352,7 +354,7 @@
                         <div class="widget_item">
                             <div class="widget widget_7">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
 
                                 <div class="wg_content">
@@ -376,7 +378,7 @@
 
                                         <div class="wg_feels">
                                             <div class="title">Feels like</div>
-                                            <div class="wg_descr">
+                                            <div class="wg_descr wg_temp_feels">
                                                 <span>+28 </span><sup>°C</sup>
                                             </div>
                                         </div>
@@ -386,43 +388,43 @@
                                     <div class="wg_info_list">
                                         <div class="wg_info_item">
                                             <div class="wg_date_wrap">
-                                                <div class="wg_date">15 may</div>
-                                                <div class="wg_day">mon</div>
+                                                <div class="wg_date wg_date1">15 may</div>
+                                                <div class="wg_day wg_day1">mon</div>
                                             </div>
                                             <div class="wg_img_wrap">
-                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <img class="wg_weather_img wg_weather_img1" src="img/widget/wg_1_sun.png" alt="">
                                             </div>
                                             <div class="wg_temp_wrap">
-                                                <div class="wg_clarity">Clear</div>
-                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                                <div class="wg_clarity wg_clarity1">Clear</div>
+                                                <div class="wg_temp wg_temp1"><span>+24</span><sup>°C</sup></div>
                                             </div>
                                         </div><!--/wg_info_item-->
 
                                         <div class="wg_info_item">
                                             <div class="wg_date_wrap">
-                                                <div class="wg_date">16 may</div>
-                                                <div class="wg_day">tue</div>
+                                                <div class="wg_date wg_date2">16 may</div>
+                                                <div class="wg_day wg_day2">tue</div>
                                             </div>
                                             <div class="wg_img_wrap">
-                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <img class="wg_weather_img wg_weather_img2" src="img/widget/wg_1_sun.png" alt="">
                                             </div>
                                             <div class="wg_temp_wrap">
-                                                <div class="wg_clarity">Clear</div>
-                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                                <div class="wg_clarity wg_clarity2">Clear</div>
+                                                <div class="wg_temp wg_temp2"><span>+24</span><sup>°C</sup></div>
                                             </div>
                                         </div><!--/wg_info_item-->
 
                                         <div class="wg_info_item">
                                             <div class="wg_date_wrap">
-                                                <div class="wg_date">17 may</div>
-                                                <div class="wg_day">wed</div>
+                                                <div class="wg_date wg_date3">17 may</div>
+                                                <div class="wg_day wg_day3">wed</div>
                                             </div>
                                             <div class="wg_img_wrap">
-                                                <img class="wg_weather_img" src="img/widget/wg_1_sun.png" alt="">
+                                                <img class="wg_weather_img wg_weather_img3" src="img/widget/wg_1_sun.png" alt="">
                                             </div>
                                             <div class="wg_temp_wrap">
-                                                <div class="wg_clarity">Clear</div>
-                                                <div class="wg_temp"><span>+24</span><sup>°C</sup></div>
+                                                <div class="wg_clarity wg_clarity3">Clear</div>
+                                                <div class="wg_temp wg_temp3"><span>+24</span><sup>°C</sup></div>
                                             </div>
                                         </div><!--/wg_info_item-->
 
@@ -450,7 +452,7 @@
                         <div class="widget_item">
                             <div class="widget widget_8">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
 
                                 <div class="wg_content">
@@ -537,10 +539,10 @@
                                                 <div class="wg_h_title">evening</div>
                                                 <div class="wg_h_count">
                                                     <div class="wg_img_wrap">
-                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                        <img class="wg_weather_img img3" src="img/widget/wg_1_sun.png"
                                                              alt="">
                                                     </div>
-                                                    <div class="wg_temp"><span>+21</span><sup>°C</sup></div>
+                                                    <div class="wg_temp temp3"><span>+21</span><sup>°C</sup></div>
                                                 </div>
                                             </div>
                                             <div class="wg_hours_item wg_hours_item_day">
@@ -550,17 +552,17 @@
                                                         <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
                                                              alt="">
                                                     </div>
-                                                    <div class="wg_temp"><span>+25</span><sup>°C</sup></div>
+                                                    <div class="wg_temp temp2"><span>+25</span><sup>°C</sup></div>
                                                 </div>
                                             </div>
                                             <div class="wg_hours_item">
                                                 <div class="wg_h_title">night</div>
                                                 <div class="wg_h_count">
                                                     <div class="wg_img_wrap">
-                                                        <img class="wg_weather_img" src="img/widget/wg_1_sun.png"
+                                                        <img class="wg_weather_img img4" src="img/widget/wg_1_sun.png"
                                                              alt="">
                                                     </div>
-                                                    <div class="wg_temp"><span>+14</span><sup>°C</sup></div>
+                                                    <div class="wg_temp temp4"><span>+14</span><sup>°C</sup></div>
                                                 </div>
                                             </div>
                                             <div class="wg_footer">
@@ -594,7 +596,7 @@
                         <div class="widget_item">
                             <div class="widget widget_9">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
                                 <div class="wg_content">
                                     <div class="wg_top_cont">
@@ -613,21 +615,21 @@
                                             <div class="wg_feels">
                                                 <div class="wg_title">Feels like</div>
                                                 <div class="wg_descr">
-                                                    <div class="wg_temp">
+                                                    <div class="wg_temp wg_temp_feels">
                                                         <span>+28</span><sup>°C</sup>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="wind">
                                                 <div class="wg_title">Wind</div>
-                                                <div class="wg_descr">
+                                                <div class="wg_descr wg_wind">
                                                     <span>2 m/s</span>
                                                     <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                 </div>
                                             </div>
                                             <div class="wg_gust">
-                                                <div class="wg_title">gust</div>
-                                                <div class="wg_descr">
+                                                <div class="wg_title">pressure</div>
+                                                <div class="wg_descr wg_pressure">
                                                     <span>3 mph</span>
                                                 </div>
                                             </div>
@@ -698,7 +700,7 @@
                         <div class="widget_item">
                             <div class="widget widget_10">
                                 <div class="wg_top">
-                                    <div class="wg_title">Donetsk, UA</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
                                 </div>
                                 <div class="wg_content">
                                     <div class="wg_sub_cont">
@@ -756,20 +758,20 @@
                                             <div class="wg_info">
                                                 <div class="wg_feels">
                                                     <div class="wg_title">Feels like</div>
-                                                    <div class="wg_descr">
+                                                    <div class="wg_descr wg_temp_feels">
                                                         <span>+28 </span><sup>°C</sup>
                                                     </div>
                                                 </div>
                                                 <div class="wg_wind">
                                                     <div class="wg_title">Wind</div>
-                                                    <div class="wg_descr">
+                                                    <div class="wg_descr wg_wind">
                                                         <span>2 m/s</span>
                                                         <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="wg_gust">
-                                                    <div class="wg_title">gust</div>
-                                                    <div class="wg_descr">
+                                                    <div class="wg_title">pressure</div>
+                                                    <div class="wg_descr wg_pressure">
                                                         <span>3 mph</span>
                                                     </div>
                                                 </div>
@@ -838,21 +840,16 @@
                                     <div class="wg_form_resault_wrap">
                                         <div class="wg_form_search">
                                             <div class="wg_search_keys">
-                                                <input type="text" placeholder="City/Town, Post/Zip code, LAT, LON">
-                                            </div>
-                                            <button type="submit" id="wg_search_btn">
+                                                <input type="text" value="" id="widgetCity" placeholder="City/Town, Post/Zip code, LAT, LON" ng-keyup="searchWidgetCities()" ng-model="searchInputWidget">
+                                             </div>
+                                            <button type="button" id="wg_search_btn" ng-click="searchWidgetCities()" ng-model="searchInputWidget">
                                                 Search
                                             </button>
                                         </div>
                                         <div class="wg_form_resault">
                                             <ul>
-                                                <li class="active">Abidjan</li>
-                                                <li>Adana</li>
-                                                <li>Abidjan</li>
-                                                <li>Addis Ababa</li>
-                                                <li>Abidjan</li>
-                                                <li>Abidjan</li>
-                                                <li>Abidjan</li>
+                                                  <li ng-repeat="i in searchListWidget" ng-if="searchInputWidget.length>1 && resultWidget==1"  ng-click="selectCityWidget(i.geonameId, i.name, i.countryName)"><a>{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
+                                                    <li ng-if="searchListWidget.length==0"><a>No results</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -976,12 +973,12 @@
                                     <div class="wg_form_title">Re-captcha:</div>
                                     <div class="wg_captcha">
                                         <div class="wg_captcha_item">
-                                            <label for="wg_captcha_input">Type text from image</label>
+                                            <label for="wg_captcha_input">Add these numbers</label>
                                             <input type="text" id="wg_captcha_input">
-                                            <div class="wg_captcha_refresh">Refresh image</div>
+                                            <div class="wg_captcha_refresh" style="cursor: pointer" ng-click="loadNumbers()">Refresh numbers</div>
                                         </div>
-                                        <div class="wg_captcha_item">
-                                            <img class="wg_captcha_img" src="img/widget/wg_captcha.jpg" alt="">
+                                        <div class="wg_captcha_item" ng-init="loadNumbers()" style="background-color: #fbe4d8; padding: 10px;display: inline-flex;font-size: 25px;">
+                                            <div id="digit1"></div> + <div id="digit2"></div>
                                         </div>
                                     </div>
                                 </div><!--/wg_form_group-->
@@ -991,7 +988,7 @@
                                 <textarea class="wg_textarea"></textarea>
 
                                 <div class="wg_btn_wrap">
-                                    <button type="submit" class="wg_btn">Get the code</button>
+                                    <button type="button" class="wg_btn" ng-click="getCode()" style="cursor: pointer">Get the code</button>
                                     <div class="wg_sub_text">Adopting the terms of use.</div>
                                 </div>
                             </div><!--/wg_form_group-->
@@ -1003,5 +1000,3 @@
             </div>
         </div><!--/widget_option_wrap-->
     </div><!--/theme-wrapper-->
-    <script src="js/widgets.js"></script>
-    <script>loadScript2();</script>
