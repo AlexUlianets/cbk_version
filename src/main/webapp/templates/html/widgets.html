@@ -657,7 +657,7 @@
                                         <div class="wg_form_resault">
                                             <ul>
                                                   <li ng-repeat="i in searchListWidget" ng-if="searchInputWidget.length>1 && resultWidget==1"  ng-click="selectCityWidget(i.geonameId, i.name, i.countryName)"><a>{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
-                                                    <li ng-if="searchListWidget.length==0 && "><a>No results</a></li>
+                                                    <li ng-if="searchListWidget.length==0"><a>No results</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -670,21 +670,21 @@
                                             <div class="wg_radio">
                                                 <label>
                                                     <input type="radio" name="wg_lang_radio" id="wg_lang_radio1"
-                                                           value="option1" checked>
+                                                           value="option1" checked ng-click="selectLang('ru')">
                                                     English
                                                 </label>
                                             </div>
                                             <div class="wg_radio">
                                                 <label>
                                                     <input type="radio" name="wg_lang_radio" id="wg_lang_radio2"
-                                                           value="option2" ng-click="reloadWidget()">
+                                                           value="option2" ng-click="selectLang('ru')">
                                                     Russian
                                                 </label>
                                             </div>
                                             <div class="wg_radio">
                                                 <label>
                                                     <input type="radio" name="wg_lang_radio" id="wg_lang_radio3"
-                                                           value="option3">
+                                                           value="option3" ng-click="selectLang('ru')">
                                                     Ukrainian
                                                 </label>
                                             </div>
@@ -693,21 +693,21 @@
                                             <div class="wg_radio">
                                                 <label>
                                                     <input type="radio" name="wg_lang_radio" id="wg_lang_radio4"
-                                                           value="option4">
+                                                           value="option4" ng-click="selectLang('ru')">
                                                     Dutch
                                                 </label>
                                             </div>
                                             <div class="wg_radio">
                                                 <label>
                                                     <input type="radio" name="wg_lang_radio" id="wg_lang_radio5"
-                                                           value="option5">
+                                                           value="option5" ng-click="selectLang('ru')">
                                                     Italian
                                                 </label>
                                             </div>
                                             <div class="wg_radio">
                                                 <label>
                                                     <input type="radio" name="wg_lang_radio" id="wg_lang_radio6"
-                                                           value="option6">
+                                                           value="option6" ng-click="selectLang('ru')">
                                                     French
                                                 </label>
                                             </div>

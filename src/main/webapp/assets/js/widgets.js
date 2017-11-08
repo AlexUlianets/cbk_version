@@ -113,7 +113,11 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             }
 
             $('.wg_textarea').val(('<div id="Oplao" data-lang="'+$scope.lang+'" data-city="' + $scope.city + '" data-temp="' + temp + '" data-wind="' + wind + '" data-pressure="' + pressure + '" style="border: 0!important;" class="' +
-            $('.wg_response_wrap').attr('class') + '">' + htmlWidget.html() + '</div>' + '<script type="text/javascript" charset="UTF-8" src="' + location.protocol + '//' + window.location.host + '/js/informer.js"></script>'))
+            $('.wg_response_wrap').attr('class') + '">' + htmlWidget.html().replace(/<!--[^>]*-->/gi, '')
+                .replace(/\n/g, '')
+                .replace(/ng-.+?\b/g, '')
+                .replace(/ng-.+?=".*?"/g, '')
+                .replace(/\s+/g, " ") + '</div>' + '<script type="text/javascript" charset="UTF-8" src="' + location.protocol + '//' + window.location.host + '/js/informer.js"></script>'))
 
         }
     }
@@ -142,6 +146,8 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             $scope.searchInputWidget = $scope.$parent.temperature.city+", "+$scope.$parent.temperature.country;
             e=$scope.$parent.temperature.geonameId
             $scope.city = e;
+        }else if(e === 'lang'){
+
         }else{
             $scope.searchInputWidget = e1+", "+e2
             $scope.city = e;
@@ -244,6 +250,12 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
         })
     };
 
+
+    $scope.selectLang = function(lang){
+       $scope.lang=lang;
+       $scope.selectCityWidget('lang', null, null)
+    };
+
     $scope.reloadWidgetInfo = function (i, i1) {
 
         if(i1 === 'temp' ){
@@ -261,7 +273,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
         $scope.selectedCityWidget =  data
 
         $scope.updateWidget();
-    }
+    };
 
     $scope.updateWidget=function () {
         $('.wg_respons_content .widget_nav').html('<img src="images/cloud_load.gif" style="    width: 46%;margin: 0px auto;text-align: center;padding: 27%;background-color: white;position: relative;"/>')
