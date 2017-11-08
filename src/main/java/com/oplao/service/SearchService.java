@@ -92,7 +92,6 @@ public class SearchService {
                 clearCookies(request, response);
 
                 Cookie c = new Cookie(SearchService.cookieName, arr.toString());
-                c.setMaxAge(60 * 60 * 24);
                 c.setPath("/");
                 response.addCookie(c);
 
@@ -108,21 +107,22 @@ public class SearchService {
 
     private int checkDuplicateCookie(HttpServletRequest request, HttpServletResponse response,
                                      JSONObject city){
-        for (int i = 0; i < request.getCookies().length; i++) {
-            if(request.getCookies()[i].getName().equals(SearchService.cookieName)){
-                JSONArray array = new JSONArray(request.getCookies()[i].getValue());
-                for (int j = 0; j < array.length(); j++) {
-                    if(Objects.equals("" + (array.getJSONObject(j)).get("geonameId"),
-                            "" + city.get("geonameId"))){
-                        setCitySelected(array, j);
-                        clearCookies(request, response);
+        if(request.getCookies()!=null) {
+            for (int i = 0; i < request.getCookies().length; i++) {
+                if (request.getCookies()[i].getName().equals(SearchService.cookieName)) {
+                    JSONArray array = new JSONArray(request.getCookies()[i].getValue());
+                    for (int j = 0; j < array.length(); j++) {
+                        if (Objects.equals("" + (array.getJSONObject(j)).get("geonameId"),
+                                "" + city.get("geonameId"))) {
+                            setCitySelected(array, j);
+                            clearCookies(request, response);
 
-                        Cookie c = new Cookie(SearchService.cookieName, array.toString());
-                        c.setMaxAge(60 * 60 * 24);
-                        c.setPath("/");
-                        response.addCookie(c);
+                            Cookie c = new Cookie(SearchService.cookieName, array.toString());
+                            c.setPath("/");
+                            response.addCookie(c);
 
-                        return 0;
+                            return 0;
+                        }
                     }
                 }
             }
@@ -213,13 +213,15 @@ public class SearchService {
         return list;
     }
    private void clearCookies(HttpServletRequest request, HttpServletResponse response){
+        if(request.getCookies()!=null){
        for (int i = 0; i < request.getCookies().length; i++) {
-           if(request.getCookies()[i].getName().equals(cookieName)) {
+           if (request.getCookies()[i].getName().equals(cookieName)) {
                request.getCookies()[i].setPath("/");
                request.getCookies()[i].setValue("");
                request.getCookies()[i].setMaxAge(0);
                response.addCookie(request.getCookies()[i]);
            }
+       }
        }
    }
 
@@ -258,11 +260,23 @@ public class SearchService {
     private JSONObject findGeolocation(HttpServletRequest request, HttpServletResponse response){
            JSONObject location = null;
            Application.log.info("generating location...");
+
+           String currentIp = AddressGetter.getCurrentIpAddress(request);
            try {
-               location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/"+AddressGetter.getCurrentIpAddress(request));
+               location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/"+currentIp);
+               System.out.println(location.getString("country_code"));
            } catch (IOException e) {
-               Application.log.warning(e.toString());
+                Application.log.info("cannot find location for ip " + currentIp);
+           }catch (JSONException ex){
+               currentIp = "37.215.0.50";
+               try {
+                   location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/"+currentIp);
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
            }
+
+
            Application.log.info("generated.");
            List<JSONObject> list = null;
            try {
@@ -271,7 +285,6 @@ public class SearchService {
                obj.put("status", "selected");
                JSONArray arr = new JSONArray("["+obj.toString()+"]");
                Cookie c = new Cookie(cookieName,arr.toString());
-               c.setMaxAge(60 * 60 * 24);
                c.setPath("/");
                response.addCookie(c);
                return obj;
@@ -331,7 +344,6 @@ public class SearchService {
                 array.remove(i);
                 clearCookies(request, response);
                 Cookie c = new Cookie(cookieName,array.toString());
-                c.setMaxAge(60 * 60 * 24);
                 c.setPath("/");
                 return c;
             }
@@ -421,7 +433,7 @@ public class SearchService {
 
     }
 
-    public String generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public JSONObject generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
 
         if(!location.equals("undefined")) {
             boolean airport = false;
@@ -456,6 +468,7 @@ public class SearchService {
 
             if (obj != null) {
                 selectCity(obj.getInt("geonameId"), currentCookieValue, request, response);
+                return obj;
             }
         }
 
@@ -546,6 +559,11 @@ public class SearchService {
                         "weather summary and 14 day weather chart.");
                 res.put("canonical", "https://oplao.com/en/weather/outlook/");
                 return res;
+            }else if(values.contains("map")){
+                res.put("title", "Oplao.com - Temperature map, weather map");
+                res.put("description", "Interactive temperature map for "+ location+". Weather map, with real time temperature, wind, precipitation and cloudiness");
+                res.put("canonical", "https://oplao.com/en/weather/outlook/");
+                return res;
             }else if(values.contains("hour-by-hour1")||values.contains("hour-by-hour3")){
                 char index = values.get(3).charAt(values.get(3).length()-1);
                 res.put("title", "Oplao.com – Hourly weather for "+location);
@@ -568,13 +586,10 @@ public class SearchService {
             }
         return null;
     }
-    public void selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode){
+    public void selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode, JSONObject currentCity){
         List parsedUrl = Arrays.asList(reqUrl.split("/"));
-        if(parsedUrl.contains("weather")||parsedUrl.contains("forecast")||parsedUrl.contains("img")||parsedUrl.contains("about")) {
+        if(parsedUrl.contains("weather")||parsedUrl.contains("forecast")||parsedUrl.contains("about")) {
             String requestedLang = reqUrl.split("/")[1];
-            if (requestedLang.equals("img")) {
-                requestedLang = languageCookieCode;
-            }
             if (Arrays.asList(validCountryCodes).contains(requestedLang)) {
                 if (!languageCookieCode.equals(requestedLang) && requestedLang.length() == 2) {
                     refreshLangCookie(request, response, requestedLang);
@@ -582,6 +597,12 @@ public class SearchService {
             } else {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace(requestedLang, languageCookieCode));
+            }
+        }else if(parsedUrl.size()==0){
+            if(Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase())){
+                refreshLangCookie(request, response, currentCity.getString("countryCode").toLowerCase());
+            }else{
+                refreshLangCookie(request, response, "en");
             }
         }else{
             try {
@@ -605,7 +626,6 @@ public class SearchService {
             }
         }
         Cookie c = new Cookie(SearchService.langCookieCode, newValue);
-        c.setMaxAge(60 * 60 * 24);
         c.setPath("/");
         response.addCookie(c);
     }

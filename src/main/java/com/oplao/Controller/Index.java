@@ -1,7 +1,6 @@
 package com.oplao.Controller;
 
 
-import com.oplao.Application;
 import com.oplao.service.SearchService;
 import com.oplao.service.SitemapService;
 import org.json.JSONObject;
@@ -68,7 +67,7 @@ public class Index {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
-            searchService.selectLanguage(reqUrl, request, response, languageCookieCode);
+            searchService.selectLanguage(reqUrl, request, response, languageCookieCode, searchService.findSelectedCity(request, response, currentCookieValue));
             return "forward:/index.html";
         }
         @RequestMapping({
@@ -105,7 +104,7 @@ public class Index {
                             HttpServletRequest request, HttpServletResponse response,
                             @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode) {
 
-            searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response);
+            JSONObject generatedCity = searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response);
             try {
                 sitemapService.addToSitemap(request.getRequestURI());
             } catch (Exception e) {
@@ -116,7 +115,7 @@ public class Index {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
-            searchService.selectLanguage(reqUrl, request, response, languageCookieCode);
+            searchService.selectLanguage(reqUrl, request, response, languageCookieCode,generatedCity);
             return "forward:/index.html";
         }
     }
