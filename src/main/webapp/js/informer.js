@@ -148,8 +148,12 @@ function LoadInformer(data) {
 }
 
 // var xhttp = new XMLHttpRequest();
+// var params = "city="+document.getElementById('Oplao').getAttribute('data-city')+"&lang="+document.getElementById('Oplao').getAttribute('data-lang')
 // xhttp.open("POST", "http://localhost:8080/get_api_weather", true);
-// xhttp.send();
+// xhttp.send(params);
+// LoadInformer(xhttp.response())
+
+// Delete after back-end
 LoadInformer({
     "hours":22,
     "time": "14:10",
@@ -231,3 +235,4 @@ LoadInformer({
         }
     ]
 })
+// here
