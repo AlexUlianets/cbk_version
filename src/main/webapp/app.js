@@ -5,8 +5,30 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.$stateParams = $stateParams;
         $rootScope.example = "";
         $rootScope.local = {};
-        $rootScope.currentCountryCode = $cookies.get('langCookieCode');
 
+        if($cookies.get('langCookieCode') == undefined){
+            $rootScope.currentCountryCode = location.pathname.split("/")[1]
+        }else {
+            $rootScope.currentCountryCode = $cookies.get('langCookieCode');
+        }
+        console.log($rootScope.currentCountryCode)
+        console.log(location.pathname)
+        $rootScope.updateLang = function () {
+            var langRequest = {
+                method: 'GET',
+                url: '/generate_language_content',
+                params: {
+                    langCode:$rootScope.currentCountryCode,
+                    path : location.pathname
+                },
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }}
+            $http(langRequest).success(function (data) {
+                $rootScope.pageContent = data;
+            })
+        }
+        $rootScope.updateLang();
 
         if($cookies.get('temp_val')===undefined){
             $cookies.put('temp_val', 'C');
@@ -61,12 +83,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 url: "/get_api_weather"
             }).done(function( msg ) {
                 $rootScope.temperature = msg;
-
-                if($cookies.get('langCookieCode') == undefined){
-                    console.log('generated')
-                    $rootScope.currentCountryCode = $rootScope.temperature.countryCode;
-                    $cookies.put('langCookieCode', msg.countryCode);
-                }
                 $rootScope.get_recent_cities_tabs_func();
                 $.ajax({
                     method: "GET",
@@ -160,13 +176,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         url = url.join('/').replace('//','/');
                     }
                 }else{
-                    url = "/en/weather/"+msg.name+"_"+msg.countryCode;
+                    url = "/"+$rootScope.currentCountryCode+"/weather/"+msg.name+"_"+msg.countryCode;
                 }
                 if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + url;
                     window.history.pushState({path:newurl},'',newurl);
                 }
                 $state.reload();
+                $rootScope.updateLang();
                 $rootScope.get_api_weather();
                 $('html, body').animate({
                     scrollTop: $('body').offset().top
@@ -551,8 +568,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                         }
 
                     }).state('map', {
-                          url: "/en/weather/map/:city",
+                          url: "/:lang/weather/map/:city",
                           params:{
+                              lang:{squash: true, value: null},
                               city: {squash: true, value: null},
                               "index":7,
                               "day": "Map",

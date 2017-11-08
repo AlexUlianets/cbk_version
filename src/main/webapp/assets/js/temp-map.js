@@ -3,6 +3,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
   app.controller('tempMapCtrl', ['$scope', '$http', '$state', '$element', 'locationsModel', '$cookies', function($scope, $http, $state, $element, locationsModel, $cookies) {
       $scope.currentTabMap="";
 
+      var slav = ["ua", "by", "ru"];
+      if(slav.includes(location.pathname.split("/")[1])){
+          $scope.outTable = "slavTable";
+      }else{
+          $scope.outTable = "enTable"
+      }
+
       $http.post('/get_4_days_tabs').success(function (response) {
           $scope.tabs=response;
           if($cookies.get('currentTabMap')==undefined){
@@ -20,9 +27,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       }).error(function () {
 
       });
-      $http.post('/get_weekly_weather').then(function (response) {
-          $scope.temperatureWeekly = response;
-      });
+      $http.post('/get_weekly_weather/'+location.pathname.split("/")[1]).then(function (response) {
+          $scope.$parent.temperatureWeekly = response;
+      });;
 
       $scope.select_tab_map = function (time) {
           $scope.currentTabMap=time;

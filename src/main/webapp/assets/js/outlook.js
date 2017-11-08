@@ -5,8 +5,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       $scope.graph = $scope.$state.params.graph;
       $scope.day=$scope.$state.params.day;
       $scope.graphTitle=$scope.$state.params.graphTitle;
+      var slav = ["ua", "by", "ru"];
+      if(slav.includes(location.pathname.split("/")[1])){
+          $scope.outTable = "slavTable";
+      }else{
+          $scope.outTable = "enTable"
+      }
 
-      $http.post('/get_weekly_weather').then(function (response) {
+      $http.post('/get_weekly_weather/'+location.pathname.split("/")[1]).then(function (response) {
          $scope.$parent.temperatureWeekly = response;
       });
 

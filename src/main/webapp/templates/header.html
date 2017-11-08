@@ -8,7 +8,7 @@
     </div>
     <div class="header-bot" id="fix-menu">
         <div class="container">
-            <a href="/en/weather/{{selectedCity}}" class="h-logo"><img src="images/icons/logo.png" alt="img"></a>
+            <a href="/{{currentCountryCode}}/weather/{{selectedCity}}" class="h-logo"><img src="images/icons/logo.png" alt="img"></a>
 
             <div class="header-bot-right" >
 
@@ -58,8 +58,8 @@
 
                 <nav id="h-menu">
                     <ul>
-                        <li><a href="/en/weather/outlook/{{selectedCity}}">Weather</a></li>
-                        <li><a href="#">Temperature map</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/outlook/{{selectedCity}}">Weather</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}">Temperature map</a></li>
                         <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup">Alerts <span></span></a>
                         </li>
                     </ul>
@@ -73,13 +73,13 @@
                     <nav class="main-menu-block">
                         <h3>Weather</h3>
                         <ul>
-                            <li><a href="/en/weather/3/{{selectedCity}}">3 days weather forecast</a></li>
-                            <li><a href="/en/weather/5/{{selectedCity}}">5 days weather forecast</a></li>
-                            <li><a href="/en/weather/7/{{selectedCity}}">7 days weather forecast</a></li>
-                            <li><a href="/en/weather/14/{{selectedCity}}">14 days weather forecast</a></li>
-                            <li><a href="/en/weather/hour-by-hour3/{{selectedCity}}">Hourly weather</a></li>
-                            <li><a href="/en/weather/map">Weather map</a></li>
-                            <li><a href="/en/weather/history3/{{selectedCity}}">Weather history</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}">3 days weather forecast</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}">5 days weather forecast</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}">7 days weather forecast</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}">14 days weather forecast</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}">Hourly weather</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/map">Weather map</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}">Weather history</a></li>
                         </ul>
                     </nav>
 
@@ -96,7 +96,7 @@
                     <nav class="main-menu-block">
                         <h3>Information</h3>
                         <ul>
-                            <li><a href="/en/about">About</a></li>
+                            <li><a href="/{{currentCountryCode}}/about">About</a></li>
                             <li><a href="#">Blog</a></li>
                         </ul>
                     </nav>
