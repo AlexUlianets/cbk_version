@@ -125,6 +125,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
     $scope.searchWidgetCities = function(){
 
         if($scope.searchInputWidget.length > 1){
+            $('.wg_form_resault').addClass('active_search')
 
             $.ajax({
                 method: "POST",
