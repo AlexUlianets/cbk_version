@@ -42,81 +42,85 @@ function LoadInformer(data) {
     }
     if (document.getElementById('threeDays')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays.day1.icon+"_"+day+".svg"
-        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays.day2.icon+"_"+day+".svg"
-        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays.day3.icon+"_"+day+".svg"
+        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
+        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
+        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
 
 
-        document.getElementById('opDate').innerHTML = data.threeDays.day1.date
-        document.getElementById('opDate2').innerHTML = data.threeDays.day2.date
-        document.getElementById('opDate3').innerHTML = data.threeDays.day3.date
-        document.getElementById('opDay').innerHTML = data.threeDays.day1.day
-        document.getElementById('opDay2').innerHTML = data.threeDays.day2.day
-        document.getElementById('opDay3').innerHTML = data.threeDays.day3.day
+        document.getElementById('opDate').innerHTML = data.threeDays[0].date
+        document.getElementById('opDate2').innerHTML = data.threeDays[1].date
+        document.getElementById('opDate3').innerHTML = data.threeDays[2].date
+        document.getElementById('opDay').innerHTML = data.threeDays[0].day
+        document.getElementById('opDay2').innerHTML = data.threeDays[1].day
+        document.getElementById('opDay3').innerHTML = data.threeDays[2].day
         document.getElementById('opImg').src = url1
         document.getElementById('opImg2').src = url2
         document.getElementById('opImg3').src = url3
-        document.getElementById('opClarity').innerHTML = data.threeDays.day1.clarity
-        document.getElementById('opClarity2').innerHTML = data.threeDays.day2.clarity
-        document.getElementById('opClarity3').innerHTML = data.threeDays.day3.clarity
+        document.getElementById('opClarity').innerHTML = data.threeDays[0].clarity
+        document.getElementById('opClarity2').innerHTML = data.threeDays[1].clarity
+        document.getElementById('opClarity3').innerHTML = data.threeDays[2].clarity
 
 
         var temp = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays.day1.temp_f : data.threeDays.day1.temp_c;
+        var tempNum = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays[0].temp_f : data.threeDays[0].temp_c;
         document.getElementById('opTemp').innerHTML = "<span>"+tempNum+"</span><sup>°"+temp+"</sup>"
 
         var temp2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays.day2.temp_f : data.threeDays.day2.temp_c;
+        var tempNum2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays[1].temp_f : data.threeDays[1].temp_c;
         document.getElementById('opTemp2').innerHTML = "<span>"+tempNum2+"</span><sup>°"+temp2+"</sup>"
 
         var temp3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays.day3.temp_f : data.threeDays.day3.temp_c;
+        var tempNum3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays[2].temp_f : data.threeDays[2].temp_c;
         document.getElementById('opTemp3').innerHTML = "<span>"+tempNum3+"</span><sup>°"+temp3+"</sup>"
     }
 
     if (document.getElementById('dayThreeDays')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays.day1.icon+"_"+day+".svg"
-        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays.day2.icon+"_"+day+".svg"
-        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays.day3.icon+"_"+day+".svg"
+        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
+        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
+        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
 
         document.getElementById('opDate').innerHTML = data.date
         document.getElementById('opDay').innerHTML = data.day
-        document.getElementById('opDate1').innerHTML = data.threeDays.day1.date
-        document.getElementById('opDate2').innerHTML = data.threeDays.day2.date
-        document.getElementById('opDate3').innerHTML = data.threeDays.day3.date
-        document.getElementById('opDay1').innerHTML = data.threeDays.day1.day
-        document.getElementById('opDay2').innerHTML = data.threeDays.day2.day
-        document.getElementById('opDay3').innerHTML = data.threeDays.day3.day
+        document.getElementById('opDate1').innerHTML = data.threeDays[0].date
+        document.getElementById('opDate2').innerHTML = data.threeDays[1].date
+        document.getElementById('opDate3').innerHTML = data.threeDays[2].date
+        document.getElementById('opDay1').innerHTML = data.threeDays[0].day
+        document.getElementById('opDay2').innerHTML = data.threeDays[1].day
+        document.getElementById('opDay3').innerHTML = data.threeDays[2].day
         document.getElementById('opImg1').src = url1
         document.getElementById('opImg2').src = url2
         document.getElementById('opImg3').src = url3
-        document.getElementById('opClarity1').innerHTML = data.threeDays.day1.clarity
-        document.getElementById('opClarity2').innerHTML = data.threeDays.day2.clarity
-        document.getElementById('opClarity3').innerHTML = data.threeDays.day3.clarity
+        document.getElementById('opClarity1').innerHTML = data.threeDays[0].clarity
+        document.getElementById('opClarity2').innerHTML = data.threeDays[1].clarity
+        document.getElementById('opClarity3').innerHTML = data.threeDays[2].clarity
 
 
         var temp1 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum1 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays.day1.temp_f : data.threeDays.day1.temp_c;
+        var tempNum1 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays[0].temp_f : data.threeDays[0].temp_c;
         document.getElementById('opTemp1').innerHTML = "<span>"+tempNum1+"</span><sup>°"+temp1+"</sup>"
 
         var temp2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays.day2.temp_f : data.threeDays.day2.temp_c;
+        var tempNum2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays[1].temp_f : data.threeDays[1].temp_c;
         document.getElementById('opTemp2').innerHTML = "<span>"+tempNum2+"</span><sup>°"+temp2+"</sup>"
 
         var temp3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays.day3.temp_f : data.threeDays.day3.temp_c;
+        var tempNum3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.threeDays[2].temp_f : data.threeDays[2].temp_c;
         document.getElementById('opTemp3').innerHTML = "<span>"+tempNum3+"</span><sup>°"+temp3+"</sup>"
     }
 
-    if (document.getElementById('widget_4')) {
+    if (document.getElementById('widget_4') || document.getElementById('widget_8') || document.getElementById('widget_9') || document.getElementById('widget_10')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay.morning.icon+"_"+day+".svg"
-        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay.day.icon+"_"+day+".svg"
-        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay.evening.icon+"_"+day+".svg"
-        var url4 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay.night.icon+"_"+day+".svg"
-
-
+        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[0].icon+"_"+day+".svg"
+        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[1].icon+"_"+day+".svg"
+        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[2].icon+"_"+day+".svg"
+        var url4 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[3].icon+"_"+day+".svg"
+        if (document.getElementById('opDate')){
+            document.getElementById('opDate').innerHTML = data.date
+        }
+        if (document.getElementById('opTime')){
+            document.getElementById('opTime').innerHTML = data.time
+        }
         document.getElementById('opImg1').src = url1
         document.getElementById('opImg2').src = url2
         document.getElementById('opImg3').src = url3
@@ -124,19 +128,19 @@ function LoadInformer(data) {
 
 
         var temp1 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum1 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay.morning.temp_f : data.wholeDay.morning.temp_c;
+        var tempNum1 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay[0].temp_f : data.wholeDay[0].temp_c;
         document.getElementById('opTemp1').innerHTML = "<span>"+tempNum1+"</span><sup>°"+temp1+"</sup>"
 
         var temp2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay.day.temp_f : data.wholeDay.day.temp_c;
+        var tempNum2 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay[1].temp_f : data.wholeDay[1].temp_c;
         document.getElementById('opTemp2').innerHTML = "<span>"+tempNum2+"</span><sup>°"+temp2+"</sup>"
 
         var temp3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay.evening.temp_f : data.wholeDay.evening.temp_c;
+        var tempNum3 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay[2].temp_f : data.wholeDay[2].temp_c;
         document.getElementById('opTemp3').innerHTML = "<span>"+tempNum3+"</span><sup>°"+temp3+"</sup>"
 
         var temp4 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
-        var tempNum4 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay.night.temp_f : data.wholeDay.night.temp_c;
+        var tempNum4 = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.wholeDay[3].temp_f : data.wholeDay[3].temp_c;
         document.getElementById('opTemp4').innerHTML = "<span>"+tempNum4+"</span><sup>°"+temp4+"</sup>"
     }
 
@@ -164,16 +168,15 @@ LoadInformer({
     "windMph":"4",
     "windMs":2,
     "windDegree":250,
-    "threeDays": {
-          "day1": {
-              "date": "15 MAY",
-              "day": "mon",
-              "icon": "Clear",
-              "clarity": "Fog",
-              "temp_c":"6",
-              "temp_f":"45"
-          },
-        "day2": {
+    "threeDays": [{
+        "date": "15 MAY",
+        "day": "mon",
+        "icon": "Clear",
+        "clarity": "Fog",
+        "temp_c":"6",
+        "temp_f":"45"
+    },
+        {
             "date": "16 MAY",
             "day": "mon",
             "icon": "Clear",
@@ -181,17 +184,16 @@ LoadInformer({
             "temp_c":"6",
             "temp_f":"43"
         },
-        "day3": {
+        {
             "date": "17 MAY",
             "day": "mon",
             "icon": "Clear",
             "clarity": "Fog",
             "temp_c":"6",
             "temp_f":"41"
-        }
-    },
-    "wholeDay": {
-        "morning": {
+        }],
+    "wholeDay": [
+        {
             "name": "morning",
             "date": "15 MAY",
             "day": "mon",
@@ -200,7 +202,7 @@ LoadInformer({
             "temp_c":"6",
             "temp_f":"45"
         },
-        "day": {
+        {
             "name": "day",
             "date": "16 MAY",
             "day": "mon",
@@ -209,7 +211,7 @@ LoadInformer({
             "temp_c":"6",
             "temp_f":"43"
         },
-        "evening": {
+        {
             "name": "evening",
             "date": "17 MAY",
             "day": "mon",
@@ -218,7 +220,7 @@ LoadInformer({
             "temp_c":"6",
             "temp_f":"41"
         },
-        "night": {
+        {
             "name": "night",
             "date": "17 MAY",
             "day": "mon",
@@ -227,5 +229,5 @@ LoadInformer({
             "temp_c":"6",
             "temp_f":"41"
         }
-    }
+    ]
 })

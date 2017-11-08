@@ -12,9 +12,14 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
     $scope.searchListWidget = [];
     $scope.resultWidget = 0;
     $scope.captcha= false;
-    $scope.el=$scope.$parent.el;
-    $scope.el1=$scope.$parent.el1;
-    $scope.el2=$scope.$parent.el2;
+    $scope.lang = "en";
+    $scope.city = '';
+    $scope.widgetTemp = "C";
+    $scope.widgetWind = "m/s";
+    $scope.widgetPressure = "hPa";
+
+
+    console.log($scope.$parent.temperature)
 
     $scope.getCode = function () {
         var answer = document.getElementById("wg_captcha_input").value;
@@ -67,6 +72,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             htmlWidget.find('.wg_temp2').attr('id', 'opTemp2').html('')
             htmlWidget.find('.wg_temp3').attr('id', 'opTemp3').html('')
             htmlWidget.find('.wg_date').attr('id', 'opDate').html('')
+            htmlWidget.find('.wg_time').attr('id', 'opTime').html('')
             htmlWidget.find('.wg_date1').attr('id', 'opDate1').html('')
             htmlWidget.find('.wg_date2').attr('id', 'opDate2').html('')
             htmlWidget.find('.wg_date3').attr('id', 'opDate3').html('')
@@ -84,6 +90,9 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             htmlWidget.find('.widget_6').find('.wg_info_list').attr('id', 'threeDays')
             htmlWidget.find('.widget_7').find('.wg_info_list').attr('id', 'dayThreeDays')
             htmlWidget.find('.widget_4').find('.wg_content').attr('id', 'widget_4')
+            htmlWidget.find('.widget_8').find('.wg_content').attr('id', 'widget_8')
+            htmlWidget.find('.widget_9').find('.wg_content').attr('id', 'widget_9')
+            htmlWidget.find('.widget_10').find('.wg_content').attr('id', 'widget_10')
 
             if ($('#wg_wind_radio1').is(':checked')) {
                 var wind = "m/s"
@@ -103,7 +112,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                 var pressure = "in"
             }
 
-            $('.wg_textarea').val(('<div id="Oplao" data-temp="' + temp + '" data-wind="' + wind + '" data-pressure="' + pressure + '" style="border: 0!important;" class="' +
+            $('.wg_textarea').val(('<div id="Oplao" data-lang="'+$scope.lang+'" data-city="' + $scope.city + '" data-temp="' + temp + '" data-wind="' + wind + '" data-pressure="' + pressure + '" style="border: 0!important;" class="' +
             $('.wg_response_wrap').attr('class') + '">' + htmlWidget.html() + '</div>' + '<script type="text/javascript" charset="UTF-8" src="' + location.protocol + '//' + window.location.host + '/js/informer.js"></script>'))
 
         }
@@ -129,15 +138,25 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
 
     $scope.selectCityWidget = function(e, e1, e2){
         $('.wg_form_resault').removeClass('active_search')
-        $scope.searchInputWidget = e1+", "+e2
+        if(e1===null){
+            $scope.searchInputWidget = $scope.$parent.temperature.city+", "+$scope.$parent.temperature.country;
+            e=$scope.$parent.temperature.geonameId
+            $scope.city = e;
+        }else{
+            $scope.searchInputWidget = e1+", "+e2
+            $scope.city = e;
+        }
+
 
         $.ajax({
             method: "POST",
             url: "/get_info_widgets/",
             data: {
-                city: e
+                city: e,
+                lang: $scope.lang
             }
         }).error(function( msg ) {
+
 
             $scope.selectedCityWidget =   {  "hours":22,
                 "time": "14:10",
@@ -156,8 +175,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                 "windMph":"4",
                 "windMs":2,
                 "windDegree":250,
-                "threeDays": {
-                "day1": {
+                "threeDays": [{
                     "date": "15 MAY",
                         "day": "mon",
                         "icon": "Clear",
@@ -165,7 +183,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                         "temp_c":"6",
                         "temp_f":"45"
                 },
-                "day2": {
+                {
                     "date": "16 MAY",
                         "day": "mon",
                         "icon": "Clear",
@@ -173,57 +191,110 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                         "temp_c":"6",
                         "temp_f":"43"
                 },
-                "day3": {
+                {
                     "date": "17 MAY",
                         "day": "mon",
                         "icon": "Clear",
                         "clarity": "Fog",
                         "temp_c":"6",
                         "temp_f":"41"
-                }
-            },
-            "wholeDay": {
-                "morning": {
-                    "name": "morning",
+                }],
+                "wholeDay": [
+                    {
+                        "name": "morning",
                         "date": "15 MAY",
                         "day": "mon",
                         "icon": "Clear",
                         "clarity": "Fog",
                         "temp_c":"6",
                         "temp_f":"45"
-                },
-                "day": {
-                    "name": "day",
+                    },
+                    {
+                        "name": "day",
                         "date": "16 MAY",
                         "day": "mon",
                         "icon": "Clear",
                         "clarity": "Fog",
                         "temp_c":"6",
                         "temp_f":"43"
-                },
-                "evening": {
-                    "name": "evening",
+                    },
+                    {
+                        "name": "evening",
                         "date": "17 MAY",
                         "day": "mon",
                         "icon": "Clear",
                         "clarity": "Fog",
                         "temp_c":"6",
                         "temp_f":"41"
-                },
-                "night": {
-                    "name": "night",
+                    },
+                    {
+                        "name": "night",
                         "date": "17 MAY",
                         "day": "mon",
                         "icon": "Clear",
                         "clarity": "Fog",
                         "temp_c":"6",
                         "temp_f":"41"
-                }
-            }};
+                    }
+                ]};
+            $scope.updateWidget();
         }).done(function( msg ) {
-            $scope.selectedCityWidget = msg[0]
+            $scope.selectedCityWidget = msg[0];
+            $scope.updateWidget();
         })
     };
+
+    $scope.reloadWidgetInfo = function (i, i1) {
+
+        if(i1 === 'temp' ){
+            $scope.widgetTemp = i
+
+        }else if(i1==='wind'){
+            $scope.widgetWind = i
+
+        }else if(i1==='press'){
+            $scope.widgetPressure = i
+        }
+
+        var data=$scope.selectedCityWidget
+
+        $scope.selectedCityWidget =  data
+
+        $scope.updateWidget();
+    }
+
+    $scope.updateWidget=function () {
+        $('.wg_respons_content .widget_nav').html('<img src="images/cloud_load.gif" style="    width: 46%;margin: 0px auto;text-align: center;padding: 27%;background-color: white;position: relative;"/>')
+
+        setTimeout(function () {
+            var curruntSlide = $("#widget_carusel").slick("getSlick").$slides[$("#widget_carusel").slick("getSlick")['currentSlide']];
+
+            console.log(curruntSlide)
+            curruntSlide = $(curruntSlide).html();
+
+
+            var currentWidget = $('.wg_respons_content .widget_nav');
+            currentWidget.html(curruntSlide);
+
+            $('#widget_carusel').on('afterChange', function (event, slick, currentSlide, nextSlide) {
+                var curruntSlide = $(slick.$slides[currentSlide]).html();
+                currentWidget.html(curruntSlide);
+            });
+        }, 1000)
+    }
+
+    $scope.copyText = function () {
+        var copyTextarea = document.querySelector('.wg_textarea');
+        copyTextarea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+    }
 
     $scope.loadNumbers = function () {
         var rand_num1 = Math.floor(Math.random() * 10) + 1;
