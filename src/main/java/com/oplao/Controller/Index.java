@@ -67,6 +67,10 @@ public class Index {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
+            if(reqUrl.charAt(reqUrl.length()-1)!='/' && !reqUrl.contains("widgets")){
+                response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                response.setHeader("Location", reqUrl+"/");
+            }
             searchService.selectLanguage(reqUrl, request, response, languageCookieCode, searchService.findSelectedCity(request, response, currentCookieValue));
             return "forward:/index.html";
         }

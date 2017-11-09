@@ -34,6 +34,9 @@ public class WeatherService {
 
     public static final Map<Integer, WeatherStateExt> EXT_STATES = new HashMap<>();
 
+    public static String dayTimes[] = {"Night", "Morning", "Midday", "Evening"};
+    public static int dayTimesHours[]= {2, 8, 14, 20};
+
     static {
         EXT_STATES.put(113, WeatherStateExt.Clear);
         EXT_STATES.put(116, WeatherStateExt.PartlyCloudy);
@@ -402,52 +405,6 @@ public class WeatherService {
             default: return null;
         }
     }
-    private String convertMonthOfYearShort(int month) {
-
-
-        switch (month) {
-            case DateConstants.JANUARY
-                    :
-                return "Jan";
-
-            case DateConstants.FEBRUARY
-                    :
-                return "Feb";
-            case DateConstants.MARCH
-                    :
-                return "Mar";
-            case DateConstants.APRIL
-                    :
-                return "Apr";
-            case DateConstants.MAY
-                    :
-                return "May";
-            case DateConstants.JUNE
-                    :
-                return "Jun";
-            case DateConstants.JULY
-                    :
-                return "Jul";
-            case DateConstants.AUGUST
-                    :
-                return "Aug";
-            case DateConstants.SEPTEMBER
-                    :
-                return "Sep";
-            case DateConstants.OCTOBER
-                    :
-                return "Oct";
-            case DateConstants.NOVEMBER
-                    :
-                return "Nov";
-            case DateConstants.DECEMBER
-                    :
-                return "Dec";
-            default:
-                return "Wrong value for field 'month'";
-        }
-    }
-
 
     private float roundFloat(float num){
         String pattern = "##0.00";
@@ -506,7 +463,7 @@ public class WeatherService {
         int moonPhaseIndex = getMoonPhase(city);
 
         dateMap.put("dayOfMonth", dateTime.getDayOfMonth());
-        dateMap.put("monthOfYear", convertMonthOfYearShort(dateTime.getMonthOfYear()));
+        dateMap.put("monthOfYear", DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear()));
         dateMap.put("year", dateTime.getYear());
         result.put("date", dateMap);
         result.put("sunrise", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunrise"));
@@ -706,7 +663,7 @@ public class WeatherService {
                 ((HashMap)((ArrayList)map.get("weather")).get(0)).get("uvIndex"));
         res.put("date", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek())+" " +
                 dateTime.getDayOfMonth()+" "
-                + convertMonthOfYearShort(dateTime.getMonthOfYear()));
+                + DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear()));
         return res;
     }
 
@@ -808,20 +765,20 @@ public class WeatherService {
         int maxTempF = maxtempFavges.getMax();
         int avgMaxTempF = (int)maxtempFavges.getAverage();
         DateTime maxTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("maxtempC"))==maxTempC).findAny().get().get("date"));
-        String maxTempDay = convertMonthOfYearShort(maxTempDateTime.getMonthOfYear()).toUpperCase() + "."+maxTempDateTime.getDayOfMonth();
+        String maxTempDay = DateConstants.convertMonthOfYearShort(maxTempDateTime.getMonthOfYear()).toUpperCase() + "."+maxTempDateTime.getDayOfMonth();
         int minTempC = mintempCavges.getMin();
         int avgMinTempC = (int)mintempCavges.getAverage();
         int minTempF = mintempFavges.getMin();
         int avgMinTempF = (int)mintempFavges.getAverage();
         DateTime minTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("mintempC"))==minTempC).findAny().get().get("date"));
-        String minTempDay = convertMonthOfYearShort(minTempDateTime.getMonthOfYear()).toUpperCase() + "."+minTempDateTime.getDayOfMonth();
+        String minTempDay = DateConstants.convertMonthOfYearShort(minTempDateTime.getMonthOfYear()).toUpperCase() + "."+minTempDateTime.getDayOfMonth();
         double totalRainfallMM = getTotalRainfall(week);
         double totalRainfallInch = new BigDecimal(totalRainfallMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         int windiestMiles = getWindiestMiles(week);
         int windiestMS = (int)Math.round(getWindiestKmph(week)*0.27777777777778);
         String foundWindiest = (String)getWindiestDay(week, windiestMiles).get("date");
         DateTime windiestDateTime = new DateTime(foundWindiest);
-        String windiestDay = convertMonthOfYearShort(windiestDateTime.getMonthOfYear()).toUpperCase() + "."+windiestDateTime.getDayOfMonth();
+        String windiestDay = DateConstants.convertMonthOfYearShort(windiestDateTime.getMonthOfYear()).toUpperCase() + "."+windiestDateTime.getDayOfMonth();
 
        HashMap<String, Object> results = new HashMap<>();
 
@@ -993,9 +950,6 @@ public class WeatherService {
 
         return list;
     }
-
-    private String dayTimes[] = {"Night", "Morning", "Midday", "Evening"};
-    private int dayTimesHours[]= {2, 8, 14, 20};
 
     public List getTableDataForDays(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
 
