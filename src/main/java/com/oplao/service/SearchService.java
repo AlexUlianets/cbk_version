@@ -21,7 +21,7 @@ import java.util.*;
 public class SearchService {
     public static final String cookieName = "lastCitiesVisited";
     public static final String langCookieCode = "langCookieCode";
-    public static final String validCountryCodes[] = {"en", "us", "ru", "it", "fr", "de", "by", "ua"};
+    protected static final String validCountryCodes[] = {"en", "us", "ru", "it", "fr", "de", "by", "ua"};
     private static final List<String> cities = Arrays.asList(new String[]{"Hong Kong", " Singapore", " Bangkok", " London", " Macau", " Kuala Lumpur", " Shenzhen", " New York City", " Antalya", " Paris", " Istanbul", " Rome", " Dubai", " Guangzhou", " Phuket", " Mecca", " Pattaya", " Prague", " Shanghai", " Las Vegas", " Miami", " Barcelona", " Moscow", " Beijing", " Los Angeles", " Budapest", " Vienna", " Amsterdam", " Sofia", " Madrid", " Orlando", " Ho Chi Minh City", " Lima", " Berlin", " Tokyo", " Warsaw", " Chennai", " Cairo", " Nairobi", " Hangzhou", " Milan", " San Francisco", " Buenos Aires", " Venice", " Mexico City", " Dublin", " Seoul", " Mugla", " Mumbai", " Denpasar", " Delhi", " Toronto", " Zhuhai", " Saint Petersburg", " Burgas", " Sydney", " Djerba", " Munich", " Johannesburg", " Cancun", " Edirne", " Suzhou", " Bucharest", " Punta Cana", " Agra", " Jaipur", " Brussels", " Nice", " Chiang Mai", " Sharm el-Sheikh", " Lisbon", " Porto", " Marrakech", " Jakarta", " Manama", " Honolulu", " Vietnam", " Manila", " Guilin", " Auckland", " Siem Reap", " Sousse", " Amman", " Vancouver", " Abu Dhabi", " Kiev", " Doha", " Florence", " Rio de Janeiro", " Melbourne", " Washington D.C.", " Riyadh", " Christchurch", " Frankfurt", " Baku", " Sao Paulo", " Harare", " Kolkata", " Nanjing", " Athens", " Copenhagen", " Edinburgh", " Stockholm", " Oslo", " Oxford", " Cannes", " Helsinki", " Bruges", " Hamburg", " Pisa", " Dubrovnik", " Tallinn", " Granada", " Salzburg", " Bilbao", " Strasbourg", " Reykjavik", " Naples", " Monaco", " Riga", " Liverpool", " Luxembourg", " Cologne", " Krakow", " Malaga", " Verona", " Thessaloniki", " Zurich", " Seville", " Geneva", " Marseille", " Palma De Mallorca", " Valencia", " Glasgow", " Mykonos", " Dresden", " Palermo", " Bali", " Crete", " Roatan", " Kathmandu", " Cusco", " Corsica", " Lyon", " Bordeaux", " Beaune", " Sorrento", " Hurghada", " Alexandria", " St. Moritz", " Madeira", " Faro", " Utrecht", " Rotterdam", " Goa", " Varanasi", " Rishikesh", " Kyoto", " Osaka", " Port Douglas", " Darwin", " Brisbane", " Perth", " Lhasa", " Split", " Budva", " Cape Town", " Vilamendhoo", " Hilo", " Victoria", " Costa Del Sol", " Bergen", " Whitsundays", " Bathsheba", " Hoi An", " Versailles", " Grindelwald", " Cascais", " Sao Miguel", " Luxor", " Bremen", " Larnaca", " Tel Aviv", " New Orleans", " Unawatuna", " Mirissa", "Tenerife"});
     public List<HashMap> findSearchOccurences(String searchRequest){
         List list = null;
@@ -588,7 +588,7 @@ public class SearchService {
     }
     public void selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode, JSONObject currentCity){
         List parsedUrl = Arrays.asList(reqUrl.split("/"));
-        if(parsedUrl.contains("weather")||parsedUrl.contains("forecast")||parsedUrl.contains("about")) {
+        if(parsedUrl.contains("weather")||parsedUrl.contains("forecast")||parsedUrl.contains("about")||parsedUrl.contains("widgets")) {
             String requestedLang = reqUrl.split("/")[1];
             if (Arrays.asList(validCountryCodes).contains(requestedLang)) {
                 if (!languageCookieCode.equals(requestedLang) && requestedLang.length() == 2) {
@@ -599,7 +599,7 @@ public class SearchService {
                 response.setHeader("Location", reqUrl.replace(requestedLang, languageCookieCode));
             }
         }else if(parsedUrl.size()==0){
-            if(Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase())){
+            if(Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase())&&!currentCity.getString("countryCode").equals(languageCookieCode)){
                 refreshLangCookie(request, response, currentCity.getString("countryCode").toLowerCase());
             }else{
                 refreshLangCookie(request, response, "en");

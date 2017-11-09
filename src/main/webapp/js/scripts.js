@@ -339,7 +339,9 @@ function loadScript() {
              ** Вставляем активный виджет в resizable окно
              */
             //При начальной загрузке
-            var curruntSlide = $("#widget_carusel").slick("getSlick").$slides[0];
+            if($("#widget_carusel").slick("getSlick").$slides!=undefined){
+                var curruntSlide = $("#widget_carusel").slick("getSlick").$slides[0];
+            }
             curruntSlide = $(curruntSlide).html();
             //console.log(curruntSlide);
 
