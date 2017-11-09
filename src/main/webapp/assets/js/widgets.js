@@ -163,90 +163,11 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                 lang: $scope.lang
             }
         }).done(function( msg ) {
-            $scope.selectedCityWidget = msg[0];
+            $scope.selectedCityWidget = msg;
+            $scope.$apply();
             $scope.updateWidget();
         })
 
-        // "Delete after back-end created"
-        $scope.selectedCityWidget =   {  "hours":22,
-            "time": "14:10",
-            "date": "15 MAY",
-            "day": "mon",
-            "city":"Minsk",
-            "countryCode":"by",
-            "feelsLikeC":"5",
-            "feelsLikeF":"40",
-            "weatherIconCode":"Fog",
-            "clarity": 'Fog',
-            "pressurehPa":"1030",
-            "pressureInch":0.31,
-            "temp_c":"6",
-            "temp_f":"43",
-            "windMph":"4",
-            "windMs":2,
-            "windDegree":250,
-            "threeDays": [{
-                "date": "15 MAY",
-                "day": "mon",
-                "icon": "Clear",
-                "clarity": "Fog",
-                "temp_c":"6",
-                "temp_f":"45"
-            },
-                {
-                    "date": "16 MAY",
-                    "day": "mon",
-                    "icon": "Clear",
-                    "clarity": "Fog",
-                    "temp_c":"6",
-                    "temp_f":"43"
-                },
-                {
-                    "date": "17 MAY",
-                    "day": "mon",
-                    "icon": "Clear",
-                    "clarity": "Fog",
-                    "temp_c":"6",
-                    "temp_f":"41"
-                }],
-            "wholeDay": [
-                {
-                    "name": "morning",
-                    "date": "15 MAY",
-                    "day": "mon",
-                    "icon": "Clear",
-                    "clarity": "Fog",
-                    "temp_c":"6",
-                    "temp_f":"45"
-                },
-                {
-                    "name": "day",
-                    "date": "16 MAY",
-                    "day": "mon",
-                    "icon": "Clear",
-                    "clarity": "Fog",
-                    "temp_c":"6",
-                    "temp_f":"43"
-                },
-                {
-                    "name": "evening",
-                    "date": "17 MAY",
-                    "day": "mon",
-                    "icon": "Clear",
-                    "clarity": "Fog",
-                    "temp_c":"6",
-                    "temp_f":"41"
-                },
-                {
-                    "name": "night",
-                    "date": "17 MAY",
-                    "day": "mon",
-                    "icon": "Clear",
-                    "clarity": "Fog",
-                    "temp_c":"6",
-                    "temp_f":"41"
-                }
-            ]};
         $scope.updateWidget();
         // here
 
