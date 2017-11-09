@@ -25,6 +25,10 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="description" content="{{metaData.description}}">
+    <meta property="og:title" content="Oplao"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:description" content="{{metaData.description}}"/>
+    <meta property="og:image" content="https://simplesharebuttons.com/wp-content/uploads/2014/08/simple-share-buttons-logo-square.png"/>
     <title ng-bind="metaData.title"></title>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,6 +44,11 @@
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,700' rel='stylesheet'>
     <link rel="stylesheet" href="scss/widget.css">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+    <style>
+    #widget_carusel, .wg_choice_wrap {
+        visibility: hidden;
+        }
+    </style>
 </head>
 <body>
 
@@ -242,8 +251,6 @@
 
         <div ng-include="'templates/footer.html'"></div>
     </div>
-
-
     <script src="js/jquery.min.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/charts_init.js"></script>

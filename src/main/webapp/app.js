@@ -29,6 +29,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             })
         }
         $rootScope.updateLang();
+
         if($cookies.get('temp_val')===undefined){
             $cookies.put('temp_val', 'C');
             $rootScope.local.typeTemp = 'C';
@@ -89,28 +90,16 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }).done(function (data) {
                     console.log(data)
                     $rootScope.selectedCity = data;
+
                 })
+
+                setTimeout(function () {
                     loadScript();
+                }, 1000)
+
             })
         }
-        $rootScope.get_recent_cities_tabs_func = function(){
-            $.ajax({
-                method: "POST",
-                url: "/get_recent_cities_tabs"
-            }).done(function( msg ) {
-                $rootScope.$apply(function(){
-                    $rootScope.get_recent_cities_tabs = msg;
-                });
-                if($('.favorite-location .container')[0]!= undefined) {
-                    var ln = $('.favorite-location .container')[0]['children'].length;
-                }
-                if ($(window).width() < 500) {
-                    $('#top-page').animate({height: (300+((ln) * 50))+'px'});
-                }
-            });
-            // $('.tb-contant').removeClass('inner-html')
 
-        }
         $rootScope.get_api_weather();
         $rootScope.generate_meta_title = function () {
 
@@ -159,11 +148,18 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                       }
                 }
         }
-        $rootScope.selectCity = function(e){
+
+
+
+        $rootScope.selectCity = function(e, e1, e2){
             $('.search-dropdown').removeClass('opened');
             $('.search-dropdown').css({'display': 'none'})
             $rootScope.searchInput = '';
             $('.ht-search-input input').val('')
+
+            $rootScope.el=e;
+            $rootScope.el1=e1;
+            $rootScope.el2=e2;
 
             $.ajax({
             method: "POST",
