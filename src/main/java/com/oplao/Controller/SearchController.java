@@ -29,6 +29,12 @@ public class SearchController {
         return searchService.getSelectedCity(currentCookieValue);
       }
 
+    @RequestMapping(value = "get_current_city_object")
+    @ResponseBody
+    public HashMap getCurrentCityObject(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue) {
+
+        return (HashMap) searchService.findSelectedCity(request, response, currentCookieValue).toMap();
+    }
 
     @RequestMapping(value = "/select_city/{geonameId}", method = RequestMethod.POST)
     @ResponseBody

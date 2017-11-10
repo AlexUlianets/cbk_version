@@ -1,7 +1,7 @@
 var opCss = document.createElement('link');
 opCss.setAttribute('rel', 'stylesheet');
 opCss.setAttribute('type', 'text/css');
-opCss.setAttribute('href', 'http://staging.oplao.com/scss/widget.css');
+opCss.setAttribute('href', 'http://localhost:8080/scss/widget.css');
 document.getElementsByTagName('head')[0].appendChild(opCss);
 function LoadInformer(data) {
     if (document.getElementById('opTitle')) {
@@ -9,7 +9,7 @@ function LoadInformer(data) {
     }
     if (document.getElementById('opImg')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url = "http://staging.oplao.com/svg/wicons_svg/"+data.weatherIconCode+"_"+day+".svg"
+        var url = "http://localhost:8080/svg/wicons_svg/"+data.weatherIconCode+"_"+day+".svg"
 
         document.getElementById('opImg').src = url
         document.getElementById('opImg').style.height = 'auto!important'
@@ -38,13 +38,13 @@ function LoadInformer(data) {
     if (document.getElementById('opWind')) {
         var opWind = document.getElementById('Oplao').getAttribute('data-wind') == 'm/s' ? 'm/s' : 'mph';
         var opWindNum = document.getElementById('Oplao').getAttribute('data-wind') == 'm/s' ? data.windMs : data.windMph;
-        document.getElementById('opWind').innerHTML = '<img class="wind_icon" src="http://staging.oplao.com/img/widget/wg_wind.png" style="-ms-transform: rotate('+(data.windDegree+20)+'deg); -webkit-transform: rotate('+(data.windDegree+20)+'deg);transform: rotate('+(data.windDegree+20)+'deg);" alt=""><span> '+opWindNum+' '+opWind+'</span>'
+        document.getElementById('opWind').innerHTML = '<img class="wind_icon" src="http://localhost:8080/img/widget/wg_wind.png" style="-ms-transform: rotate('+(data.windDegree+20)+'deg); -webkit-transform: rotate('+(data.windDegree+20)+'deg);transform: rotate('+(data.windDegree+20)+'deg);" alt=""><span> '+opWindNum+' '+opWind+'</span>'
     }
     if (document.getElementById('threeDays')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://staging.oplao.com/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
-        var url2 = "http://staging.oplao.com/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
-        var url3 = "http://staging.oplao.com/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
+        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
+        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
+        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
 
 
         document.getElementById('opDate').innerHTML = data.threeDays[0].date
@@ -76,9 +76,9 @@ function LoadInformer(data) {
 
     if (document.getElementById('dayThreeDays')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://staging.oplao.com/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
-        var url2 = "http://staging.oplao.com/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
-        var url3 = "http://staging.oplao.com/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
+        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
+        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
+        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
 
         document.getElementById('opDate').innerHTML = data.date
         document.getElementById('opDay').innerHTML = data.day
@@ -111,10 +111,10 @@ function LoadInformer(data) {
 
     if (document.getElementById('widget_4') || document.getElementById('widget_8') || document.getElementById('widget_9') || document.getElementById('widget_10')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://staging.oplao.com/svg/wicons_svg/"+data.wholeDay[0].icon+"_"+day+".svg"
-        var url2 = "http://staging.oplao.com/svg/wicons_svg/"+data.wholeDay[1].icon+"_"+day+".svg"
-        var url3 = "http://staging.oplao.com/svg/wicons_svg/"+data.wholeDay[2].icon+"_"+day+".svg"
-        var url4 = "http://staging.oplao.com/svg/wicons_svg/"+data.wholeDay[3].icon+"_"+day+".svg"
+        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[0].icon+"_"+day+".svg"
+        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[1].icon+"_"+day+".svg"
+        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[2].icon+"_"+day+".svg"
+        var url4 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[3].icon+"_"+day+".svg"
         if (document.getElementById('opDate')){
             document.getElementById('opDate').innerHTML = data.date
         }
@@ -154,5 +154,10 @@ xhttp.onreadystatechange = function() {
         LoadInformer(JSON.parse(xhttp.responseText));
     }
 }
-xhttp.open("POST", "http://staging.oplao.com/get_info_widgets?city=2761369&lang=en");
-xhttp.send(params);
+$.ajax({
+    method: "POST",
+    url: "/get_current_city_object"
+}).done(function( msg ) {
+    xhttp.open("POST", "http://localhost:8080/get_info_widgets?city="+msg.geonameId+"&lang=en");
+    xhttp.send(params);
+})
