@@ -319,6 +319,22 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                       }]
                   }
               })
+              .state('widgets', {
+                  url: "/:lang/weather/widgets",
+                  params:{
+                      lang:{squash: true, value: null}
+                  },
+                  views: {
+                      "": {
+                          templateUrl: "templates/html/widgets.html"
+                      }
+                  },
+                  resolve: {
+                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                          return $ocLazyLoad.load('widgets');
+                      }]
+                  }
+              })
               .state('front-page', {
                   url: "/:lang/weather/:city",
                   params:{
@@ -624,20 +640,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                                 return $ocLazyLoad.load('about');
                             }]
                         }
-                    }).state('widgets', {
-                          url: "/en/widgets",
-
-                          views: {
-                              "": {
-                                  templateUrl: "templates/html/widgets.html"
-                              }
-                          },
-                          resolve: {
-                              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                  return $ocLazyLoad.load('widgets');
-                              }]
-                          }
-                      });
+                    });
         $locationProvider.html5Mode({
             enabled: true,
             rewriteLinks: false

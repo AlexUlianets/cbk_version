@@ -53,7 +53,7 @@ public class Index {
                 "/weather/hour-by-hour3",
                 "/weather/map",
                 "/about",
-                "/widgets"
+                "/weather/widgets"
         })
         public String index(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, @CookieValue(value = SearchService.langCookieCode, defaultValue = "") String languageCookieCode) {
             try {
