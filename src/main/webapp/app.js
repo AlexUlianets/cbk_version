@@ -11,8 +11,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         }else {
             $rootScope.currentCountryCode = $cookies.get('langCookieCode');
         }
-        console.log($rootScope.currentCountryCode)
-        console.log(location.pathname)
         $rootScope.updateLang = function () {
             var langRequest = {
                 method: 'GET',
@@ -88,7 +86,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     method: "GET",
                     url:"/get_selected_city"
                 }).done(function (data) {
-                    console.log(data)
                     $rootScope.selectedCity = data;
 
                 })
@@ -201,9 +198,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $this.parent().slideUp();
                 var $menuIndex = index;
                 var block_weater = $('.weather-block-favorite')[0] ? $('.weather-block-favorite') : $('.weather-block-width');
-                if (!$('.weather-block-favorite')[0]) {
-                    console.log('true');
-                }
                 $('.w' + $menuIndex).remove();
                 $('.w' + $menuIndex + '_li').remove();
 

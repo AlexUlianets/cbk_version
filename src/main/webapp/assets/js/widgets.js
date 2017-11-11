@@ -12,7 +12,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
     $scope.searchListWidget = [];
     $scope.resultWidget = 0;
     $scope.captcha= false;
-    $scope.lang = $scope.$parent.currentCountryCode;
+    $scope.lang = 'en';
     $scope.city = '';
     $scope.widgetTemp = "C";
     $scope.widgetWind = "m/s";
@@ -50,6 +50,9 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             htmlWidget.find('.respons_handles').remove()
             htmlWidget.find('img').each(function () {
                 $(this).attr('src', location.protocol + "//" + window.location.host + '/' + $(this).attr('src'))
+            })
+            htmlWidget.find('a').each(function () {
+                $(this).attr('href', location.protocol + "//" + window.location.host + $(this).attr('href'))
             })
             htmlWidget.find('.wg_title').first().attr('id', 'opTitle').html('')
             htmlWidget.find('.wg_weather_img').attr('id', 'opImg')
@@ -177,9 +180,6 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                 $scope.$apply();
                 $scope.updateWidget();
             })
-
-            $scope.updateWidget();
-            // here
 
         },700)
         setTimeout(function () {
