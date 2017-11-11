@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +33,27 @@ public class WidgetService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        String location = currentCity.getString("name")+"_" + currentCity.getString("countryCode");
+        String[] tabs = {"Outlook", "Today", "Tomorrow", "Past", "Temperature map", "3 day", "5 day", "7 day", "10 day", "14 day", "Hour by hour"};
+        String[] hrefs = {"weather/outlook/"+location, "weather/today/"+location, "weather/tomorrow/"+location,
+        "weather/history3/"+location, "weather/map/"+location, "weather/3/"+location, "weather/5/"+location, "weather/7/"+location,
+                "weather/10/"+location, "weather/14/"+location, "weather/hour-by-hour3/"+location};
+
+        int rand1  = (int)(Math.random() * tabs.length);
+        HashMap<String, String> map1 = new HashMap<>();
+        map1.put(tabs[rand1], hrefs[rand1]);
+        map1.put("name", tabs[rand1]);
+        tabs = removeArrayElement(tabs, tabs[rand1]);
+        hrefs = removeArrayElement(hrefs, hrefs[rand1]);
+        int rand2  = (int)(Math.random() * tabs.length-1);
+        HashMap<String, String> map2 = new HashMap<>();
+        map2.put(tabs[rand2], hrefs[rand2]);
+        map2.put("name", tabs[rand2]);
+
+        List links = new ArrayList();
+        links.add(map1);
+        links.add(map2);
         DateTime dateTime = new DateTime(DateTimeZone.forID((String) ((JSONObject) currentCity.get("timezone")).get("timeZoneId")));
 
         APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
@@ -59,6 +81,8 @@ public class WidgetService {
         res.put("windDegree", currentConditions.get("winddirDegree"));
         res.put("threeDays", getThreeDaysWeatherForWidgets(dateTime, currentCity));
         res.put("wholeDay", getWholeDayWeatherForWidgets(dateTime, currentCity));
+        res.put("location", location);
+        res.put("urls", links);
         return res;
     }
 
@@ -119,5 +143,12 @@ public class WidgetService {
                 ),
                 " "
         );
+    }
+
+    private String[] removeArrayElement(String[] arr, String elem){
+
+        List<String> list = new ArrayList<String>(Arrays.asList(arr));
+        list.removeAll(Arrays.asList(elem));
+        return list.toArray(arr);
     }
 }
