@@ -144,9 +144,22 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
     $scope.selectCityWidget = function(e, e1, e2){
         $('.wg_form_resault').removeClass('active_search')
         if(e1===null){
-            $scope.searchInputWidget = $scope.$parent.temperature.city+", "+$scope.$parent.temperature.country;
-            e=$scope.$parent.temperature.geonameId
-            $scope.city = e;
+            if ($scope.$parent.temperature === undefined){
+                 $.ajax({
+                     method: "POST",
+                     url: "/get_current_city_object"
+                 }).done(function( msg ) {
+                     $scope.$parent.temperature = msg;
+                     $scope.searchInputWidget = $scope.$parent.temperature.name+", "+$scope.$parent.temperature.countryName;
+                     e=$scope.$parent.temperature.geonameId
+                     $scope.city = e;
+                 })
+            }else{
+                $scope.searchInputWidget = $scope.$parent.temperature.city+", "+$scope.$parent.temperature.country;
+                e=$scope.$parent.temperature.geonameId
+                $scope.city = e;
+            }
+
         }else if(e === 'lang'){
 
         }else{
@@ -154,23 +167,24 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             $scope.city = e;
         }
 
+        setTimeout(function () {
+            $.ajax({
+                method: "POST",
+                url: "/get_info_widgets/",
+                data: {
+                    city: e,
+                    lang: $scope.lang
+                }
+            }).done(function( msg ) {
+                $scope.selectedCityWidget = msg;
+                $scope.$apply();
+                $scope.updateWidget();
+            })
 
-        $.ajax({
-            method: "POST",
-            url: "/get_info_widgets/",
-            data: {
-                city: e,
-                lang: $scope.lang
-            }
-        }).done(function( msg ) {
-            $scope.selectedCityWidget = msg;
-            $scope.$apply();
             $scope.updateWidget();
-        })
+            // here
 
-        $scope.updateWidget();
-        // here
-
+        },700)
         setTimeout(function () {
             $('#widget_carusel').css({'visibility': 'visible'})
             $('.wg_choice_wrap').css({'visibility': 'visible'})

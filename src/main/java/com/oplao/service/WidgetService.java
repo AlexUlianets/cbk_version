@@ -49,7 +49,7 @@ public class WidgetService {
         res.put("feelsLikeC", currentConditions.get("FeelsLikeC"));
         res.put("feelsLikeF", currentConditions.get("FeelsLikeF"));
         res.put("weatherIconCode", EXT_STATES.get(Integer.parseInt("" + currentConditions.get("weatherCode"))));
-        res.put("clarity", EXT_STATES.get(Integer.parseInt("" + currentConditions.get("weatherCode"))));
+        res.put("clarity", splitCamelCase(EXT_STATES.get(Integer.parseInt("" + currentConditions.get("weatherCode"))).toStringValue()));
         res.put("pressurehPa", currentConditions.get("pressure"));
         res.put("pressureInch", new BigDecimal(Integer.parseInt("" + currentConditions.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
         res.put("temp_c", currentConditions.get("temp_C"));
@@ -75,7 +75,7 @@ public class WidgetService {
             res.put("date", dateTime.getDayOfMonth() + " " + DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear()).toUpperCase());
             res.put("day", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek()).toLowerCase());
             res.put("icon", EXT_STATES.get(Integer.parseInt("" + weather2Pm.get("weatherCode"))));
-            res.put("clarity", EXT_STATES.get(Integer.parseInt("" + weather2Pm.get("weatherCode"))));
+            res.put("clarity", splitCamelCase(EXT_STATES.get(Integer.parseInt("" + weather2Pm.get("weatherCode"))).toStringValue()));
             res.put("temp_c", weather2Pm.get("tempC"));
             res.put("temp_f", weather2Pm.get("tempF"));
             result.add(res);
@@ -101,12 +101,23 @@ public class WidgetService {
             dayMap.put("date", dateTime.getDayOfMonth() + " " + DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear()).toUpperCase());
             dayMap.put("day", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek()).toLowerCase());
             dayMap.put("icon", EXT_STATES.get(Integer.parseInt("" + elem.get("weatherCode"))));
-            dayMap.put("clarity", EXT_STATES.get(Integer.parseInt("" + elem.get("weatherCode"))));
+            dayMap.put("clarity", splitCamelCase(EXT_STATES.get(Integer.parseInt("" + elem.get("weatherCode"))).toStringValue()));
             dayMap.put("temp_c", elem.get("tempC"));
             dayMap.put("temp_f", elem.get("tempF"));
             result.add(dayMap);
         }
         return result;
 
+    }
+
+    private String splitCamelCase(String s) {
+        return s.replaceAll(
+                String.format("%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"
+                ),
+                " "
+        );
     }
 }
