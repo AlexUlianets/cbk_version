@@ -154,10 +154,5 @@ xhttp.onreadystatechange = function() {
         LoadInformer(JSON.parse(xhttp.responseText));
     }
 }
-$.ajax({
-    method: "POST",
-    url: "/get_current_city_object"
-}).done(function( msg ) {
-    xhttp.open("POST", "http://localhost:8080/get_info_widgets?city="+msg.geonameId+"&lang=en");
-    xhttp.send(params);
-})
+xhttp.open("POST", "http://staging.oplao.com/get_info_widgets?city="+document.getElementById('Oplao').getAttribute("data-city")+"&lang=en");
+xhttp.send(params);
