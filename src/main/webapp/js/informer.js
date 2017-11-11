@@ -152,5 +152,5 @@ xhttp.onreadystatechange = function() {
         LoadInformer(JSON.parse(xhttp.responseText));
     }
 }
-xhttp.open("POST", "http://staging.oplao.com/get_info_widgets?city="+document.getElementById('Oplao').getAttribute("data-city")+"&lang=en");
+xhttp.open("POST", "http://staging.oplao.com/get_info_widgets?city="+document.getElementById('Oplao').getAttribute("data-city")+"&lang="+document.getElementById('Oplao').getAttribute('data-lang'));
 xhttp.send(params);
