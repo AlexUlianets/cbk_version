@@ -18,9 +18,6 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
     $scope.widgetWind = "m/s";
     $scope.widgetPressure = "hPa";
 
-
-    console.log($scope.$parent.temperature)
-
     $scope.getCode = function () {
         var answer = document.getElementById("wg_captcha_input").value;
 
@@ -112,7 +109,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
                 var pressure = "in"
             }
 
-            $('.wg_textarea').val(('<div id="Oplao" data-lang="'+$scope.lang+'" data-city="' + $scope.city + '" data-temp="' + temp + '" data-wind="' + wind + '" data-pressure="' + pressure + '" style="border: 0!important;" class="' +
+            $('.wg_textarea').val(('<div id="Oplao" style="display: none;" data-url="' + location.protocol + '//' + window.location.host + '" data-lang="'+$scope.lang+'" data-city="' + $scope.city + '" data-temp="' + temp + '" data-wind="' + wind + '" data-pressure="' + pressure + '" style="border: 0!important;" class="' +
             $('.wg_response_wrap').attr('class') + '">' + htmlWidget.html().replace(/<!--[^>]*-->/gi, '')
                 .replace(/\n/g, '')
                 .replace(/ng-.+?\b/g, '')
@@ -189,7 +186,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
             $('#widget_carusel').css({'visibility': 'visible'})
             $('.wg_choice_wrap').css({'visibility': 'visible'})
 
-        }, 1000)
+        }, 1200)
     };
 
 
