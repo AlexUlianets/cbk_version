@@ -1,7 +1,7 @@
 var opCss = document.createElement('link');
 opCss.setAttribute('rel', 'stylesheet');
 opCss.setAttribute('type', 'text/css');
-opCss.setAttribute('href', 'http://localhost:8080/scss/widget.css');
+opCss.setAttribute('href', document.getElementById('Oplao').getAttribute('data-url')+'/scss/widget.css');
 document.getElementsByTagName('head')[0].appendChild(opCss);
 function LoadInformer(data) {
     if (document.getElementById('opTitle')) {
@@ -9,19 +9,17 @@ function LoadInformer(data) {
     }
     if (document.getElementById('opImg')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url = "http://localhost:8080/svg/wicons_svg/"+data.weatherIconCode+"_"+day+".svg"
+        var url = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.weatherIconCode+"_"+day+".svg"
 
         document.getElementById('opImg').src = url
         document.getElementById('opImg').style.height = 'auto!important'
     }
     if (document.getElementById('opTemp')) {
-        console.log(document.getElementById('Oplao').getAttribute('data-temp'));
         var temp = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
         var tempNum = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.temp_f : data.temp_c;
         document.getElementById('opTemp').innerHTML = "<span>"+tempNum+"</span><sup>°"+temp+"</sup>"
     }
     if (document.getElementById('opFeel')) {
-        console.log(document.getElementById('Oplao').getAttribute('data-temp'));
         var opFeel = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? 'F' : 'C';
         var opFeelNum = document.getElementById('Oplao').getAttribute('data-temp') == 'F' ? data.feelsLikeF : data.feelsLikeC;
         document.getElementById('opFeel').innerHTML = "<span>"+opFeelNum+"</span><sup>°"+opFeel+"</sup>"
@@ -38,13 +36,13 @@ function LoadInformer(data) {
     if (document.getElementById('opWind')) {
         var opWind = document.getElementById('Oplao').getAttribute('data-wind') == 'm/s' ? 'm/s' : 'mph';
         var opWindNum = document.getElementById('Oplao').getAttribute('data-wind') == 'm/s' ? data.windMs : data.windMph;
-        document.getElementById('opWind').innerHTML = '<img class="wind_icon" src="http://localhost:8080/img/widget/wg_wind.png" style="-ms-transform: rotate('+(data.windDegree+20)+'deg); -webkit-transform: rotate('+(data.windDegree+20)+'deg);transform: rotate('+(data.windDegree+20)+'deg);" alt=""><span> '+opWindNum+' '+opWind+'</span>'
+        document.getElementById('opWind').innerHTML = '<img class="wind_icon" src="'+document.getElementById('Oplao').getAttribute('data-url')+'"/img/widget/wg_wind.png" style="-ms-transform: rotate('+(data.windDegree+20)+'deg); -webkit-transform: rotate('+(data.windDegree+20)+'deg);transform: rotate('+(data.windDegree+20)+'deg);" alt=""><span> '+opWindNum+' '+opWind+'</span>'
     }
     if (document.getElementById('threeDays')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
-        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
-        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
+        var url1 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
+        var url2 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
+        var url3 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
 
 
         document.getElementById('opDate').innerHTML = data.threeDays[0].date
@@ -76,9 +74,9 @@ function LoadInformer(data) {
 
     if (document.getElementById('dayThreeDays')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
-        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
-        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
+        var url1 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.threeDays[0].icon+"_"+day+".svg"
+        var url2 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.threeDays[1].icon+"_"+day+".svg"
+        var url3 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.threeDays[2].icon+"_"+day+".svg"
 
         document.getElementById('opDate').innerHTML = data.date
         document.getElementById('opDay').innerHTML = data.day
@@ -111,10 +109,10 @@ function LoadInformer(data) {
 
     if (document.getElementById('widget_4') || document.getElementById('widget_8') || document.getElementById('widget_9') || document.getElementById('widget_10')) {
         var day = data.hours<=6 || data.hours>=18?'night':'day'
-        var url1 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[0].icon+"_"+day+".svg"
-        var url2 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[1].icon+"_"+day+".svg"
-        var url3 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[2].icon+"_"+day+".svg"
-        var url4 = "http://localhost:8080/svg/wicons_svg/"+data.wholeDay[3].icon+"_"+day+".svg"
+        var url1 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.wholeDay[0].icon+"_"+day+".svg"
+        var url2 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.wholeDay[1].icon+"_"+day+".svg"
+        var url3 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.wholeDay[2].icon+"_"+day+".svg"
+        var url4 = document.getElementById('Oplao').getAttribute('data-url')+"/svg/wicons_svg/"+data.wholeDay[3].icon+"_"+day+".svg"
         if (document.getElementById('opDate')){
             document.getElementById('opDate').innerHTML = data.date
         }
@@ -144,7 +142,7 @@ function LoadInformer(data) {
         document.getElementById('opTemp4').innerHTML = "<span>"+tempNum4+"</span><sup>°"+temp4+"</sup>"
     }
 
-    document.getElementById('Oplao').style.display = 'block';
+    document.getElementById('Oplao').style.display = 'initial';
 }
 
 var xhttp = new XMLHttpRequest();
