@@ -12,7 +12,7 @@ app.controller('widgets',['$scope', '$http', '$state','$stateParams', function($
     $scope.searchListWidget = [];
     $scope.resultWidget = 0;
     $scope.captcha= false;
-    $scope.lang = "en";
+    $scope.lang = $scope.$parent.currentCountryCode;
     $scope.city = '';
     $scope.widgetTemp = "C";
     $scope.widgetWind = "m/s";
