@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.oplao.service.SearchService.langCookieCode;
+
 @Controller
 public class SearchController {
 
@@ -17,9 +19,9 @@ public class SearchController {
 
     @RequestMapping(value = "find_occurences/{searchRequest:.+}", method = RequestMethod.POST)
     @ResponseBody
-    public List<HashMap> findOccurences(@PathVariable("searchRequest") String searchRequest) {
+    public List<HashMap> findOccurences(@PathVariable("searchRequest") String searchRequest, @CookieValue(value = langCookieCode, defaultValue = "") String langCode) {
 
-        return searchService.findSearchOccurences(searchRequest);
+        return searchService.findSearchOccurences(searchRequest, langCode);
       }
 
     @RequestMapping(value = "get_selected_city")
@@ -39,8 +41,9 @@ public class SearchController {
     @RequestMapping(value = "/select_city/{geonameId}", method = RequestMethod.POST)
     @ResponseBody
     public HashMap selectCity(@PathVariable("geonameId") int geonameId, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request,
-                              HttpServletResponse response) {
-        return searchService.selectCity(geonameId, currentCookieValue, request, response);
+                              HttpServletResponse response,
+                              @CookieValue(value = "langCookieCode", defaultValue = "") String langCode) {
+        return searchService.selectCity(geonameId, currentCookieValue, request, response, langCode);
 
     }
 

@@ -76,8 +76,8 @@
                             <div class="search-dropdown">
                                 <img src="images/cloud_load.gif" style="width: 18%;margin-left: 41%;display: none;margin-right: 41%;" class="load_search">
                                 <ul>
-                                    <li ng-repeat="i in searchList" ng-if="searchInput.length>1 && result==1" ng-click="selectCity(i.geonameId)"><a  ng-class="{'active':i.geonameId==temperature.geonameId}">{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
-                                    <li ng-repeat="i in searchList track by $index" ng-if="searchInput.length<=1" ng-click="selectCity(i.geonameId)" class="w{{$index}}_li"><a id="w{{$index}}" ng-class="{'active':i.geonameId==temperature.geonameId}">{{i.city}}</a><span ng-if="i.geonameId!=temperature.geonameId" ng-click="deleteCity(i.geonameId, $index)"></span></li>
+                                    <li ng-repeat="i in searchList" ng-if="searchInput.length>1 && result==1"><a  ng-class="{'active':i.geonameId==temperature.geonameId}" ng-click="selectCity(i.geonameId)">{{i.name}}, {{i.countryName}} <span ng-if="false"></span></a></li>
+                                    <li ng-repeat="i in searchList track by $index" ng-if="searchInput.length<=1" class="w{{$index}}_li"><a id="w{{$index}}" ng-class="{'active':i.geonameId==temperature.geonameId}" ng-click="selectCity(i.geonameId)" >{{i.city}}</a><span ng-if="i.geonameId!=temperature.geonameId" ng-click="deleteCity(i.geonameId, $index)"></span></li>
                                     <li ng-if="searchList.length==0"><a>No results</a></li>
                                 </ul>
                                 <a href="#" class="dropdown-top"></a>
@@ -86,9 +86,9 @@
                     </div>
                     <div class="ht-location">
                         <dl>
-                            <dt><i class="icon location"></i><span class="search-text1">{{temperature.city}}</span> weather, <span
+                            <dt><i class="icon location"></i><span class="search-text1">{{temperature.cityWeather}}</span>  <span
                                     class="search-text2">{{temperature.country}}</span></dt>
-                            <dd>Today. {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span  ng-bind="getTime(('0' + temperature.hours).slice(-2)+':'+('0' + temperature.minutes).slice(-2))"></span></dd>
+                            <dd>{{pageContent.today}} {{temperature.month}} {{temperature.day}}. {{temperature.dayOfWeek}}. <span  ng-bind="getTime(('0' + temperature.hours).slice(-2)+':'+('0' + temperature.minutes).slice(-2))"></span></dd>
                         </dl>
                     </div>
 
@@ -177,7 +177,7 @@
                 </div>
                 <div class="h-full-forecast" ng-if="$state.params.day=='front-page'">
                                     <div class="container">
-                                        <a href="/{{currentCountryCode}}/weather/outlook/{{selectedCity}}" ng-bind="pageContent.fullForecast"> <span class="arr-right-white"></span></a>
+                                        <a href="/{{currentCountryCode}}/weather/outlook/{{selectedCity}}"> {{pageContent.fullForecast}}<span class="arr-right-white"></span></a>
                                     </div>
                                 </div>
             </div><!-- end container -->
@@ -195,7 +195,7 @@
                                                 <span class="helper"></span>
                                                 <img src="img/feels_like_white.svg" alt="img" style="    width: 24px;">
                                             </div>
-                                            <h4>Feels like</h4>
+                                            <h4 ng-bind="pageContent.feelsLike"></h4>
                                             <p>{{local.typeTemp=='C'?temperature.feelsLikeC:temperature.feelsLikeF}} <span class="cels">{{local.typeTemp}}</span></p>
                                         </div>
                                         <div class="weather-info-block">
@@ -203,7 +203,7 @@
                                                 <span class="helper"></span>
                                                 <img src="img/humidity.svg" alt="img" style="    width: 40px;">
                                             </div>
-                                            <h4>Humidity</h4>
+                                            <h4 ng-bind="pageContent.humidity"></h4>
                                             <p>{{temperature.humidity}}<span>%</span></p>
                                         </div>
                                         <div class="weather-info-block">
@@ -211,7 +211,7 @@
                                                 <span class="helper"></span>
                                                 <img src="images/svg-sprite/pressure_white_fill.svg" alt="img" style="    width: 42px;">
                                             </div>
-                                            <h4>Pressure</h4>
+                                            <h4 ng-bind="pageContent.pressure"></h4>
                                             <p>{{local.typeTemp=='C'?temperature.pressurehPa:temperature.pressureInch}} <span>{{local.typeTemp=='C'?'hPa':'in'}}</span></p>
                                         </div>
                                         <div class="weather-info-block">
@@ -220,7 +220,7 @@
                                                 <!-- <i class="sprite-wind"></i> -->
                                                 <img src="img/wind_white.svg" alt="img" style="    width: 25px;    -ms-transform: rotate({{temperature.windDegree + 'deg'}});    -webkit-transform: rotate({{temperature.windDegree + 'deg'}});    transform: rotate({{temperature.windDegree + 'deg'}});">
                                             </div>
-                                            <h4>Wind</h4>
+                                            <h4 ng-bind="pageContent.wind"></h4>
                                             <p>{{temperature.wind}} <span>{{local.typeTemp=='C'?temperature.windMs:temperature.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</span></p>
                                         </div>
                                     </div><!-- end weather-info -->
@@ -263,7 +263,7 @@
     <script src="assets/plugins/angularJS/angular-ui-router.min.js"></script>
     <script src="assets/plugins/angularJS/ocLazyLoad.min.js"></script>
     <script src="assets/plugins/other/angular-cookies.min.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js?n=1"></script>
     <script type="text/javascript" src="assets/js/map.js"></script>
     <script type="text/javascript">
             window.doorbellOptions = {

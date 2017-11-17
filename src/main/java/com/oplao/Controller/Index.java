@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 @Controller
@@ -71,7 +73,7 @@ public class Index {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl+"/");
             }
-            searchService.selectLanguage(reqUrl, request, response, languageCookieCode, searchService.findSelectedCity(request, response, currentCookieValue));
+            searchService.selectLanguage(reqUrl, request, response, languageCookieCode, searchService.findSelectedCity(request, response, currentCookieValue), currentCookieValue);
             return "forward:/index.html";
         }
         @RequestMapping({
@@ -107,19 +109,23 @@ public class Index {
                             @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
                             HttpServletRequest request, HttpServletResponse response,
                             @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode) {
-
-            JSONObject generatedCity = searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response);
+            String reqUrl = request.getRequestURI();
+            try {
+                locationRequest = URLDecoder.decode(locationRequest, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            JSONObject generatedCity = searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response, reqUrl.split("/")[1]);
             try {
                 sitemapService.addToSitemap(request.getRequestURI());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String reqUrl = request.getRequestURI();
             if(reqUrl.contains("forecast")){
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
-            searchService.selectLanguage(reqUrl, request, response, languageCookieCode,generatedCity);
+            searchService.selectLanguage(reqUrl, request, response, languageCookieCode,generatedCity, currentCookieValue);
             return "forward:/index.html";
         }
     }

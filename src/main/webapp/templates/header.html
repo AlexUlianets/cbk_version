@@ -73,10 +73,10 @@
 
                 <nav id="h-menu">
                     <ul>
-                        <li><a href="/{{currentCountryCode}}/weather/widgets">Widgets</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/outlook/{{selectedCity}}">Weather</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}">Temperature map</a></li>
-                        <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup">Alerts <span></span></a>
+                        <li><a href="/{{currentCountryCode}}/weather/widgets" ng-bind="pageContent.widgets"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/outlook/{{selectedCity}}" ng-bind="pageContent.weather"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}" ng-bind="pageContent.temperatureMap"></a></li>
+                        <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup" ng-bind="pageContent.alerts"><span></span></a>
                         </li>
                     </ul>
                 </nav>
@@ -87,34 +87,33 @@
             <div class="container">
                 <div class="main-menu-inner">
                     <nav class="main-menu-block">
-                        <h3>Weather</h3>
+                        <h3 ng-bind="pageContent.weather"></h3>
                         <ul>
-                            <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}">3 days weather forecast</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}">5 days weather forecast</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}">7 days weather forecast</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}">14 days weather forecast</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}">Hourly weather</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/map">Weather map</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}">Weather history</a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}" ng-bind="pageContent.threeDaysWeatherForecast"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}" ng-bind="pageContent.fiveDaysWeatherForecast"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}" ng-bind="pageContent.sevenDaysWeatherForecast"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}" ng-bind="pageContent.fourteenDaysWeatherForecast"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}" ng-bind="pageContent.hourlyWeather"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}" ng-bind="pageContent.weatherMap"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}" ng-bind="pageContent.weatherHistory"></a></li>
                         </ul>
                     </nav>
 
                     <nav class="main-menu-block">
-                        <h3>Applications</h3>
+                        <h3 ng-bind="pageContent.applications"></h3>
                         <ul>
-                            <li><a href="https://chrome.google.com/webstore/detail/oplao-weather/jbjeihiakbjchgaehgcilindlghfffnb">Google Chrome weather extension</a></li>
-                            <li><a href="https://addons.mozilla.org/en-US/firefox/addon/oplao-weather/">Firefox weather extension</a></li>
-                            <li><a href="https://addons.opera.com/en/extensions/details/oplao-weather/">Opera weather extension</a></li>
-                            <li><a href="https://addons.opera.com/en/extensions/details/oplao-weather/">Opera weather extension</a></li>
-                            <li><a href="/{{currentCountryCode}}/weather/widgets">Widgets</a></li>
+                            <li><a href="https://chrome.google.com/webstore/detail/oplao-weather/jbjeihiakbjchgaehgcilindlghfffnb" ng-bind="pageContent.googleChromeWeatherExtension"></a></li>
+                            <li><a href="https://addons.mozilla.org/en-US/firefox/addon/oplao-weather/" ng-bind="pageContent.firefoxWeatherExtension"></a></li>
+                            <li><a href="https://addons.opera.com/en/extensions/details/oplao-weather/" ng-bind="pageContent.operaWeatherExtension"></a></li>
+                            <li><a href="/{{currentCountryCode}}/weather/widgets" ng-bind="pageContent.widgets"></a></li>
 
                         </ul>
                     </nav>
 
                     <nav class="main-menu-block">
-                        <h3>Information</h3>
+                        <h3 ng-bind="pageContent.information"></h3>
                         <ul>
-                            <li><a href="/{{currentCountryCode}}/about">About</a></li>
+                            <!--<li><a href="/{{currentCountryCode}}/about"></a></li>-->
                             <li><a href="#">Blog</a></li>
                         </ul>
                     </nav>

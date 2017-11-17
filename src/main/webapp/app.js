@@ -157,23 +157,24 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             $rootScope.el=e;
             $rootScope.el1=e1;
             $rootScope.el2=e2;
+            console.log(e);
 
             $.ajax({
             method: "POST",
                 url: "/select_city/"+e
             }).done(function( msg ) {
                 var url = document.location.pathname.split("/");
-                $rootScope.selectedCity = msg.name+"_"+msg.countryCode;
+                $rootScope.selectedCity = msg.asciiName+"_"+msg.countryCode;
                 if(url.length>2){
                     if(document.URL.includes('_')){
-                        url[url.length-1]=url[url.length-1].replace(url[url.length-1], msg.name+"_"+msg.countryCode);
+                        url[url.length-1]=url[url.length-1].replace(url[url.length-1], msg.asciiName+"_"+msg.countryCode);
                         url = url.join('/').replace('//','/')
                     }else{
-                        url.push(msg.name+"_"+msg.countryCode)
+                        url.push(msg.asciiName+"_"+msg.countryCode)
                         url = url.join('/').replace('//','/');
                     }
                 }else{
-                    url = "/"+$rootScope.currentCountryCode+"/weather/"+msg.name+"_"+msg.countryCode;
+                    url = "/"+$rootScope.currentCountryCode+"/weather/"+msg.asciiName+"_"+msg.countryCode;
                 }
                 if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + url;
@@ -211,10 +212,12 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.selectLanguage = function (lan) {
             var curUrl = location.pathname.split('/');
             if(curUrl[1].length==2){
-                location.pathname = location.pathname.replace(curUrl[1], lan);
+    //            location.reload(true);
+                var loc = window.location.href.replace(curUrl[1], lan);
+                window.location.href = loc;
             }else{
                 $cookies.put('langCookieCode', lan);
-                document.location.reload(true);
+                location.reload(true);
             }
         }
         $rootScope.updateTemp = function(val){

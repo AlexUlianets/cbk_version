@@ -10,6 +10,7 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
     $scope.tabClass = $scope.$state.params.tabClass;
     $scope.page=$scope.$state.params.page;
     $scope.graphTitle = $scope.$state.params.graphTitle;
+    $scope.space = ' ';
 
     $scope.getData = function () {
         var sendingTableRequest = {
@@ -56,12 +57,12 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
                 }
             });
             $(window).resize();
-        }, 1000);
+        }, 900);
 
         $(window).resize()
 setTimeout(function () {
     $(".tb-tabs-header").css({"visibility" : "visible"});
-},2700);
+},2300);
 
         }
 

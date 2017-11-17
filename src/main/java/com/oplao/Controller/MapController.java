@@ -22,8 +22,10 @@ public class MapController {
     MapService mapService;
     @RequestMapping("get_4_days_tabs")
     @ResponseBody
-    public List<HashMap> get4DaysTabs(HttpServletRequest request, HttpServletResponse response, @CookieValue(name = SearchService.cookieName, defaultValue = "") String currentCookieValue){
-        return mapService.create4DaysTabs(searchService.findSelectedCity(request, response, currentCookieValue));
+    public List<HashMap> get4DaysTabs(HttpServletRequest request, HttpServletResponse response,
+                                      @CookieValue(name = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                      @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        return mapService.create4DaysTabs(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("get_map_weather")

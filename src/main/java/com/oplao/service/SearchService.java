@@ -2,6 +2,7 @@ package com.oplao.service;
 
 import com.oplao.Application;
 import com.oplao.Utils.AddressGetter;
+import com.oplao.Utils.LanguageUtil;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
@@ -14,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
@@ -23,7 +27,8 @@ public class SearchService {
     public static final String langCookieCode = "langCookieCode";
     protected static final String validCountryCodes[] = {"en", "us", "ru", "it", "fr", "de", "by", "ua"};
     private static final List<String> cities = Arrays.asList(new String[]{"Hong Kong", " Singapore", " Bangkok", " London", " Macau", " Kuala Lumpur", " Shenzhen", " New York City", " Antalya", " Paris", " Istanbul", " Rome", " Dubai", " Guangzhou", " Phuket", " Mecca", " Pattaya", " Prague", " Shanghai", " Las Vegas", " Miami", " Barcelona", " Moscow", " Beijing", " Los Angeles", " Budapest", " Vienna", " Amsterdam", " Sofia", " Madrid", " Orlando", " Ho Chi Minh City", " Lima", " Berlin", " Tokyo", " Warsaw", " Chennai", " Cairo", " Nairobi", " Hangzhou", " Milan", " San Francisco", " Buenos Aires", " Venice", " Mexico City", " Dublin", " Seoul", " Mugla", " Mumbai", " Denpasar", " Delhi", " Toronto", " Zhuhai", " Saint Petersburg", " Burgas", " Sydney", " Djerba", " Munich", " Johannesburg", " Cancun", " Edirne", " Suzhou", " Bucharest", " Punta Cana", " Agra", " Jaipur", " Brussels", " Nice", " Chiang Mai", " Sharm el-Sheikh", " Lisbon", " Porto", " Marrakech", " Jakarta", " Manama", " Honolulu", " Vietnam", " Manila", " Guilin", " Auckland", " Siem Reap", " Sousse", " Amman", " Vancouver", " Abu Dhabi", " Kiev", " Doha", " Florence", " Rio de Janeiro", " Melbourne", " Washington D.C.", " Riyadh", " Christchurch", " Frankfurt", " Baku", " Sao Paulo", " Harare", " Kolkata", " Nanjing", " Athens", " Copenhagen", " Edinburgh", " Stockholm", " Oslo", " Oxford", " Cannes", " Helsinki", " Bruges", " Hamburg", " Pisa", " Dubrovnik", " Tallinn", " Granada", " Salzburg", " Bilbao", " Strasbourg", " Reykjavik", " Naples", " Monaco", " Riga", " Liverpool", " Luxembourg", " Cologne", " Krakow", " Malaga", " Verona", " Thessaloniki", " Zurich", " Seville", " Geneva", " Marseille", " Palma De Mallorca", " Valencia", " Glasgow", " Mykonos", " Dresden", " Palermo", " Bali", " Crete", " Roatan", " Kathmandu", " Cusco", " Corsica", " Lyon", " Bordeaux", " Beaune", " Sorrento", " Hurghada", " Alexandria", " St. Moritz", " Madeira", " Faro", " Utrecht", " Rotterdam", " Goa", " Varanasi", " Rishikesh", " Kyoto", " Osaka", " Port Douglas", " Darwin", " Brisbane", " Perth", " Lhasa", " Split", " Budva", " Cape Town", " Vilamendhoo", " Hilo", " Victoria", " Costa Del Sol", " Bergen", " Whitsundays", " Bathsheba", " Hoi An", " Versailles", " Grindelwald", " Cascais", " Sao Miguel", " Luxor", " Bremen", " Larnaca", " Tel Aviv", " New Orleans", " Unawatuna", " Mirissa", "Tenerife"});
-    public List<HashMap> findSearchOccurences(String searchRequest){
+
+    public List<HashMap> findSearchOccurences(String searchRequest, String langCode){
         List list = null;
         if((Character.isDigit(searchRequest.trim().charAt(0)) || Character.isDigit(searchRequest.trim().charAt(1))) && searchRequest.contains(",")){
             String [] parsedRequest = searchRequest.split(",");
@@ -41,15 +46,15 @@ public class SearchService {
             }
 
             if(lat.contains(".")&& lon.contains(".")) {
-                list = findByCoordinates(lat, lon);
+                list = findByCoordinates(lat, lon, langCode);
             }else {
                 return null;
             }
         }else if(searchRequest.length()==3 && Objects.equals(searchRequest, searchRequest.toUpperCase())) {
-            list = findByAirports(searchRequest);
+            list = findByAirports(searchRequest, langCode);
         }
         else {
-                list = findByCity(searchRequest);
+                list = findByCity(searchRequest, langCode);
         }
             List<HashMap> maps = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -59,15 +64,15 @@ public class SearchService {
     }
 
 
-    public HashMap selectCity(int geonameId, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public HashMap selectCity(int geonameId, String currentCookieValue, HttpServletRequest request, HttpServletResponse response, String langCode){
         List<JSONObject> list = null;
         JSONObject city = null;
         try{
             try {
-                list = findByGeonameId(geonameId);
+                list = findByGeonameId(geonameId, langCode);
                 city = list.get(0);
             }catch (Exception e){
-                list = findByGeonameIdAirports(geonameId);
+                list = findByGeonameIdAirports(geonameId, langCode);
                 city = list.get(0);
             }
 
@@ -91,7 +96,7 @@ public class SearchService {
                 }
                 clearCookies(request, response);
 
-                Cookie c = new Cookie(SearchService.cookieName, arr.toString());
+                Cookie c =new Cookie(cookieName, URLEncoder.encode(new String(arr.toString().getBytes(), "UTF-8"), "UTF-8"));
                 c.setPath("/");
                 response.addCookie(c);
 
@@ -110,14 +115,28 @@ public class SearchService {
         if(request.getCookies()!=null) {
             for (int i = 0; i < request.getCookies().length; i++) {
                 if (request.getCookies()[i].getName().equals(SearchService.cookieName)) {
-                    JSONArray array = new JSONArray(request.getCookies()[i].getValue());
+                    JSONArray array = null;
+                    try {
+                        if(!request.getCookies()[i].getValue().equals("")) {
+                            array = new JSONArray(URLDecoder.decode(request.getCookies()[i].getValue(), "UTF-8"));
+                        }else{
+                            array = new JSONArray();
+                        }
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     for (int j = 0; j < array.length(); j++) {
                         if (Objects.equals("" + (array.getJSONObject(j)).get("geonameId"),
                                 "" + city.get("geonameId"))) {
                             setCitySelected(array, j);
                             clearCookies(request, response);
 
-                            Cookie c = new Cookie(SearchService.cookieName, array.toString());
+                            Cookie c = null;
+                            try {
+                                c = new Cookie(cookieName, URLEncoder.encode(new String(array.toString().getBytes(), "UTF-8"), "UTF-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                             c.setPath("/");
                             response.addCookie(c);
 
@@ -143,11 +162,11 @@ public class SearchService {
         InputStream is = null;
         try {
             is = new URL(url).openStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = WeatherService.readAll(rd);
             List<JSONObject> objects = new ArrayList<>();
 
-            JSONArray jsonArray = new JSONArray(jsonText);
+            JSONArray jsonArray = new JSONArray(new String(jsonText.getBytes(), "UTF-8"));
             for (int i = 0; i < jsonArray.length(); i++) {
                 objects.add((JSONObject)jsonArray.get(i));
             }
@@ -160,42 +179,44 @@ public class SearchService {
                 is.close();
             }
         }
+        System.out.println("Suchara");
         return null;
     }
 
-    private List<JSONObject> findByCoordinates(String lat, String lon){
+    private List<JSONObject> findByCoordinates(String lat, String lon, String langCode){
         List<JSONObject> list = null;
         try {
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&lat=" + lat + "&lng=" + lon);
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&lat=" + lat + "&lng=" + lon);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    private List<JSONObject> findByGeonameIdAirports(int geonameId){
+    private List<JSONObject> findByGeonameIdAirports(int geonameId, String langCode){
         List<JSONObject> list = null;
         try {
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId + "&featureClass=S");
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&geonameId=" + geonameId + "&featureClass=S");
         } catch (IOException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    private List<JSONObject> findByGeonameId(int geonameId){
+    private List<JSONObject> findByGeonameId(int geonameId, String langCode){
         List<JSONObject> list = null;
         try {
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&geonameId=" + geonameId);
+            String url = "https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&geonameId=" + geonameId;
+            list = SearchService.findByOccurences(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return list;
     }
-    private List<JSONObject> findByAirports(String name){
+    private List<JSONObject> findByAirports(String name, String langCode){
         List<JSONObject> list = null;
         try {
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts="+name.trim()+"&featureClass=S");
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts="+name.trim()+"&featureClass=S");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,10 +224,11 @@ public class SearchService {
     }
 
 
-    private List<JSONObject> findByCity(String city){
+    private List<JSONObject> findByCity(String city, String langCode){
         List<JSONObject> list = null;
         try {
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20"));
+            String url ="https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts=" + URLEncoder.encode(city.replaceAll(" ", "%20"), "UTF-8");
+            list = SearchService.findByOccurences(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -279,12 +301,18 @@ public class SearchService {
 
            Application.log.info("generated.");
            List<JSONObject> list = null;
+           String langCode = "en";
+           if(Arrays.asList(validCountryCodes).contains(location.getString("country_code").toLowerCase())){
+               langCode = location.getString("country_code").toLowerCase();
+           }
+
            try {
-               list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + location.get("city"));
+               String url = "https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts=" + URLEncoder.encode(location.getString("city").replaceAll(" ", "%20"), "UTF-8");
+               list = SearchService.findByOccurences(url);
                JSONObject obj = list.get(0);
                obj.put("status", "selected");
                JSONArray arr = new JSONArray("["+obj.toString()+"]");
-               Cookie c = new Cookie(cookieName,arr.toString());
+               Cookie c = new Cookie(cookieName, URLEncoder.encode(new String(arr.toString().getBytes(), "UTF-8"), "UTF-8"));
                c.setPath("/");
                response.addCookie(c);
                return obj;
@@ -295,8 +323,13 @@ public class SearchService {
        }
 
 
-    public List<HashMap> createRecentCitiesTabs(String currentCookieValue) {
+    public List<HashMap> createRecentCitiesTabs(String currentCookieValue, String langCode) {
 
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         if (!currentCookieValue.equals("")) {
             JSONArray array = new JSONArray(currentCookieValue);
 
@@ -343,7 +376,12 @@ public class SearchService {
             if(String.valueOf(array.getJSONObject(i).get("geonameId")).equals(geonameId)){
                 array.remove(i);
                 clearCookies(request, response);
-                Cookie c = new Cookie(cookieName,array.toString());
+                Cookie c = null;
+                try {
+                    c = new Cookie(cookieName, URLEncoder.encode(new String(array.toString().getBytes(), "UTF-8"), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 c.setPath("/");
                 return c;
             }
@@ -372,11 +410,12 @@ public class SearchService {
         return result;
     }
 
-    public List<HashMap> getCountryWeather(JSONObject city) {
+    public List<HashMap> getCountryWeather(JSONObject city, String langCode) {
 
         JSONArray jsonArray = null;
+        String url = "https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&countryCode=" + String.valueOf(city.get("countryCode")) + "&featureCode=PPLA";
         try {
-            jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&countryCode=" + String.valueOf(city.get("countryCode")) + "&featureCode=PPLA");
+            jsonArray = WeatherService.readJsonArrayFromUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -405,7 +444,7 @@ public class SearchService {
         return result;
     }
 
-    public List<HashMap> getHolidaysWeather(JSONObject city) {
+    public List<HashMap> getHolidaysWeather(JSONObject city, String langCode) {
         List<String> cities = getTopHolidaysDestinations(6);
 
         List<HashMap> result = new ArrayList<>();
@@ -413,7 +452,7 @@ public class SearchService {
             HashMap hm = new HashMap();
             DateTime dateTime = new DateTime(DateTimeZone.forID((String) ((JSONObject) city.get("timezone")).get("timeZoneId")));
             try {
-                hm = findSearchOccurences(cities.get(i)).get(0);
+                hm = findSearchOccurences(cities.get(i), langCode).get(0);
             }catch (IndexOutOfBoundsException ignored){
             }
             APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
@@ -433,7 +472,7 @@ public class SearchService {
 
     }
 
-    public JSONObject generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public JSONObject generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response, String langCode){
 
         if(!location.equals("undefined")) {
             boolean airport = false;
@@ -445,7 +484,8 @@ public class SearchService {
 
             JSONArray jsonArray = null;
             try {
-                jsonArray = WeatherService.readJsonArrayFromUrl("https://bd.oplao.com/geoLocation/find.json?lang=en&max=10&nameStarts=" + city.replaceAll(" ", "%20").concat(airport?"&featureClass=S":"&countryCode=" + countryCode));
+                String url = "https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts=" + URLEncoder.encode(city, "UTF-8").concat(airport?"&featureClass=S":"&countryCode=" + countryCode);
+                jsonArray = WeatherService.readJsonArrayFromUrl(url);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -462,12 +502,12 @@ public class SearchService {
                         obj = jsonArray.getJSONObject(0);
                     }
                 } else {
-                    obj = findByCity(city.substring(0, city.length() - 1)).get(0);
+                    obj = findByCity(city.substring(0, city.length() - 1), langCode).get(0);
                 }
             }
 
             if (obj != null) {
-                selectCity(obj.getInt("geonameId"), currentCookieValue, request, response);
+                selectCity(obj.getInt("geonameId"), currentCookieValue, request, response, langCode);
                 return obj;
             }
         }
@@ -481,7 +521,7 @@ public class SearchService {
             for (int i = 0; i < array.length(); i++) {
                 if (array.getJSONObject(i).getString("status").equals("selected")) {
 
-                    return array.getJSONObject(i).getString("name")+ "_" + array.getJSONObject(i).getString("countryCode");
+                    return array.getJSONObject(i).getString("asciiName")+ "_" + array.getJSONObject(i).getString("countryCode");
                 }
             }
         }
@@ -591,34 +631,35 @@ public class SearchService {
             }
         return null;
     }
-    public void selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode, JSONObject currentCity){
+    public void selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode, JSONObject currentCity, String currentCookieValue){
         List parsedUrl = Arrays.asList(reqUrl.split("/"));
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         if(parsedUrl.contains("weather")||parsedUrl.contains("forecast")||parsedUrl.contains("about")||parsedUrl.contains("widgets")) {
             String requestedLang = reqUrl.split("/")[1];
             if (Arrays.asList(validCountryCodes).contains(requestedLang)) {
                 if (!languageCookieCode.equals(requestedLang) && requestedLang.length() == 2) {
-                    refreshLangCookie(request, response, requestedLang);
+                    refreshLangCookie(request, response, requestedLang, currentCookieValue);
                 }
             } else {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace(requestedLang, languageCookieCode));
             }
         }else if(parsedUrl.size()==0){
-            if(Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase())&&!currentCity.getString("countryCode").equals(languageCookieCode)){
-                refreshLangCookie(request, response, currentCity.getString("countryCode").toLowerCase());
-            }else{
-                refreshLangCookie(request, response, "en");
-            }
-        }else{
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(languageCookieCode.equals("")) {
+                if (Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase()) && !currentCity.getString("countryCode").equals(languageCookieCode)) {
+                    refreshLangCookie(request, response, currentCity.getString("countryCode").toLowerCase(), currentCookieValue);
+                } else {
+                    refreshLangCookie(request, response, "en", currentCookieValue);
+                }
             }
         }
     }
 
-    private void refreshLangCookie(HttpServletRequest request, HttpServletResponse response, String newValue){
+    private void refreshLangCookie(HttpServletRequest request, HttpServletResponse response, String newValue, String currentCookieValue){
 
         if(request.getCookies()!=null) {
             for (int i = 0; i < request.getCookies().length; i++) {
@@ -630,8 +671,44 @@ public class SearchService {
                 }
             }
         }
-        Cookie c = new Cookie(SearchService.langCookieCode, newValue);
+        Cookie c = null;
+        try {
+            c = new Cookie(langCookieCode, URLEncoder.encode(new String(newValue.getBytes(), "UTF-8"), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         c.setPath("/");
         response.addCookie(c);
+
+        JSONArray array = null;
+        if(currentCookieValue.equals("")){
+            array = new JSONArray("["+currentCookieValue+"]");
+        }else{
+            array = new JSONArray(currentCookieValue);
+        }
+        if(!currentCookieValue.equals("")) {
+
+
+            JSONArray resArray = new JSONArray();
+            List<String> statuses = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                statuses.add(array.getJSONObject(i).getString("status"));
+            }
+            for (int i = 0; i < array.length(); i++) {
+                resArray.put(findByGeonameId(array.getJSONObject(i).getInt("geonameId"), newValue).get(0));
+                resArray.getJSONObject(i).put("status", statuses.get(i));
+            }
+
+            clearCookies(request, response);
+
+            Cookie cookie = null;
+            try {
+                cookie = new Cookie(cookieName, URLEncoder.encode(new String(resArray.toString().getBytes(), "UTF-8"), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
     }
 }

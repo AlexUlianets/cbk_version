@@ -1,6 +1,9 @@
 package com.oplao.Utils;
 
+import com.oplao.service.LanguageService;
 import org.joda.time.DateTimeConstants;
+
+import java.util.ResourceBundle;
 
 public class DateConstants {
 
@@ -46,147 +49,124 @@ public class DateConstants {
         }
         return null;
     }
-    public static String convertDayOfWeekShort(int day) {
+
+
+    public static String convertDayOfWeek(int day, ResourceBundle bundle) {
         switch (day) {
             case DateTimeConstants.MONDAY
-                    :
-                return "Mon";
+                    : return bundle.getString("monday");
             case DateTimeConstants.TUESDAY
-                    :
-                return "Tue";
+                    : return bundle.getString("tuesday");
 
             case DateTimeConstants.WEDNESDAY
-                    :
-                return "Wed";
+                    : return bundle.getString("wednesday");
 
             case DateTimeConstants.THURSDAY
-                    :
-                return "Thu";
+                    : return bundle.getString("thursday");
 
             case DateTimeConstants.FRIDAY
-                    :
-                return "Fri";
+                    : return bundle.getString("friday");
 
             case DateTimeConstants.SATURDAY
-                    :
-                return "Sat";
+                    : return bundle.getString("saturday");
 
             case DateTimeConstants.SUNDAY
-                    :
-                return "Sun";
-            default:
-                return "wrong value for field 'day of week' ";
-        }
-    }
-
-    public static String convertDayOfWeek(int day) {
-        switch (day) {
-            case DateTimeConstants.MONDAY
-                    : return "Monday";
-            case DateTimeConstants.TUESDAY
-                    : return "Tuesday";
-
-            case DateTimeConstants.WEDNESDAY
-                    : return "Wednesday";
-
-            case DateTimeConstants.THURSDAY
-                    : return "Thursday";
-
-            case DateTimeConstants.FRIDAY
-                    : return "Friday";
-
-            case DateTimeConstants.SATURDAY
-                    : return "Saturday";
-
-            case DateTimeConstants.SUNDAY
-                    : return "Sunday";
+                    : return bundle.getString("sunday");
             default:return "wrong value for field 'day of week' ";
 
         }
     }
-    public static String convertMonthOfYear(int month) {
+    public static String[] getDayTimes(ResourceBundle bundle){
+        String[] times = new String[4];
+        times[0] = LanguageService.encode(bundle.getString("timeOfDay.Night"));
+        times[1] = LanguageService.encode(bundle.getString("timeOfDay.Morning"));
+        times[2] = LanguageService.encode(bundle.getString("timeOfDay.Midday"));
+        times[3] = LanguageService.encode(bundle.getString("timeOfDay.Evening"));
+        return times;
+    }
+    public static String convertMonthOfYear(int month, ResourceBundle bundle) {
         switch (month) {
             case DateConstants.JANUARY
                     :
-                return "January";
+                return bundle.getString("january");
 
             case DateConstants.FEBRUARY
                     :
-                return "February";
+                return bundle.getString("february");
             case DateConstants.MARCH
                     :
-                return "March";
+                return bundle.getString("march");
             case DateConstants.APRIL
                     :
-                return "April";
+                return bundle.getString("april");
             case DateConstants.MAY
                     :
-                return "May";
+                return bundle.getString("mayLong");
             case DateConstants.JUNE
                     :
-                return "June";
+                return bundle.getString("june");
             case DateConstants.JULY
                     :
-                return "July";
+                return bundle.getString("july");
             case DateConstants.AUGUST
                     :
-                return "August";
+                return bundle.getString("august");
             case DateConstants.SEPTEMBER
                     :
-                return "September";
+                return bundle.getString("september");
             case DateConstants.OCTOBER
                     :
-                return "October";
+                return bundle.getString("october");
             case DateConstants.NOVEMBER
                     :
-                return "November";
+                return bundle.getString("november");
             case DateConstants.DECEMBER
                     :
-                return "December";
+                return bundle.getString("december");
             default:
                 return "Wrong value for field 'month'";
         }
     }
 
-    public static String convertMonthOfYearShort(int month) {
+    public static String convertMonthOfYearShort(int month, ResourceBundle bundle) {
         switch (month) {
             case DateConstants.JANUARY
                     :
-                return "Jan";
+                return bundle.getString("jan");
 
             case DateConstants.FEBRUARY
                     :
-                return "Feb";
+                return bundle.getString("feb");
             case DateConstants.MARCH
                     :
-                return "Mar";
+                return bundle.getString("mar");
             case DateConstants.APRIL
                     :
-                return "Apr";
+                return bundle.getString("apr");
             case DateConstants.MAY
                     :
-                return "May";
+                return bundle.getString("may");
             case DateConstants.JUNE
                     :
-                return "Jun";
+                return bundle.getString("jun");
             case DateConstants.JULY
                     :
-                return "Jul";
+                return bundle.getString("jul");
             case DateConstants.AUGUST
                     :
-                return "Aug";
+                return bundle.getString("aug");
             case DateConstants.SEPTEMBER
                     :
-                return "Sep";
+                return bundle.getString("sep");
             case DateConstants.OCTOBER
                     :
-                return "Oct";
+                return bundle.getString("oct");
             case DateConstants.NOVEMBER
                     :
-                return "Nov";
+                return bundle.getString("nov");
             case DateConstants.DECEMBER
                     :
-                return "Dec";
+                return bundle.getString("dec");
             default:
                 return "Wrong value for field 'month'";
         }

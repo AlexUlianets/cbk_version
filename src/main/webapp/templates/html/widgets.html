@@ -3,14 +3,14 @@
         <section class="widget_carusel_wrap section-margin-top" ng-init="selectCityWidget(null, null, null)">
             <div class="container">
                 <div class="inner">
-                    <h2 class="section-title">Weather Widgets For Web Applications</h2>
+                    <h2 class="section-title" ng-bind="pageContent.widgetsHeader"></h2>
                     <div id="widget_carusel">
 
                         <div class="widget_item">
                             <div class="widget widget_1">
                                 <div class="wg_top">
-                                <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
-</div>
+                                    <div class="wg_title">{{selectedCityWidget.city}}, <span style="text-transform: uppercase;">{{selectedCityWidget.countryCode}}</span></div>
+                                </div>
 
                                 <div class="wg_content">
                                     <div class="wg_weather">
@@ -20,7 +20,7 @@
                                     <div class="wg_info">
                                         <div class="wg_temp"><span>{{widgetTemp=='C'?selectedCityWidget.temp_c:selectedCityWidget.temp_f}}</span><sup>°{{widgetTemp}}</sup></div>
                                         <div class="wg_feels">
-                                            <div class="title">Feels like</div>
+                                            <div class="title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                             <div class="wg_temp_feels"><span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup></div>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                                     <div class="wg_info">
                                         <div class="wg_temp"><span>{{widgetTemp=='C'?selectedCityWidget.temp_c:selectedCityWidget.temp_f}} </span><sup>°{{widgetTemp}}</sup></div>
                                         <div class="wg_feels">
-                                            <div class="title">Feels like</div>
+                                            <div class="title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                             <div class="wg_temp_feels"><span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup></div>
                                         </div>
                                     </div>
@@ -95,20 +95,20 @@
                                             <div class="wg_temp"><span>{{widgetTemp=='C'?selectedCityWidget.temp_c:selectedCityWidget.temp_f}} </span><sup>°{{widgetTemp}}</sup></div>
                                             <div class="wg_sub_info">
                                                 <div class="wg_feels">
-                                                    <div class="title">Feels like</div>
+                                                    <div class="title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                                     <div class="wg_descr wg_temp_feels">
                                                         <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup>
                                                     </div>
                                                 </div>
                                                 <div class="wind">
-                                                    <div class="title">Wind</div>
+                                                    <div class="title" ng-bind="selectedCityWidget.windName"></div>
                                                     <div class="wg_descr wg_wind">
                                                         <img class="wind_icon" src="img/widget/wg_wind.png" style="-ms-transform: rotate({{selectedCityWidget.windDegree+20}}deg); -webkit-transform: rotate({{selectedCityWidget.windDegree+20}}deg);transform: rotate({{selectedCityWidget.windDegree+20}}deg);" alt="">
                                                         <span>{{widgetWind=='m/s'?selectedCityWidget.windMs+" m/s":selectedCityWidget.windMph+" mph"}}</span>
                                                     </div>
                                                 </div>
                                                 <div class="gust">
-                                                    <div class="title">Pressure</div>
+                                                    <div class="title" ng-bind="selectedCityWidget.pressureName"></div>
                                                     <div class="wg_descr wg_pressure">
                                                         <span>{{widgetPressure=='hPa'?selectedCityWidget.pressurehPa+" hPa":selectedCityWidget.pressureInch+" in"}}</span>
                                                     </div>
@@ -151,13 +151,13 @@
                                         </div>
                                         <div class="wg_info">
                                             <div class="wg_feels">
-                                                <div class="title">Feels like</div>
+                                                <div class="title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                                 <div class="wg_descr wg_temp_feels">
                                                     <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup>
                                                 </div>
                                             </div>
                                             <div class="wind">
-                                                <div class="title">Wind</div>
+                                                <div class="title" ng-bind="selectedCityWidget.windName"></div>
                                                 <div class="wg_descr wg_wind">
                                                     <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                     <span>{{widgetWind == "m/s"?selectedCityWidget.windMs+" m/s":selectedCityWidget.windMph+" mph"}}</span>
@@ -203,11 +203,11 @@
                                 <div class="wg_content">
                                     <div class="wg_left_info wg_info_list">
                                         <div class="wg_info_item wg_top_item">
-                                            <div class="wg_title">pressure</div>
+                                            <div class="wg_title" ng-bind="selectedCityWidget.pressureName"></div>
                                             <div class="wg_count wg_pressure">{{widgetPressure == "hPa"?selectedCityWidget.pressurehPa+" hPa":selectedCityWidget.pressureInch+" in"}}</div>
                                         </div>
                                         <div class="wg_info_item wg_bottom_item">
-                                            <div class="wg_title">Wind</div>
+                                            <div class="wg_title" ng-bind="selectedCityWidget.windName"></div>
                                             <div class="wg_count wg_sub_text wg_wind">
                                                 <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                 <div>{{widgetWind == "m/s"?selectedCityWidget.windMs+" m/s":selectedCityWidget.windMph+" mph"}}</div>
@@ -227,7 +227,7 @@
                                             <div class="wg_temp"><span>{{widgetTemp=='C'?selectedCityWidget.temp_c:selectedCityWidget.temp_f}}</span><sup>°{{widgetTemp}}</sup></div>
                                         </div>
                                         <div class="wg_info_item wg_bottom_item">
-                                            <div class="wg_title">Feels like</div>
+                                            <div class="wg_title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                             <div class="wg_count wg_temp_feels">
                                                 <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}}</span><sup>°{{widgetTemp}}</sup>
                                             </div>
@@ -304,8 +304,8 @@
                                 <div class="wg_content">
                                     <div class="wg_top_cont">
                                         <div class="wg_date_wrap">
-                                            <div class="wg_date">16 may</div>
-                                            <div class="wg_day">tuesday</div>
+                                            <div class="wg_date" ng-bind="selectedCityWidget.date"></div>
+                                            <div class="wg_day" ng-bind="selectedCityWidget.day"></div>
                                         </div>
 
                                         <div class="wg_weather">
@@ -321,7 +321,7 @@
                                         </div>
 
                                         <div class="wg_feels">
-                                            <div class="title">Feels like</div>
+                                            <div class="title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                             <div class="wg_descr wg_temp_feels">
                                                 <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup>
                                             </div>
@@ -399,7 +399,7 @@
                                                         <div class="wg_sub_icon">
                                                             <img src="img/widget/wg_temp.png" alt="">
                                                         </div>
-                                                        <div class="wg_sub_title">Feels Like</div>
+                                                        <div class="wg_sub_title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                                         <div class="wg_descr">
                                                             <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup>
                                                         </div>
@@ -408,7 +408,7 @@
                                                         <div class="wg_sub_icon">
                                                             <img src="img/widget/wg_wind_sub.png" alt="">
                                                         </div>
-                                                        <div class="wg_sub_title">Wind</div>
+                                                        <div class="wg_sub_title" ng-bind="selectedCityWidget.windName"></div>
                                                         <div class="wg_descr">
                                                              <span>{{widgetWind == "m/s"?selectedCityWidget.windMs+" m/s":selectedCityWidget.windMph+" mph"}}</span>
                                                                                                                 <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
@@ -483,7 +483,7 @@
                                         </div>
                                         <div class="wg_info">
                                             <div class="wg_feels">
-                                                <div class="wg_title">Feels like</div>
+                                                <div class="wg_title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                                 <div class="wg_descr">
                                                     <div class="wg_temp wg_temp_feels">
                                                         <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}}</span><sup>°{{widgetTemp}}</sup>
@@ -491,14 +491,14 @@
                                                 </div>
                                             </div>
                                             <div class="wind">
-                                                <div class="wg_title">Wind</div>
+                                                <div class="wg_title" ng-bind="selectedCityWidget.windName"></div>
                                                 <div class="wg_descr wg_wind">
                                                     <span>{{widgetWind == "m/s"?selectedCityWidget.windMs+" m/s":selectedCityWidget.windMph+" mph"}}</span>
                                                     <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                 </div>
                                             </div>
                                             <div class="wg_gust">
-                                                <div class="wg_title">pressure</div>
+                                                <div class="wg_title" ng-bind="selectedCityWidget.pressureName"></div>
                                                 <div class="wg_descr wg_pressure">
                                                     <span>{{widgetPressure != "in"?selectedCityWidget.pressurehPa+" hPa":selectedCityWidget.pressureInch+" in"}}</span>
                                                 </div>
@@ -565,20 +565,20 @@
                                             </div>
                                             <div class="wg_info">
                                                 <div class="wg_feels">
-                                                    <div class="wg_title">Feels like</div>
+                                                    <div class="wg_title" ng-bind="selectedCityWidget.feelsLikeName"></div>
                                                     <div class="wg_descr wg_temp_feels">
                                                         <span>{{widgetTemp=='C'?selectedCityWidget.feelsLikeC:selectedCityWidget.feelsLikeF}} </span><sup>°{{widgetTemp}}</sup>
                                                     </div>
                                                 </div>
                                                 <div class="wg_wind">
-                                                    <div class="wg_title">Wind</div>
+                                                    <div class="wg_title" ng-bind="selectedCityWidget.windName"></div>
                                                     <div class="wg_descr wg_wind">
                                                         <span>{{widgetWind == "m/s"?selectedCityWidget.windMs+" m/s":selectedCityWidget.windMph+" mph"}}</span>
                                                         <img class="wind_icon" src="img/widget/wg_wind.png" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="wg_gust">
-                                                    <div class="wg_title">pressure</div>
+                                                    <div class="wg_title" ng-bind="selectedCityWidget.pressureName"></div>
                                                     <div class="wg_descr wg_pressure">
                                                         <span>{{widgetPressure != "in"?selectedCityWidget.pressurehPa+" hPa":selectedCityWidget.pressureInch+" in"}}</span>
                                                     </div>
@@ -613,7 +613,7 @@
             <div class="container">
                 <div class="inner">
                     <div class="wg_choice_wrap">
-                        <h4 class="local_title">Choose Widget Size</h4>
+                        <h4 class="local_title" ng-bind="pageContent.chooseWidgetSize"></h4>
                         <div class="response_settings">
                             <span class="size">Size:</span>
                             <input type="text" id="wg_width" value="" class="theme_control">
@@ -644,7 +644,7 @@
                         <form action="#" id="wg_widget_form">
                             <div class="wg_form_list">
                                 <div class="wg_form_group">
-                                    <div class="wg_form_title">Choose your location</div>
+                                    <div class="wg_form_title" ng-bind="pageContent.chooseLocation"></div>
                                     <div class="wg_form_resault_wrap">
                                         <div class="wg_form_search">
                                             <div class="wg_search_keys">
@@ -662,7 +662,7 @@
                                 </div><!--/wg_form_group-->
 
                                 <div class="wg_form_group">
-                                    <div class="wg_form_title">Select language</div>
+                                    <div class="wg_form_title" ng-bind="pageContent.selectLanguage"></div>
                                     <div class="wg_form_lang">
                                         <div class="wg_f_lang_item">
                                             <div class="wg_radio">
@@ -716,10 +716,10 @@
 
                             <div class="wg_form_list">
                                 <div class="wg_form_group">
-                                    <div class="wg_form_title">Customize parametres</div>
+                                    <div class="wg_form_title" ng-bind="pageContent.customizeParameters"></div>
                                     <div class="wg_form_param">
                                         <div class="wg_f_param_item">
-                                            <div class="wg_form_sub_title">Wind</div>
+                                            <div class="wg_form_sub_title" ng-bind="pageContent.wind"></div>
                                             <div class="wg_radio">
                                                 <label>
                                                             <input type="radio" name="wg_wind_radio" id="wg_wind_radio1" value="option1" checked ng-click="reloadWidgetInfo('m/s', 'wind')">
@@ -736,7 +736,7 @@
                                         </div><!--/wg_f_param_item-->
 
                                         <div class="wg_f_param_item">
-                                            <div class="wg_form_sub_title">Temperature</div>
+                                            <div class="wg_form_sub_title" ng-bind="pageContent.temperature"></div>
                                             <div class="wg_radio">
                                                 <label>
                                                 <input type="radio" name="wg_temp_radio" id="wg_temp_radio1"
@@ -755,7 +755,7 @@
                                         </div><!--/wg_f_param_item-->
 
                                         <div class="wg_f_param_item">
-                                            <div class="wg_form_sub_title">Pressure</div>
+                                            <div class="wg_form_sub_title" ng-bind="pageContent.pressure"></div>
                                             <div class="wg_radio">
                                                 <label>
                                          <input type="radio" name="wg_press_radio" id="wg_press_radio1" value="option1" checked ng-click="reloadWidgetInfo('hPa', 'press')">
@@ -779,9 +779,9 @@
                                     <div class="wg_form_title">Re-captcha:</div>
                                     <div class="wg_captcha">
                                         <div class="wg_captcha_item">
-                                            <label for="wg_captcha_input">Add these numbers</label>
+                                            <label for="wg_captcha_input" ng-bind="pageContent.addTheseNumbers"></label>
                                             <input type="text" id="wg_captcha_input">
-                                            <div class="wg_captcha_refresh" style="cursor: pointer" ng-click="loadNumbers()">Refresh numbers</div>
+                                            <div class="wg_captcha_refresh" style="cursor: pointer" ng-click="loadNumbers()" ng-bind="pageContent.refreshNumbers"></div>
                                         </div>
                                         <div class="wg_captcha_item" ng-init="loadNumbers()" style="background-color: #fbe4d8; padding: 10px;display: inline-flex;font-size: 25px;">
                                             <div id="digit1"></div> + <div id="digit2"></div>
@@ -790,12 +790,12 @@
                                 </div><!--/wg_form_group-->
                             </div>
                             <div class="wg_form_group wg_group_code">
-                                <div id="wg_copy_code" ng-click="copyText()" style="cursor: pointer">Copy code</div>
+                                <div id="wg_copy_code" ng-click="copyText()" style="cursor: pointer"ng-bind="pageContent.copyCode"></div>
                                 <textarea class="wg_textarea"></textarea>
 
                                 <div class="wg_btn_wrap">
-                                    <button type="button" class="wg_btn" ng-click="getCode()" style="cursor: pointer">Get the code</button>
-                                    <div class="wg_sub_text">Adopting the terms of use.</div>
+                                    <button type="button" class="wg_btn" ng-click="getCode()" style="cursor: pointer" ng-bind="pageContent.getTheCode"></button>
+                                    <div class="wg_sub_text" ng-bind="pageContent.adoptingTheTermsOfUse"></div>
                                 </div>
                             </div><!--/wg_form_group-->
 

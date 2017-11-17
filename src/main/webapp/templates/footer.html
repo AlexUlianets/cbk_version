@@ -5,7 +5,7 @@
 
 <section id="weather-extensions">
     <div class="container">
-        <h2>Oplao weather extension</h2>
+        <h2 ng-bind="pageContent.oplaoWeatherExtension"></h2>
     </div>
     <div class="ext-row">
         <a target="_blank" href="https://addons.mozilla.org/en-US/firefox/addon/oplao-weather/" class="ext-block">
@@ -32,40 +32,40 @@
         <div class="container">
             <div class="main-menu-inner">
                 <nav class="main-menu-block">
-                    <h3>Weather</h3>
+                    <h3 ng-bind="pageContent.weather"></h3>
                     <ul>
-                        <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}">3 days weather forecast</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}">5 days weather forecast</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}">7 days weather forecast</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}">14 days weather forecast</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}">Hourly weather</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}">Weather map</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}">Weather history</a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}" ng-bind="pageContent.threeDaysWeatherForecast"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}" ng-bind="pageContent.fiveDaysWeatherForecast"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}" ng-bind="pageContent.sevenDaysWeatherForecast"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}" ng-bind="pageContent.fourteenDaysWeatherForecast"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}" ng-bind="pageContent.hourlyWeather"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}" ng-bind="pageContent.weatherMap"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}" ng-bind="pageContent.weatherHistory"></a></li>
                     </ul>
                 </nav>
 
                 <nav class="main-menu-block">
-                    <h3>Applications</h3>
+                    <h3 ng-bind="pageContent.applications"></h3>
                     <ul>
-                        <li><a href="https://play.google.com/store/apps/developer?id=Oplao">Android apps</a></li>
-                        <li><a href="https://chrome.google.com/webstore/detail/oplao-weather/jbjeihiakbjchgaehgcilindlghfffnb">Google Chrome weather extension</a></li>
-                        <li><a href="https://addons.mozilla.org/en-US/firefox/addon/oplao-weather/">Firefox weather extension</a></li>
-                        <li><a href="https://addons.opera.com/en/extensions/details/oplao-weather/">Opera weather extension</a></li>
-                        <li><a href="/{{currentCountryCode}}/weather/widgets">Widgets</a></li>
+                        <li><a href="https://play.google.com/store/apps/developer?id=Oplao" ng-bind="pageContent.androidApps"></a></li>
+                        <li><a href="https://chrome.google.com/webstore/detail/oplao-weather/jbjeihiakbjchgaehgcilindlghfffnb" ng-bind="pageContent.googleChromeWeatherExtension"></a></li>
+                        <li><a href="https://addons.mozilla.org/en-US/firefox/addon/oplao-weather/" ng-bind="pageContent.firefoxWeatherExtension"></a></li>
+                        <li><a href="https://addons.opera.com/en/extensions/details/oplao-weather/" ng-bind="pageContent.operaWeatherExtension"></a></li>
+                        <li><a href="/{{currentCountryCode}}/weather/widgets" ng-bind="pageContent.widgets"></a></li>
                     </ul>
                 </nav>
 
                 <nav class="main-menu-block">
-                    <h3>Information</h3>
+                    <h3 ng-bind="pageContent.information"></h3>
                     <ul>
-                        <li><a href="/{{currentCountryCode}}/about">About</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <!--<li><a href="/{{currentCountryCode}}/about" ng-bind="pageContent.about"></a></li>-->
+                        <li><a href="#" ng-bind="pageContent.blog"></a></li>
                     </ul>
                 </nav>
             </div>
 
             <nav class="footer-soc">
-                <a class="doorbell-button"  onclick="showDoorbellModal();"><img src="images/svg-icons/feedback.svg" alt=""><em>Feedback</em></a>
+                <a class="doorbell-button"  onclick="showDoorbellModal();"><img src="images/svg-icons/feedback.svg" alt=""><em ng-bind="pageContent.feedback"></em></a>
                 <a target="_blank" href="https://vk.com/oplao"><i class="icon vk" style="border: none;"></i></a>
                 <a target="_blank" href="https://www.facebook.com/Oplao"><i class="icon facebook"></i></a>
                 <a target="_blank" href="https://twitter.com/Oplaoweather"><i class="icon twitter"></i></a>

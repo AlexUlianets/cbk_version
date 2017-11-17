@@ -12,7 +12,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
+
+import static com.oplao.service.SearchService.langCookieCode;
 
 @Controller
 public class OutlookController {
@@ -25,15 +29,31 @@ public class OutlookController {
 
     @RequestMapping("/get_coordinates")
     @ResponseBody
-    public HashMap getCoordinates(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
-
-        return weatherService.getCoordinates(searchService.findSelectedCity(request, response, currentCookieValue));
+    public HashMap getCoordinates(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return weatherService.getCoordinates(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
     @RequestMapping("/get_api_weather")
     @ResponseBody
-    public HashMap getApiWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public HashMap getApiWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response,
+                                 @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
 
-        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue));
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("/refresh_cookies")
@@ -43,56 +63,116 @@ public class OutlookController {
     }
     @RequestMapping("/get_astronomy")
     @ResponseBody
-    public HashMap getAstronomy(@CookieValue(value = SearchService.cookieName, defaultValue = "")String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public HashMap getAstronomy(@CookieValue(value = SearchService.cookieName, defaultValue = "")String currentCookieValue,
+                                HttpServletRequest request,
+                                HttpServletResponse response,
+                                @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        return weatherService.getAstronomy(searchService.findSelectedCity(request, response, currentCookieValue));
+        return weatherService.getAstronomy(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("/get_weekly_weather_summary")
     @ResponseBody
-    public HashMap getWeeklySummary(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public HashMap getWeeklySummary(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-
-        return weatherService.getWeeklyWeatherSummary(searchService.findSelectedCity(request, response, currentCookieValue));
+        return weatherService.getWeeklyWeatherSummary(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("/get_detailed_forecast")
     @ResponseBody
-    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
-        return weatherService.getDetailedForecastMapping(searchService.findSelectedCity(request, response, currentCookieValue));
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                                                         HttpServletRequest request,
+                                                                         HttpServletResponse response,
+                                                                         @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return weatherService.getDetailedForecastMapping(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
     @RequestMapping("/get_weekly_weather/{langCode}")
     @ResponseBody
 
-    public Map<Integer, Map<String,Map>> getWeeklyWeather(@PathVariable("langCode") String langCode, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response){
+    public Map<Integer, Map<String,Map>> getWeeklyWeather(@PathVariable("langCode") String langCode,
+                                                          @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                                          HttpServletRequest request,
+                                                          HttpServletResponse response){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         return weatherService.getWeeklyWeatherReport(searchService.findSelectedCity(request, response, currentCookieValue), 7, langCode);
     }
 
     @RequestMapping("/get_year_summary")
     @ResponseBody
-    public List<HashMap> getYearSummary(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
-        return weatherService.getYearSummary(searchService.findSelectedCity(request, response, currentCookieValue));
+    public List<HashMap> getYearSummary(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return weatherService.getYearSummary(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
 
     }
     @RequestMapping("/get_five_years_average")
     @ResponseBody
-    public List getFiveYearsAverage(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
-        return weatherService.getFiveYearsAverage(searchService.findSelectedCity(request, response, currentCookieValue));
+    public List getFiveYearsAverage(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return weatherService.getFiveYearsAverage(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("/get_weekly_ultraviolet_index")
     @ResponseBody
-    public List getWeeklyUltravioletIndex(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,HttpServletRequest request, HttpServletResponse response){
+    public List getWeeklyUltravioletIndex(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
 
-        return weatherService.getWeeklyUltraviolet(searchService.findSelectedCity(request, response, currentCookieValue));
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return weatherService.getWeeklyUltraviolet(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("get_recent_cities_tabs")
     @ResponseBody
-    public List<HashMap> getRecentCitiesTabs(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
-
-        return searchService.createRecentCitiesTabs(currentCookieValue);
+    public List<HashMap> getRecentCitiesTabs(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                             @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return searchService.createRecentCitiesTabs(currentCookieValue, langCode);
     }
 
     @RequestMapping("/deleteCity/{geonameId}")
@@ -123,14 +203,20 @@ public class OutlookController {
 
     @RequestMapping("get_country_weather")
     @ResponseBody
-    public List<HashMap> getCountryWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public List<HashMap> getCountryWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response,
+                                           @CookieValue(value = "langCookieCode", defaultValue = "") String langCode) throws IOException {
 
-        return searchService.getCountryWeather(searchService.findSelectedCity(request, response, currentCookieValue));
+        return searchService.getCountryWeather(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
     @RequestMapping(value = "/get_holidays_weather", produces = "application/json")
     @ResponseBody
-    public List<HashMap> getHolidaysWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public List<HashMap> getHolidaysWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                            HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            @CookieValue(value = langCookieCode, defaultValue = "") String langCode) throws IOException {
 
-        return searchService.getHolidaysWeather(searchService.findSelectedCity(request, response, currentCookieValue));
+        return searchService.getHolidaysWeather(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
     }

@@ -3,13 +3,13 @@
         <div class="wrapper">
             <div class="page-content">
                 <section id="hour-by-hour-top" class="past-weather">
-                    <h2>Weather history and data archive</h2>
+                    <h2 ng-bind="pageContent.aboveTable"></h2>
                     <div class="datepicker-wrap dr-wrapper">
                         <div class="dp-left" id="dp-calendar">
                             <div class="calendar-activator">
                                 <div class="img"></div>
                                 <!--img src="images/icons/datepicker-ico.png" alt="img"-->
-                                <span id = "pickADate">Pick a date</span>
+                                <span id = "pickADate" ng-bind="pageContent.pickADate   "></span>
                             </div>
                             <div id="calendar">
                                 <div class="close-calendar">&#215;</div>
@@ -24,8 +24,8 @@
 
                         <nav role='navigation' class="transformer-tabs date-tabs ht-nav tb-top-nav">
                             <ul>
-                                <li><a id = "hr-selector1" ng-click="refreshTableWithHours(1)">1 hour</a></li>
-                                <li><a id = "hr-selector3" ng-click="refreshTableWithHours(3)">3 hour</a></li>
+                                <li><a id = "hr-selector1" ng-click="refreshTableWithHours(1)" ng-bind="pageContent.oneHour"></a></li>
+                                <li><a id = "hr-selector3" ng-click="refreshTableWithHours(3)" ng-bind="pageContent.threeHour"></a></li>
                             </ul>
                         </nav>
                         <div id="h-tab-1" class="tab-hour-content">
@@ -37,67 +37,67 @@
                                                 <div class="tb-head-icon">
                                                     <img src="img/time.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Time</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.time"></div>
                                             </div>
                                             <div class="tb-weather">
                                                 <div class="tb-head-icon">
                                                     <img src="img/weath.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Weather</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.weather"></div>
                                             </div>
                                             <div class="tb-temperature">
                                                 <div class="tb-head-icon">
                                                     <img src="img/temperature.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Temperature</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.temperature"></div>
                                             </div>
                                             <div class="tb-feels-like">
                                                 <div class="tb-head-icon">
                                                     <img src="img/feels_like.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Feels like</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.feelsLike"></div>
                                             </div>
                                             <div class="tb-precip-chance">
                                                 <div class="tb-head-icon">
                                                     <img src="img/precip_chance.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Precip chance</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.precipChance"></div>
                                             </div>
                                             <div class="tb-precip">
                                                 <div class="tb-head-icon">
                                                     <img src="img/precip.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Precip</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.precip"></div>
                                             </div>
                                             <div class="tb-wind">
                                                 <div class="tb-head-icon">
                                                     <img src="img/wind.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Wind</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.wind"></div>
                                             </div>
                                             <div class="tb-gust">
                                                 <div class="tb-head-icon">
                                                     <img src="img/gust.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Gust</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.gust"></div>
                                             </div>
                                             <div class="tb-cloud">
                                                 <div class="tb-head-icon">
                                                     <img src="img/cloud.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Cloud</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.cloud"></div>
                                             </div>
                                             <div class="tb-visibility">
                                                 <div class="tb-head-icon">
                                                     <img src="img/visibility.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Visibility</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.visibility"></div>
                                             </div>
                                             <div class="tb-pressure">
                                                 <div class="tb-head-icon">
                                                     <img src="img/pressure.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Pressure</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.pressure"></div>
                                             </div>
                                         </div>
                                         <div class="tb-contant">
@@ -168,67 +168,67 @@
                                                 <div class="tb-head-icon">
                                                     <img src="img/time.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Time</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.time"></div>
                                             </div>
                                             <div class="tb-weather">
                                                 <div class="tb-head-icon">
                                                     <img src="img/weath.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Weather</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.weather"></div>
                                             </div>
                                             <div class="tb-temperature">
                                                 <div class="tb-head-icon">
                                                     <img src="img/temperature.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Temperature</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.temperature"></div>
                                             </div>
                                             <div class="tb-feels-like">
                                                 <div class="tb-head-icon">
                                                     <img src="img/feels_like.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Feels like</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.feelsLike"></div>
                                             </div>
                                             <div class="tb-precip-chance">
                                                 <div class="tb-head-icon">
                                                     <img src="img/precip_chance.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Precip chance</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.precipChance"></div>
                                             </div>
                                             <div class="tb-precip">
                                                 <div class="tb-head-icon">
                                                     <img src="img/precip.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Precip</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.precip"></div>
                                             </div>
                                             <div class="tb-wind">
                                                 <div class="tb-head-icon">
                                                     <img src="img/wind.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Wind</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.wind"></div>
                                             </div>
                                             <div class="tb-gust">
                                                 <div class="tb-head-icon">
                                                     <img src="img/gust.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Gust</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.gust"></div>
                                             </div>
                                             <div class="tb-cloud">
                                                 <div class="tb-head-icon">
                                                     <img src="img/cloud.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Cloud</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.cloud"></div>
                                             </div>
                                             <div class="tb-visibility">
                                                 <div class="tb-head-icon">
                                                     <img src="img/visibility.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Visibility</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.visibility"></div>
                                             </div>
                                             <div class="tb-pressure">
                                                 <div class="tb-head-icon">
                                                     <img src="img/pressure.svg" alt="" height="25">
                                                 </div>
-                                                <div class="tb-head-title">Pressure</div>
+                                                <div class="tb-head-title" ng-bind="pageContent.pressure"></div>
                                             </div>
                                         </div>
                                         <div class="tb-contant">

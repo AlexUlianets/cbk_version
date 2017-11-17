@@ -6,6 +6,10 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
     $scope.graph = $scope.$state.params.graph;
     $scope.page = $scope.$state.params.page;
     $scope.graphTitle = $scope.$state.params.graphTitle;
+    $scope.dayTrans = ["Day", "der Tag"];
+    $scope.nightTrans = ["Night", "die Nacht"];
+    $scope.dayTransSlav = ["День", "Дзень"];
+    $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
     var slav = ["ua", "by", "ru"];
     if(slav.includes(location.pathname.split("/")[1])){
         $scope.outTable = "slavTable";

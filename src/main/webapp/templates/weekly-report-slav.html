@@ -1,5 +1,5 @@
 <section id="weekly-report">
-    <h2>Long term forecast</h2>
+    <h2 ng-bind="pageContent.aboveTable"></h2>
 
     <div class="tb-wrapper">
         <div class="wather-table-wrap">
@@ -9,74 +9,74 @@
                         <div class="tb-head-icon">
                             <img src="img/date.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Date</div>
+                        <div class="tb-head-title" ng-bind="pageContent.date"></div>
                     </div>
                     <div class="tb-time">
                         <div class="tb-head-icon">
                             <img src="img/time.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Time</div>
+                        <div class="tb-head-title" ng-bind="pageContent.time"></div>
                     </div>
                     <div class="tb-weather">
                         <div class="tb-head-icon">
                             <img src="img/weath.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Weather</div>
+                        <div class="tb-head-title" ng-bind="pageContent.weather"></div>
                     </div>
                     <div class="tb-temperature">
                         <div class="tb-head-icon">
                             <img src="img/temperature.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Temperature</div>
+                        <div class="tb-head-title" ng-bind="pageContent.temperature"></div>
                     </div>
                     <div class="tb-feels-like">
                         <div class="tb-head-icon">
                             <img src="img/feels_like.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Feels like</div>
+                        <div class="tb-head-title" ng-bind="pageContent.feelsLike"></div>
                     </div>
                     <div class="tb-precip-chance">
                         <div class="tb-head-icon">
                             <img src="img/precip_chance.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Precip chance</div>
+                        <div class="tb-head-title" ng-bind="pageContent.precipChance"></div>
                     </div>
                     <div class="tb-precip">
                         <div class="tb-head-icon">
                             <img src="img/precip.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Precip</div>
+                        <div class="tb-head-title" ng-bind="pageContent.precip"></div>
                     </div>
                     <div class="tb-wind">
                         <div class="tb-head-icon">
                             <img src="img/wind.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Wind</div>
+                        <div class="tb-head-title" ng-bind="pageContent.wind"></div>
                     </div>
                     <div class="tb-gust">
                         <div class="tb-head-icon">
                             <img src="img/gust.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Gust</div>
+                        <div class="tb-head-title" ng-bind="pageContent.gust"></div>
                     </div>
                     <div class="tb-pressure">
                         <div class="tb-head-icon">
                             <img src="img/pressure.svg" alt="" height="25">
                         </div>
-                        <div class="tb-head-title">Pressure</div>
+                        <div class="tb-head-title" ng-bind="pageContent.pressure"></div>
                     </div>
                 </div>
                 <div class="tb-contant inner-html">
                     <div class="tb-item" ng-repeat="temperatureDay in temperatureWeekly.data"  ng-init="sectionIndex = $index">
 
-                        <div class="tb-row" ng-repeat="day in temperatureDay" ng-if="day.time == 'Day' || day.time == 'Night'">
-                            <div class="tb-date" ng-if="day.time == 'Night'">
-                                <div class="tb-today" ng-if="sectionIndex==0">Today</div>
+                        <div class="tb-row" ng-repeat="day in temperatureDay" ng-if="dayTransSlav.includes(day.time) || nightTransSlav.includes(day.time)">
+                            <div class="tb-date" ng-if="nightTransSlav.includes(day.time)">
+                                <div class="tb-today" ng-if="sectionIndex==0" ng-bind="pageContent.today"></div>
                                 <div class="tb-date-day">{{temperatureDay.wholeDay.dayOfMonth}} {{temperatureDay.wholeDay.monthOfYear | limitTo:3}},</div>
                                 <div class="tb-day">{{temperatureDay.wholeDay.dayOfWeek | limitTo:3}}</div>
                             </div>
 
-                            <div class="tb-date" ng-if="day.time == 'Day'">
+                            <div class="tb-date" ng-if="dayTransSlav.includes(day.time)">
                                 <div class="tb-img">
                                     <img ng-src="svg/wicons_svg/{{temperatureDay.wholeDay.weatherCode}}_day.svg" style="width: 42px;margin-bottom:6px">
                                 </div>
@@ -87,8 +87,8 @@
                                 <div class="tb-text">{{day.time}}</div>
                             </div>
                             <div class="tb-weather">
-                                <img ng-src="svg/wicons_svg/{{day.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Night'">
-                                <img ng-src="svg/wicons_svg/{{day.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="day.time == 'Day'">
+                                <img ng-src="svg/wicons_svg/{{day.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="nightTransSlav.includes(day.time)">
+                                <img ng-src="svg/wicons_svg/{{day.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dayTransSlav.includes(day.time)">
                             </div>
                             <div class="tb-temperature">
                                 <div class="tb-text">{{local.typeTemp=='C'?day.avgTempC:day.avgTempF}}°{{local.typeTemp}}</div>
