@@ -52,7 +52,11 @@ public class OutlookController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 

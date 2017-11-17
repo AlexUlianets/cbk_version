@@ -212,12 +212,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.selectLanguage = function (lan) {
             var curUrl = location.pathname.split('/');
             if(curUrl[1].length==2){
-    //            location.reload(true);
                 var loc = window.location.href.replace(curUrl[1], lan);
                 window.location.href = loc;
             }else{
-                $cookies.put('langCookieCode', lan);
-                location.reload(true);
+                window.location.href = "/"+lan+"/weather/"+$rootScope.selectedCity
             }
         }
         $rootScope.updateTemp = function(val){
