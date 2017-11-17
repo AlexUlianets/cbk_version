@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 @Controller
@@ -32,7 +34,7 @@ public class SlashController {
             response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             response.setHeader("Location", reqUrl.replace("forecast", "weather"));
         }
-        searchService.selectLanguage(reqUrl, request, response, languageCookieCode, city);
+        searchService.selectLanguage(reqUrl, request, response, languageCookieCode, city, currentCookieValue);
         return "forward:index.html";
     }
 
@@ -41,6 +43,11 @@ public class SlashController {
     @ResponseBody
     public HashMap generateLanguageContent(@RequestParam(value = "langCode") String langCode, @RequestParam(value = "path") String path, HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
 
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return languageService.generateLanguageContent(langCode, path, searchService.findSelectedCity(request, response, currentCookieValue));
     }
 }

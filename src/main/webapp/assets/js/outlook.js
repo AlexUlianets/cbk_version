@@ -12,7 +12,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           $scope.outTable = "enTable"
       }
 
+      $scope.dayTrans = ["Day", "der Tag"];
+      $scope.nightTrans = ["Night", "die Nacht"];
+      $scope.dayTransSlav = ["День", "Дзень"];
+      $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
+
       $http.post('/get_weekly_weather/'+location.pathname.split("/")[1]).then(function (response) {
+          console.log(response);
+          console.log($scope.outTable);
          $scope.$parent.temperatureWeekly = response;
       });
 

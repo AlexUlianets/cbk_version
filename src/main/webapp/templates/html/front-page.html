@@ -7,10 +7,10 @@
 				</div>
 				<div class="tdb-bot">
 					<div class="tdb-min">
-						min <em>{{local.typeTemp=='C'?elem[1].mintempC:elem[1].mintempF}}° <span>{{local.typeTemp}}</span></em>
+						{{pageContent.min}} <em>{{local.typeTemp=='C'?elem[1].mintempC:elem[1].mintempF}}° <span>{{local.typeTemp}}</span></em>
 					</div>
 					<div class="tdb-max">
-						max <em>{{local.typeTemp=='C'?elem[1].maxtempC:elem[1].maxtempF}}° <span>{{local.typeTemp}}</span></em>
+						{{pageContent.max}} <em>{{local.typeTemp=='C'?elem[1].maxtempC:elem[1].maxtempF}}° <span>{{local.typeTemp}}</span></em>
 					</div>
 					<!-- <img src="images/svg-icons/cloud-sm.svg" alt=""> -->
 					<img class="green_tabs_header_icon" ng-src="svg/wicons_svg/{{elem[1].weatherCode}}_night.svg" style="   text-align: center;    margin: auto;" ng-if="elem[1].isDay== false ">
@@ -49,7 +49,7 @@
 				<section id="temperature-map">
 					<div class="temperature-heading">
 						<h2 ng-bind="pageContent.temperatureMap"></h2>
-						<a href="#" class="t-view-map" ng-bind="pageContent.viewMap"></a>
+						<a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}" class="t-view-map" ng-bind="pageContent.viewMap"></a>
 					</div>
                     <figure id="map">
                       <div id="gmap"></div>

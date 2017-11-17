@@ -3,7 +3,7 @@
 		<div class="wrapper">
 			<div class="page-content">
 				<section class="tomorrow tomorrow-list">
-					<h2 class="section-title">Weather for tomorrow</h2>
+					<h2 class="section-title" ng-bind="pageContent.aboveTable"></h2>
 					<div class="tomorrow-item">
 						<div class="tmr-left-info">
 							<div class="tmr-left-block">
@@ -12,7 +12,7 @@
 										<img src="img/sunrise.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">Sunrise</div>
+										<div class="grey" ng-bind="pageContent.sunrise"></div>
 										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunrise)"></div>
 									</div>
 								</div>
@@ -21,7 +21,7 @@
 										<img src="img/sunset.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">Sunset</div>
+										<div class="grey" ng-bind="pageContent.sunset"></div>
 										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunset)"></div>
 									</div>
 								</div>
@@ -32,7 +32,7 @@
 										<img src="img/min_temp.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">min</div>
+										<div class="grey" ng-bind="pageContent.min"></div>
 										<div class="count">{{local.typeTemp=='C'?dynamicTableData[1][1].mintempC:dynamicTableData[1][1].mintempF}}</div>
 									</div>
 								</div>
@@ -41,7 +41,7 @@
 										<img src="img/max_temp.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">max</div>
+										<div class="grey" ng-bind="pageContent.max"></div>
 										<div class="count">{{local.typeTemp=='C'?dynamicTableData[1][1].maxtempC:dynamicTableData[1][1].maxtempF}}</div>
 									</div>
 								</div>
@@ -65,61 +65,61 @@
 												<div class="tb-head-icon">
 													<img src="img/weath.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Weather</div>
+												<div class="tb-head-title" ng-bind="pageContent.weather"></div>
 											</div>
 											<div class="tb-temperature">
 												<div class="tb-head-icon">
 													<img src="img/temperature.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Temperature</div>
+												<div class="tb-head-title" ng-bind="pageContent.temperature"></div>
 											</div>
 											<div class="tb-feels-like">
 												<div class="tb-head-icon">
 													<img src="img/feels_like.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Feels like</div>
+												<div class="tb-head-title" ng-bind="pageContent.feelsLike"></div>
 											</div>
 											<div class="tb-precip-chance">
 												<div class="tb-head-icon">
 													<img src="img/precip_chance.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Precip chance</div>
+												<div class="tb-head-title" ng-bind="pageContent.precipChance"></div>
 											</div>
 											<div class="tb-precip">
 												<div class="tb-head-icon">
 													<img src="img/precip.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Precip</div>
+												<div class="tb-head-title" ng-bind="pageContent.precip"></div>
 											</div>
 											<div class="tb-wind">
 												<div class="tb-head-icon">
 													<img src="img/wind.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Wind</div>
+												<div class="tb-head-title" ng-bind="pageContent.wind"></div>
 											</div>
 											<div class="tb-gust">
 												<div class="tb-head-icon">
 													<img src="img/gust.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Gust</div>
+												<div class="tb-head-title" ng-bind="pageContent.gust"></div>
 											</div>
 											<div class="tb-cloud">
 												<div class="tb-head-icon">
 													<img src="img/cloud.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Cloud</div>
+												<div class="tb-head-title" ng-bind="pageContent.cloud"></div>
 											</div>
 											<div class="tb-visibility">
 												<div class="tb-head-icon">
 													<img src="img/visibility.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Visibility</div>
+												<div class="tb-head-title" ng-bind="pageContent.visibility"></div>
 											</div>
 											<div class="tb-pressure">
 												<div class="tb-head-icon">
 													<img src="img/pressure.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Pressure</div>
+												<div class="tb-head-title" ng-bind="pageContent.pressure"></div>
 											</div>
 										</div>
 										<div class="tb-contant">
@@ -191,7 +191,7 @@
 										<img src="images/svg/oplao_sunrise.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">Sunrise</div>
+										<div class="grey" ng-bind="pageContent.sunrise"></div>
 										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunrise)"></div>
 									</div>
 								</div>
@@ -200,7 +200,7 @@
 										<img src="images/svg/oplao_sunset.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">Sunset</div>
+										<div class="grey" ng-bind="pageContent.sunset"></div>
 										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunset)"></div>
 									</div>
 								</div>
@@ -211,7 +211,7 @@
 										<img src="img/min_temp.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">min</div>
+										<div class="grey" ng-bind="pageContent.min"></div>
 										<div class="count">{{local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF}}</div>
 									</div>
 								</div>
@@ -220,7 +220,7 @@
 										<img src="img/max_temp.svg" alt="img">
 									</div>
 									<div class="tmr-text">
-										<div class="grey">max</div>
+										<div class="grey" ng-bind="pageContent.max"></div>
 										<div class="count">{{local.typeTemp=='C'?dynamicTableData[0][1].maxtempC:dynamicTableData[0][1].maxtempF}}</div>
 									</div>
 								</div>
@@ -238,67 +238,67 @@
 												<div class="tb-head-icon">
 													<img src="img/time.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Time</div>
+												<div class="tb-head-title" ng-bind="pageContent.time"></div>
 											</div>
 											<div class="tb-weather">
 												<div class="tb-head-icon">
 													<img src="img/weath.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Weather</div>
+												<div class="tb-head-title" ng-bind="pageContent.weather"></div>
 											</div>
 											<div class="tb-temperature">
 												<div class="tb-head-icon">
 													<img src="img/temperature.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Temperature</div>
+												<div class="tb-head-title" ng-bind="pageContent.temperature"></div>
 											</div>
 											<div class="tb-feels-like">
 												<div class="tb-head-icon">
 													<img src="img/feels_like.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Feels like</div>
+												<div class="tb-head-title" ng-bind="pageContent.feelsLike"></div>
 											</div>
 											<div class="tb-precip-chance">
 												<div class="tb-head-icon">
 													<img src="img/precip_chance.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Precip chance</div>
+												<div class="tb-head-title" ng-bind="pageContent.precipChance"></div>
 											</div>
 											<div class="tb-precip">
 												<div class="tb-head-icon">
 													<img src="img/precip.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Precip</div>
+												<div class="tb-head-title" ng-bind="pageContent.precip"></div>
 											</div>
 											<div class="tb-wind">
 												<div class="tb-head-icon">
 													<img src="img/wind.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Wind</div>
+												<div class="tb-head-title" ng-bind="pageContent.wind"></div>
 											</div>
 											<div class="tb-gust">
 												<div class="tb-head-icon">
 													<img src="img/gust.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Gust</div>
+												<div class="tb-head-title" ng-bind="pageContent.gust"></div>
 											</div>
 											<div class="tb-cloud">
 												<div class="tb-head-icon">
 													<img src="img/cloud.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Cloud</div>
+												<div class="tb-head-title" ng-bind="pageContent.cloud"></div>
 											</div>
 											<div class="tb-visibility">
 												<div class="tb-head-icon">
 													<img src="img/visibility.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Visibility</div>
+												<div class="tb-head-title" ng-bind="pageContent.visibility"></div>
 											</div>
 											<div class="tb-pressure">
 												<div class="tb-head-icon">
 													<img src="img/pressure.svg" alt="" height="25">
 												</div>
-												<div class="tb-head-title">Pressure</div>
+												<div class="tb-head-title" ng-bind="pageContent.pressure"></div>
 											</div>
 										</div>
 										<div class="tb-contant">

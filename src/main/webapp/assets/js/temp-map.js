@@ -3,6 +3,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
   app.controller('tempMapCtrl', ['$scope', '$http', '$state', '$element', 'locationsModel', '$cookies', function($scope, $http, $state, $element, locationsModel, $cookies) {
       $scope.currentTabMap="";
 
+      $scope.dayTrans = ["Day", "der Tag"];
+      $scope.nightTrans = ["Night", "die Nacht"];
+      $scope.dayTransSlav = ["День", "Дзень"];
+      $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
       var slav = ["ua", "by", "ru"];
       if(slav.includes(location.pathname.split("/")[1])){
           $scope.outTable = "slavTable";

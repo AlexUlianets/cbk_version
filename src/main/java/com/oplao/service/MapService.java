@@ -2,6 +2,7 @@ package com.oplao.service;
 
 
 import com.oplao.Utils.DateConstants;
+import com.oplao.Utils.LanguageUtil;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.json.JSONObject;
@@ -10,39 +11,38 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static com.oplao.service.WeatherService.EXT_STATES;
 
 @Service
 public class MapService {
 
-    public List<HashMap> create4DaysTabs(JSONObject city){
+    public List<HashMap> create4DaysTabs(JSONObject city, String langCode){
         List<HashMap> res = new ArrayList<>();
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
-
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
         String now = dateTime.getDayOfMonth()+"_"+dateTime.getMonthOfYear()+"_"+dateTime.getYear() +"_now";
         HashMap<String, String> nowMap = new HashMap<>();
         nowMap.put("time", now);
-        nowMap.put("name", "Now");
+        nowMap.put("name", LanguageService.encode(bundle.getString("now")));
         String today = dateTime.getDayOfMonth()+"_"+dateTime.getMonthOfYear()+"_"+dateTime.getYear();
         HashMap<String, String> todayMap = new HashMap<>();
         todayMap.put("time", today);
-        todayMap.put("name", "Today");
+        todayMap.put("name", LanguageService.encode(bundle.getString("today")));
         dateTime = dateTime.plusDays(1);
         String tomorrow = dateTime.getDayOfMonth()+"_"+dateTime.getMonthOfYear()+"_"+dateTime.getYear();
         HashMap<String, String> tomorrowMap = new HashMap<>();
         tomorrowMap.put("time", tomorrow);
-        tomorrowMap.put("name", "Tommorrow");
+        tomorrowMap.put("name", LanguageService.encode(bundle.getString("tomorrow")));
         dateTime = dateTime.plusDays(1);
         String aftTomorrow = dateTime.getDayOfMonth()+"_"+dateTime.getMonthOfYear()+"_"+dateTime.getYear();
         HashMap<String, String> aftTomorrowMap = new HashMap<>();
         aftTomorrowMap.put("time", aftTomorrow);
-        aftTomorrowMap.put("name", dateTime.getDayOfMonth() +" " + DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()).substring(0,3).toUpperCase() +
-                " " + DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek()).toUpperCase());
+        aftTomorrowMap.put("name", dateTime.getDayOfMonth() +" " + LanguageService.encode(DateConstants.convertMonthOfYear(dateTime.getMonthOfYear(), bundle)).substring(0,3).toUpperCase() +
+                " " + LanguageService.encode(DateConstants.convertDayOfWeek(dateTime.getDayOfWeek(), bundle)).substring(0,3).toUpperCase());
         res.add(nowMap);
         res.add(todayMap);
         res.add(tomorrowMap);

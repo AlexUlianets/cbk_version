@@ -1,10 +1,7 @@
 package com.oplao.service;
 
 import com.oplao.Application;
-import com.oplao.Utils.CityToTimeZoneConverter;
-import com.oplao.Utils.DateConstants;
-import com.oplao.Utils.MoonPhase;
-import com.oplao.Utils.MyJsonHelper;
+import com.oplao.Utils.*;
 import com.oplao.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -21,6 +18,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -34,7 +32,6 @@ public class WeatherService {
 
     public static final Map<Integer, WeatherStateExt> EXT_STATES = new HashMap<>();
 
-    public static String dayTimes[] = {"Night", "Morning", "Midday", "Evening"};
     public static int dayTimesHours[]= {2, 8, 14, 20};
 
     static {
@@ -114,7 +111,7 @@ public class WeatherService {
         }
 
 
-    public List<HashMap> getYearSummary(JSONObject city){
+    public List<HashMap> getYearSummary(JSONObject city, String langCode){
 
         JSONObject jsonObject = null;
 
@@ -156,19 +153,21 @@ public class WeatherService {
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
 
+        Locale locale = new Locale(countryCode, LanguageUtil.getCountryCode(countryCode));
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_"+countryCode, locale);
        HashMap<Integer, Map<String,Map>> result = new HashMap<>();
 
         for (int day = dateTime.getDayOfMonth(), count = 0; day < dateTime.getDayOfMonth()+numOfDays ; day++, count++) {
             result.put(count, getOneDayReportMapping(dateTime.plusDays(
                     count),
-                    String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))), countryCode, city.getString("lat"), city.getString("lng")));
+                    resourceBundle, countryCode, city.getString("lat"), city.getString("lng")));
         }
 
 
         return result;
     }
 
-    private Map<String, Map> getOneDayReportMapping(DateTime dateTime, String city, String countryCode, String lat, String lng){
+    private Map<String, Map> getOneDayReportMapping(DateTime dateTime, ResourceBundle bundle, String countryCode, String lat, String lng){
         APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, "",
                 false, true, 1, lat, lng);
         HashMap map = apiWeatherFinder.findWeatherByDate();
@@ -242,20 +241,20 @@ public class WeatherService {
         Map<String, Object> nightMap = null;
 
         Map<String, Object> wholeDayMap = null;
-        if(enCountries.contains(countryCode)){
-            result = new TreeMap<>();
-            dayMap = new TreeMap<>();
-            nightMap = new TreeMap<>();
-            wholeDayMap = new TreeMap<>();
-        }else{
+//        if(enCountries.contains(countryCode)){
+//            result = new TreeMap<>();
+//            dayMap = new TreeMap<>();
+//            nightMap = new TreeMap<>();
+//            wholeDayMap = new TreeMap<>();
+//        }else{
             result = new HashMap<>();
             dayMap = new HashMap<>();
             nightMap = new HashMap<>();
             wholeDayMap = new HashMap<>();
-        }
+//        }
         wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
-        wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
-        wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
+        wholeDayMap.put("monthOfYear", LanguageService.encode(DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear(), bundle)));
+        wholeDayMap.put("dayOfWeek", LanguageService.encode(DateConstants.convertDayOfWeek(dateTime.getDayOfWeek(), bundle)));
         wholeDayMap.put("weatherCode", weatherCode);
         wholeDayMap.put("maxTemperatureC", maxWholeDayC);
         wholeDayMap.put("maxTemperatureF", maxWholeDayF);
@@ -264,7 +263,7 @@ public class WeatherService {
 
         dayMap.put("avgTempC", avgDayC);
         dayMap.put("avgTempF", avgDayF);
-        dayMap.put("time", "Day");
+        dayMap.put("time", LanguageService.encode(bundle.getString("day")));
         dayMap.put("feelsLikeC", maxFeelLikeDayC);
         dayMap.put("feelsLikeF", maxFeelLikeDayF);
         dayMap.put("precipChance", precipeChanceDay);
@@ -284,7 +283,7 @@ public class WeatherService {
         dayMap.put("boldSpeed", boldDaySpeed);
         dayMap.put("boldGust", boldDayGust);
 
-        nightMap.put("time", "Night");
+        nightMap.put("time", LanguageService.encode(bundle.getString("night")));
         nightMap.put("avgTempC", avgNightC);
         nightMap.put("avgTempF", avgNightF);
         nightMap.put("feelsLikeC", maxFeelLikeNightC);
@@ -411,9 +410,9 @@ public class WeatherService {
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
         return Float.parseFloat(decimalFormat.format(num).replace(',', '.'));
     }
-    public HashMap getCoordinates(JSONObject city){
+    public HashMap getCoordinates(JSONObject city, String langCode){
 
-        String cityName = validateCityName((String)city.get("asciiName"));
+        String cityName = validateCityName((String)city.get("name"));
         ZonedDateTime zdt = ZonedDateTime.now(ZoneOffset.UTC);
         LocalDateTime ldt = LocalDateTime.of(zdt.getYear(),
                 zdt.getMonth(), zdt.getDayOfMonth(),
@@ -429,7 +428,7 @@ public class WeatherService {
         HashMap result = new HashMap();
 
         result.put("city", cityName.replaceAll("%20", " "));
-        result.put("country", city.get("countryName"));
+        result.put("country", city.getString("countryName"));
         result.put("latitude", roundFloat((float) city.getDouble("lat")));
         result.put("longitude", roundFloat((float) city.getDouble("lng")));
         result.put("hours_between", hoursBetween);
@@ -444,11 +443,12 @@ public class WeatherService {
         cityName = cityName.replaceAll(" ", "%20");
         return cityName;
     }
-    public HashMap getAstronomy(JSONObject city){
+    public HashMap getAstronomy(JSONObject city, String langCode){
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         JSONObject jsonObject = null;
-
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
         try{
            jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=6&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
         }catch (IOException e){
@@ -463,7 +463,7 @@ public class WeatherService {
         int moonPhaseIndex = getMoonPhase(city);
 
         dateMap.put("dayOfMonth", dateTime.getDayOfMonth());
-        dateMap.put("monthOfYear", DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear()));
+        dateMap.put("monthOfYear", LanguageService.encode(DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear(), bundle)));
         dateMap.put("year", dateTime.getYear());
         result.put("date", dateMap);
         result.put("sunrise", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunrise"));
@@ -488,7 +488,7 @@ public class WeatherService {
         return waningIndex<0?"Waning":"Waxing";
     }
 
-        public HashMap getRemoteData(JSONObject city){
+        public HashMap getRemoteData(JSONObject city, String langCode){
 
             String cityName = validateCityName((String)city.get("name"));
             String countryCode = city.getString("countryCode").toLowerCase();
@@ -501,19 +501,22 @@ public class WeatherService {
             e.printStackTrace();
         }
             HashMap map = (HashMap)jsonObject.toMap().get("data");
-        ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
+            ArrayList<HashMap> weather = (ArrayList<HashMap>)map.get("weather");
             HashMap weatherData = weather.get(0);
             HashMap currentConditions = ((HashMap)((ArrayList)map.get("current_condition")).get(0));
 
+            Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+            ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
+            HashMap<String, Object> result = new HashMap<>();
 
-        HashMap<String, Object> result = new HashMap<>();
+            String locWeather = LanguageService.encode(bundle.getString("locationWeather"));
 
-        result.put("city", cityName.replaceAll("%20", " "));
+        result.put("cityWeather",  MessageFormat.format(locWeather, cityName.replaceAll("%20", " ")));
         result.put("country", city.get("countryName"));
         result.put("countryCode", Arrays.asList(SearchService.validCountryCodes).contains(countryCode)?countryCode:"en");
-        result.put("month", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
+        result.put("month", LanguageService.encode(DateConstants.convertMonthOfYear(dateTime.getMonthOfYear(), bundle)));
         result.put("day", dateTime.getDayOfMonth());
-        result.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
+        result.put("dayOfWeek", LanguageService.encode(DateConstants.convertDayOfWeek(dateTime.getDayOfWeek(), bundle)));
         result.put("hours", dateTime.getHourOfDay());
         result.put("minutes", dateTime.getMinuteOfHour());
         result.put("temp_c", currentConditions.get("temp_C"));
@@ -601,7 +604,7 @@ public class WeatherService {
         return fulfilHourly(hourly, date);
         }
 
-    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(JSONObject city){
+    public List<DetailedForecastGraphMapping> getDetailedForecastMapping(JSONObject city, String langCode){
             List<DetailedForecastGraphMapping> result = new ArrayList<>();
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
@@ -638,18 +641,21 @@ public class WeatherService {
             return new DetailedForecastGraphMapping(tempC,tempF,date, precipMM, precipInch,  weatherIconCode);
     }
 
-    public List<HashMap> getWeeklyUltraviolet(JSONObject city){
+    public List<HashMap> getWeeklyUltraviolet(JSONObject city, String langCode){
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         List<HashMap> list = new ArrayList<>();
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
         for (int day = 0; day < 5; day++) {
-            list.add(getSingleUltravioletIndex(dateTime.plusDays(day), city));
+            list.add(getSingleUltravioletIndex(dateTime.plusDays(day), city, bundle));
         }
         return list;
     }
-    private HashMap getSingleUltravioletIndex(DateTime dateTime, JSONObject city){
+    private HashMap getSingleUltravioletIndex(DateTime dateTime, JSONObject city, ResourceBundle bundle){
 
-            JSONObject jsonObject = null;
+        JSONObject jsonObject = null;
+
             try {
                 jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=24&date="+dateTime.getYear()+"-" + dateTime.getMonthOfYear() + "-" +dateTime.getDayOfMonth() + "&q="+ String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
             }catch (IOException e){
@@ -661,13 +667,13 @@ public class WeatherService {
         HashMap res = new HashMap();
         res.put("index",
                 ((HashMap)((ArrayList)map.get("weather")).get(0)).get("uvIndex"));
-        res.put("date", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek())+" " +
+        res.put("date", LanguageService.encode(DateConstants.convertDayOfWeek(dateTime.getDayOfWeek(),bundle)).substring(0,3)+" " +
                 dateTime.getDayOfMonth()+" "
-                + DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear()));
+                + LanguageService.encode(DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear(), bundle)));
         return res;
     }
 
-    public List getFiveYearsAverage(JSONObject city){
+    public List getFiveYearsAverage(JSONObject city, String langCode){
 
         String cityName = validateCityName((String)city.get("name"));
 
@@ -728,11 +734,13 @@ public class WeatherService {
             }
     }
 
-    public HashMap getWeeklyWeatherSummary(JSONObject city){
+    public HashMap getWeeklyWeatherSummary(JSONObject city, String langCode){
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         DateTime dt1 = null;
         List<HashMap> week = new ArrayList<>();
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
         for (int i = 0; i < 7; i++) {
             if(i > 0){
                 dt1 = dt1.plusDays(i - (i-1));
@@ -765,20 +773,20 @@ public class WeatherService {
         int maxTempF = maxtempFavges.getMax();
         int avgMaxTempF = (int)maxtempFavges.getAverage();
         DateTime maxTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("maxtempC"))==maxTempC).findAny().get().get("date"));
-        String maxTempDay = DateConstants.convertMonthOfYearShort(maxTempDateTime.getMonthOfYear()).toUpperCase() + "."+maxTempDateTime.getDayOfMonth();
+        String maxTempDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(maxTempDateTime.getMonthOfYear(), bundle).toUpperCase() + "."+maxTempDateTime.getDayOfMonth());
         int minTempC = mintempCavges.getMin();
         int avgMinTempC = (int)mintempCavges.getAverage();
         int minTempF = mintempFavges.getMin();
         int avgMinTempF = (int)mintempFavges.getAverage();
         DateTime minTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("mintempC"))==minTempC).findAny().get().get("date"));
-        String minTempDay = DateConstants.convertMonthOfYearShort(minTempDateTime.getMonthOfYear()).toUpperCase() + "."+minTempDateTime.getDayOfMonth();
+        String minTempDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(minTempDateTime.getMonthOfYear(), bundle).toUpperCase() + "."+minTempDateTime.getDayOfMonth());
         double totalRainfallMM = getTotalRainfall(week);
         double totalRainfallInch = new BigDecimal(totalRainfallMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         int windiestMiles = getWindiestMiles(week);
         int windiestMS = (int)Math.round(getWindiestKmph(week)*0.27777777777778);
         String foundWindiest = (String)getWindiestDay(week, windiestMiles).get("date");
         DateTime windiestDateTime = new DateTime(foundWindiest);
-        String windiestDay = DateConstants.convertMonthOfYearShort(windiestDateTime.getMonthOfYear()).toUpperCase() + "."+windiestDateTime.getDayOfMonth();
+        String windiestDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(windiestDateTime.getMonthOfYear(), bundle).toUpperCase() + "."+windiestDateTime.getDayOfMonth());
 
        HashMap<String, Object> results = new HashMap<>();
 
@@ -864,7 +872,7 @@ public class WeatherService {
         return theWindiestMiles;
     }
 
-    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
+    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date, String langCode){
 
         String cityName = validateCityName((String)city.get("name"));
         DateTime dateTime = null;
@@ -873,6 +881,9 @@ public class WeatherService {
         }else{
             dateTime = new DateTime(date);
         }
+
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
 
         List list = new ArrayList();
         for (int i = 0; i < numOfDays; i++) {
@@ -891,10 +902,11 @@ public class WeatherService {
             HashMap<String, Object> wholeDayMap = new HashMap<>();
 
             wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
-            wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()));
+            wholeDayMap.put("monthOfYear", LanguageService.encode(DateConstants.convertMonthOfYear(dateTime.getMonthOfYear(), bundle)));
             wholeDayMap.put("year", dateTime.getYear());
-            wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeek(dateTime.getDayOfWeek()));
-            wholeDayMap.put("todaySign", i==0?"Today":"Tomorrow");
+            wholeDayMap.put("dayOfWeek", LanguageService.encode(DateConstants.convertDayOfWeek(dateTime.getDayOfWeek(), bundle)));
+            wholeDayMap.put("todaySign", i==0?LanguageService.encode(bundle.getString("today")):
+                    LanguageService.encode(bundle.getString("tomorrow")));
             wholeDayMap.put("maxtempC", weather.get("maxtempC"));
             wholeDayMap.put("mintempC", weather.get("mintempC"));
             wholeDayMap.put("maxtempF", weather.get("maxtempF"));
@@ -951,7 +963,7 @@ public class WeatherService {
         return list;
     }
 
-    public List getTableDataForDays(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date){
+    public List getTableDataForDays(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date, String langCode){
 
         String cityName = validateCityName((String)city.get("name"));
         DateTime dateTime = null;
@@ -961,12 +973,13 @@ public class WeatherService {
             dateTime = new DateTime(date);
         }
 
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
         List list = new ArrayList();
         for (int i = 0; i < numOfDays; i++) {
             if(i > 0){
                 dateTime = dateTime.plusDays(i - (i-1));
             }
-
             APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
                     pastWeather, true, numOfHours, String.valueOf(city.get("lat")), String.valueOf(city.get("lng")));
 
@@ -980,8 +993,8 @@ public class WeatherService {
             HashMap<String, Object> wholeDayMap = new HashMap<>();
 
             wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
-            wholeDayMap.put("monthOfYear", DateConstants.convertMonthOfYear(dateTime.getMonthOfYear()).substring(0,3));
-            wholeDayMap.put("dayOfWeek", DateConstants.convertDayOfWeekShort(dateTime.getDayOfWeek()));
+            wholeDayMap.put("monthOfYear", LanguageService.encode(DateConstants.convertMonthOfYear(dateTime.getMonthOfYear(), bundle)).substring(0,3));
+            wholeDayMap.put("dayOfWeek", LanguageService.encode(DateConstants.convertDayOfWeek(dateTime.getDayOfWeek(), bundle)).substring(0,3));
             wholeDayMap.put("maxtempC", weather.get("maxtempC"));
             wholeDayMap.put("mintempC", weather.get("mintempC"));
             wholeDayMap.put("maxtempF", weather.get("maxtempF"));
@@ -990,7 +1003,7 @@ public class WeatherService {
             wholeDayMap.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
 
             List<HashMap> oneWholeDayData = new ArrayList<>();
-
+            String dayTimes[] = DateConstants.getDayTimes(bundle);
             for (int dayTime = 0; dayTime < dayTimes.length; dayTime++) {
                 HashMap<String, Object> dayMap = new HashMap<>();
                 HashMap elem = (HashMap)hourly.get(dayTimesHours[dayTime]);
