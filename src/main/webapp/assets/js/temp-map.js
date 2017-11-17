@@ -42,7 +42,9 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           const mapEl = $element.find('div#gmap')[0]
 
           const mapOptions = {
-              zoom: 11,
+              zoom: 5,
+              minZoom: 3,
+              maxZoom: 10,
 
               center: new google.maps.LatLng(response.data.latitude, response.data.longitude),
 

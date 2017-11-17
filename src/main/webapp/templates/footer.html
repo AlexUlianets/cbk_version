@@ -107,13 +107,13 @@
         <div class="popup-lang-wrap">
             <h2>Language</h2>
             <ul class="popup-lang">
-                <li><a ng-click="selectLanguage('en')">En</a></li>
-                <li><a ng-click="selectLanguage('us')">Us</a></li>
-                <li><a ng-click="selectLanguage('de')">De</a></li>
-                <li><a ng-click="selectLanguage('fr')">Fr</a></li>
-                <li><a ng-click="selectLanguage('it')">It</a></li>
-                <li><a ng-click="selectLanguage('ua')">Ua</a></li>
-                <li><a ng-click="selectLanguage('by')">By</a></li>
+                <li><a ng-click="selectLanguage('en')" ng-class="{active:currentCountryCode == 'en'}">En</a></li>
+                <li><a ng-click="selectLanguage('ru')" ng-class="{active:currentCountryCode == 'ru'}">Ru</a></li>
+                <li><a ng-click="selectLanguage('de')" ng-class="{active:currentCountryCode == 'de'}">De</a></li>
+                <li><a ng-click="selectLanguage('fr')" ng-class="{active:currentCountryCode == 'fr'}">Fr</a></li>
+                <li><a ng-click="selectLanguage('it')" ng-class="{active:currentCountryCode == 'it'}">It</a></li>
+                <li><a ng-click="selectLanguage('ua')" ng-class="{active:currentCountryCode == 'ua'}">Ua</a></li>
+                <li><a ng-click="selectLanguage('by')" ng-class="{active:currentCountryCode == 'by'}">By</a></li>
             </ul>
         </div>
 
