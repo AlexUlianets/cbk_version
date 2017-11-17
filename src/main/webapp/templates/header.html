@@ -34,11 +34,9 @@
                         </a></li>
                         <li>
                             <a href="http://www.facebook.com/sharer.php?u=http://192.168.0.102:8080/" target="_blank">
-<span class="helper"></span>
-                            <i class="icon facebook"></i>
-                                                        </a>
-
-
+                                <span class="helper"></span>
+                                <i class="icon facebook"></i>
+                            </a>
                         </li>
                         <li><a href="#">
                             <span class="helper"></span>
@@ -50,6 +48,23 @@
                         </a></li>
                     </ul>
                 </div>
+
+                <div id="h-share" class="h-lang">
+                    <a>
+                        <span class="helper"></span>
+                        <i>{{currentCountryCode}}</i>
+                    </a>
+                    <ul>
+                       <li><a ng-click="selectLanguage('en')" ng-class="{active:currentCountryCode == 'en'}">En</a></li>
+                       <li><a ng-click="selectLanguage('ru')" ng-class="{active:currentCountryCode == 'ru'}">Ru</a></li>
+                       <li><a ng-click="selectLanguage('de')" ng-class="{active:currentCountryCode == 'de'}">De</a></li>
+                       <li><a ng-click="selectLanguage('fr')" ng-class="{active:currentCountryCode == 'fr'}">Fr</a></li>
+                       <li><a ng-click="selectLanguage('it')" ng-class="{active:currentCountryCode == 'it'}">It</a></li>
+                       <li><a ng-click="selectLanguage('ua')" ng-class="{active:currentCountryCode == 'ua'}">Ua</a></li>
+                       <li><a ng-click="selectLanguage('by')" ng-class="{active:currentCountryCode == 'by'}">By</a></li>
+                    </ul>
+                </div>
+
 
                 <div class="h-settings">
                     <a href="#settings-popup" data-effect="mfp-zoom-in" class="s-popup"><span class="helper"></span><i
