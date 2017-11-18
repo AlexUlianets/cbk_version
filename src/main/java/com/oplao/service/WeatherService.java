@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
 public class WeatherService {
 
     public static final Map<Integer, WeatherStateExt> EXT_STATES = new HashMap<>();
-
     public static int dayTimesHours[]= {2, 8, 14, 20};
+    private static final double DURATION = 29.53059;
 
     static {
         EXT_STATES.put(113, WeatherStateExt.Clear);
@@ -313,6 +313,83 @@ public class WeatherService {
 
 
 
+    private int calcJulianDate(int d, int m, int y) {
+
+        int mm, yy;
+        int k1, k2, k3;
+        int j;
+
+        yy = y - (int) ((12 - m) / 10);
+        mm = m + 9;
+        if (mm >= 12) {
+            mm = mm - 12;
+        }
+        k1 = (int) (365.25 * (yy + 4712));
+        k2 = (int) (30.6001 * mm + 0.5);
+        k3 = (int) ((int) ((yy / 100) + 49) * 0.75) - 38;
+        // 'j' for dates in Julian calendar:
+        j = k1 + k2 + d + 59;
+        if (j > 2299160) {
+            // For Gregorian calendar:
+            j = j - k3; // 'j' is the Julian date at 12h UT (Universal Time)
+        }
+        return j;
+    }
+
+    private double calcMoonAge(int d, int m, int y) {
+
+        int j = calcJulianDate(d, m, y);
+        // Calculate the approximate phase of the moon
+        double ip = (j + 4.867) / DURATION;
+        ip = ip - Math.floor(ip);
+        // After several trials I've seen to add the following lines,
+        // which gave the result was not bad
+        double age;
+        if (ip < 0.5) {
+            age = ip * DURATION + DURATION / 2.0;
+        } else {
+            age = ip * DURATION - DURATION / 2.0;
+        }
+        // Moon's age in days
+        age = Math.floor(age) + 1.0;
+        return age / DURATION;
+    }
+
+    private double calcMoonAge(DateTime dateTime) {
+
+        return calcMoonAge(dateTime.getDayOfMonth(), dateTime.getMonthOfYear(), dateTime.getYear());
+    }
+
+    private HashMap getMoonData(ResourceBundle bundle) {
+
+        HashMap map = new HashMap();
+        DateTime dateTime = new DateTime();
+        double age = calcMoonAge(dateTime);
+        double moonPhaseImgStep = 1.0 / (double) 28; //28 - moon phases number
+        int index = 1 + (int)(((age + moonPhaseImgStep) % 1.0) / moonPhaseImgStep);
+        if(index == 1){
+            index = 8; //8
+        }else if(index >=1 && index<=6){
+            index = 1;//1
+        }else if(index>=7 && index<=9){
+            index = 2;//2
+        }else if(index>=10 && index<=14){
+            index = 3;//3
+        }else if(index==15){
+            index = 4; //4
+        }else if(index >=16 && index<=20){
+            index = 5; //5
+        }else if(index>=21 && index<=23){
+            index=6; //6
+        }else if(index>=24&&index<=28){
+            index = 7; //7
+        }
+        map.put("index", index);
+        map.put("state", age < 0.5 - moonPhaseImgStep ? LanguageService.encode(bundle.getString("moonState.waxing")) :LanguageService.encode(bundle.getString("moonState.waning")));
+        return map;
+    }
+
+
     private double getSumDoubleParam(List<HashMap> hourly, String paramName, List<Integer> dayTimeValues){
 
         hourly = hourly.stream().filter(hashMap ->
@@ -374,36 +451,7 @@ public class WeatherService {
     }
 
 
-     String moon_phase_name[] = { "New Moon", // 0
-     "Crescent", // 1
-     "First quarter", // 2
-     "Gibbous", // 3
-     "Full Moon", // 4
-     "Gibbous", // 5
-     "Third quarter", // 6
-     "Crescent"}; //7
 
-    private String convertMoonPhaseIndexToName(int moonPhaseIndex){
-        switch (moonPhaseIndex){
-            case 0 :
-                return moon_phase_name[0];
-            case 1 :
-                return moon_phase_name[1];
-            case 2 :
-                return moon_phase_name[2];
-            case 3 :
-                return moon_phase_name[3];
-            case 4 :
-                return moon_phase_name[4];
-            case 5 :
-                return moon_phase_name[5];
-            case 6 :
-                return moon_phase_name[6];
-            case 7 :
-                return moon_phase_name[7];
-            default: return null;
-        }
-    }
 
     private float roundFloat(float num){
         String pattern = "##0.00";
@@ -460,7 +508,7 @@ public class WeatherService {
 
 
         HashMap dateMap = new HashMap();
-        int moonPhaseIndex = getMoonPhase(city);
+        HashMap moonData = getMoonData(bundle);
 
         dateMap.put("dayOfMonth", dateTime.getDayOfMonth());
         dateMap.put("monthOfYear", LanguageService.encode(DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear(), bundle)));
@@ -468,9 +516,9 @@ public class WeatherService {
         result.put("date", dateMap);
         result.put("sunrise", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunrise"));
         result.put("sunset", ((HashMap)((ArrayList)((HashMap)((ArrayList)map.get("weather")).get(0)).get("astronomy")).get(0)).get("sunset"));
-        result.put("moon_phase_index", moonPhaseIndex);
-        result.put("moon_phase_name", convertMoonPhaseIndexToName(moonPhaseIndex+1));
-        result.put("moon_phase_state", getMoonState(city));
+        result.put("moon_phase_index", moonData.get("index"));
+    //    result.put("moon_phase_name", convertMoonPhaseIndexToName(moonPhaseIndex+1));
+        result.put("moon_phase_state", moonData.get("state"));
         return result;
     }
 
