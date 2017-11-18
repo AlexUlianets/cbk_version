@@ -289,14 +289,23 @@ public class SearchService {
                System.out.println(location.getString("country_code"));
            } catch (IOException e) {
                 Application.log.info("cannot find location for ip " + currentIp);
-           }catch (JSONException ex){
+           }catch (JSONException ex) {
                currentIp = "37.215.0.50";
                try {
-                   location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/"+currentIp);
+                   location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/" + currentIp);
                } catch (IOException e) {
                    e.printStackTrace();
                }
            }
+               if(location.getString("country_code").equals("") && location.getString("city").equals("")){
+                   currentIp = "37.215.0.50";
+               }
+        try {
+            location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/" + currentIp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
 
            Application.log.info("generated.");
@@ -648,7 +657,8 @@ public class SearchService {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
                 response.setHeader("Location", reqUrl.replace(requestedLang, languageCookieCode));
             }
-        }else if(parsedUrl.size()==0){
+        }
+        else if(parsedUrl.size()==0){
             if(languageCookieCode.equals("")) {
                 if (Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase()) && !currentCity.getString("countryCode").equals(languageCookieCode)) {
                     refreshLangCookie(request, response, currentCity.getString("countryCode").toLowerCase(), currentCookieValue);
