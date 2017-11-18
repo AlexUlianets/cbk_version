@@ -5,12 +5,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.$stateParams = $stateParams;
         $rootScope.example = "";
         $rootScope.local = {};
-
-        if($cookies.get('langCookieCode') == undefined){
-            $rootScope.currentCountryCode = location.pathname.split("/")[1]
-        }else {
-            $rootScope.currentCountryCode = $cookies.get('langCookieCode');
-        }
+        $rootScope.currentCountryCode = $cookies.get('langCookieCode');
         $rootScope.updateLang = function () {
             var langRequest = {
                 method: 'GET',
@@ -26,7 +21,11 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 $rootScope.pageContent = data;
             })
         }
-        $rootScope.updateLang();
+
+        setTimeout(function () {
+            $rootScope.updateLang();
+        }, 500);
+
 
         if($cookies.get('temp_val')===undefined){
             $cookies.put('temp_val', 'C');
