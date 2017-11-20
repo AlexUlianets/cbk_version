@@ -229,7 +229,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     $cookies.put('temp_val', 'C');
 
                 }
-                document.location.reload(true);
             }
         }
         $rootScope.updateTime = function(val){
@@ -244,7 +243,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     $cookies.put('time_val', 24);
 
                 }
-                document.location.reload(true);
             }
 
         }
