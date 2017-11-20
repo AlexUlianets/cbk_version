@@ -1742,6 +1742,15 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
     font-size:17px;
     color:#0B6D76;
 }
+.wrn-block .max-temperature{
+    font-size:24px;
+    color:#970100;
+}
+
+.wrn-block .min-temperature{
+    font-size:24px;
+    color:#0B6D76;
+}
 
 .tb-item .tb-row .tb-wind .tb-meter{
     color: #b7b7b7;
@@ -1823,7 +1832,7 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 
 .tb-tabs .wrn-block .wrn-top{
     border-bottom: none;
-    margin: 0px 24px 0 0px;
+    margin: -17px 24px 0 0px;
     font-size: 20px;
     font-weight: 500;
     padding-top: 15px;
