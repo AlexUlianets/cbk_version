@@ -14,6 +14,7 @@ app.controller('MapMarkerCtrl', function($scope, $element, mapMarkerConstructor)
             this.temp = typeTemp==='C'?location.temp_C:location.temp_F;
             this.img = location.img;
             this.day = location.day;
+            this.city = location.city;
             this.typeTemp = typeTemp;
             this.style = new setColor(location.temp_C)[0][2];
         };
@@ -39,7 +40,7 @@ app.controller('MapMarkerCtrl', function($scope, $element, mapMarkerConstructor)
 
             this.element[0].className = "arrow_box "+this.style;
             this.element[0].innerHTML = "<img src='svg/wicons_svg_white/"+this.img+"_"+this.day+".svg' alt=''>" +
-                "<h5>"+this.temp+" <span>"+this.typeTemp+"</span><h5>";
+                "<h5>"+this.temp+" <span>"+this.typeTemp+"</span><h5></h5><span class='map-city'>"+this.city+"</span>";
 
             var panes = this.getPanes();
             var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
@@ -48,7 +49,7 @@ app.controller('MapMarkerCtrl', function($scope, $element, mapMarkerConstructor)
 
             if (point) {
                 this.element.css('left', point.x -20 + 'px');
-                this.element.css('top', point.y -70 + 'px');
+                this.element.css('top', point.y -50 + 'px');
             }
         };
         GoogleOverlayView.prototype.onRemove = function() {};
