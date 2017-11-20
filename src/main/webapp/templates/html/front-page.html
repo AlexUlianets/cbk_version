@@ -62,7 +62,11 @@
 			<aside class="sidebar">
 				<!-- <div class="ad300-250 top62px ">300x250</div> -->
 				<img src="https://placehold.it/300x250" alt="alt" class="top62px">
+
+                <a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>
+
 			</aside>
+
 		</div><!-- end wrapper -->
 	</div><!-- end container -->
 
@@ -87,56 +91,34 @@
 					</div>
 				</section><!-- end country-weather-section -->
 
-				<!--<section id="text-weather" class="section-margin-top text-weather-main">-->
-					<!--<h2>Text weather</h2>-->
-					<!--<h3>7 day weather outlook of Minsk</h3>-->
+				<section id="holiday-weather-section">
+                    <h3 ng-bind="pageContent.holidayWeather"></h3>
+                    <div class="holiday-weather">
+                        <div ng-repeat="elem in holidays_weather" class="weather-block">
+                            <div class="wb-left">
+                                <img ng-src="svg/wicons_svg/{{elem.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem.isDay== false ">
+                                <img ng-src="svg/wicons_svg/{{elem.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem.isDay== true ">
+                                <div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
+                            </div>
+                            <div class="wb-right">
+                                <a href="/{{currentCountryCode}}/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
+                                    <h3>{{elem.name}}</h3>
+                                    <h4>{{elem.countryName}}</h4>
+                                </a>
+                            </div>
+                        </div>
 
+                    </div>
+                </section><!-- end holiday-weather-section -->
 
-					<!--<div class="tabs-tr">-->
+                <section id="top-holiday-dest">
+                        <h4 ng-bind="pageContent.topHolidayDestinations"></h4>
+                        <ul>
+                            <li ng-repeat="elem in top_holidays_destinations track by $index">
+                                <a class = "destination{{$index}}" ng-click="select_holiday_destination($index)">{{elem}}<span>/</span></a></li>
 
-					  <!--<nav role='navigation' class="transformer-tabs w-tabs">-->
-					    <!--<ul>-->
-					      <!--<li><a href="#tab-1" class="active">Weekly Outlook</a></li>-->
-					      <!--<li><a href="#tab-2">Mon</a></li>-->
-					      <!--<li><a href="#tab-3">Tue</a></li>-->
-					      <!--<li><a href="#tab-4">Wed</a></li>-->
-					      <!--<li><a href="#tab-5">Thu</a></li>-->
-					      <!--<li><a href="#tab-6">Fri</a></li>-->
-					      <!--<li><a href="#tab-7">Sat</a></li>-->
-					      <!--<li><a href="#tab-8">Sun</a></li>-->
-					    <!--</ul>-->
-					  <!--</nav>-->
-
-					  <!--<div id="tab-1" class="active text-weather-tab w-tab-cont">-->
-					    	<!--<p>The <b>maximum temperature</b> for Brighton over the next 7 day will be 30°C(or 86°F) on Wednesday 24th August at around 5 pm. In the same week the <b>minimum temperature</b> will be 13°C (or 56°F) on Tuesday 23rd August at around 5 am. Our Brighton weather forecaster is reporting Thursday 25th August to be the wettest day in the coming week with around 2.70mm (or 0.1 inches) of rainfall. Make sure to carry an umbrella if you are out and about in Brighton.</p>-->
-					  <!--</div>-->
-
-					  <!--<div id="tab-2" class="w-tab-cont">-->
-					   <!--2-->
-					  <!--</div>-->
-
-					  <!--<div id="tab-3" class="w-tab-cont">-->
-					     <!--3-->
-					  <!--</div>-->
-
-					  <!--<div id="tab-4" class="w-tab-cont">-->
-					   <!--4-->
-					  <!--</div>-->
-					  <!--<div id="tab-5" class="w-tab-cont">-->
-					   <!--5-->
-					  <!--</div>-->
-					  <!--<div id="tab-6" class="w-tab-cont">-->
-					   <!--6-->
-					  <!--</div>-->
-					  <!--<div id="tab-7" class="w-tab-cont">-->
-					   <!--7-->
-					  <!--</div>-->
-					  <!--<div id="tab-8" class="w-tab-cont">-->
-					   <!--8-->
-					  <!--</div>-->
-
-					<!--</div>-->
-				<!--</section>&lt;!&ndash; end text-weather &ndash;&gt;-->
+                        </ul>
+                </section><!-- end top-holiday-dest -->
 			</div><!-- end page-content -->
 			<aside class="sidebar">
 				<!-- <div class="ad300-600">300x600</div> -->
@@ -149,40 +131,11 @@
 	<div class="container section-margin-top">
 		<div class="wrapper">
 			<div class="page-content">
-				<section id="holiday-weather-section">
-					<h3 ng-bind="pageContent.holidayWeather"></h3>
-					<div class="holiday-weather">
-						<div ng-repeat="elem in holidays_weather" class="weather-block">
-							<div class="wb-left">
-								<img ng-src="svg/wicons_svg/{{elem.weatherCode}}_night.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem.isDay== false ">
-								<img ng-src="svg/wicons_svg/{{elem.weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;" ng-if="elem.isDay== true ">
-								<div class="wbl-temp">{{local.typeTemp=='C'?elem.temp_C:elem.temp_F}}° <span>{{local.typeTemp}}</span></div>
-							</div>
-							<div class="wb-right">
-								<a href="/{{currentCountryCode}}/weather/outlook/{{elem.name+'_'+elem.countryCode}}">
-									<h3>{{elem.name}}</h3>
-									<h4>{{elem.countryName}}</h4>
-								</a>
-							</div>
-						</div>
 
-					</div>
-				</section><!-- end holiday-weather-section -->
 			</div><!-- end page-content -->
-			<aside class="sidebar">
-				<a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>
-			</aside>
+
 		</div>
 	</div><!-- end container -->
 
-	<section id="top-holiday-dest">
-		<div class="container">
-			<h4 ng-bind="pageContent.topHolidayDestinations"></h4>
-			<ul>
-				<li ng-repeat="elem in top_holidays_destinations track by $index">
-					<a class = "destination{{$index}}" ng-click="select_holiday_destination($index)">{{elem}}<span>/</span></a></li>
 
-			</ul>
-		</div>
-	</section><!-- end top-holiday-dest -->
 </div>
