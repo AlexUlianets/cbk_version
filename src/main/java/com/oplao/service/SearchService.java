@@ -54,7 +54,7 @@ public class SearchService {
             list = findByAirports(searchRequest, langCode);
         }
         else {
-                list = findByCity(searchRequest, langCode);
+                 list = findByCity(searchRequest, langCode);
         }
             List<HashMap> maps = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -98,6 +98,7 @@ public class SearchService {
 
                 Cookie c =new Cookie(cookieName, URLEncoder.encode(new String(arr.toString().getBytes(), "UTF-8"), "UTF-8"));
                 c.setPath("/");
+                c.setMaxAge(60 * 60 * 24 * 365 * 10);
                 response.addCookie(c);
 
                 return (HashMap)city.toMap();
@@ -138,6 +139,7 @@ public class SearchService {
                                 e.printStackTrace();
                             }
                             c.setPath("/");
+                            c.setMaxAge(60 * 60 * 24 * 365 * 10);
                             response.addCookie(c);
 
                             return 0;
@@ -228,7 +230,7 @@ public class SearchService {
         List<JSONObject> list = null;
         try {
             String url ="https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts=" + URLEncoder.encode(city.replaceAll(" ", "%20"), "UTF-8");
-            list = SearchService.findByOccurences(url);
+            list = SearchService.findByOccurences(url.replaceAll("25", ""));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -323,6 +325,7 @@ public class SearchService {
                JSONArray arr = new JSONArray("["+obj.toString()+"]");
                Cookie c = new Cookie(cookieName, URLEncoder.encode(new String(arr.toString().getBytes(), "UTF-8"), "UTF-8"));
                c.setPath("/");
+               c.setMaxAge(60 * 60 * 24 * 365 * 10);
                response.addCookie(c);
                return obj;
            } catch (IOException e) {
@@ -392,18 +395,19 @@ public class SearchService {
                     e.printStackTrace();
                 }
                 c.setPath("/");
+                c.setMaxAge(60 * 60 * 24 * 365 * 10);
                 return c;
             }
         }
         return null;
     }
 
-    public List<String> getTopHolidaysDestinations(int numOfCities){
+    public List<String> getTopHolidaysDestinations(int numOfCities, String languageCode){
 
-            return validateTopHolidaysDestinations(cities, numOfCities);
+            return validateTopHolidaysDestinations(cities, numOfCities, languageCode);
         }
 
-    private List<String> validateTopHolidaysDestinations(List<String> destinations, int numOfCities){
+    private List<String> validateTopHolidaysDestinations(List<String> destinations, int numOfCities, String langCookieCode){
 
         List<String> cities = new ArrayList<>();
         for (int i = 0; i < destinations.size(); i++) {
@@ -413,9 +417,10 @@ public class SearchService {
         List<String> result = new ArrayList<>();
         for (int i = 0; i < numOfCities; i++) {
             int index = random.nextInt(cities.size());
-            result.add(cities.get(index));
+            result.add(findByCity(cities.get(index), langCookieCode).get(0).getString("name"));
             cities.remove(index);
         }
+
         return result;
     }
 
@@ -454,7 +459,7 @@ public class SearchService {
     }
 
     public List<HashMap> getHolidaysWeather(JSONObject city, String langCode) {
-        List<String> cities = getTopHolidaysDestinations(6);
+        List<String> cities = getTopHolidaysDestinations(6, langCode);
 
         List<HashMap> result = new ArrayList<>();
         for (int i = 0; i < cities.size(); i++) {
@@ -538,109 +543,109 @@ public class SearchService {
     }
 
 
-    public HashMap<String, String> generateMetaTitle(String cookieValue, String path){
-        List<String> values = Arrays.asList(path.split("/"));
-        if(cookieValue.equals("")){
-            return null;
-        }
-        JSONObject selected = null;
-        JSONArray array = new JSONArray(cookieValue);
-        for (int i = 0; i < array.length(); i++) {
-            if(array.getJSONObject(i).getString("status").equals("selected")){
-                selected = array.getJSONObject(i);
-            }
-        }
-
-        String location = selected.getString("name") + ", "+selected.getString("countryName");
-
-        HashMap<String, String> res = new HashMap<>();
-            if(values.contains("widgets")){
-                res.put("title", "Oplao.com – Weather Widget for Website");
-                res.put("description", "Oplao provides free, beautiful, full responsive weather widgets for your site. Less than 1 minute to setup. Choose design, dimension, and language and get HTML code. Oplao weather plugin is the best way to bring good weather to your website.");
-                return res;
-            }
-            else if(values.size()==0||values.size()==4){
-                res.put("title","Oplao.com – Professional weather forecast. Local to Global");
-                res.put("description", "Oplao provides professional weather forecasts generated by own software. Animated temperature\n" +
-                        "map, alerts, hourly forecast, interactive weather charts, accurate forecast up to 15 days, past weather\n" +
-                        "starting 2008 July.");
-                return res;
-            } else if(values.contains("outlook")){
-                res.put("title", "Oplao.com - 10 day Weather Forecast for "+ location);
-                res.put("description", location + " current weather, 10 day weather forecast, weather chart, weekly weather summary,\n" +
-                        "astronomy, climate in " + location + ", UV-index, weather history.");
-                return res;
-            }else if(values.contains("today")){
-                res.put("title", "Oplao.com – Today Weather for "+location);
-                res.put("description", "Weather for today in " + location + " with temperature, feels like, wind, gust, pressure, humidity,\n" +
-                        "hourly weather chart with temperature, precipitation.");
-                res.put("canonical", "https://oplao.com/en/forecast/hour-by-hour1/");
-                return res;
-            }else if(values.contains("tomorrow")){
-                res.put("title", "Oplao.com – Tomorrow Weather for "+location);
-                res.put("description", location + " tomorrow detailed weather with temperature, feels like, wind, gust, pressure, and\n" +
-                        "humidity as well as 1 day more hourly weather with 3hr interval.");
-                res.put("canonical", "https://oplao.com/en/forecast/today/");
-                return res;
-            }else if(values.contains("3")){
-                res.put("title", "Oplao.com – 3 day weather for "+location);
-                res.put("description", "Detailed 3 day weather for "+location+" with temperature, feels like, wind, gust, pressure and 3 day\n" +
-                        "weather chart.");
-                res.put("canonical", "https://oplao.com/en/forecast/10/");
-                return res;
-            }else if(values.contains("5")){
-                res.put("title", "Oplao.com – 5 day weather forecast for "+location);
-                res.put("description", "5 day weather for "+location+" with temperature, feels like, wind, gust, pressure and 5 day weather chart\n" +
-                        "with.");
-                res.put("canonical", "https://oplao.com/en/weather/outlook/");
-                return res;
-            }else if(values.contains("7")){
-                res.put("title", "Oplao.com – 7 day weather forecast for "+location);
-                res.put("description", location+" weekly weather with temperature, feels like, wind, gust, pressure, weekly weather\n" +
-                        "summary and 7 day weather chart.");
-                res.put("canonical", "https://oplao.com/en/forecast/10/");
-
-                return res;
-            }else if(values.contains("10")){
-                res.put("title", "Oplao.com – 10 day weather forecast for "+location);
-                res.put("description", location + " ten day weather forecast with temperature, feels like, wind, gust, pressure, weekly\n" +
-                        "weather summary and 10 day weather chart.");
-                res.put("canonical", "https://oplao.com/en/weather/outlook/");
-                return res;
-            }else if(values.contains("14")){
-                res.put("title", "Oplao.com – 14 day weather forecast for "+location);
-                res.put("description", location +   " 2 week weather forecast with temperature, feels like, wind, gust, pressure, weekly\n" +
-                        "weather summary and 14 day weather chart.");
-                res.put("canonical", "https://oplao.com/en/weather/outlook/");
-                return res;
-            }else if(values.contains("map")){
-                res.put("title", "Oplao.com - Temperature map, weather map");
-                res.put("description", "Interactive temperature map for "+ location+". Weather map, with real time temperature, wind, precipitation and cloudiness");
-                res.put("canonical", "https://oplao.com/en/weather/outlook/");
-                return res;
-            }else if(values.contains("hour-by-hour1")||values.contains("hour-by-hour3")){
-                char index = values.get(3).charAt(values.get(3).length()-1);
-                res.put("title", "Oplao.com – Hourly weather for "+location);
-                res.put("description", location + " hourly weather with temperature, feels like, wind, gust, pressure, weekly weather\n" +
-                        "summary and detailed hour by hour weather chart. "+index+" hr interval detailed weather.");
-                    if(index =='3'){
-                        res.put("canonical", "https://oplao.com/en/forecast/hour-by-hour1/");
-                    }
-                return res;
-            }else if(values.contains("history1")||values.contains("history3")){
-                char index = values.get(3).charAt(values.get(3).length()-1);
-                res.put("title", "Oplao.com – Weather History for "+location);
-                res.put("description", "Hourly weather history and data archive for "+location+" with "+ index + " hour interval. Detailed weather\n" +
-                        "history data provides temperature, wind, gust, humidity, pressure, precipitation chance as well as in\n" +
-                        "inches.");
-                if(index =='3'){
-                    res.put("canonical", "https://oplao.com/en/weather/history1/");
-                }
-                return res;
-            }
-        return null;
-    }
-    public void selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode, JSONObject currentCity, String currentCookieValue){
+//    public HashMap<String, String> generateMetaTitle(String cookieValue, String path){
+//        List<String> values = Arrays.asList(path.split("/"));
+//        if(cookieValue.equals("")){
+//            return null;
+//        }
+//        JSONObject selected = null;
+//        JSONArray array = new JSONArray(cookieValue);
+//        for (int i = 0; i < array.length(); i++) {
+//            if(array.getJSONObject(i).getString("status").equals("selected")){
+//                selected = array.getJSONObject(i);
+//            }
+//        }
+//
+//        String location = selected.getString("name") + ", "+selected.getString("countryName");
+//
+//        HashMap<String, String> res = new HashMap<>();
+//            if(values.contains("widgets")){
+//                res.put("title", "Oplao.com – Weather Widget for Website");
+//                res.put("description", "Oplao provides free, beautiful, full responsive weather widgets for your site. Less than 1 minute to setup. Choose design, dimension, and language and get HTML code. Oplao weather plugin is the best way to bring good weather to your website.");
+//                return res;
+//            }
+//            else if(values.size()==0||values.size()==4){
+//                res.put("title","Oplao.com – Professional weather forecast. Local to Global");
+//                res.put("description", "Oplao provides professional weather forecasts generated by own software. Animated temperature\n" +
+//                        "map, alerts, hourly forecast, interactive weather charts, accurate forecast up to 15 days, past weather\n" +
+//                        "starting 2008 July.");
+//                return res;
+//            } else if(values.contains("outlook")){
+//                res.put("title", "Oplao.com - 10 day Weather Forecast for "+ location);
+//                res.put("description", location + " current weather, 10 day weather forecast, weather chart, weekly weather summary,\n" +
+//                        "astronomy, climate in " + location + ", UV-index, weather history.");
+//                return res;
+//            }else if(values.contains("today")){
+//                res.put("title", "Oplao.com – Today Weather for "+location);
+//                res.put("description", "Weather for today in " + location + " with temperature, feels like, wind, gust, pressure, humidity,\n" +
+//                        "hourly weather chart with temperature, precipitation.");
+//                res.put("canonical", "https://oplao.com/en/forecast/hour-by-hour1/");
+//                return res;
+//            }else if(values.contains("tomorrow")){
+//                res.put("title", "Oplao.com – Tomorrow Weather for "+location);
+//                res.put("description", location + " tomorrow detailed weather with temperature, feels like, wind, gust, pressure, and\n" +
+//                        "humidity as well as 1 day more hourly weather with 3hr interval.");
+//                res.put("canonical", "https://oplao.com/en/forecast/today/");
+//                return res;
+//            }else if(values.contains("3")){
+//                res.put("title", "Oplao.com – 3 day weather for "+location);
+//                res.put("description", "Detailed 3 day weather for "+location+" with temperature, feels like, wind, gust, pressure and 3 day\n" +
+//                        "weather chart.");
+//                res.put("canonical", "https://oplao.com/en/forecast/10/");
+//                return res;
+//            }else if(values.contains("5")){
+//                res.put("title", "Oplao.com – 5 day weather forecast for "+location);
+//                res.put("description", "5 day weather for "+location+" with temperature, feels like, wind, gust, pressure and 5 day weather chart\n" +
+//                        "with.");
+//                res.put("canonical", "https://oplao.com/en/weather/outlook/");
+//                return res;
+//            }else if(values.contains("7")){
+//                res.put("title", "Oplao.com – 7 day weather forecast for "+location);
+//                res.put("description", location+" weekly weather with temperature, feels like, wind, gust, pressure, weekly weather\n" +
+//                        "summary and 7 day weather chart.");
+//                res.put("canonical", "https://oplao.com/en/forecast/10/");
+//
+//                return res;
+//            }else if(values.contains("10")){
+//                res.put("title", "Oplao.com – 10 day weather forecast for "+location);
+//                res.put("description", location + " ten day weather forecast with temperature, feels like, wind, gust, pressure, weekly\n" +
+//                        "weather summary and 10 day weather chart.");
+//                res.put("canonical", "https://oplao.com/en/weather/outlook/");
+//                return res;
+//            }else if(values.contains("14")){
+//                res.put("title", "Oplao.com – 14 day weather forecast for "+location);
+//                res.put("description", location +   " 2 week weather forecast with temperature, feels like, wind, gust, pressure, weekly\n" +
+//                        "weather summary and 14 day weather chart.");
+//                res.put("canonical", "https://oplao.com/en/weather/outlook/");
+//                return res;
+//            }else if(values.contains("map")){
+//                res.put("title", "Oplao.com - Temperature map, weather map");
+//                res.put("description", "Interactive temperature map for "+ location+". Weather map, with real time temperature, wind, precipitation and cloudiness");
+//                res.put("canonical", "https://oplao.com/en/weather/outlook/");
+//                return res;
+//            }else if(values.contains("hour-by-hour1")||values.contains("hour-by-hour3")){
+//                char index = values.get(3).charAt(values.get(3).length()-1);
+//                res.put("title", "Oplao.com – Hourly weather for "+location);
+//                res.put("description", location + " hourly weather with temperature, feels like, wind, gust, pressure, weekly weather\n" +
+//                        "summary and detailed hour by hour weather chart. "+index+" hr interval detailed weather.");
+//                    if(index =='3'){
+//                        res.put("canonical", "https://oplao.com/en/forecast/hour-by-hour1/");
+//                    }
+//                return res;
+//            }else if(values.contains("history1")||values.contains("history3")){
+//                char index = values.get(3).charAt(values.get(3).length()-1);
+//                res.put("title", "Oplao.com – Weather History for "+location);
+//                res.put("description", "Hourly weather history and data archive for "+location+" with "+ index + " hour interval. Detailed weather\n" +
+//                        "history data provides temperature, wind, gust, humidity, pressure, precipitation chance as well as in\n" +
+//                        "inches.");
+//                if(index =='3'){
+//                    res.put("canonical", "https://oplao.com/en/weather/history1/");
+//                }
+//                return res;
+//            }
+//        return null;
+//    }
+    public String selectLanguage(String reqUrl, HttpServletRequest request, HttpServletResponse response, String languageCookieCode, JSONObject currentCity, String currentCookieValue){
         List parsedUrl = Arrays.asList(reqUrl.split("/"));
         try {
             currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
@@ -652,6 +657,7 @@ public class SearchService {
             if (Arrays.asList(validCountryCodes).contains(requestedLang)) {
                 if (!languageCookieCode.equals(requestedLang) && requestedLang.length() == 2) {
                     refreshLangCookie(request, response, requestedLang, currentCookieValue);
+                    return requestedLang;
                 }
             } else {
                 response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
@@ -662,11 +668,15 @@ public class SearchService {
             if(languageCookieCode.equals("")) {
                 if (Arrays.asList(SearchService.validCountryCodes).contains(currentCity.getString("countryCode").toLowerCase()) && !currentCity.getString("countryCode").equals(languageCookieCode)) {
                     refreshLangCookie(request, response, currentCity.getString("countryCode").toLowerCase(), currentCookieValue);
+                    return currentCity.getString("countryCode").toLowerCase();
                 } else {
                     refreshLangCookie(request, response, "en", currentCookieValue);
+                    return "en";
                 }
             }
         }
+
+        return languageCookieCode;
     }
 
     private void refreshLangCookie(HttpServletRequest request, HttpServletResponse response, String newValue, String currentCookieValue){
@@ -688,6 +698,7 @@ public class SearchService {
             e.printStackTrace();
         }
         c.setPath("/");
+        c.setMaxAge(60 * 60 * 24 * 365 * 10);
         response.addCookie(c);
 
         JSONArray array = null;

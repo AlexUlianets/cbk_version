@@ -47,9 +47,9 @@ public class SearchController {
 
     }
 
-    @RequestMapping(value = "/generate_meta_title")
-    @ResponseBody
-    public HashMap<String, String> generateMetaTitle(@RequestParam("path") String path, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
-        return searchService.generateMetaTitle(currentCookieValue, path);
-    }
+//    @RequestMapping(value = "/generate_meta_title")
+//    @ResponseBody
+//    public HashMap<String, String> generateMetaTitle(@RequestParam("path") String path, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
+//        return searchService.generateMetaTitle(currentCookieValue, path);
+//    }
 }

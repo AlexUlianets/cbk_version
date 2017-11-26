@@ -47,7 +47,7 @@
                                                 <img ng-src="svg/wicons_svg/{{dynamicTableData[0][1].weatherCode}}_day.svg" style="    width: 45px;    text-align: center;    margin: auto;"  ng-if="dynamicTableData[0][1].isDay== true ">
                                             </div>
                                             <div class="wrn-temp">
-                                                <span class="min-temperature" ng-bind="(local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF ) +(space) + ( local.typeTemp)"></span>
+                                                <span class="min-temperature">{{local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF}} {{local.typeTemp}}</span>
                                                 <span class="max-temperature">{{local.typeTemp=='C'?dynamicTableData[0][1].maxtempC:dynamicTableData[0][1].maxtempF}} {{local.typeTemp}}</span>
                                             </div>
                                         </div>
@@ -337,20 +337,20 @@
                                                     </div>
                                                     <div class="tb-precip">
                                                         <div class="tb-count">{{local.typeTemp=='C'?item.precipMM:item.precipInch}}</div>
-                                                        <div class="tb-meter">{{local.typeTemp=='C'?'mm':'in'}}</div>
+                                                        <div class="tb-meter">{{local.typeTemp=='C'?pageContent.mmDist:pageContent.inDist}}</div>
                                                     </div>
                                                     <div class="tb-wind">
                                                         <i class="sprite-wind-tb" style="-ms-transform: rotate({{item.windDegree + 'deg'}});    -webkit-transform: rotate({{item.windDegree + 'deg'}});    transform: rotate({{item.windDegree + 'deg'}});"></i>
-                                                        <div class="tb-count" style="color:{{item.windspeedColor}}; font-weight:{{item.boldSpeed}}">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                                        <div class="tb-count" style="color:{{item.windspeedColor}}; font-weight:{{item.boldSpeed}}">{{local.typeTemp=='C'?item.windMs:item.windMph}} {{local.typeTemp=='C'?pageContent.ms:pageContent.mph}}</div>
                                                         <div class="tb-meter">{{item.winddir}}</div>
                                                     </div>
                                                     <div class="tb-gust">
                                                         <div class="tb-count" style="color:{{item.windgustColor}}; font-weight:{{item.boldGust}}">{{local.typeTemp=='C'?item.gustMs:item.gustMph}}</div>
-                                                        <div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                                        <div class="tb-meter">{{local.typeTemp=='C'?pageContent.ms:pageContent.mph}}</div>
                                                     </div>
                                                     <div class="tb-pressure">
                                                         <div class="tb-count">{{local.typeTemp=='C'?item.pressurehPa:item.pressureInch}}</div>
-                                                        <div class="tb-meter">{{local.typeTemp=='C'?'hPa':'in'}}</div>
+                                                        <div class="tb-meter">{{local.typeTemp=='C'?pageContent.hPa:pageContent.in}}</div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -2,7 +2,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 // Enter page
 
-  app.controller('todayCtrl', function($scope, $http) {
+  app.controller('todayCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
 
       $scope.graph = $scope.$state.params.graph;
       $scope.day = $scope.$state.params.day;
@@ -19,7 +19,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
       $http.post('/get_detailed_forecast_today').then(function (response) {
           $scope.$parent.detailedTemp = response;
-          readyGet(response, [], $scope.local.typeTemp, 'today',$scope.graphTitle, $scope.local.timeRange)
+          readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
       });
 
       var sendingTableRequest = {
@@ -37,4 +37,4 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
       })
 
 
-  });
+  }]);

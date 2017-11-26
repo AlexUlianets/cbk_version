@@ -52,11 +52,6 @@ public class OutlookController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
@@ -198,9 +193,9 @@ public class OutlookController {
 
     @RequestMapping(value = "/get_top_holidays_destinations", produces = "application/json")
     @ResponseBody
-    public List<String> getTopHolidaysDestinations() {
+    public List<String> getTopHolidaysDestinations(@CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode) {
 
-        return searchService.getTopHolidaysDestinations(23);
+        return searchService.getTopHolidaysDestinations(23, languageCookieCode);
 
 
     }

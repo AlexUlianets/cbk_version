@@ -41,7 +41,7 @@
                     <div class="glance-row">
                         <div class="glance-left" ng-bind="pageContent.windiest"></div>
                         <div class="glance-right">
-                            <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.windiestMS :weekly_weather_summary.windiestMiles}} {{local.typeTemp=='C'?'M/S':'Mph'}}</div>
+                            <div class="glance-temp">{{local.typeTemp=='C'?weekly_weather_summary.windiestMS :weekly_weather_summary.windiestMiles}} {{local.typeTemp=='C'?pageContent.ms:pageContent.mph}}</div>
                             <div class="glance-date">{{weekly_weather_summary.windiestDay}}</div>
                         </div>
                     </div>

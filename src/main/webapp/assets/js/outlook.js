@@ -1,19 +1,19 @@
 var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
-  app.controller('outlookCtrl', ['$scope', '$http', function($scope, $http) {
-      $scope.climate=[];
-      $scope.graph = $scope.$state.params.graph;
-      $scope.day=$scope.$state.params.day;
-      $scope.graphTitle=$scope.$state.params.graphTitle;
+  app.controller('outlookCtrl', ['$scope', '$http', '$rootScope', function($scope, $http, $rootScope) {
       var slav = ["ua", "by", "ru"];
+      $scope.climate=[];
+      $scope.graph = slav.includes(location.pathname.split("/")[1])?"weatherFourteen":$scope.$state.params.graph;
+      $scope.day=$scope.$state.params.day;
+      // $scope.graphTitle=$scope.$state.params.graphTitle;
       if(slav.includes(location.pathname.split("/")[1])){
           $scope.outTable = "slavTable";
       }else{
           $scope.outTable = "enTable"
       }
 
-      $scope.dayTrans = ["Day", "der Tag"];
-      $scope.nightTrans = ["Night", "die Nacht"];
+      $scope.dayTrans = ["Day", "der Tag", "Giorno"];
+      $scope.nightTrans = ["Night", "die Nacht", "Notte"];
       $scope.dayTransSlav = ["День", "Дзень"];
       $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
 
@@ -28,8 +28,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           $http.post('/get_year_summary').then(function (responseYear) {
               $scope.$parent.get_year_summary = responseYear;
               $scope.getActiveClimate(-1);
-
-              readyGet(response, responseYear, $scope.local.typeTemp, 'outlook', $scope.graphTitle, $scope.local.timeRange)
+              readyGet(response, responseYear, $scope.local.typeTemp, 'fourteen-days', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
           });
       });
 
@@ -100,4 +99,56 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           })
       }
 
+      $scope.getData = function () {
+          var sendingTableRequest = {
+              method: 'GET',
+              url: '/get_table_data_for_days',
+              params: {
+                  numOfHours:1,
+                  numOfDays:14,
+                  pastWeather:false
+              },
+              headers: {
+                  'Content-Type': 'application/json; charset=utf-8'
+              }
+          }
+          $http(sendingTableRequest).success(function (data) {
+              $scope.dynamicTableData = data;
+                  setTimeout(function () {
+                      $(function () {
+                          if ($('.tb-slider').length) {
+                              if ($(window).width() >= '881') {
+                                  try {
+                                      $('.tb-slider').slick({
+                                          infinite: false,
+                                          //speed: 300,
+                                          slide: 'li',
+                                          slidesToShow: 7,
+                                          slidesToScroll: 7,
+                                          prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
+                                          nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
+                                      });
+
+                                  } catch (e) {
+                                      console.log()
+                                  }
+                              }
+                          }
+                      });
+                      $(window).resize();
+                  }, 1400);
+
+                  $(window).resize()
+                  setTimeout(function () {
+                      $(".tb-tabs-header").css({"visibility" : "visible"});
+                  },1400);
+          })
+
+      };
+      $scope.selectTab = function (index) {
+          activateTab(index);
+          $scope.selectedTab = index;
+          $scope.getData();
+      }
+      $scope.selectTab(1);
   }]);

@@ -2,14 +2,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 // Enter page
 
-app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$stateParams', function($scope, $http, $state, $stateParams) {
+app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$stateParams', '$rootScope', function($scope, $http, $state, $stateParams, $rootScope) {
     $scope.graph = $scope.$state.params.graph;
     $scope.page = $scope.$state.params.page;
     $scope.graphTitle = $scope.$state.params.graphTitle;
-    $scope.dayTrans = ["Day", "der Tag"];
-    $scope.nightTrans = ["Night", "die Nacht"];
-    $scope.dayTransSlav = ["День", "Дзень"];
-    $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
+    $scope.dayTrans = ["Day", "der Tag", "Giorno", "День", "Дзень"];
+    $scope.nightTrans = ["Night", "die Nacht", "Notte", "Ніч", "Ночь", "Ноч"];
+    $scope.dayTransSlav = [];
+    $scope.nightTransSlav = [];
     var slav = ["ua", "by", "ru"];
     if(slav.includes(location.pathname.split("/")[1])){
         $scope.outTable = "slavTable";
@@ -29,6 +29,7 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
         };
 
         $http(sendingTableRequest).then(function (response) {
+            console.log(response);
             $scope.$parent.temperatureWeekly = response;
         })
     }
@@ -50,12 +51,12 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
 
             $http(sendingTableRequest).success(function (data) {
                 console.log(1)
-                readyGet(data, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle, $scope.local.timeRange)
+                readyGet(data, [], $scope.local.typeTemp, $scope.$state.params.page, $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
             })
         }
     } else if($scope.$state.params.page === 'ten-days') {
         $http.post('/get_detailed_forecast').then(function (response) {
-            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle, $scope.local.timeRange)
+            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
         });
     }
 

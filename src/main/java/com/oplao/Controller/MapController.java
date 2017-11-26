@@ -11,6 +11,8 @@ package com.oplao.Controller;
 
         import javax.servlet.http.HttpServletRequest;
         import javax.servlet.http.HttpServletResponse;
+        import java.io.UnsupportedEncodingException;
+        import java.net.URLDecoder;
         import java.util.HashMap;
         import java.util.List;
 
@@ -38,9 +40,15 @@ public class MapController {
                                        @RequestParam("west") double west,
                                        @RequestParam("south") double south,
                                        @RequestParam("east") double east,
-                                       @RequestParam(value = "time", required = false) String time){
+                                       @RequestParam(value = "time", required = false) String time,
+                                       @CookieValue(name = SearchService.langCookieCode, defaultValue = "") String langCookieCode){
 
-        return mapService.getMapWeather(max,north,west,south, east, time, searchService.findSelectedCity(request, response, currentCookieValue));
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return mapService.getMapWeather(max,north,west,south, east, time, searchService.findSelectedCity(request, response, currentCookieValue), langCookieCode);
 
     }
 

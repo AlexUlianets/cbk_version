@@ -13,33 +13,38 @@ import java.util.ResourceBundle;
 @Service
 public class LanguageService {
 
-    public HashMap generateLanguageContent(String languageCode, String path, JSONObject currentCity){
+    public HashMap generateLanguageContent(String languageCode, String path, JSONObject currentCity) {
         Locale locale = new Locale(languageCode, LanguageUtil.getCountryCode(languageCode));
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_"+languageCode, locale);
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_" + languageCode, locale);
 
-        if(path.contains("widgets")){
+        String city = currentCity.getString("name");
+        String countryName = currentCity.getString("countryName");
+        String[] parsedUrl = path.split("/");
+        char hrIndex = parsedUrl[3].charAt(parsedUrl[3].length() - 1);
+
+        if (path.contains("widgets")) {
             return generateWidgetContent(resourceBundle);
-        }else if(path.equals("/") || path.split("/").length==4&&!path.contains("widgets")){
-          return generateFrontPageContent(resourceBundle, currentCity.getString("countryName"));
-        }else if(path.contains("outlook")){
-            return generateOutlookContent(resourceBundle, currentCity.getString("name"));
-        }else if(path.contains("today")|| path.contains("tomorrow")){
-            return generateTodayTomorrowContent(resourceBundle, path.contains("today"));
-        }else if(path.contains("history")){
-            return generatePastWeatherContent(resourceBundle);
-        }else if(path.contains("hour-by-hour")){
-            return generateHourlyContent(resourceBundle);
-        } else if(path.contains("3")||path.contains("7")||path.contains("14")){
-            return generateUniversalDaysContent(resourceBundle, path.contains("3"), path.contains("7"));
-        }else if(path.contains("5")||path.contains("10")){
-            return generateNotUniversalDaysContent(resourceBundle, path.contains("5"));
+        } else if (path.equals("/") || path.split("/").length == 4 && !path.contains("widgets")) {
+            return generateFrontPageContent(resourceBundle, city, countryName, languageCode);
+        } else if (path.contains("outlook")) {
+            return generateOutlookContent(resourceBundle, city, countryName, languageCode);
+        } else if (path.contains("today") || path.contains("tomorrow")) {
+            return generateTodayTomorrowContent(resourceBundle, city, countryName, languageCode, path.contains("today"));
+        } else if (path.contains("history")) {
+            return generatePastWeatherContent(resourceBundle, city, countryName, languageCode, hrIndex);
+        } else if (path.contains("hour-by-hour")) {
+            return generateHourlyContent(resourceBundle, city, countryName, languageCode, hrIndex);
+        } else if (path.contains("3") || path.contains("7") || path.contains("14")) {
+            return generateUniversalDaysContent(resourceBundle, path.contains("3"), path.contains("7"), city, countryName, languageCode);
+        } else if (path.contains("5") || path.contains("10")) {
+            return generateNotUniversalDaysContent(resourceBundle, path.contains("5"), city, countryName, languageCode);
         } else if (path.contains("map")) {
-            return generateTemperatureMapContent(resourceBundle);
+            return generateTemperatureMapContent(resourceBundle, city, countryName, languageCode);
         }
         return null;
     }
 
-    private HashMap<String, String> generateWidgetContent(ResourceBundle bundle){
+    private HashMap<String, String> generateWidgetContent(ResourceBundle bundle) {
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("widgetsHeader", encode(bundle.getString("widgetsHeader")));
         map.put("chooseLocation", encode(bundle.getString("chooseLocation")));
@@ -51,74 +56,122 @@ public class LanguageService {
         map.put("copyCode", encode(bundle.getString("copyCode")));
         map.put("getTheCode", encode(bundle.getString("getTheCode")));
         map.put("adoptingTheTermsOfUse", encode(bundle.getString("adoptingTheTermsOfUse")));
+        map.put("title", encode(bundle.getString("titleWidgets")));
+        map.put("description", encode(bundle.getString("descrWidgets")));
         return map;
     }
-    private HashMap generateHourlyContent(ResourceBundle bundle){
+
+    private HashMap generateHourlyContent(ResourceBundle bundle, String city, String country, String langCode, char hrIndex) {
+        boolean isSlav = LanguageUtil.isSlav(langCode);
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("aboveGraph", encode(bundle.getString("aboveGraphHourly")));
         map.put("aboveTable", encode(bundle.getString("aboveTableHourly")));
         map.put("oneHour", encode(bundle.getString("oneHour")));
         map.put("threeHour", encode(bundle.getString("threeHour")));
+        map.put("inGraphTitle", encode(bundle.getString("inGraphHourly")));
+        map.put("title", formatLocation(bundle.getString("titleHourly"), city, country, langCode));
+        map.put("description", !isSlav ? langCode.equals("fr") || langCode.equals("it")
+                ? formatThreeLocations(bundle.getString("descrHourly"), city, country, langCode)
+                : formatTwoLocations(bundle.getString("descrHourly"), city, country, langCode)
+                : formatTwoLocations(bundle.getString("descrHourly" + hrIndex), city, country, langCode));
+        map.put("canonical", hrIndex == '3' ? "https://oplao.com/en/forecast/hour-by-hour1/" : "");
         return map;
     }
-    private HashMap generatePastWeatherContent(ResourceBundle bundle){
+
+    private HashMap generatePastWeatherContent(ResourceBundle bundle, String city, String country, String langCode, char hrIndex) {
+        boolean isSlav = LanguageUtil.isSlav(langCode);
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("aboveTable", encode(bundle.getString("aboveTablePastWeather")));
         map.put("aboveGraph", encode(bundle.getString("aboveGraphPastWeather")));
+        map.put("inGraphTitle", encode(bundle.getString("inGraphPastWeather")));
         map.put("pickADate", encode(bundle.getString("pickDate")));
         map.put("oneHour", encode(bundle.getString("oneHour")));
         map.put("threeHour", encode(bundle.getString("threeHour")));
-        return map;
-    }
-    private HashMap generateTemperatureMapContent(ResourceBundle bundle){
-        HashMap map = generateMainContent(bundle);
-        map.put("aboveTable", encode(bundle.getString("aboveTableTempMap")));
-        return map;
-    }
-    private HashMap generateNotUniversalDaysContent(ResourceBundle bundle, boolean is5){
-        HashMap<String, String> map = generateMainContent(bundle);
-        map.put("aboveTable", encode(is5?bundle.getString("aboveTable5Days"):bundle.getString("aboveTable10Days")));
-        map.put("aboveGraph", encode(is5?bundle.getString("aboveGraph5Days"):bundle.getString("aboveGraph10Days")));
-        return map;
-    }
-    private HashMap generateUniversalDaysContent(ResourceBundle bundle, boolean is3, boolean is7){
-        HashMap<String, String> map = generateMainContent(bundle);
-        map.put("aboveTable", encode(is3?bundle.getString("aboveTable3Days")
-                :is7?bundle.getString("aboveTable7Days")
-                :bundle.getString("aboveTable14Days")));
-        map.put("aboveGraph", encode(is3?bundle.getString("aboveGraph3Days")
-                :is7?bundle.getString("aboveGraph7Days")
-                :bundle.getString("aboveGraph14Days")));
-        return map;
-    }
-    private HashMap generateTodayTomorrowContent(ResourceBundle bundle, boolean isToday){
-        HashMap<String, String> map = generateMainContent(bundle);
-        map.put("sunrise", encode(bundle.getString("sunrise")));
-        map.put("sunset", encode(bundle.getString("sunset")));
-        map.put("aboveTable", encode(isToday?bundle.getString("aboveTableToday"):bundle.getString("aboveTableTomorrow")));
-        map.put("aboveGraph", encode(isToday?bundle.getString("aboveGraphToday"):""));
+        map.put("title", formatLocation(bundle.getString("titleHistory".concat(isSlav || langCode.equals("de") ? String.valueOf(hrIndex) : "")), city, country, langCode));
+        map.put("description", generateHistoryDescription(bundle, city, country, langCode, hrIndex, isSlav));
+        map.put("canonical", hrIndex == '3' ? "https://oplao.com/en/weather/history1/" : "");
 
         return map;
     }
-    private HashMap generateFrontPageContent(ResourceBundle bundle, String country){
+
+    private HashMap generateTemperatureMapContent(ResourceBundle bundle, String city, String country, String langCode) {
+        HashMap map = generateMainContent(bundle);
+        map.put("aboveTable", encode(bundle.getString("aboveTableTempMap")));
+        map.put("title", encode(bundle.getString("titleMap")));
+        map.put("description", formatLocation(bundle.getString("descrMap"), city, country, langCode));
+        map.put("canonical", "https://oplao.com/en/weather/outlook/");
+        return map;
+    }
+
+    private HashMap generateNotUniversalDaysContent(ResourceBundle bundle, boolean is5, String city, String country, String langCode) {
+        HashMap<String, String> map = generateMainContent(bundle);
+        map.put("aboveTable", encode(is5 ? bundle.getString("aboveTable5Days") : bundle.getString("aboveTable10Days")));
+        map.put("aboveGraph", encode(is5 ? bundle.getString("aboveGraph5Days") : bundle.getString("aboveGraph10Days")));
+        map.put("inGraphTitle", encode(is5 ? bundle.getString("inGraph5Days") : bundle.getString("inGraph10Days")));
+        map.put("title", formatLocation(is5 ? bundle.getString("title5Days") : bundle.getString("title10Days"), city, country, langCode));
+        map.put("description", (!langCode.equals("fr") && !langCode.equals("it")) ?
+                formatLocation(is5 ? bundle.getString("descr5Days") :
+                        bundle.getString("descr10Days"), city, country, langCode) :
+                formatTwoLocations(is5 ? bundle.getString("descr5Days") : bundle.getString("descr10Days"), city, country, langCode));
+        map.put("canonical", "https://oplao.com/en/weather/outlook/");
+        return map;
+    }
+
+    private HashMap generateUniversalDaysContent(ResourceBundle bundle, boolean is3, boolean is7, String city, String country, String langCode) {
+        HashMap<String, String> map = generateMainContent(bundle);
+        map.put("aboveTable", encode(is3 ? bundle.getString("aboveTable3Days")
+                : is7 ? bundle.getString("aboveTable7Days")
+                : bundle.getString("aboveTable14Days")));
+        map.put("aboveGraph", encode(is3 ? bundle.getString("aboveGraph3Days")
+                : is7 ? bundle.getString("aboveGraph7Days")
+                : bundle.getString("aboveGraph14Days")));
+        map.put("inGraphTitle", encode(is3 ? bundle.getString("inGraph3Days")
+                : is7 ? bundle.getString("inGraph7Days")
+                : bundle.getString("inGraph14Days")));
+        map.put("title", formatLocation(is3 ? bundle.getString("title3Days")
+                : is7 ? bundle.getString("title7Days")
+                : bundle.getString("title14Days"), city, country, langCode));
+        map.put("description", generateUniversalDaysDescription(bundle, city, country, langCode, is3, is7));
+        map.put("canonical", is3 || is7 ? "https://oplao.com/en/forecast/10/" : "https://oplao.com/en/weather/outlook/");
+        return map;
+    }
+
+    private HashMap generateTodayTomorrowContent(ResourceBundle bundle, String city, String country, String langCode, boolean isToday) {
+        HashMap<String, String> map = generateMainContent(bundle);
+        map.put("sunrise", encode(bundle.getString("sunrise")));
+        map.put("sunset", encode(bundle.getString("sunset")));
+        map.put("inGraphTitle", encode(bundle.getString("inGraphToday")));
+        map.put("aboveTable", encode(isToday ? bundle.getString("aboveTableToday") : bundle.getString("aboveTableTomorrow")));
+        map.put("aboveGraph", encode(isToday ? bundle.getString("aboveGraphToday") : ""));
+        map.put("title", isToday ? formatLocation(bundle.getString("titleToday"), city, country, langCode) : formatLocation(bundle.getString("titleTomorrow"), city, country, langCode));
+        map.put("description", isToday ? formatLocation(bundle.getString("descrToday"), city, country, langCode) : formatLocation(bundle.getString("descrTomorrow"), city, country, langCode));
+        map.put("canonical", isToday ? "https://oplao.com/en/forecast/hour-by-hour1/" : "https://oplao.com/en/forecast/today/");
+        return map;
+    }
+
+    private HashMap generateFrontPageContent(ResourceBundle bundle, String city, String country, String langCode) {
 
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("viewMap", encode(bundle.getString("viewMap")));
         String locWeather = encode(bundle.getString("locationWeather"));
-        map.put("locationWeather", MessageFormat.format(locWeather,country));
+        map.put("locationWeather", MessageFormat.format(locWeather, LanguageUtil.validateSlavCurrentCode(country, langCode)));
         map.put("holidayWeather", encode(bundle.getString("holidayWeather")));
         map.put("topHolidayDestinations", encode(bundle.getString("topHolidayDestinations")));
+        map.put("title", encode(bundle.getString("titleFront")));
+        map.put("description", langCode.equals("it") || langCode.equals("en") ? encode(bundle.getString("descrFront")) : formatLocation(bundle.getString("descrFront"), city, country, langCode));
         return map;
     }
 
-    private HashMap<String, String> generateOutlookContent(ResourceBundle bundle, String city){
+    private HashMap<String, String> generateOutlookContent(ResourceBundle bundle, String city, String country, String langCode) {
+        boolean isSlav = LanguageUtil.isSlav(langCode);
         HashMap<String, String> map = generateMainContent(bundle);
+        map.put("inGraphTitle", isSlav ? encode(bundle.getString("inGraph14Days")) : encode(bundle.getString("inGraphOutlook")));
         map.put("longTermForecast", encode(bundle.getString("longTermForecast")));
         map.put("date", encode(bundle.getString("date")));
-        map.put("aboveGraph", encode(bundle.getString("aboveGraphOutlook")));
-        map.put("aboveTable", encode(bundle.getString("aboveTableOutlook")));
+        map.put("aboveGraph", isSlav ? encode(bundle.getString("aboveGraph14Days")) : encode(bundle.getString("aboveGraphOutlook")));
+        map.put("aboveTable", isSlav ? encode(bundle.getString("aboveTable14Days")) : encode(bundle.getString("aboveTableOutlook")));
         String climIn = encode(bundle.getString("climateInWeather"));
-        map.put("climateIn", MessageFormat.format(climIn, city));
+        map.put("climateIn", MessageFormat.format(climIn, LanguageUtil.validateSlavCurrentCode(city, langCode)));
         map.put("coordinates", encode(bundle.getString("coordinates")));
         map.put("last5YearWeatherData", encode(bundle.getString("last5YearWeatherData")));
         map.put("uvIndex", encode(bundle.getString("uvIndex")));
@@ -127,10 +180,13 @@ public class LanguageService {
         map.put("uvIndex3", encode(bundle.getString("uvIndex.3")));
         map.put("uvIndex4", encode(bundle.getString("uvIndex.4")));
         map.put("uvIndex5", encode(bundle.getString("uvIndex.5")));
+        map.put("title", formatLocation(bundle.getString("titleOutlook"), city, country, langCode));
+        map.put("description", generateOutlookDescription(bundle, city, country, langCode, isSlav));
 
         return map;
     }
-    private HashMap<String, String> generateMainContent(ResourceBundle bundle){
+
+    private HashMap<String, String> generateMainContent(ResourceBundle bundle) {
         HashMap<String, String> map = new HashMap<>();
         map.put("searchTip", encode(bundle.getString("searchTip")));
         map.put("feelsLike", encode(bundle.getString("feelsLike")));
@@ -191,6 +247,21 @@ public class LanguageService {
         map.put("precipitation", encode(bundle.getString("precipitation")));
         map.put("timezone", encode(bundle.getString("timezone")));
         map.put("visibility", encode(bundle.getString("visibility")));
+        map.put("ms", encode(bundle.getString("speedScale.m/s")));
+        map.put("mph", encode(bundle.getString("speedScale.mph")));
+        map.put("hPa", encode(bundle.getString("pressureScale.hPa")));
+        map.put("in", encode(bundle.getString("pressureScale.in")));
+        map.put("mmDist", encode(bundle.getString("smallWidthScale.mm")));
+        map.put("inDist", encode(bundle.getString("smallWidthScale.in")));
+        map.put("settings", encode(bundle.getString("settings")));
+        map.put("language", encode(bundle.getString("language")));
+        map.put("unitsPreference", encode(bundle.getString("unitsPreference")));
+        map.put("timeFormat", encode(bundle.getString("timeFormat")));
+        map.put("twelveHours", encode(bundle.getString("timeFormat.1")));
+        map.put("twentyFourHours", encode(bundle.getString("timeFormat.2")));
+        map.put("feedbackShare", encode(bundle.getString("feedbackShare")));
+        map.put("email", encode(bundle.getString("feedbackCommand.email.label")));
+        map.put("send", encode(bundle.getString("send")));
         return map;
     }
 
@@ -203,5 +274,76 @@ public class LanguageService {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private String formatLocation(String content, String city, String country, String langCode) {
+        String pattern = encode(content);
+        String arg = LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country;
+        return MessageFormat.format(pattern.replaceAll("'", ""), arg);
+    }
+
+    private String formatTwoLocations(String content, String city, String country, String langCode) {
+        return MessageFormat.format(encode(content).replaceAll("'", ""), LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country, LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country);
+    }
+
+    private String formatThreeLocations(String content, String city, String country, String langCode) {
+        return MessageFormat.format(encode(content).replaceAll("'", ""), LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country, LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country, LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country);
+    }
+
+    private String formatWithHourIndex(String content, String city, String country, String langCode, char hrIndex) {
+        return MessageFormat.format(encode(content).replaceAll("'", ""), LanguageUtil.validateSlavCurrentCode(city, langCode) + ", " + country, hrIndex);
+    }
+
+    private String generateHistoryDescription(ResourceBundle bundle, String city, String country, String langCode, char hrIndex, boolean isSlav) {
+        String descr = "";
+        if (isSlav) {
+            if (langCode.equals("ua") || langCode.equals("ru")) {
+                if (hrIndex == '3') {
+                    descr = formatTwoLocations(bundle.getString("descrHistory3"), city, country, langCode);
+                } else if (hrIndex == '1') {
+                    descr = formatLocation(bundle.getString("descrHistory1"), city, country, langCode);
+                }
+            } else if (langCode.equals("by")) {
+                descr = formatThreeLocations(bundle.getString("descrHistory" + hrIndex), city, country, langCode);
+            }
+        } else if (langCode.equals("fr") || langCode.equals("it")) {
+            descr = formatThreeLocations(bundle.getString("descrHistory"), city, country, langCode);
+        } else if (langCode.equals("en")) {
+            descr = formatWithHourIndex(bundle.getString("descrHistory"), city, country, langCode, hrIndex);
+        } else {
+            descr = formatLocation(bundle.getString("descrHistory"), city, country, langCode);
+        }
+        return descr;
+    }
+
+
+    private String generateUniversalDaysDescription(ResourceBundle bundle, String city, String country, String langCode, boolean is3, boolean is7) {
+        String desc = "";
+        if (langCode.equals("by") || langCode.equals("fr") || langCode.equals("it")) {
+            desc = formatTwoLocations(is3 ? bundle.getString("descr3Days")
+                    : is7 ? bundle.getString("descr7Days") : bundle.getString("descr14Days"), city, country, langCode);
+        } else if (langCode.equals("ua") || langCode.equals("ru")) {
+            if (is3 || is7) {
+                desc = formatLocation(is3 ? bundle.getString("descr3Days")
+                        : bundle.getString("descr7Days"), city, country, langCode);
+            } else {
+                desc = formatTwoLocations(bundle.getString("descr14Days"), city, country, langCode);
+            }
+        } else if (langCode.equals("de") || langCode.equals("en")) {
+            desc = formatLocation(is3 ? bundle.getString("descr3Days") : is7 ? bundle.getString("descr7Days") : bundle.getString("descr14Days"), city, country, langCode);
+        }
+        return desc;
+    }
+
+    private String generateOutlookDescription(ResourceBundle bundle, String city, String country, String langCode, boolean isSlav) {
+        String desc = "";
+        if (isSlav || langCode.equals("en") || langCode.equals("de")) {
+            desc = formatTwoLocations(bundle.getString("descrOutlook"), city, country, langCode);
+        } else if (langCode.equals("fr")) {
+            desc = formatLocation(bundle.getString("descrOutlook"), city, country, langCode);
+        } else if (langCode.equals("it")) {
+            desc = encode(bundle.getString("descrOutlook"));
+        }
+        return desc;
     }
 }
