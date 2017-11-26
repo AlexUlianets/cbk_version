@@ -3,16 +3,14 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
   app.controller('tempMapCtrl', ['$scope', '$http', '$state', '$element', 'locationsModel', '$cookies', function($scope, $http, $state, $element, locationsModel, $cookies) {
       $scope.currentTabMap="";
 
-      $scope.dayTrans = ["Day", "der Tag", "Giorno"];
-      $scope.nightTrans = ["Night", "die Nacht", "Notte"];
-      $scope.dayTransSlav = ["День", "Дзень"];
-      $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
-      var slav = ["ua", "by", "ru"];
-      if(slav.includes(location.pathname.split("/")[1])){
-          $scope.outTable = "slavTable";
-      }else{
-          $scope.outTable = "enTable"
-      }
+      $scope.dayTrans = ["Day", "der Tag", "Giorno", "День", "Дзень"];
+      $scope.nightTrans = ["Night", "die Nacht", "Notte", "Ніч", "Ночь", "Ноч"];
+   //   var slav = ["ua", "by", "ru"];
+      // if(slav.includes(location.pathname.split("/")[1])){
+      //     $scope.outTable = "slavTable";
+      // }else{
+      //     $scope.outTable = "enTable"
+      // }
 
       $http.post('/get_4_days_tabs').success(function (response) {
           $scope.tabs=response;
