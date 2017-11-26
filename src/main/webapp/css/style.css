@@ -506,7 +506,7 @@ img.mfp-img{width:auto;max-width:100%;height:auto;display:block;line-height:0;bo
 .t-view-map{display:block;float:left;margin-left:24px;color:#9c9c9c;font:400 1.4em/33px "FiraSans-Book", sans-serif;text-transform:uppercase;padding-left:26px;position:relative;}
 .t-view-map:after{content:'';display:block;position:absolute;left:0;top:10px;width:15px;height:10px;}
 .t-view-map:hover{color:#0089d0;}
-#map{height:260px;width:100%;margin-top:30px;}
+#map{height:520px;width:100%;margin-top:30px;}
 map-marker.arrow_box{width:57px;height:55px;border-radius:2px;text-align:center;z-index:10000;background-image:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwZTY5NiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwZGM5ZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');background-size:100%;  }
 map-marker.arrow_box h5{text-align:center;color:#fff;font:500 1.5em/1 "Fira Sans", sans-serif;}
 map-marker.arrow_box h5 span{position:relative;}
@@ -1742,6 +1742,15 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
     font-size:17px;
     color:#0B6D76;
 }
+.wrn-block .max-temperature{
+    font-size:24px;
+    color:#970100;
+}
+
+.wrn-block .min-temperature{
+    font-size:24px;
+    color:#0B6D76;
+}
 
 .tb-item .tb-row .tb-wind .tb-meter{
     color: #b7b7b7;
@@ -1823,7 +1832,7 @@ header .main-menu-inner{padding-top:15px;margin-top:50px;}
 
 .tb-tabs .wrn-block .wrn-top{
     border-bottom: none;
-    margin: 0px 24px 0 0px;
+    margin: -17px 24px 0 0px;
     font-size: 20px;
     font-weight: 500;
     padding-top: 15px;
@@ -3232,8 +3241,21 @@ a{
 #gmap {
     position: relative;
     overflow: hidden;
-    height: 260px;
+    height: 520px;
     width: 100%;
+}
+.map-city {
+    position: absolute;
+    padding: 10px;
+    text-align: center;
+    color: grey;
+    font-size: 16px;
+    left: -5px;
+    right: 0;
+    bottom: -33px;
+}
+#holiday-weather-section{
+    margin-top: 35px;
 }
 
 figure {
