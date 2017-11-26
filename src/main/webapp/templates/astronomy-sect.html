@@ -20,8 +20,7 @@
         </div>
         <div class="astronomy-right">
             <div class="ar-inner">
-                <h5>{{astronomy.moon_phase_name}}
-                    <br>
+                <h5>
                     {{astronomy.moon_phase_state}}
                 </h5>
                 <img alt="img" ng-repeat="n in [1, 2, 3, 4, 5, 6, 7, 8]" ng-src="svg/oplao_moon_{{n}}.svg" ng-class="{'op_full':moon_phase_index==n, 'op':moon_phase_index!=n}"></img>
