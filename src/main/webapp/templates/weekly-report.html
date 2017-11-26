@@ -100,20 +100,20 @@
                             </div>
                             <div class="tb-precip">
                                 <div class="tb-count">{{local.typeTemp=='C'?day.precipMm:day.precipIn}}</div>
-                                <div class="tb-meter">{{local.typeTemp=='C'?'mm':'in'}}</div>
+                                <div class="tb-meter">{{local.typeTemp=='C'?pageContent.mmDist:pageContent.inDist}}</div>
                             </div>
                             <div class="tb-wind">
                                 <i class="sprite-wind-tb" style="    -ms-transform: rotate({{day.windDegree + 'deg'}});    -webkit-transform: rotate({{day.windDegree + 'deg'}});    transform: rotate({{day.windDegree + 'deg'}});"></i>
-                                <div class="tb-count" style="color:{{day.windspeedColor}}; font-weight:{{day.boldSpeed}}">{{local.typeTemp=='C'?day.windMs:day.windMph}} {{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                <div class="tb-count" style="color:{{day.windspeedColor}}; font-weight:{{day.boldSpeed}}">{{local.typeTemp=='C'?day.windMs:day.windMph}} {{local.typeTemp=='C'?pageContent.ms:pageContent.mph}}</div>
                                 <div class="tb-meter">{{day.winddir}}</div>
                             </div>
                             <div class="tb-gust">
                                 <div class="tb-count" style="color:{{day.windgustColor}}; font-weight:{{day.boldGust}}">{{local.typeTemp=='C'?day.gustMs:day.gustMph}}</div>
-                                <div class="tb-meter">{{local.typeTemp=='C'?'m/s':'mph'}}</div>
+                                <div class="tb-meter">{{local.typeTemp=='C'?pageContent.ms:pageContent.mph}}</div>
                             </div>
                             <div class="tb-pressure">
                                 <div class="tb-count">{{local.typeTemp=='C'?day.pressurehPa:day.pressureInch}}</div>
-                                <div class="tb-meter">{{local.typeTemp=='C'?'hPa':'in'}}</div>
+                                <div class="tb-meter">{{local.typeTemp=='C'?pageContent.hPa:pageContent.in}}</div>
                             </div>
                         </div>
                     </div>

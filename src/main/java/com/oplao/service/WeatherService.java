@@ -185,20 +185,20 @@ public class WeatherService {
         ArrayList<HashMap> weatherTomorrow = (ArrayList<HashMap>)tomorrowMap.get("weather");
         HashMap weatherDataTomorrow = weatherTomorrow.get(0);
         ArrayList<HashMap> hourlyTomorrow = (ArrayList<HashMap>)weatherDataTomorrow.get("hourly");
-        boolean countrySpecific = enCountries.contains(countryCode);
-        int avgNightC = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow, "tempC"):getAVGIntParam(hourly, "tempC", nightTimeValues);
-        int avgNightF = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"tempF"):getAVGIntParam(hourly, "tempF", nightTimeValues);
-        int maxFeelLikeNightC = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"FeelsLikeC"):getAVGIntParam(hourly, "FeelsLikeC", nightTimeValues);
-        int maxFeelLikeNightF = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"FeelsLikeF"):getAVGIntParam(hourly, "FeelsLikeF", nightTimeValues);
-        int precipeChanceNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"chanceofrain"):getAVGIntParam(hourly, "chanceofrain", nightTimeValues);
-        double precipNightMM = new BigDecimal(countrySpecific?getNightSumDoubleParam(hourly, hourlyTomorrow,"precipMM"):getSumDoubleParam(hourly, "precipMM", nightTimeValues)).setScale(2, BigDecimal.ROUND_UP).doubleValue();
-        int avgWindMNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"windspeedMiles"):getAVGIntParam(hourly, "windspeedMiles", nightTimeValues);
-        int avgWindKmhNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"windspeedKmph"):getAVGIntParam(hourly, "windspeedKmph", nightTimeValues);
-        int maxGustMNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow, "WindGustMiles"):getAVGIntParam(hourly, "WindGustMiles", nightTimeValues);
-        int maxGustKmhNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow, "WindGustKmph"):getAVGIntParam(hourly, "WindGustKmph", nightTimeValues);
-        int avgPressureNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"pressure"):getAVGIntParam(hourly, "pressure", nightTimeValues);
+        //boolean countrySpecific = enCountries.contains(countryCode);
+        int avgNightC = getAVGNightIntParam(hourly, hourlyTomorrow, "tempC");
+        int avgNightF = getAVGNightIntParam(hourly, hourlyTomorrow,"tempF");
+        int maxFeelLikeNightC = getAVGNightIntParam(hourly, hourlyTomorrow,"FeelsLikeC");
+        int maxFeelLikeNightF = getAVGNightIntParam(hourly, hourlyTomorrow,"FeelsLikeF");
+        int precipeChanceNight = getAVGNightIntParam(hourly, hourlyTomorrow,"chanceofrain");
+        double precipNightMM = new BigDecimal(getNightSumDoubleParam(hourly, hourlyTomorrow,"precipMM")).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+        int avgWindMNight = getAVGNightIntParam(hourly, hourlyTomorrow,"windspeedMiles");
+        int avgWindKmhNight = getAVGNightIntParam(hourly, hourlyTomorrow,"windspeedKmph");
+        int maxGustMNight = getAVGNightIntParam(hourly, hourlyTomorrow, "WindGustMiles");
+        int maxGustKmhNight = getAVGNightIntParam(hourly, hourlyTomorrow, "WindGustKmph");
+        int avgPressureNight = getAVGNightIntParam(hourly, hourlyTomorrow,"pressure");
         double avgPressureInchNight = new BigDecimal(avgPressureNight * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
-        int windDegreeNight = countrySpecific?getAVGNightIntParam(hourly, hourlyTomorrow,"winddirDegree"):getAVGIntParam(hourly, "winddirDegree", nightTimeValues) + 40 + 180;
+        int windDegreeNight = getAVGNightIntParam(hourly, hourlyTomorrow,"winddirDegree");
         String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode")));
         int avgWindMsNight = (int)Math.round(avgWindKmhNight * 0.27777777777778);
         int maxGustMsNight = (int)Math.round(maxGustKmhNight * 0.27777777777778);
@@ -242,15 +242,15 @@ public class WeatherService {
 
         Map<String, Object> wholeDayMap = null;
 //        if(enCountries.contains(countryCode)){
-//            result = new TreeMap<>();
-//            dayMap = new TreeMap<>();
-//            nightMap = new TreeMap<>();
-//            wholeDayMap = new TreeMap<>();
+            result = new TreeMap<>();
+            dayMap = new TreeMap<>();
+            nightMap = new TreeMap<>();
+            wholeDayMap = new TreeMap<>();
 //        }else{
-            result = new HashMap<>();
-            dayMap = new HashMap<>();
-            nightMap = new HashMap<>();
-            wholeDayMap = new HashMap<>();
+//            result = new HashMap<>();
+//            dayMap = new HashMap<>();
+//            nightMap = new HashMap<>();
+//            wholeDayMap = new HashMap<>();
 //        }
         wholeDayMap.put("dayOfMonth", dateTime.getDayOfMonth());
         wholeDayMap.put("monthOfYear", LanguageService.encode(DateConstants.convertMonthOfYearShort(dateTime.getMonthOfYear(), bundle)));
@@ -467,7 +467,7 @@ public class WeatherService {
                 zdt.getHour(), zdt.getMinute());
 
         String hoursBetween = "" + ChronoUnit.HOURS.between(ldt, ZonedDateTime.now
-                (ZoneId.of(CityToTimeZoneConverter.convert(city))));
+                (ZoneId.of((String) ((JSONObject)city.get("timezone")).get("timeZoneId"))));
 
         if(Integer.parseInt(hoursBetween)>0){
             hoursBetween = "+ " + hoursBetween;
@@ -535,12 +535,12 @@ public class WeatherService {
         double waningIndex = moonPhase.getPhase();
         return waningIndex<0?"Waning":"Waxing";
     }
-
         public HashMap getRemoteData(JSONObject city, String langCode){
 
             String cityName = validateCityName((String)city.get("name"));
             String countryCode = city.getString("countryCode").toLowerCase();
             DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
+            List<String> slavCodes = Arrays.asList("ua", "by", "ru");
             JSONObject jsonObject = null;
         try {
           jsonObject = readJsonFromUrl("http://api.worldweatheronline.com/premium/v1/weather.ashx?key=gwad8rsbfr57wcbvwghcps26&format=json&show_comments=no&mca=no&cc=yes&tp=1&date=" + dateTime.getYear() + "-" + dateTime.getMonthOfYear() + "-" + dateTime.getDayOfMonth() + "&q=" + String.valueOf(city.get("lat")+ "," + String.valueOf(city.get("lng"))));
@@ -559,7 +559,7 @@ public class WeatherService {
 
             String locWeather = LanguageService.encode(bundle.getString("locationWeather"));
 
-        result.put("cityWeather",  MessageFormat.format(locWeather, cityName.replaceAll("%20", " ")));
+        result.put("cityWeather",  MessageFormat.format(locWeather, LanguageUtil.validateSlavCurrentCode(cityName.replaceAll("%20", " "), langCode)));
         result.put("country", city.get("countryName"));
         result.put("countryCode", Arrays.asList(SearchService.validCountryCodes).contains(countryCode)?countryCode:"en");
         result.put("month", LanguageService.encode(DateConstants.convertMonthOfYear(dateTime.getMonthOfYear(), bundle)));
@@ -657,11 +657,11 @@ public class WeatherService {
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
         for (int day = 0; day < 14; day++) {
-            result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day), city));
+            result.add(getSingleDetailedForecastMapping(dateTime.plusDays(day), city, langCode));
         }
         return result;
     }
-    private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime, JSONObject city){
+    private DetailedForecastGraphMapping getSingleDetailedForecastMapping(DateTime dateTime, JSONObject city, String langCode){
         
         JSONObject jsonObject = null;
         try {
@@ -673,6 +673,9 @@ public class WeatherService {
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         ArrayList<HashMap> hourly2PmData = ((ArrayList)((HashMap)((ArrayList)(map.get("weather"))).get(0)).get("hourly"));
 
+
+        Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
+        ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
 
         int tempC = parseInt(hourly2PmData.get(14).get("tempC"));
         int tempF = parseInt(hourly2PmData.get(14).get("tempF"));
@@ -834,7 +837,7 @@ public class WeatherService {
         int windiestMS = (int)Math.round(getWindiestKmph(week)*0.27777777777778);
         String foundWindiest = (String)getWindiestDay(week, windiestMiles).get("date");
         DateTime windiestDateTime = new DateTime(foundWindiest);
-        String windiestDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(windiestDateTime.getMonthOfYear(), bundle).toUpperCase() + "."+windiestDateTime.getDayOfMonth());
+        String windiestDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(windiestDateTime.getMonthOfYear(), bundle) + "."+windiestDateTime.getDayOfMonth()).toUpperCase();
 
        HashMap<String, Object> results = new HashMap<>();
 

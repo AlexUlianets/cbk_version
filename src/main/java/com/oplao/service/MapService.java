@@ -51,7 +51,7 @@ public class MapService {
         return res;
     }
 
-    public List<HashMap> getMapWeather(int max, double north, double west, double south, double east, String time, JSONObject city){
+    public List<HashMap> getMapWeather(int max, double north, double west, double south, double east, String time, JSONObject city, String lang){
 
         List<JSONObject> list= new ArrayList<>();
         DateTime dateTime = null;
@@ -67,7 +67,7 @@ public class MapService {
         }
 
         try {
-            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang=en" +
+            list = SearchService.findByOccurences("https://bd.oplao.com/geoLocation/find.json?lang="+lang +
                     "&max="+max+"&north="+north+"&west="+west+"&south="+south+"&east="+east+"&minppl=10000");
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,6 +95,7 @@ List<HashMap> res = new ArrayList<>();
         data.put("img", "" + EXT_STATES.get(Integer.parseInt("" + weather.get("weatherCode"))));
         data.put("lat", "" + elem.getString("lat"));
         data.put("lng", "" + elem.getString("lng"));
+        data.put("city", elem.getString("name"));
         return data;
     }
 
@@ -108,6 +109,7 @@ List<HashMap> res = new ArrayList<>();
         data.put("img", "" + EXT_STATES.get(Integer.parseInt("" + weather.get("weatherCode"))));
         data.put("lat", "" + elem.getString("lat"));
         data.put("lng", "" + elem.getString("lng"));
+        data.put("city", elem.getString("name"));
         return data;
     }
 }

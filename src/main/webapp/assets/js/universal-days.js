@@ -2,7 +2,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 // Enter page
 
-app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', function($scope, $http, $state, $stateParams) {
+app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams','$rootScope', function($scope, $http, $state, $stateParams, $rootScope) {
     $scope.$state = $state;
     $scope.$stateParams = $stateParams;
     $scope.selectedTab = 1;
@@ -10,7 +10,6 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
     $scope.tabClass = $scope.$state.params.tabClass;
     $scope.page=$scope.$state.params.page;
     $scope.graphTitle = $scope.$state.params.graphTitle;
-    $scope.space = ' ';
 
     $scope.getData = function () {
         var sendingTableRequest = {
@@ -27,50 +26,51 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams', fun
         }
         $http(sendingTableRequest).success(function (data) {
             $scope.dynamicTableData = data;
-            console.log($scope.dynamicTableData)
+            console.log($scope.dynamicTableData);
+
+            if($scope.page=='fourteen-days'){
+                setTimeout(function () {
+
+                    $(function () {
+                        if ($('.tb-slider').length) {
+                            if ($(window).width() >= '881') {
+                                try {
+                                    $('.tb-slider').slick({
+                                        infinite: false,
+                                        //speed: 300,
+                                        slide: 'li',
+                                        slidesToShow: 7,
+                                        slidesToScroll: 7,
+                                        prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
+                                        nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
+                                    });
+
+                                } catch (e) {
+                                    console.log()
+                                }
+                            }
+                        }
+                    });
+                    $(window).resize();
+                }, 1400);
+
+                $(window).resize()
+                setTimeout(function () {
+                    $(".tb-tabs-header").css({"visibility" : "visible"});
+                },1400);
+
+            }
             if($scope.$state.params.page === 'three-days') {
-                readyGet($scope.dynamicTableData, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle, $scope.local.timeRange)
+                readyGet($scope.dynamicTableData, [], $scope.local.typeTemp, $scope.$state.params.page, $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
             }
         })
 
-        if($scope.page=='fourteen-days'){
-        setTimeout(function () {
-
-            $(function () {
-                if ($('.tb-slider').length) {
-                    if ($(window).width() >= '881') {
-                        try {
-                            $('.tb-slider').slick({
-                                infinite: false,
-                                //speed: 300,
-                                slide: 'li',
-                                slidesToShow: 7,
-                                slidesToScroll: 7,
-                                prevArrow: '<button type="button" class="slick-prev slick-arrow"><</button>',
-                                nextArrow: '<button type="button" class="slick-next slick-arrow">></button>'
-                            });
-
-                        } catch (e) {
-                            console.log()
-                        }
-                    }
-                }
-            });
-            $(window).resize();
-        }, 900);
-
-        $(window).resize()
-setTimeout(function () {
-    $(".tb-tabs-header").css({"visibility" : "visible"});
-},2300);
-
-        }
 
     };
 
     if($scope.$state.params.page === 'seven-days' || $scope.$state.params.page === 'fourteen-days') {
         $http.post('/get_detailed_forecast').then(function (response) {
-            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $scope.graphTitle, $scope.local.timeRange)
+            readyGet(response, [], $scope.local.typeTemp, $scope.$state.params.page, $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
         });
     }
     $scope.selectTab = function (index) {

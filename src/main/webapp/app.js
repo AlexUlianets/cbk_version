@@ -97,23 +97,24 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         }
 
         $rootScope.get_api_weather();
-        $rootScope.generate_meta_title = function () {
+        // $rootScope.generate_meta_title = function () {
+        //
+        //     var sendingTableRequest = {
+        //         method: 'GET',
+        //         url: '/generate_meta_title',
+        //         params: {
+        //             path:location.pathname
+        //         },
+        //         headers: {
+        //             'Content-Type': 'application/json; charset=utf-8'
+        //         }}
+        //
+        //     $http(sendingTableRequest).success(function (data) {
+        //         $rootScope.metaData = data;
+        //     })
+        // }
+        // $rootScope.generate_meta_title();
 
-            var sendingTableRequest = {
-                method: 'GET',
-                url: '/generate_meta_title',
-                params: {
-                    path:location.pathname
-                },
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8'
-                }}
-
-            $http(sendingTableRequest).success(function (data) {
-                $rootScope.metaData = data;
-            })
-        }
-        $rootScope.generate_meta_title();
         $rootScope.searchHint = function(){
             $('.search-dropdown ul').css({'display': 'none'})
             $('.search-dropdown img').css({'display': 'block'})

@@ -2,7 +2,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
 // Enter page
 
-app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', function($scope, $http, $state, $stateParams) {
+app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', '$rootScope', function($scope, $http, $state, $stateParams, $rootScope) {
 
 
     $scope.$state = $state;
@@ -26,7 +26,6 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
     }
     var path = window.location.pathname;
     var url = path.split('/');
-    console.log(url)
     $scope.refreshTableWithHours = function (hours) {
         $scope.hrs = hours;
         var path = window.location.pathname;
@@ -76,7 +75,7 @@ app.controller('hour-by-hourCtrl',['$scope', '$http', '$state','$stateParams', f
         $http(sendingGraphRequest).success(function (data) {
             $scope.dynamicGraphData = data;
             var response=data[[[$scope.selectedTabGraph-1]]][0];
-            readyGet(response, [], $scope.local.typeTemp, 'hour-by-hour', $scope.graphTitle, $scope.local.timeRange)
+            readyGet(response, [], $scope.local.typeTemp, 'hour-by-hour', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
         })
     }
 

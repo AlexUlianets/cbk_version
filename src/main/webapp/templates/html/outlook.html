@@ -71,7 +71,7 @@
                     <span></span>
                     <i></i>
                     <em>{{pageContent.precipitation}}</em>
-                    <b>{{local.typeTemp=='C'?climate.precipMm:climate.precipIn}} {{local.typeTemp=='C'?'mm':'in'}}</b>
+                    <b>{{local.typeTemp=='C'?climate.precipMm:climate.precipIn}} {{local.typeTemp=='C'?pageContent.mmDist:pageContent.inDist}}</b>
                 </div>
         </div>
         <div class="green-bg graff-wrap">
@@ -161,7 +161,7 @@
 
             <div class="uv-bot" >
                 <div class="uv-bot-block" ng-repeat="ultra in ultraviolet track by $index">
-                    <em>{{$index == 0 ? 'Today':ultra.date}}</em>
+                    <em>{{$index == 0 ? pageContent.today:ultra.date}}</em>
                     <span class="{{colorsUV[$index]}}"></span>
                 </div>
             </div>

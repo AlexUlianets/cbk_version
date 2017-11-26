@@ -101,11 +101,11 @@
 <!-- Popup -->
 <div id="settings-popup" class="settings-popup mfp-with-anim mfp-hide">
     <div class="settings-popup-top">
-        <div class="spt-left">Settings</div>
+        <div class="spt-left" ng-bind="pageContent.settings"></div>
     </div>
     <div class="settings-popup-md">
         <div class="popup-lang-wrap">
-            <h2>Language</h2>
+            <h2 ng-bind="pageContent.language"></h2>
             <ul class="popup-lang">
                 <li><a ng-click="selectLanguage('en')" ng-class="{active:currentCountryCode == 'en'}">En</a></li>
                 <li><a ng-click="selectLanguage('ru')" ng-class="{active:currentCountryCode == 'ru'}">Ru</a></li>
@@ -119,21 +119,21 @@
 
         <div class="set-popup-row">
             <div class="spr-block popup-units">
-                <h2>Units Preference</h2>
+                <h2 ng-bind="pageContent.unitsPreference"></h2>
                 <a href="#" class="spr-item" ng-class="{active:local.typeTemp == 'C'}" ng-click="local.typeTemp = 'C'; updateTemp(local.typeTemp);">°C</a>
                 <a href="#" class="spr-item" ng-class="{active:local.typeTemp == 'F'}" ng-click="local.typeTemp = 'F'; updateTemp(local.typeTemp);">°F</a>
             </div>
             <div class="spr-block popup-time">
-                <h2>Time Format</h2>
-                <a href="#" class="spr-item" ng-class="{active:local.typeTime == 12}" ng-click="local.typeTime = 12; updateTime(local.typeTime);">12 hours</a>
-                <a href="#" class="spr-item" ng-class="{active:local.typeTime == 24}" ng-click="local.typeTime = 24; updateTime(local.typeTime);">24 hours</a>
+                <h2 ng-bind="pageContent.timeFormat"></h2>
+                <a href="#" class="spr-item" ng-class="{active:local.typeTime == 12}" ng-click="local.typeTime = 12; updateTime(local.typeTime);" ng-bind="pageContent.twelveHours"></a>
+                <a href="#" class="spr-item" ng-class="{active:local.typeTime == 24}" ng-click="local.typeTime = 24; updateTime(local.typeTime);" ng-bind="pageContent.twentyFourHours"></a>
             </div>
         </div>
     </div>
 
     <div class="set-pop-bot">
         <div class="alerts_block">
-            <div class="alerts_text">Alerts</div>
+            <div class="alerts_text" ng-bind="pageContent.alerts"></div>
             <div class="onoffswitch">
                 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
                 <label class="onoffswitch-label" for="myonoffswitch">
