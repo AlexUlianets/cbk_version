@@ -486,11 +486,11 @@ public class SearchService {
 
     }
 
-    public JSONObject generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response, String langCode){
+    public JSONObject generateUrlRequestWeather(String location, String currentCookieValue, HttpServletRequest request, HttpServletResponse response, String langCode) {
 
-        if(!location.equals("undefined")) {
+        if (!location.equals("undefined")) {
             boolean airport = false;
-            if(location.contains("airport")||location.contains("Airport")){
+            if (location.contains("airport") || location.contains("Airport")) {
                 airport = true;
             }
             String city = location.substring(0, location.indexOf('_'));
@@ -498,7 +498,7 @@ public class SearchService {
 
             JSONArray jsonArray = null;
             try {
-                String url = "https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts=" + URLEncoder.encode(city, "UTF-8").concat(airport?"&featureClass=S":"&countryCode=" + countryCode);
+                String url = "https://bd.oplao.com/geoLocation/find.json?lang=" + LanguageUtil.validateOldCountryCodes(langCode) + "&max=10&nameStarts=" + URLEncoder.encode(city, "UTF-8").concat(airport ? "&featureClass=S" : "&countryCode=" + countryCode);
                 jsonArray = WeatherService.readJsonArrayFromUrl(url);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -510,20 +510,47 @@ public class SearchService {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         results.add(jsonArray.getJSONObject(i));
                     }
-                    if(!jsonArray.getJSONObject(0).getString("countryCode").equals(countryCode)) {
+                    if (!jsonArray.getJSONObject(0).getString("countryCode").equals(countryCode)) {
                         obj = results.stream().filter(jsonObject -> jsonObject.getString("countryCode").equals(countryCode)).findFirst().get();
-                    }else{
+                    } else {
                         obj = jsonArray.getJSONObject(0);
                     }
                 } else {
                     obj = findByCity(city.substring(0, city.length() - 1), langCode).get(0);
                 }
             }
-
-            if (obj != null) {
-                selectCity(obj.getInt("geonameId"), currentCookieValue, request, response, langCode);
-                return obj;
+            JSONArray refreshedArray = null;
+            if (currentCookieValue.equals("")) {
+                refreshedArray = new JSONArray("[" + currentCookieValue + "]");
+            } else {
+                refreshedArray = new JSONArray(currentCookieValue);
             }
+            for (int i = 0; i < refreshedArray.length(); i++) {
+                refreshedArray.getJSONObject(i).put("status", "unselected");
+            }
+            obj.put("status", "unselected");
+            boolean contains = false;
+            int index = 0;
+            for (int i = 0; i < refreshedArray.length(); i++) {
+                if (refreshedArray.getJSONObject(i).getInt("geonameId") == obj.getInt("geonameId")) {
+                    contains = true;
+                    index = i;
+                }
+            }
+            if (contains) {
+                refreshedArray.getJSONObject(index).put("status", "selected");
+            } else {
+                obj.put("status", "selected");
+                if(refreshedArray.length()<4) {
+                    refreshedArray.put(obj);
+                }else{
+                    refreshedArray.put(4, obj);
+                }
+            }
+
+
+            refreshLangCookie(request, response, langCode, refreshedArray.toString());
+            return obj;
         }
 
         return null;
