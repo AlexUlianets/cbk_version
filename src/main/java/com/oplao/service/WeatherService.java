@@ -90,7 +90,7 @@ public class WeatherService {
             return "#660000";
         } else if (speed >= 35) {
             return "#970000";
-        } else if (speed >= 18) {
+        } else if (speed >= 17) {
             return "#DBA000";
         } else {
             return "";
