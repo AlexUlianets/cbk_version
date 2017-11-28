@@ -12,8 +12,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
           $scope.outTable = "enTable"
       }
 
-      $scope.dayTrans = ["Day", "der Tag", "Giorno"];
-      $scope.nightTrans = ["Night", "die Nacht", "Notte"];
+      $scope.dayTrans = ["Day", "der Tag", "Giorno", "Jour"];
+      $scope.nightTrans = ["Night", "die Nacht", "Notte", "Nuit"];
       $scope.dayTransSlav = ["День", "Дзень"];
       $scope.nightTransSlav = ["Ніч", "Ночь", "Ноч"];
 
