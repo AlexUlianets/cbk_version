@@ -26,7 +26,7 @@ public class LanguageService {
         }
         if (path.contains("widgets")) {
             return generateWidgetContent(resourceBundle);
-        } else if (path.equals("/") || path.split("/").length == 4 && !path.contains("widgets")) {
+        } else if (path.equals("/") || path.equals("%2F")||path.split("/").length == 4 && !path.contains("widgets")) {
             return generateFrontPageContent(resourceBundle, city, countryName, languageCode);
         } else if (path.contains("outlook")) {
             return generateOutlookContent(resourceBundle, city, countryName, languageCode);
@@ -43,7 +43,7 @@ public class LanguageService {
         } else if (path.contains("map")) {
             return generateTemperatureMapContent(resourceBundle, city, countryName, languageCode);
         }
-        return null;
+        return generateFrontPageContent(resourceBundle, city, countryName, languageCode);
     }
 
     private HashMap<String, String> generateWidgetContent(ResourceBundle bundle) {
