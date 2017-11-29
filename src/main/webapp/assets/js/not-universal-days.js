@@ -6,8 +6,8 @@ app.controller('not-universal-daysCtrl',['$scope', '$http', '$state','$statePara
     $scope.graph = $scope.$state.params.graph;
     $scope.page = $scope.$state.params.page;
     $scope.graphTitle = $scope.$state.params.graphTitle;
-    $scope.dayTrans = ["Day", "der Tag", "Giorno", "День", "Дзень"];
-    $scope.nightTrans = ["Night", "die Nacht", "Notte", "Ніч", "Ночь", "Ноч"];
+    $scope.dayTrans = ["Day", "der Tag", "Giorno", "День", "Дзень", "Jour"];
+    $scope.nightTrans = ["Night", "die Nacht", "Notte", "Ніч", "Ночь", "Ноч", "Nuit"];
     $scope.dayTransSlav = [];
     $scope.nightTransSlav = [];
     var slav = ["ua", "by", "ru"];
