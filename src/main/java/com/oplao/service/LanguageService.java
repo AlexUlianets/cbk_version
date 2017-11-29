@@ -20,8 +20,10 @@ public class LanguageService {
         String city = currentCity.getString("name");
         String countryName = currentCity.getString("countryName");
         String[] parsedUrl = path.split("/");
-        char hrIndex = parsedUrl[3].charAt(parsedUrl[3].length() - 1);
-
+        char hrIndex = 3;
+        if(parsedUrl.length >=3) {
+            hrIndex = parsedUrl[3].charAt(parsedUrl[3].length() - 1);
+        }
         if (path.contains("widgets")) {
             return generateWidgetContent(resourceBundle);
         } else if (path.equals("/") || path.split("/").length == 4 && !path.contains("widgets")) {
