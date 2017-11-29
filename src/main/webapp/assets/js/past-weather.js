@@ -70,8 +70,12 @@ app.controller('past-weatherCtrl', ['$scope', '$http', '$rootScope', function($s
 
     $http(sendingGraphRequest).then(function (response) {
         $scope.$parent.detailedTemp = response;
-            readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
-
+        if($rootScope.pageContent == undefined){
+            $rootScope.updateLang();
+        }
+        setTimeout(function () {
+            readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange);
+        },300);
     })
 
     $scope.sendRequest = function (numOfHrs, days, pastWeath, date) {
@@ -110,7 +114,12 @@ app.controller('past-weatherCtrl', ['$scope', '$http', '$rootScope', function($s
 
         $http(sendingGraphRequest).then(function (response) {
             $scope.$parent.detailedTemp = response;
-            readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
+            if($rootScope.pageContent == undefined){
+                $rootScope.updateLang();
+            }
+            setTimeout(function () {
+                readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange);
+            },300);
         })
 
     };
