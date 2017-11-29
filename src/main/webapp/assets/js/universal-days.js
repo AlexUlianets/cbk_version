@@ -52,12 +52,12 @@ app.controller('three-daysCtrl',['$scope', '$http', '$state','$stateParams','$ro
                         }
                     });
                     $(window).resize();
-                }, 1400);
+                }, 600);
 
                 $(window).resize()
                 setTimeout(function () {
                     $(".tb-tabs-header").css({"visibility" : "visible"});
-                },1400);
+                },600);
 
             }
             if($scope.$state.params.page === 'three-days') {

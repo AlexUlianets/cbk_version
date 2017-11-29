@@ -136,12 +136,12 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
                           }
                       });
                       $(window).resize();
-                  }, 1400);
+                  }, 600);
 
                   $(window).resize()
                   setTimeout(function () {
                       $(".tb-tabs-header").css({"visibility" : "visible"});
-                  },1400);
+                  },600);
           })
 
       };
