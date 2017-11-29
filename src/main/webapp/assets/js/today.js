@@ -19,7 +19,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
 
       $http.post('/get_detailed_forecast_today').then(function (response) {
           $scope.$parent.detailedTemp = response;
-          readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange)
+          if($rootScope.pageContent == undefined){
+              $rootScope.updateLang();
+          }
+          setTimeout(function () {
+              readyGet(response, [], $scope.local.typeTemp, 'today', $rootScope.pageContent.inGraphTitle, $scope.local.timeRange);
+          },300);
+
       });
 
       var sendingTableRequest = {
