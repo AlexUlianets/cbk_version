@@ -824,13 +824,13 @@ public class WeatherService {
         int maxTempF = maxtempFavges.getMax();
         int avgMaxTempF = (int)maxtempFavges.getAverage();
         DateTime maxTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("maxtempC"))==maxTempC).findAny().get().get("date"));
-        String maxTempDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(maxTempDateTime.getMonthOfYear(), bundle).toUpperCase() + "."+maxTempDateTime.getDayOfMonth());
+        String maxTempDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(maxTempDateTime.getMonthOfYear(), bundle) + "."+maxTempDateTime.getDayOfMonth()).toUpperCase() ;
         int minTempC = mintempCavges.getMin();
         int avgMinTempC = (int)mintempCavges.getAverage();
         int minTempF = mintempFavges.getMin();
         int avgMinTempF = (int)mintempFavges.getAverage();
         DateTime minTempDateTime = new DateTime(week.stream().filter(hashMap -> parseInt(hashMap.get("mintempC"))==minTempC).findAny().get().get("date"));
-        String minTempDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(minTempDateTime.getMonthOfYear(), bundle).toUpperCase() + "."+minTempDateTime.getDayOfMonth());
+        String minTempDay = LanguageService.encode(DateConstants.convertMonthOfYearShort(minTempDateTime.getMonthOfYear(), bundle) + "."+minTempDateTime.getDayOfMonth()).toUpperCase();
         double totalRainfallMM = getTotalRainfall(week);
         double totalRainfallInch = new BigDecimal(totalRainfallMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
         int windiestMiles = getWindiestMiles(week);

@@ -24,7 +24,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
 
         setTimeout(function () {
             $rootScope.updateLang();
-        }, 500);
+        }, 1000);
 
 
         if($cookies.get('temp_val')===undefined){
