@@ -68,7 +68,7 @@ public class LanguageService {
         map.put("aboveTable", encode(bundle.getString("aboveTableHourly")));
         map.put("oneHour", encode(bundle.getString("oneHour")));
         map.put("threeHour", encode(bundle.getString("threeHour")));
-        map.put("inGraphTitle", encode(bundle.getString("inGraphHourly")));
+        map.put("inGraphTitle", encode(bundle.getString("aboveGraphHourly")));
         map.put("title", formatLocation(bundle.getString("titleHourly"), city, country, langCode));
         map.put("description", !isSlav ? langCode.equals("fr") || langCode.equals("it")
                 ? formatThreeLocations(bundle.getString("descrHourly"), city, country, langCode)
@@ -83,7 +83,7 @@ public class LanguageService {
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("aboveTable", encode(bundle.getString("aboveTablePastWeather")));
         map.put("aboveGraph", encode(bundle.getString("aboveGraphPastWeather")));
-        map.put("inGraphTitle", encode(bundle.getString("inGraphPastWeather")));
+        map.put("inGraphTitle", encode(bundle.getString("aboveGraphPastWeather")));
         map.put("pickADate", encode(bundle.getString("pickDate")));
         map.put("oneHour", encode(bundle.getString("oneHour")));
         map.put("threeHour", encode(bundle.getString("threeHour")));
@@ -107,7 +107,7 @@ public class LanguageService {
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("aboveTable", encode(is5 ? bundle.getString("aboveTable5Days") : bundle.getString("aboveTable10Days")));
         map.put("aboveGraph", encode(is5 ? bundle.getString("aboveGraph5Days") : bundle.getString("aboveGraph10Days")));
-        map.put("inGraphTitle", encode(is5 ? bundle.getString("inGraph5Days") : bundle.getString("inGraph10Days")));
+        map.put("inGraphTitle", encode(is5 ? bundle.getString("aboveGraph5Days") : bundle.getString("aboveGraph10Days")));
         map.put("title", formatLocation(is5 ? bundle.getString("title5Days") : bundle.getString("title10Days"), city, country, langCode));
         map.put("description", (!langCode.equals("fr") && !langCode.equals("it")) ?
                 formatLocation(is5 ? bundle.getString("descr5Days") :
@@ -125,9 +125,9 @@ public class LanguageService {
         map.put("aboveGraph", encode(is3 ? bundle.getString("aboveGraph3Days")
                 : is7 ? bundle.getString("aboveGraph7Days")
                 : bundle.getString("aboveGraph14Days")));
-        map.put("inGraphTitle", encode(is3 ? bundle.getString("inGraph3Days")
-                : is7 ? bundle.getString("inGraph7Days")
-                : bundle.getString("inGraph14Days")));
+        map.put("inGraphTitle", encode(is3 ? bundle.getString("aboveGraph3Days")
+                : is7 ? bundle.getString("aboveGraph7Days")
+                : bundle.getString("aboveGraph14Days")));
         map.put("title", formatLocation(is3 ? bundle.getString("title3Days")
                 : is7 ? bundle.getString("title7Days")
                 : bundle.getString("title14Days"), city, country, langCode));
@@ -140,7 +140,7 @@ public class LanguageService {
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("sunrise", encode(bundle.getString("sunrise")));
         map.put("sunset", encode(bundle.getString("sunset")));
-        map.put("inGraphTitle", encode(bundle.getString("inGraphToday")));
+        map.put("inGraphTitle", encode(bundle.getString("aboveGraphToday")));
         map.put("aboveTable", encode(isToday ? bundle.getString("aboveTableToday") : bundle.getString("aboveTableTomorrow")));
         map.put("aboveGraph", encode(isToday ? bundle.getString("aboveGraphToday") : ""));
         map.put("title", isToday ? formatLocation(bundle.getString("titleToday"), city, country, langCode) : formatLocation(bundle.getString("titleTomorrow"), city, country, langCode));
@@ -165,7 +165,7 @@ public class LanguageService {
     private HashMap<String, String> generateOutlookContent(ResourceBundle bundle, String city, String country, String langCode) {
         boolean isSlav = LanguageUtil.isSlav(langCode);
         HashMap<String, String> map = generateMainContent(bundle);
-        map.put("inGraphTitle", isSlav ? encode(bundle.getString("inGraph14Days")) : encode(bundle.getString("inGraphOutlook")));
+        map.put("inGraphTitle", isSlav ? encode(bundle.getString("aboveGraph14Days")) : encode(bundle.getString("aboveGraphOutlook")));
         map.put("longTermForecast", encode(bundle.getString("longTermForecast")));
         map.put("date", encode(bundle.getString("date")));
         map.put("aboveGraph", isSlav ? encode(bundle.getString("aboveGraph14Days")) : encode(bundle.getString("aboveGraphOutlook")));
