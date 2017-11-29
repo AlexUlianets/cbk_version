@@ -35,8 +35,8 @@ public class SlashController {
             response.setHeader("Location", reqUrl.replace("forecast", "weather"));
         }
         String selectedLang = searchService.selectLanguage(reqUrl, request, response, languageCookieCode, city, currentCookieValue);
-        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-        response.setHeader("Location", "/"+selectedLang+"/weather/"+city.getString("asciiName")+"_"+city.getString("countryCode"));
+        response.setStatus(HttpServletResponse.SC_FOUND);
+        response.setHeader("newLoc", "/"+selectedLang+"/weather/"+city.getString("asciiName")+"_"+city.getString("countryCode"));
         return "forward:index.html";
     }
 
