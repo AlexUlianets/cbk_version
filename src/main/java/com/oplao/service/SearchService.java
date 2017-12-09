@@ -25,7 +25,7 @@ import java.util.*;
 public class SearchService {
     public static final String cookieName = "lastCitiesVisited";
     public static final String langCookieCode = "langCookieCode";
-    protected static final String validCountryCodes[] = {"en", "us", "ru", "it", "fr", "de", "by", "ua"};
+    public static final String validCountryCodes[] = {"en", "ru", "it", "fr", "de", "by", "ua"};
     private static final List<String> cities = Arrays.asList(new String[]{"Hong Kong", " Singapore", " Bangkok", " London", " Macau", " Kuala Lumpur", " Shenzhen", " New York City", " Antalya", " Paris", " Istanbul", " Rome", " Dubai", " Guangzhou", " Phuket", " Mecca", " Pattaya", " Prague", " Shanghai", " Las Vegas", " Miami", " Barcelona", " Moscow", " Beijing", " Los Angeles", " Budapest", " Vienna", " Amsterdam", " Sofia", " Madrid", " Orlando", " Ho Chi Minh City", " Lima", " Berlin", " Tokyo", " Warsaw", " Chennai", " Cairo", " Nairobi", " Hangzhou", " Milan", " San Francisco", " Buenos Aires", " Venice", " Mexico City", " Dublin", " Seoul", " Mugla", " Mumbai", " Denpasar", " Delhi", " Toronto", " Zhuhai", " Saint Petersburg", " Burgas", " Sydney", " Djerba", " Munich", " Johannesburg", " Cancun", " Edirne", " Suzhou", " Bucharest", " Punta Cana", " Agra", " Jaipur", " Brussels", " Nice", " Chiang Mai", " Sharm el-Sheikh", " Lisbon", " Porto", " Marrakech", " Jakarta", " Manama", " Honolulu", " Vietnam", " Manila", " Guilin", " Auckland", " Siem Reap", " Sousse", " Amman", " Vancouver", " Abu Dhabi", " Kiev", " Doha", " Florence", " Rio de Janeiro", " Melbourne", " Washington D.C.", " Riyadh", " Christchurch", " Frankfurt", " Baku", " Sao Paulo", " Harare", " Kolkata", " Nanjing", " Athens", " Copenhagen", " Edinburgh", " Stockholm", " Oslo", " Oxford", " Cannes", " Helsinki", " Bruges", " Hamburg", " Pisa", " Dubrovnik", " Tallinn", " Granada", " Salzburg", " Bilbao", " Strasbourg", " Reykjavik", " Naples", " Monaco", " Riga", " Liverpool", " Luxembourg", " Cologne", " Krakow", " Malaga", " Verona", " Thessaloniki", " Zurich", " Seville", " Geneva", " Marseille", " Palma De Mallorca", " Valencia", " Glasgow", " Mykonos", " Dresden", " Palermo", " Bali", " Crete", " Roatan", " Kathmandu", " Cusco", " Corsica", " Lyon", " Bordeaux", " Beaune", " Sorrento", " Hurghada", " Alexandria", " St. Moritz", " Madeira", " Faro", " Utrecht", " Rotterdam", " Goa", " Varanasi", " Rishikesh", " Kyoto", " Osaka", " Port Douglas", " Darwin", " Brisbane", " Perth", " Lhasa", " Split", " Budva", " Cape Town", " Vilamendhoo", " Hilo", " Victoria", " Costa Del Sol", " Bergen", " Whitsundays", " Bathsheba", " Hoi An", " Versailles", " Grindelwald", " Cascais", " Sao Miguel", " Luxor", " Bremen", " Larnaca", " Tel Aviv", " New Orleans", " Unawatuna", " Mirissa", "Tenerife"});
 
     public List<HashMap> findSearchOccurences(String searchRequest, String langCode){
@@ -287,12 +287,12 @@ public class SearchService {
 
            String currentIp = AddressGetter.getCurrentIpAddress(request);
            try {
-               location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/"+currentIp);
+               location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/" + currentIp);
                System.out.println(location.getString("country_code"));
            } catch (IOException e) {
                 Application.log.info("cannot find location for ip " + currentIp);
            }catch (JSONException ex) {
-               currentIp = "37.215.0.50";
+               currentIp = "212.98.171.68";
                try {
                    location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/" + currentIp);
                } catch (IOException e) {
@@ -300,13 +300,13 @@ public class SearchService {
                }
            }
                if(location.getString("country_code").equals("") && location.getString("city").equals("")){
-                   currentIp = "37.215.0.50";
+                   currentIp = "212.98.171.68";
+                   try {
+                       location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/" + currentIp);
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
                }
-        try {
-            location = WeatherService.readJsonFromUrl("http://freegeoip.net/json/" + currentIp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
 
@@ -327,6 +327,23 @@ public class SearchService {
                c.setPath("/");
                c.setMaxAge(60 * 60 * 24 * 365 * 10);
                response.addCookie(c);
+
+               boolean isLangPresent = false;
+               boolean containsCookies = request.getCookies()==null;
+
+               if(!containsCookies) {
+                   for (int i = 0; i < request.getCookies().length; i++) {
+                       if (request.getCookies()[i].getName().equals("langCookieCode")) {
+                           isLangPresent = true;
+                       }
+                   }
+               }
+               if(!isLangPresent){
+                   Cookie langCookie = new Cookie("langCookieCode", langCode);
+                   langCookie.setPath("/");
+                   langCookie.setMaxAge(60 * 60 * 24 * 365 * 10);
+                   response.addCookie(langCookie);
+               }
                return obj;
            } catch (IOException e) {
                e.printStackTrace();
@@ -703,7 +720,7 @@ public class SearchService {
             }
         }
 
-        return languageCookieCode;
+        return languageCookieCode.equals("")?currentCity.getString("countryCode"):languageCookieCode;
     }
 
     private void refreshLangCookie(HttpServletRequest request, HttpServletResponse response, String newValue, String currentCookieValue){

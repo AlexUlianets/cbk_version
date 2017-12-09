@@ -549,6 +549,23 @@ function loadScript() {
         refresh();
     }
 
+    function refreshSlick(cb, seconds) {
+        var timer;
+        var interval = seconds * 1000;
+        function refresh() {
+            clearInterval(timer);
+            timer = setTimeout(cb, interval);
+        };
+        refresh();
+    }
+
+
+    refreshSlick(function () {
+        $(window).resize();
+        console.log('resized');
+    }, 2);
+
+
     setIdle(function() {
         location.href = location.href;
     }, 15 * 60);

@@ -6,6 +6,12 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
         $rootScope.example = "";
         $rootScope.local = {};
         $rootScope.currentCountryCode = $cookies.get('langCookieCode');
+        if($rootScope.currentCountryCode == undefined){
+            $http.get("http://freegeoip.net/json/").success(function (data) {
+                var ccodes =["en", "de", "fr", "it", "ru", "ua", "by"];
+               $rootScope.currentCountryCode = ccodes.includes(data.country_code.toLowerCase())?data.country_code.toLowerCase():"en";
+            })
+        }
         $rootScope.updateLang = function () {
             var langRequest = {
                 method: 'GET',
@@ -79,6 +85,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 method: "POST",
                 url: "/get_api_weather"
             }).done(function( msg ) {
+                if($cookies.get("langCookieCode") === undefined || $cookies.get("langCookieCode") === ""){
+                    $rootScope.currentCountryCode = msg.countryCode;
+                    console.log($rootScope.currentCountryCode)
+                }
                 $rootScope.temperature = msg;
                 $rootScope.get_recent_cities_tabs_func();
                 $.ajax({
@@ -86,9 +96,13 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     url:"/get_selected_city"
                 }).done(function (data) {
                     $rootScope.selectedCity = data;
-
                 })
-
+                setTimeout(function () {
+                    $rootScope.updateLang();
+                    // if(location.pathname == "/"){
+                    //     location.pathname = "/" + msg.langCode + "/weather" + msg.city + "_" + msg.countryCode.toUpperCase();
+                    // }
+                }, 1000);
                 setTimeout(function () {
                     loadScript();
                 }, 1000)
@@ -304,7 +318,6 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               .state('main', {
                   url: "/",
                   params:{
-                      city: {squash: true, value: null},
                       "graph": "",
                       "day": "front-page",
                       "pos": "slash"

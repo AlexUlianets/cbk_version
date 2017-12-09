@@ -13,7 +13,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.sunrise"></div>
-										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunrise)"></div>
+										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunrise)"></div>
 									</div>
 								</div>
 								<div class="tmr-sunset">
@@ -22,7 +22,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.sunset"></div>
-										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunset)"></div>
+										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunset)"></div>
 									</div>
 								</div>
 							</div>
@@ -33,7 +33,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.min"></div>
-										<div class="count">{{local.typeTemp=='C'?dynamicTableData[1][1].mintempC:dynamicTableData[1][1].mintempF}}</div>
+										<div class="count">{{local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF}}</div>
 									</div>
 								</div>
 								<div class="tmr-max">
@@ -42,14 +42,14 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.max"></div>
-										<div class="count">{{local.typeTemp=='C'?dynamicTableData[1][1].maxtempC:dynamicTableData[1][1].maxtempF}}</div>
+										<div class="count">{{local.typeTemp=='C'?dynamicTableData[0][1].maxtempC:dynamicTableData[0][1].maxtempF}}</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tmr-main-info">
-							<div ng-show="dynamicTableData[1][1].dayOfMonth" class="tomorrow-date" >
-								{{dynamicTableData[1][1].dayOfMonth}} {{dynamicTableData[1][1].monthOfYear}}, {{dynamicTableData[1][1].year}} {{dynamicTableData[1][1].dayOfWeek}} ({{dynamicTableData[1][1].todaySign}})
+							<div ng-show="dynamicTableData[0][1].dayOfMonth" class="tomorrow-date" >
+								{{dynamicTableData[0][1].dayOfMonth}} {{dynamicTableData[0][1].monthOfYear}}, {{dynamicTableData[0][1].year}} {{dynamicTableData[0][1].dayOfWeek}} ({{pageContent.tomorrow}})
 							</div>
 							<div class="tb-wrapper">
 								<div class="wather-table-wrap">
@@ -124,7 +124,7 @@
 										</div>
 										<div class="tb-contant">
 											<div class="tb-item">
-												<div class="tb-row" ng-repeat="item in dynamicTableData[1][0]">
+												<div class="tb-row" ng-repeat="item in dynamicTableData[0][0]">
 													<div class="tb-time">
 														<div class="tb-text" ng-bind="getTime(item.time)">{{item.time}}</div>
 													</div>
@@ -192,7 +192,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.sunrise"></div>
-										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunrise)"></div>
+										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunrise)"></div>
 									</div>
 								</div>
 								<div class="tmr-sunset">
@@ -201,7 +201,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.sunset"></div>
-										<div class="count" ng-bind="getTime(dynamicTableData[0][1].sunset)"></div>
+										<div class="count" ng-bind="getTime(dynamicTableData[1][1].sunset)"></div>
 									</div>
 								</div>
 							</div>
@@ -212,7 +212,7 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.min"></div>
-										<div class="count">{{local.typeTemp=='C'?dynamicTableData[0][1].mintempC:dynamicTableData[0][1].mintempF}}</div>
+										<div class="count">{{local.typeTemp=='C'?dynamicTableData[1][1].mintempC:dynamicTableData[1][1].mintempF}}</div>
 									</div>
 								</div>
 								<div class="tmr-max">
@@ -221,14 +221,14 @@
 									</div>
 									<div class="tmr-text">
 										<div class="grey" ng-bind="pageContent.max"></div>
-										<div class="count">{{local.typeTemp=='C'?dynamicTableData[0][1].maxtempC:dynamicTableData[0][1].maxtempF}}</div>
+										<div class="count">{{local.typeTemp=='C'?dynamicTableData[1][1].maxtempC:dynamicTableData[1][1].maxtempF}}</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="tmr-main-info">
 							<div  ng-show="dynamicTableData[0][1].dayOfMonth" class="tomorrow-date">
-								{{dynamicTableData[0][1].dayOfMonth}} {{dynamicTableData[0][1].monthOfYear}}, {{dynamicTableData[0][1].year}}, {{dynamicTableData[0][1].dayOfWeek}} ({{dynamicTableData[0][1].todaySign}})
+								{{dynamicTableData[1][1].dayOfMonth}} {{dynamicTableData[1][1].monthOfYear}}, {{dynamicTableData[1][1].year}}, {{dynamicTableData[1][1].dayOfWeek}}
 							</div>
 							<div class="tb-wrapper">
 								<div class="wather-table-wrap">
@@ -303,7 +303,7 @@
 										</div>
 										<div class="tb-contant">
 											<div class="tb-item">
-												<div class="tb-row" ng-repeat="item in dynamicTableData[0][0]">
+												<div class="tb-row" ng-repeat="item in dynamicTableData[1][0]">
 													<div class="tb-time">
 														<div class="tb-text" ng-bind="getTime(item.time)"></div>
 													</div>

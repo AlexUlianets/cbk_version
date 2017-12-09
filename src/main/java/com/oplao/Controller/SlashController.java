@@ -23,27 +23,36 @@ public class SlashController {
     @Autowired
     LanguageService languageService;
 
-    @RequestMapping("/")
-    public String main(HttpServletRequest request, HttpServletResponse response,
-                       @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
-                       @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode){
+//    @RequestMapping("/")
+//    public String main(HttpServletRequest request, HttpServletResponse response,
+//                       @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+//                       @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode){
+//
+//          searchService.findSelectedCity(request, response, currentCookieValue); //is done to generate location before the page is loaded
+////        String reqUrl = request.getRequestURI();
+//       // String selectedLang = searchService.selectLanguage(reqUrl, request, response, languageCookieCode, city, currentCookieValue);
+//
+//        return "forward:/index.html";
+//    }
 
-        JSONObject city = searchService.findSelectedCity(request, response, currentCookieValue); //is done to generate location before the page is loaded
-        String reqUrl = request.getRequestURI();
-        if(reqUrl.contains("forecast")){
-            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-            response.setHeader("Location", reqUrl.replace("forecast", "weather"));
-        }
-        String selectedLang = searchService.selectLanguage(reqUrl, request, response, languageCookieCode, city, currentCookieValue);
-        response.setStatus(HttpServletResponse.SC_FOUND);
-        response.setHeader("newLoc", "/"+selectedLang+"/weather/"+city.getString("asciiName")+"_"+city.getString("countryCode"));
-        return "forward:index.html";
-    }
-
+//    @RequestMapping("/get_slash_data")
+//    @ResponseBody
+//    public HashMap getShashData(HttpServletRequest request, HttpServletResponse response,
+//                                @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+//                                @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode){
+//        JSONObject city = searchService.findSelectedCity(request, response, currentCookieValue); //is done to generate location before the page is loaded
+//        String reqUrl = request.getRequestURI();
+//        String selectedLang = searchService.selectLanguage(reqUrl, request, response, languageCookieCode, city, currentCookieValue);
+//        HashMap map = new HashMap();
+//        map.put("langCode", selectedLang.toLowerCase());
+//        map.put("city", city.getString("asciiName"));
+//        map.put("countryCode", city.getString("countryCode"));
+//        return map;
+//    }
 
     @RequestMapping("/generate_language_content")
     @ResponseBody
-    public HashMap generateLanguageContent(@RequestParam(value = "langCode") String langCode, @RequestParam(value = "path") String path, HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
+    public HashMap generateLanguageContent(@RequestParam(value = "langCode", required = false) String langCode, @RequestParam(value = "path") String path, HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
 
         try {
             currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
@@ -51,5 +60,11 @@ public class SlashController {
             e.printStackTrace();
         }
         return languageService.generateLanguageContent(langCode, path, searchService.findSelectedCity(request, response, currentCookieValue));
+    }
+
+    @RequestMapping("/generate_lang_code")
+    @ResponseBody
+    public String generateLangCode(HttpServletRequest request, HttpServletResponse response, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
+        return  searchService.findSelectedCity(request, response, currentCookieValue).getString("countryCode").toLowerCase();
     }
 }
