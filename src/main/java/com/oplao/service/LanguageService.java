@@ -14,6 +14,10 @@ import java.util.ResourceBundle;
 public class LanguageService {
 
     public HashMap generateLanguageContent(String languageCode, String path, JSONObject currentCity) {
+
+        if(languageCode == null || languageCode.equals("")){
+            languageCode = currentCity.getString("countryCode").toLowerCase();
+        }
         Locale locale = new Locale(languageCode, LanguageUtil.getCountryCode(languageCode));
         ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_" + languageCode, locale);
 

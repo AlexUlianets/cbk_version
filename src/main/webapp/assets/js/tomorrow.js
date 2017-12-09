@@ -8,7 +8,7 @@ app.controller('tomorrowCtrl', function($scope, $http) {
     var sendingTableRequest = {
         method: 'GET',
         url: '/get_dynamic_table_data',
-        params: {numOfHours:3, numOfDays:2, pastWeather:false},
+        params: {numOfHours:3, numOfDays:2, pastWeather:false, forTomorrow:true},
         headers: {
             'Content-Type': 'application/json; charset=utf-8'
         }

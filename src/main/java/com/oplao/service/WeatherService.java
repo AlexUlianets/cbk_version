@@ -539,6 +539,9 @@ public class WeatherService {
 
             String cityName = validateCityName((String)city.get("name"));
             String countryCode = city.getString("countryCode").toLowerCase();
+            if(langCode == null || langCode.equals("")){
+                langCode = Arrays.asList(SearchService.validCountryCodes).contains(countryCode)?countryCode:"en";
+            }
             DateTime dateTime = new DateTime(DateTimeZone.forID((String)((JSONObject)city.get("timezone")).get("timeZoneId")));
             List<String> slavCodes = Arrays.asList("ua", "by", "ru");
             JSONObject jsonObject = null;
@@ -582,6 +585,8 @@ public class WeatherService {
         result.put("sunset", ((HashMap)((ArrayList)weatherData.get("astronomy")).get(0)).get("sunset"));
         result.put("weatherIconCode", ""+(EXT_STATES.get(parseInt(currentConditions.get("weatherCode")))));
         result.put("geonameId", city.getInt("geonameId"));
+        result.put("langCode", langCode);
+        result.put("city", cityName);
 
         return result;
     }
@@ -923,7 +928,7 @@ public class WeatherService {
         return theWindiestMiles;
     }
 
-    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date, String langCode){
+    public List getDynamicTableData(JSONObject city, int numOfHours, int numOfDays, boolean pastWeather, String date, String langCode, boolean forTomorrow){
 
         String cityName = validateCityName((String)city.get("name"));
         DateTime dateTime = null;
@@ -937,11 +942,10 @@ public class WeatherService {
         ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
 
         List list = new ArrayList();
-        for (int i = 0; i < numOfDays; i++) {
-
-            if(i > 0){
-                dateTime = dateTime.plusDays(i - (i-1));
-            }
+        if(forTomorrow) {
+            dateTime = dateTime.plusDays(1);
+        }
+        for (int i = 0; i <numOfDays; i++) {
             APIWeatherFinder apiWeatherFinder = new APIWeatherFinder(dateTime, cityName,
                     pastWeather, true, numOfHours, String.valueOf(city.get("lat")), String.valueOf(city.get("lng")));
 
@@ -1008,6 +1012,8 @@ public class WeatherService {
             results.add(wholeDayMap);
 
             list.add(results);
+
+            dateTime = dateTime.plusDays(1);
         }
 
 
@@ -1024,6 +1030,10 @@ public class WeatherService {
             dateTime = new DateTime(date);
         }
 
+        String countryCode = city.getString("countryCode").toLowerCase();
+        if(langCode.equals("")){
+                langCode = Arrays.asList(SearchService.validCountryCodes).contains(countryCode) ? countryCode : "en";
+        }
         Locale locale = new Locale(langCode, LanguageUtil.getCountryCode(langCode));
         ResourceBundle bundle = ResourceBundle.getBundle("messages_"+langCode, locale);
         List list = new ArrayList();

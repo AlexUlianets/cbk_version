@@ -37,8 +37,8 @@ public class TodayController {
     @ResponseBody
     public List getDynamicTableData(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
                                              HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "date", required = false) String date,@RequestParam("numOfHours") int numOfHours,
-                                             @RequestParam("numOfDays") int numOfDays, @RequestParam("pastWeather") boolean pastWeather, @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+                                             @RequestParam("numOfDays") int numOfDays, @RequestParam("pastWeather") boolean pastWeather, @CookieValue(value = "langCookieCode", defaultValue = "") String langCode, @RequestParam(value = "forTomorrow", required = false) boolean forTomorrow){
 
-        return weatherService.getDynamicTableData(searchService.findSelectedCity(request, response, currentCookieValue), numOfHours, numOfDays, pastWeather, date, langCode);
+        return weatherService.getDynamicTableData(searchService.findSelectedCity(request, response, currentCookieValue), numOfHours, numOfDays, pastWeather, date, langCode, forTomorrow);
     }
 }

@@ -22,7 +22,7 @@ public class AddressGetter {
 
         if(ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")||ip.equalsIgnoreCase("127.0.0.1")){
             Application.log.info("connected by ip " + ip);
-            return "176.8.91.205";
+            return "212.98.171.68";
         }
         else{
             Application.log.info("connected by ip " + ip);
