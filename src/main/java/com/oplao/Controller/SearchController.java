@@ -47,6 +47,14 @@ public class SearchController {
 
     }
 
+    @RequestMapping(value = "/generate_custom_request_weather")
+    public void generateCustomRequestWeather(
+                        @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                        HttpServletRequest request, HttpServletResponse response, @RequestParam("language") String language, @RequestParam("currentLocation") String currentLocation) {
+
+        searchService.generateUrlRequestWeather(currentLocation, currentCookieValue, request, response, language);
+
+    }
 //    @RequestMapping(value = "/generate_meta_title")
 //    @ResponseBody
 //    public HashMap<String, String> generateMetaTitle(@RequestParam("path") String path, @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){

@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static com.oplao.service.SearchService.validCountryCodes;
 
 @Service
 public class LanguageService {
@@ -16,7 +19,10 @@ public class LanguageService {
     public HashMap generateLanguageContent(String languageCode, String path, JSONObject currentCity) {
 
         if(languageCode == null || languageCode.equals("")){
-            languageCode = currentCity.getString("countryCode").toLowerCase();
+             languageCode = "en";
+            if(Arrays.asList(validCountryCodes).contains(currentCity.getString("country_code").toLowerCase())){
+                languageCode = currentCity.getString("country_code").toLowerCase();
+            }
         }
         Locale locale = new Locale(languageCode, LanguageUtil.getCountryCode(languageCode));
         ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_" + languageCode, locale);
