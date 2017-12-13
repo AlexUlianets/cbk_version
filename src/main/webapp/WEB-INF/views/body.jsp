@@ -1,3 +1,4 @@
+<%--<c:if test="${pageName} != front-page">--%>
 <div class="page-nav" ng-if="$state.params.day!='front-page'">
     <nav class="pn-top" >
         <ul>
@@ -21,7 +22,7 @@
         </ul>
     </nav>
 </div><!-- end page-nav -->
-
+<%--</c:if>--%>
 <div ui-view></div>
 <script>
    function blockUrl(event) {

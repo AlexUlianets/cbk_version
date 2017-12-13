@@ -1,8 +1,12 @@
 package com.oplao.Controller;
 
 import com.oplao.model.*;
+import com.oplao.service.DarkSkyWeatherFinder;
 import com.oplao.service.SearchService;
 import com.oplao.service.WeatherService;
+import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -40,21 +44,41 @@ public class OutlookController {
         }
         return weatherService.getCoordinates(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
-    @RequestMapping("/get_api_weather")
+    @RequestMapping(value = "/get_api_weather", produces = "application/json")
     @ResponseBody
     public HashMap getApiWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
                                  HttpServletRequest request,
                                  HttpServletResponse response,
-                                 @CookieValue(value = "langCookieCode", defaultValue = "") String langCode){
+                                 @CookieValue(value = "langCookieCode", defaultValue = "") String langCode, @CookieValue(value = "temp_val", defaultValue = "C") String typeTemp){
 
         try {
             currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
+        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode, typeTemp);
     }
 
+    @RequestMapping("/get_darksky_weather")
+    @ResponseBody
+    public HashMap getDarkSkyWeather(@CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue){
+
+        try {
+            currentCookieValue = URLDecoder.decode(currentCookieValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        JSONArray arr = null;
+
+        if(currentCookieValue.equals("")){
+            arr = new JSONArray("["+currentCookieValue+"]");
+        }else{
+            arr = new JSONArray(currentCookieValue);
+        }
+        DarkSkyWeatherFinder finder = new DarkSkyWeatherFinder();
+        return (HashMap)(finder.findWeatherByTimeStamp(arr.getJSONObject(0).getString("lat"), arr.getJSONObject(0).getString("lng"), new DateTime().getMillis())).toMap();
+    }
     @RequestMapping("/refresh_cookies")
     @ResponseBody
     public String refreshCookies(@CookieValue(value = SearchService.cookieName, defaultValue = "")String currentCookieValue){

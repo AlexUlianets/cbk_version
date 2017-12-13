@@ -144,3 +144,47 @@
         </div>
     </div>
 </div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/charts.js"></script>
+<script src="../../js/charts_init.js"></script>
+<script src="../../js/popup.js"></script>
+<script src="../../js/scripts.js"></script>
+<script src="../../js/slick.min.js"></script>
+<script src="../../js/jquery-ui.min.js"></script>
+<script src="../../js/jquery.formstyler.min.js"></script>
+<script src="../../assets/plugins/angularJS/angular.min.js"></script>
+<script src="../../assets/plugins/angularJS/angular-ui-router.min.js"></script>
+<script src="../../assets/plugins/angularJS/ocLazyLoad.min.js"></script>
+<script src="../../assets/plugins/other/angular-cookies.min.js"></script>
+<script src="../../app.js?n=1"></script>
+<script type="text/javascript" src="../../assets/js/map.js"></script>
+<script type="text/javascript">
+    window.doorbellOptions = {
+        hideButton: true,
+        appKey: 'BGzSckphD3XdH71dyC32xiriWxSN0BfLyPnVJUz8VWTn6UgnCznMYoZnQXZq0tuS',
+        onInitialized: function() {
+        }
+    };
+    (function(w, d, t) {
+        var hasLoaded = false;
+        function l() { if (hasLoaded) { return; }
+            hasLoaded = true;
+
+            window.doorbellOptions.windowLoaded = true;
+            var g = d.createElement(t);
+            g.id = 'doorbellScript';
+            g.type = 'text/javascript';
+            g.async = true;
+            g.src = 'https://embed.doorbell.io/button/1291?t='+(new Date().getTime());
+            (d.getElementsByClassName('head')[0]||d.getElementsByTagName('body')[0]).appendChild(g); }
+        if (w.attachEvent) { w.attachEvent('onload', l); } else if (w.addEventListener) { w.addEventListener('load', l, false); } else { l(); }
+        if (d.readyState == 'complete') { l(); }
+    }(window, document, 'script'));
+    function showDoorbellModal() {
+        doorbell.show(); // The doorbell object gets created by the doorbell.js script
+    }
+
+</script>
+</body>
+</html>

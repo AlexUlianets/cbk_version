@@ -1,6 +1,7 @@
 package com.oplao.service;
 
 import com.oplao.Utils.LanguageUtil;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,15 @@ public class LanguageService {
 
         if(languageCode == null || languageCode.equals("")){
              languageCode = "en";
-            if(Arrays.asList(validCountryCodes).contains(currentCity.getString("country_code").toLowerCase())){
-                languageCode = currentCity.getString("country_code").toLowerCase();
+             String cc = "";
+
+            try {
+                cc = currentCity.getString("country_code");
+            } catch (JSONException e) {
+                cc = currentCity.getString("countryCode");
+            }
+            if(Arrays.asList(validCountryCodes).contains(cc.toLowerCase())){
+                languageCode = cc.toLowerCase();
             }
         }
         Locale locale = new Locale(languageCode, LanguageUtil.getCountryCode(languageCode));
@@ -161,7 +169,7 @@ public class LanguageService {
         return map;
     }
 
-    private HashMap generateFrontPageContent(ResourceBundle bundle, String city, String country, String langCode) {
+    public HashMap generateFrontPageContent(ResourceBundle bundle, String city, String country, String langCode) {
 
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("viewMap", encode(bundle.getString("viewMap")));
