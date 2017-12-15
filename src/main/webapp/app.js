@@ -69,21 +69,24 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                     var ln = $('.favorite-location .container')[0]['children'].length;
                 }
                 if ($(window).width() < 500) {
-                    if($stateParams.day === "front-page"){
-
+                    if($stateParams.day ==="front-page" || $stateParams.day ===undefined){
                         $('#top-main').animate({height: '580px'});
                     }else {
                         $('#top-page').animate({height: (300+((ln) * 60))+'px'});
+                        $('#top-main').animate({height: '580px'});
                     }
                 }
             });
             // $('.tb-contant').removeClass('inner-html')
 
-        }
+        };
         $rootScope.get_api_weather = function(){
             $.ajax({
-                method: "POST",
-                url: "/get_api_weather"
+                method: "GET",
+                url: "/get_api_weather",
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
             }).done(function( msg ) {
                 if($cookies.get("langCookieCode") === undefined || $cookies.get("langCookieCode") === ""){
                     $rootScope.currentCountryCode = msg.countryCode;
@@ -192,7 +195,8 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
                 }
                 if (history.pushState) {
                     var newurl = window.location.protocol + "//" + window.location.host + url;
-                    window.history.pushState({path:newurl},'',newurl);
+                    // window.history.pushState({path:newurl},'',newurl);
+                    location.reload();
                 }
                 $state.reload();
                 $rootScope.updateLang();
@@ -241,7 +245,7 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
             $http(langRequest).success(function () {
                 window.location.href = url;
             })
-        }
+        };
         $rootScope.updateTemp = function(val){
             if(val===$cookies.get('temp_val')){
 
@@ -320,347 +324,353 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad', 'ngCookies']);
               }]
           });
 
-          $stateProvider
-              .state('main', {
-                  url: "/",
-                  params:{
-                      "graph": "",
-                      "day": "front-page",
-                      "pos": "slash"
-                  },
-                  views: {
-                      "": {
-                          templateUrl: "templates/html/front-page.html"
-                      }
-                  },
-                  resolve: {
-                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                          return $ocLazyLoad.load('front-page');
-                      }]
-                  }
-              })
-              .state('widgets', {
-                  url: "/:lang/weather/widgets",
-                  params:{
-                      lang:{squash: true, value: null}
-                  },
-                  views: {
-                      "": {
-                          templateUrl: "templates/html/widgets.html"
-                      }
-                  },
-                  resolve: {
-                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                          return $ocLazyLoad.load('widgets');
-                      }]
-                  }
-              })
-              .state('front-page', {
-                  url: "/:lang/weather/:city",
-                  params:{
-                      lang:{squash: true, value: null},
-                      city: {squash: true, value: null},
-                      "graph": "",
-                      "day": "front-page",
-                      "pos": "main"
-                  },
-                  views: {
-                      "": {
-                          templateUrl: "templates/html/front-page.html"
-                      }
-                  },
-                  resolve: {
-                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                          return $ocLazyLoad.load('front-page');
-                      }]
-                  }
-              })
-              .state('outlook', {
-                  url: "/:lang/weather/outlook/:city",
-                  params:{
-                      lang:{squash: true, value: null},
-                      city: {squash: true, value: null},
-                      "graph": "weatherTen",
-                      "day": "Outlook",
-                      "graphTitle":"Detailed weather for 10 days"
-                  },
-                  views: {
-                      "": {
-                          templateUrl: "templates/html/outlook.html"
-                      }
-                  },
-                  resolve: {
-                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                          return $ocLazyLoad.load('outlook');
-                      }]
-                  }
-              })
-              .state('today', {
-                  url: "/:lang/weather/today/:city",
-                  params:{
-                      lang:{squash: true, value: null},
-                      city: {squash: true, value: null},
-                      "graph" : "weatherDetailed",
-                      "day": "Today",
-                      "graphTitle":"Hour by hour weather"
-                  },
-                  views: {
-                      "": {
-                          templateUrl: "templates/html/today.html"
-                      }
-                  },
-                  resolve: {
-                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                          return $ocLazyLoad.load('today');
-                      }]
-                  }
-              })
-                .state('tomorrow', {
-                        url: "/:lang/weather/tomorrow/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                            "graph" : "none",
-                            "day": "Tomorrow"
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/tomorrow.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('tomorrow');
-                            }]
-                        }
-                    }) .state('past-weather', {
-                        url: "/:lang/weather/history3/:city",
-                          params:{
-                              lang:{squash: true, value: null},
-                              city: {squash: true, value: null},
-                              "graph" : "weatherDetailed",
-                              "day": "Past weather",
-                              "hrs":3,
-                              "graphTitle":"Weather for detailed day"
-                          },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/past-weather.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('past-weather');
-                            }]
-                        }
-                    }).state('past-weather1', {
-                        url: "/:lang/weather/history1/:city",
-                          params:{
-                              lang:{squash: true, value: null},
-                              city: {squash: true, value: null},
-                              "graph" : "weatherDetailed",
-                              "day": "Past weather",
-                              "hrs":1,
-                              "graphTitle":"Weather for detailed day"
-                          },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/past-weather.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('past-weather');
-                            }]
-                        }
-                    }).state('three-days', {
-                        url: "/:lang/weather/3/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                            "index":3,
-                            "tabClass" : "tabs tabs-three tb-tabs",
-                            "page": "three-days",
-                            "graph" : "weatherThree",
-                            "day": "3 day",
-                            "graphTitle": "weather for 3 days"
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/universal-days.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('three-days');
-                            }]
-                        }
-                    }).state('seven-days', {
-                        url: "/:lang/weather/7/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                          "index":7,
-                           "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
-                            "page": "seven-days",
-                            "graph" : "weatherSeven",
-                            "day": "7 day",
-                            "graphTitle": "weather for 7 days"
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/universal-days.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('seven-days');
-                            }]
-                        }
-                    }).state('five-days', {
-                        url: "/:lang/weather/5/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                          "index":5,
-                            "page": "five-days",
-                            "graph": "weatherFive",
-                            "day": "5 day",
-                            "graphTitle":"Weather for 5 days"
-
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/not-universal-days.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('five-days');
-                            }]
-                        }
-                    }).state('ten-days', {
-                        url: "/:lang/weather/10/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                          "index":10,
-                            "page": "ten-days",
-                            "graph": "weatherTen",
-                            "day": "10 day",
-                            "graphTitle":"Weather for 10 days"
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/not-universal-days.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('ten-days');
-                            }]
-                        }
-                    }).state('hour-by-hour', {
-                        url: "/:lang/weather/hour-by-hour3/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                          "index":7,
-                            "day": "Hour by hour",
-                            "hrs":3,
-                            "graphTitle":"Hour by hour weather"
-                            //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/hour-by-hour.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('hour-by-hour');
-                            }]
-                        }
-                    }).state('hour-by-hour1', {
-                        url: "/:lang/weather/hour-by-hour1/:city",
-                        params:{
-                            lang:{squash: true, value: null},
-                            city: {squash: true, value: null},
-                          "index":7,
-                            "day": "Hour by hour",
-                            "hrs":1,
-                            "graphTitle":"Hour by hour weather"
-                            //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/hour-by-hour.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('hour-by-hour');
-                            }]
-                        }
-
-                    }).state('map', {
-                          url: "/:lang/weather/map/:city",
-                          params:{
-                              lang:{squash: true, value: null},
-                              city: {squash: true, value: null},
-                              "index":7,
-                              "day": "Map",
-                              "hrs":1
-                          },
-                          views: {
-                              "": {
-                                  templateUrl: "templates/html/map.html"
-                              }
-                          },
-                          resolve: {
-                              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                  return $ocLazyLoad.load('map');
-                              }]
-                          }
-                     
-                    }).state('fourteen-days', {
-                        url: "/:lang/weather/14/:city",
-                          params:{
-                              lang:{squash: true, value: null},
-                              city: {squash: true, value: null},
-                              "index":14,
-                              "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
-                              "page": "fourteen-days",
-                              "graph" : "weatherFourteen",
-                              "day": "14 day",
-                              "graphTitle":"Long term weather"
-                          },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/universal-days.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('fourteen-days');
-                            }]
-                        }
-                    }).state('about', {
-                        url: "/:lang/about",
-                        params:{
-                            lang:{squash: true, value: null}
-                        },
-                        views: {
-                            "": {
-                                templateUrl: "templates/html/about.html"
-                            }
-                        },
-                        resolve: {
-                            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
-                                return $ocLazyLoad.load('about');
-                            }]
-                        }
-                    });
+         // $stateProvider
+         //      .state('main', {
+         //          url: "/",
+         //          params:{
+         //              "graph": "",
+         //              "day": "front-page",
+         //              "pos": "slash"
+         //          },
+         //          views: {
+         //              "": {
+         //                  templateUrl: "templates/html/front-page.html"
+         //              }
+         //          },
+         //          resolve: {
+         //              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                  return $ocLazyLoad.load('front-page');
+         //              }]
+         //          }
+         //      })
+         //      .state('widgets', {
+         //          url: "/:lang/weather/widgets",
+         //          params:{
+         //              lang:{squash: true, value: null}
+         //          },
+         //          views: {
+         //              "": {
+         //                  templateUrl: "templates/html/widgets.html"
+         //              }
+         //          },
+         //          resolve: {
+         //              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                  return $ocLazyLoad.load('widgets');
+         //              }]
+         //          }
+         //      })
+         //      .state('front-page', {
+         //          url: "/:lang/weather/:city",
+         //          params:{
+         //              lang:{squash: true, value: null},
+         //              city: {squash: true, value: null},
+         //              "graph": "",
+         //              "day": "front-page",
+         //              "pos": "main"
+         //          },
+         //          views: {
+         //              "": {
+         //                  templateUrl: "templates/html/front-page.jsp"
+         //              }
+         //          },
+         //          resolve: {
+         //              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                  return $ocLazyLoad.load('front-page');
+         //              }]
+         //          }
+         //      })
+         //      .state('outlook', {
+         //          url: "/:lang/weather/outlook/:city",
+         //          params:{
+         //              lang:{squash: true, value: null},
+         //              city: {squash: true, value: null},
+         //              "graph": "weatherTen",
+         //              "day": "Outlook",
+         //              "graphTitle":"Detailed weather for 10 days"
+         //          },
+         //          views: {
+         //              "": {
+         //                  templateUrl: "WEB-INF/views/outlook.jsp"
+         //              }
+         //          },
+         //          resolve: {
+         //              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                  return $ocLazyLoad.load('outlook');
+         //              }]
+         //          }
+         //      })
+         //      .state('today', {
+         //          url: "/:lang/weather/today/:city",
+         //          params:{
+         //              lang:{squash: true, value: null},
+         //              city: {squash: true, value: null},
+         //              "graph" : "weatherDetailed",
+         //              "day": "Today",
+         //              "graphTitle":"Hour by hour weather"
+         //          },
+         //          views: {
+         //              "": {
+         //                  templateUrl: "templates/html/today.html"
+         //              }
+         //          },
+         //          resolve: {
+         //              loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                  return $ocLazyLoad.load('today');
+         //              }]
+         //          }
+         //      })
+         //      .state('tomorrow', {
+         //                url: "/:lang/weather/tomorrow/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                    "graph" : "none",
+         //                    "day": "Tomorrow"
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/tomorrow.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('tomorrow');
+         //                    }]
+         //                }
+         //            })
+         //      .state('past-weather', {
+         //                url: "/:lang/weather/history3/:city",
+         //                  params:{
+         //                      lang:{squash: true, value: null},
+         //                      city: {squash: true, value: null},
+         //                      "graph" : "weatherDetailed",
+         //                      "day": "Past weather",
+         //                      "hrs":3,
+         //                      "graphTitle":"Weather for detailed day"
+         //                  },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/past-weather.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('past-weather');
+         //                    }]
+         //                }
+         //            })
+         //      .state('past-weather1', {
+         //                url: "/:lang/weather/history1/:city",
+         //                  params:{
+         //                      lang:{squash: true, value: null},
+         //                      city: {squash: true, value: null},
+         //                      "graph" : "weatherDetailed",
+         //                      "day": "Past weather",
+         //                      "hrs":1,
+         //                      "graphTitle":"Weather for detailed day"
+         //                  },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/past-weather.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('past-weather');
+         //                    }]
+         //                }
+         //            })
+         //      .state('three-days', {
+         //                url: "/:lang/weather/3/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                    "index":3,
+         //                    "tabClass" : "tabs tabs-three tb-tabs",
+         //                    "page": "three-days",
+         //                    "graph" : "weatherThree",
+         //                    "day": "3 day",
+         //                    "graphTitle": "weather for 3 days"
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/universal-days.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('three-days');
+         //                    }]
+         //                }
+         //            })
+         //      .state('seven-days', {
+         //                url: "/:lang/weather/7/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                  "index":7,
+         //                   "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
+         //                    "page": "seven-days",
+         //                    "graph" : "weatherSeven",
+         //                    "day": "7 day",
+         //                    "graphTitle": "weather for 7 days"
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/universal-days.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('seven-days');
+         //                    }]
+         //                }
+         //            })
+         //      .state('five-days', {
+         //                url: "/:lang/weather/5/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                  "index":5,
+         //                    "page": "five-days",
+         //                    "graph": "weatherFive",
+         //                    "day": "5 day",
+         //                    "graphTitle":"Weather for 5 days"
+         //
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/not-universal-days.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('five-days');
+         //                    }]
+         //                }
+         //            })
+         //      .state('ten-days', {
+         //                url: "/:lang/weather/10/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                  "index":10,
+         //                    "page": "ten-days",
+         //                    "graph": "weatherTen",
+         //                    "day": "10 day",
+         //                    "graphTitle":"Weather for 10 days"
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/not-universal-days.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('ten-days');
+         //                    }]
+         //                }
+         //            }).state('hour-by-hour', {
+         //                url: "/:lang/weather/hour-by-hour3/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                  "index":7,
+         //                    "day": "Hour by hour",
+         //                    "hrs":3,
+         //                    "graphTitle":"Hour by hour weather"
+         //                    //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/hour-by-hour.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('hour-by-hour');
+         //                    }]
+         //                }
+         //            }).state('hour-by-hour1', {
+         //                url: "/:lang/weather/hour-by-hour1/:city",
+         //                params:{
+         //                    lang:{squash: true, value: null},
+         //                    city: {squash: true, value: null},
+         //                  "index":7,
+         //                    "day": "Hour by hour",
+         //                    "hrs":1,
+         //                    "graphTitle":"Hour by hour weather"
+         //                    //"tabClass" : "tb-slider tabs tb-tabs tb-tabs-full"
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/hour-by-hour.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('hour-by-hour');
+         //                    }]
+         //                }
+         //
+         //            }).state('map', {
+         //                  url: "/:lang/weather/map/:city",
+         //                  params:{
+         //                      lang:{squash: true, value: null},
+         //                      city: {squash: true, value: null},
+         //                      "index":7,
+         //                      "day": "Map",
+         //                      "hrs":1
+         //                  },
+         //                  views: {
+         //                      "": {
+         //                          templateUrl: "templates/html/map.html"
+         //                      }
+         //                  },
+         //                  resolve: {
+         //                      loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                          return $ocLazyLoad.load('map');
+         //                      }]
+         //                  }
+         //
+         //            }).state('fourteen-days', {
+         //                url: "/:lang/weather/14/:city",
+         //                  params:{
+         //                      lang:{squash: true, value: null},
+         //                      city: {squash: true, value: null},
+         //                      "index":14,
+         //                      "tabClass" : "tb-slider tabs tb-tabs tb-tabs-full",
+         //                      "page": "fourteen-days",
+         //                      "graph" : "weatherFourteen",
+         //                      "day": "14 day",
+         //                      "graphTitle":"Long term weather"
+         //                  },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/universal-days.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('fourteen-days');
+         //                    }]
+         //                }
+         //            }).state('about', {
+         //                url: "/:lang/about",
+         //                params:{
+         //                    lang:{squash: true, value: null}
+         //                },
+         //                views: {
+         //                    "": {
+         //                        templateUrl: "templates/html/about.html"
+         //                    }
+         //                },
+         //                resolve: {
+         //                    loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+         //                        return $ocLazyLoad.load('about');
+         //                    }]
+         //                }
+         //            });
         $locationProvider.html5Mode({
             enabled: true,
             rewriteLinks: false

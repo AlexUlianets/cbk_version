@@ -114,7 +114,7 @@
                         </div>
                     </div>
                     <div class="btn-wrap">
-                        <a href="past-weather.html" class="btn-theme" ng-bind="pageContent.checkPastWeather"></a>
+                        <a href="../../templates/html/past-weather.html" class="btn-theme" ng-bind="pageContent.checkPastWeather"></a>
                     </div>
                 </div>
                 <div class="v-year-wrap">

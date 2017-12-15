@@ -27,10 +27,10 @@ var app = angular.module('main', ['ui.router', 'oc.lazyLoad']);
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
             }
-        }
+        };
         $http(sendingTableRequest).success(function (data) {
             $scope.header_tabs = data;
-        })
+        });
 
         $http.get("get_recent_cities_tabs").success(function (data) {
             $scope.recent_tabs = data;

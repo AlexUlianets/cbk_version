@@ -319,7 +319,7 @@ public class SearchService {
 
            try {
                String url = "https://bd.oplao.com/geoLocation/find.json?lang="+LanguageUtil.validateOldCountryCodes(langCode)+"&max=10&nameStarts=" + URLEncoder.encode(location.getString("city").replaceAll(" ", "%20"), "UTF-8");
-               list = SearchService.findByOccurences(url);
+               list = SearchService.findByOccurences(url.replaceAll("25", ""));
                JSONObject obj = list.get(0);
                obj.put("status", "selected");
                JSONArray arr = new JSONArray("["+obj.toString()+"]");
@@ -388,7 +388,7 @@ public class SearchService {
         HashMap map = (HashMap)jsonObject.toMap().get("data");
         HashMap currentCondition = ((HashMap)((ArrayList)map.get("current_condition")).get(0));
         HashMap<String, Object> result = new HashMap<>();
-        result.put("weatherCode",(WeatherService.EXT_STATES.get(Integer.parseInt((String)currentCondition.get("weatherCode")))));
+        result.put("weatherCode",WeatherService.EXT_STATES.get(Integer.parseInt((String)currentCondition.get("weatherCode"))) + (dateTime.getHourOfDay()<=6 || dateTime.getHourOfDay()>=18 ? "_night" : "_day"));
         result.put("tempC", currentCondition.get("temp_C"));
         result.put("tempF", currentCondition.get("temp_F"));
         result.put("city", cityName.replace("%20", " "));
@@ -453,11 +453,11 @@ public class SearchService {
 
         DateTime dateTime = new DateTime(DateTimeZone.forID((String) ((JSONObject) city.get("timezone")).get("timeZoneId")));
 
-        return jsonArray.length() >= 6 ? validateCountryWeather(jsonArray, dateTime, city, 6) : validateCountryWeather(jsonArray, dateTime, city, jsonArray.length());
+        return jsonArray.length() >= 6 ? validateCountryWeather(jsonArray, dateTime, 6) : validateCountryWeather(jsonArray, dateTime, jsonArray.length());
 
     }
 
-    private List<HashMap> validateCountryWeather(JSONArray jsonArray, DateTime dateTime, JSONObject city, int numOfCities) {
+    private List<HashMap> validateCountryWeather(JSONArray jsonArray, DateTime dateTime, int numOfCities) {
 
         List<HashMap> result = new ArrayList<>();
         for (int i = 0; i < numOfCities; i++) {
@@ -468,7 +468,7 @@ public class SearchService {
             HashMap currentConditions = ((HashMap) ((ArrayList) weather.get("current_condition")).get(0));
             map.put("temp_C", currentConditions.get("temp_C"));
             map.put("temp_F", currentConditions.get("temp_F"));
-            map.put("weatherCode", WeatherService.EXT_STATES.get(Integer.parseInt("" + (currentConditions.get("weatherCode")))));
+            map.put("weatherCode", WeatherService.EXT_STATES.get(Integer.parseInt("" + (currentConditions.get("weatherCode")))) + (dateTime.getHourOfDay()<=6 || dateTime.getHourOfDay()>=18 ? "_night" : "_day"));
             map.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
             result.add(map);
         }
@@ -492,7 +492,7 @@ public class SearchService {
             HashMap currentConditions = ((HashMap) ((ArrayList) weather.get("current_condition")).get(0));
             hm.put("temp_C", currentConditions.get("temp_C"));
             hm.put("temp_F", currentConditions.get("temp_F"));
-            hm.put("weatherCode", WeatherService.EXT_STATES.get(Integer.parseInt("" + (currentConditions.get("weatherCode")))));
+            hm.put("weatherCode", WeatherService.EXT_STATES.get(Integer.parseInt("" + (currentConditions.get("weatherCode")))) + (dateTime.getHourOfDay()<=6 || dateTime.getHourOfDay()>=18 ? "_night" : "_day"));
             hm.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
             result.add(hm);
         }
