@@ -56,7 +56,7 @@ public class OutlookController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode, typeTemp);
+        return weatherService.getRemoteData(searchService.findSelectedCity(request, response, currentCookieValue), langCode);
     }
 
     @RequestMapping("/get_darksky_weather")

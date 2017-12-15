@@ -65,8 +65,8 @@ public class SlashController {
 
         ModelAndView modelAndView = new ModelAndView("front-page2");
         modelAndView.addObject("content", content);
-        modelAndView.addObject("temperature", weatherService.getRemoteData(currentCity, languageCookieCode, typeTemp));
-        modelAndView.addObject("pageName", "front-page.jsp");
+        modelAndView.addObject("temperature", weatherService.getRemoteData(currentCity, languageCookieCode));
+        modelAndView.addObject("pageName", "frontPage");
         modelAndView.addObject("typeTemp", typeTemp);
         modelAndView.addObject("threeDaysTabs", threeDaysTabs);
         modelAndView.addObject("recentTabs", recentTabs);
