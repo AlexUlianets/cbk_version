@@ -312,6 +312,7 @@
                 </div>
             </div>
         </div><!-- end container -->
+
         <div class="head-bot-mini" style="display: none" id="head-bot-mini" >
             <div class="hb-inner" ng-if="$state.params.day!='front-page'">
                 <div class="weather-now">

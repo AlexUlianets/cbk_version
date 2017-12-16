@@ -537,7 +537,7 @@ public class WeatherService {
         double waningIndex = moonPhase.getPhase();
         return waningIndex<0?"Waning":"Waxing";
     }
-        public HashMap getRemoteData(JSONObject city, String langCode, String typeTemp){
+        public HashMap getRemoteData(JSONObject city, String langCode){
 
             String cityName = validateCityName((String)city.get("name"));
             String countryCode = "";
