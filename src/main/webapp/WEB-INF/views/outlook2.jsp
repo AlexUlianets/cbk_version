@@ -4,9 +4,21 @@
     <div class="container section-margin-top">
         <div class="wrapper">
             <div class="page-content">
-                <section id="weekly-report" ng-include="'templates/weekly-report.html'" ng-if = "outTable=='enTable'"></section>
-                <section id="weekly-repor" ng-include="'templates/weekly-report-slav.html'" ng-if = "outTable=='slavTable'">
-                </section><!-- end weeekly-report -->
+
+
+                <c:choose>
+                    <c:when test="${slavTable}">
+                    <section id="weekly-repor">
+                        <%@ include file="weekly-report-slav.jsp" %>
+                    </section><!-- end weeekly-report -->
+                    </c:when>
+                    <c:otherwise>
+                        <section id="weekly-report" >
+                            <%@ include file="weekly-report.jsp" %>
+                        </section>
+                    </c:otherwise>
+                </c:choose>
+
             </div><!-- end page-content -->
             <aside class="sidebar" style="padding-top: 35px">
                 <!-- <div class="ad300-520 mob-hide"></div> -->

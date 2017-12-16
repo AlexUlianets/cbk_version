@@ -21,7 +21,7 @@
         </a>
         <a target="_blank"  href="https://addons.opera.com/en/extensions/details/oplao-weather/" class="ext-block">
             <img src="images/svg-icons/yandex.svg" alt="img">
-            <h3>yandex</h3>
+            <h3>Yandex</h3>
         </a>
     </div>
 </section><!-- end "weather-extensions -->
@@ -35,7 +35,7 @@
                     <ul>
                         <li><a href="/${currentCountryCode}/weather/3/${selectedCity}">${content.threeDaysWeatherForecast}</a></li>
                         <li><a href="/${currentCountryCode}/weather/5/${selectedCity}">${content.fiveDaysWeatherForecast}</a></li>
-                        <li><a href="/${currentCountryCode}/weather/7/${selectedCity}">${content.sevenDaysWeatherForecast}}</a></li>
+                        <li><a href="/${currentCountryCode}/weather/7/${selectedCity}">${content.sevenDaysWeatherForecast}</a></li>
                         <li><a href="/${currentCountryCode}/weather/14/${selectedCity}">${content.fourteenDaysWeatherForecast}</a></li>
                         <li><a href="/${currentCountryCode}/weather/hour-by-hour3/${selectedCity}">${content.hourlyWeather}</a></li>
                         <li><a href="/${currentCountryCode}/weather/map/${selectedCity}">${content.weatherMap}</a></li>
