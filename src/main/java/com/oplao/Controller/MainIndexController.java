@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 @Controller
@@ -162,14 +159,21 @@ public class MainIndexController {
                 response.setHeader("Location", reqUrl.replace("forecast", "weather"));
             }
 
+            boolean slavTable = false;
+
+            if(Arrays.asList(new String[]{"ua", "ru", "by"}).contains(languageCookieCode)){
+                slavTable = true;
+            }
             Locale locale = new Locale(languageCookieCode, LanguageUtil.getCountryCode(languageCookieCode));
             ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_" + languageCookieCode, locale);
 
-            HashMap content = languageService.generateFrontPageContent(resourceBundle, generatedCity.getString("name"), generatedCity.getString("countryName"), languageCookieCode);
+            HashMap content = languageService.generateOutlookContent(resourceBundle, generatedCity.getString("name"), generatedCity.getString("countryName"), languageCookieCode);
             List recentTabs = searchService.createRecentCitiesTabs(currentCookieValue, languageCookieCode);
 
-            ModelAndView modelAndView = new ModelAndView("outlook2");
+            List tableData = weatherService.getTableDataForDays(generatedCity, 1, 11, false, null, languageCookieCode);
+            HashMap<Integer, Map<String, Map>> weatherReport = weatherService.getWeeklyWeatherReport(generatedCity, 7, languageCookieCode);
 
+            ModelAndView modelAndView = new ModelAndView("outlook2");
 
             modelAndView.addObject("currentCountryCode", languageCookieCode);
             modelAndView.addObject("selectedCity", generatedCity.getString("name").toUpperCase() + "_" + generatedCity.getString("countryCode").toUpperCase());
@@ -178,6 +182,10 @@ public class MainIndexController {
             modelAndView.addObject("temperature", weatherService.getRemoteData(generatedCity, languageCookieCode));
             modelAndView.addObject("pageName", "outlook");
             modelAndView.addObject("recentTabs", recentTabs);
+            modelAndView.addObject("slavTable", slavTable);
+            modelAndView.addObject("dynamicTableData", tableData);
+            modelAndView.addObject("temperatureWeekly", weatherReport);
+
             return modelAndView;
         }
     }

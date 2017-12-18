@@ -182,7 +182,7 @@ public class LanguageService {
         return map;
     }
 
-    private HashMap<String, String> generateOutlookContent(ResourceBundle bundle, String city, String country, String langCode) {
+    public HashMap<String, String> generateOutlookContent(ResourceBundle bundle, String city, String country, String langCode) {
         boolean isSlav = LanguageUtil.isSlav(langCode);
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("inGraphTitle", isSlav ? encode(bundle.getString("aboveGraph14Days")) : encode(bundle.getString("aboveGraphOutlook")));

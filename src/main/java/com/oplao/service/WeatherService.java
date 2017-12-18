@@ -201,7 +201,7 @@ public class WeatherService {
         int avgPressureNight = getAVGNightIntParam(hourly, hourlyTomorrow,"pressure");
         double avgPressureInchNight = new BigDecimal(avgPressureNight * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
         int windDegreeNight = getAVGNightIntParam(hourly, hourlyTomorrow,"winddirDegree");
-        String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode")));
+        String nightWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(2).get("weatherCode"))) + "_night";
         int avgWindMsNight = (int)Math.round(avgWindKmhNight * 0.27777777777778);
         int maxGustMsNight = (int)Math.round(maxGustKmhNight * 0.27777777777778);
         double precipNightIn = new BigDecimal(precipNightMM * 0.0393700787).setScale(2, BigDecimal.ROUND_UP).doubleValue();
@@ -226,8 +226,8 @@ public class WeatherService {
         int maxGustMDay = getAVGIntParam(hourly, "WindGustMiles", dayTimeValues);
         int maxGustKmhDay = getAVGIntParam(hourly,"WindGustKmph", dayTimeValues);
         int avgPressureDay = getAVGIntParam(hourly,"pressure", dayTimeValues);
-        String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(12).get("weatherCode")));
-        String dayWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(14).get("weatherCode")));
+        String weatherCode = "" + EXT_STATES.get(parseInt(hourly.get(12).get("weatherCode"))) +"_day";
+        String dayWeatherCode = "" + EXT_STATES.get(parseInt(hourly.get(14).get("weatherCode"))) + "_day";
         int windDegreeDay = getAVGIntParam(hourly, "winddirDegree", dayTimeValues) + 40 + 180;
         double avgPressureInchDay = new BigDecimal(avgPressureDay * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue();  //convert pressure from PA to inches
         int avgWindMsDay = (int)Math.round(avgWindKmhDay*0.27777777777778);
