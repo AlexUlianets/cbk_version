@@ -135,13 +135,10 @@
 
                 <nav id="h-menu">
                     <ul>
-                        <li><a href="/${currentCountryCode}/weather/widgets" ng-bind="pageContent.widgets"></a></li>
-                        <li><a href="/${currentCountryCode}/weather/outlook/${selectedCity}"
-                               ng-bind="pageContent.weather"></a></li>
-                        <li><a href="/${currentCountryCode}/weather/map/${selectedCity}"
-                               ng-bind="pageContent.temperatureMap"></a></li>
-                        <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup"
-                               ng-bind="pageContent.alerts"><span></span></a>
+                        <li><a href="/${currentCountryCode}/weather/widgets">${content.widgets}</a></li>
+                        <li><a href="/${currentCountryCode}/weather/outlook/${selectedCity}">${content.weather}</a></li>
+                        <li><a href="/${currentCountryCode}/weather/map/${selectedCity}">${content.temperatureMap}</a></li>
+                        <li><a href="#alert-popup" data-effect="mfp-zoom-in" class="a-popup">${content.alerts}<span></span></a>
                         </li>
                     </ul>
                 </nav>

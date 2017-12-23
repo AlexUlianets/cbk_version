@@ -999,7 +999,7 @@ public class WeatherService {
             wholeDayMap.put("mintempF", weather.get("mintempF"));
             wholeDayMap.put("sunrise", ((HashMap)((ArrayList)weather.get("astronomy")).get(0)).get("sunrise"));
             wholeDayMap.put("sunset", ((HashMap)((ArrayList)weather.get("astronomy")).get(0)).get("sunset"));
-            wholeDayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(hourly.size()==8?(((HashMap)hourly.get(5)).get("weatherCode")):(((HashMap)hourly.get(15)).get("weatherCode")))));
+            wholeDayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(hourly.size()==8?(((HashMap)hourly.get(5)).get("weatherCode")):(((HashMap)hourly.get(15)).get("weatherCode")))) + (dateTime.getHourOfDay()<=6 || dateTime.getHourOfDay()>=18 ? "_night" : "_day"));
             wholeDayMap.put("isDay", dateTime.getHourOfDay()>6 && dateTime.getHourOfDay()<18);
 
             List<HashMap> oneWholeDayData = new ArrayList<>();
@@ -1008,12 +1008,13 @@ public class WeatherService {
                 HashMap<String, Object> dayMap = new HashMap<>();
                 HashMap elem = (HashMap)hourly.get(j);
 
+                boolean isDay = parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800;
                 String windSpeedColorDay = getWindSpeedColor(parseInt(elem.get("windspeedKmph")));
                 String windGustColorDay = getWindSpeedColor(parseInt(elem.get("WindGustKmph")));
                 String windSpeedBoldDay = !windSpeedColorDay.equals("") ?"bold":"";
                 String windGustBoldDay = !windGustColorDay.equals("") ?"bold":"";
                 dayMap.put("time", DateConstants.convertTimeToAmPm(parseInt(elem.get("time"))));
-                dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))));
+                dayMap.put("weatherCode", "" + EXT_STATES.get(parseInt(elem.get("weatherCode"))) + (isDay ? "_day": "_night"));
                 dayMap.put("tempC", elem.get("tempC"));
                 dayMap.put("tempF", elem.get("tempF"));
                 dayMap.put("feelsLikeC", elem.get("FeelsLikeC"));
@@ -1033,7 +1034,7 @@ public class WeatherService {
                 dayMap.put("pressureInch", new BigDecimal(parseInt(elem.get("pressure")) * 0.000296133971008484).setScale(2, BigDecimal.ROUND_UP).doubleValue());
                 dayMap.put("windspeedColor", windSpeedColorDay);
                 dayMap.put("windgustColor", windGustColorDay);
-                dayMap.put("isDay", parseInt(elem.get("time")) >= 600 && parseInt(elem.get("time")) < 1800);
+                dayMap.put("isDay", isDay);
                 dayMap.put("boldSpeed", windSpeedBoldDay);
                 dayMap.put("boldGust", windGustBoldDay);
                 dayMap.put("precipStyle", getPrecipColor(parseDouble(elem.get("precipMM"))));
