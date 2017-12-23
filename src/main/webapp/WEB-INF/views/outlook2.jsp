@@ -34,7 +34,7 @@
 
     <div class="container section-margin-top">
         <div class="wrapper">
-            <div ng-include="'templates/wth_glance.html'" class="page-content"></div>
+           <%@include file="wth_glance2.jsp"%>
 
             <aside class="sidebar top35px">
                 <!-- OLD -->
@@ -50,9 +50,8 @@
 
     <div class="container section-margin-top">
         <div class="wrapper">
-            <div class="page-content" ng-include="'templates/astronomy-sect.html'">
+            <%@include file="astronomy-sect2.jsp"%>
 
-            </div>
             <aside href="#" class="sidebar">
                 <div>
                     <a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>

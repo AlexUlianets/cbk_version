@@ -75,7 +75,7 @@
                                 <c:set var = "data" value = "${temperatureWeekly[elem]['Day']}" />
                             </c:if>
                             <c:if test="${day == 1}">
-                                <c:set var = "data" value = "${temperatureWeekly[elem]['Night']}" />
+                                `
                             </c:if>
                             <c:if test="${day == 2}">
                                 <c:set var = "data" value = "${temperatureWeekly[elem]['wholeDay']}" />

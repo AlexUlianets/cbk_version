@@ -156,7 +156,7 @@ public class LanguageService {
         return map;
     }
 
-    private HashMap generateTodayTomorrowContent(ResourceBundle bundle, String city, String country, String langCode, boolean isToday) {
+    public HashMap generateTodayTomorrowContent(ResourceBundle bundle, String city, String country, String langCode, boolean isToday) {
         HashMap<String, String> map = generateMainContent(bundle);
         map.put("sunrise", encode(bundle.getString("sunrise")));
         map.put("sunset", encode(bundle.getString("sunset")));
