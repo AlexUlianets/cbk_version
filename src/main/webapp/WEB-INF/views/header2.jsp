@@ -35,7 +35,7 @@
     <meta property="og:description" content="${content.description}"/>
     <meta property="og:image"
           content="https://simplesharebuttons.com/wp-content/uploads/2014/08/simple-share-buttons-logo-square.png"/>
-    <title ng-bind="pageContent.title"></title>
+    <title>${content.title}</title>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

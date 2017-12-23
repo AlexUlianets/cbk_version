@@ -1,5 +1,5 @@
 <%@ include file="header2.jsp"%>
-<div ng-controller="todayCtrl">
+<div>
 	<div class="container section-margin-top" >
 	<div class="wrapper">
 		<div class="page-content">
@@ -14,7 +14,7 @@
 								</div>
 								<div class="tmr-text">
 									<div class="grey">${content.sunrise}</div>
-									<div class="count" ng-bind="getTime(astronomy.sunrise)"></div>
+									<div class="count" ng-bind="getTime('${astronomy.sunrise}')"></div>
 								</div>
 							</div>
 							<div class="tmr-sunset">
@@ -23,7 +23,8 @@
 								</div>
 								<div class="tmr-text">
 									<div class="grey">${content.sunset}</div>
-									<div class="count" ng-bind="getTime(astronomy.sunset)"></div>
+
+									<div class="count" ng-bind="getTime('${astronomy.sunset}')"></div>
 								</div>
 							</div>
 						</div>
@@ -143,7 +144,7 @@
 												<c:set var = "item" value = "${dynamicTableData[0][0][i]}" />
 												<div class="tb-row" >
 												<div class="tb-time">
-													<div class="tb-text" ng-bind="getTime(item.time)"></div>
+													<div class="tb-text" ng-bind="getTime('${item.time}')"></div>
 												</div>
 												<div class="tb-weather">
 													<img src="svg/wicons_svg/${item.weatherCode}.svg" style="    width: 45px;    text-align: center;    margin: auto;">
@@ -296,16 +297,16 @@
 	</div><!-- end wrapper -->
 </div><!-- end container -->
 
-	<div class="container section-margin-top">
+<div class="container section-margin-top">
 	<div class="wrapper">
 		<%@include file="astronomy-sect2.jsp"%>
-
-		</div>
 		<aside href="#" class="sidebar">
 			<a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>
 		</aside>
+		</div>
+
 	</div>
 </div><!-- end container -->
-</div>
+
 
 <%@include file="footer2.jsp"%>

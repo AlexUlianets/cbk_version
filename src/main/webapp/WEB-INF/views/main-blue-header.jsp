@@ -39,7 +39,7 @@
                 <dt><i class="icon location"></i><span class="search-text1">${temperature.cityWeather}</span> <span
                         class="search-text2">${temperature.country}</span></dt>
                 <dd>${content.today} ${temperature.month} ${temperature.day}. ${temperature.dayOfWeek}. <span
-                        ng-bind="getTime(('0' + ${temperature.hours}).slice(-2)+':'+('0' + ${temperature.minutes}).slice(-2))"></span>
+                        ng-bind="getTime(('0' + '${temperature.hours}').slice(-2)+':'+('0' + '${temperature.minutes}').slice(-2))"></span>
                 </dd>
             </dl>
         </div>
@@ -115,7 +115,7 @@
                     <span class="helper"></span>
                     <img src="../../images/svg-sprite/sunrise-weather-symbol.svg" alt="" style="width: 35px;">
                 </div>
-                <div class="wt-time" ng-bind="getTime(temperature.sunrise)"></div>
+                <div class="wt-time" ng-bind="getTime('${temperature.sunrise}')"></div>
             </div>
             <div class="weather-time-block">
                 <div class="wtb-img">
@@ -123,7 +123,7 @@
                     <!-- <i class="icon pm"></i> -->
                     <img src="../../images/svg-sprite/sunset-fill-interface-symbol.svg" alt="" style="width: 35px;">
                 </div>
-                <div class="wt-time" ng-bind="getTime(temperature.sunset)"></div>
+                <div class="wt-time" ng-bind="getTime('${temperature.sunset}')"></div>
             </div>
         </div>
 

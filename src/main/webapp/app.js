@@ -191,7 +191,6 @@ app.run( ['$rootScope', '$state', '$stateParams', '$http', '$cookies', function 
 
             }
         }
-        $state.reload();
 
 
     }
@@ -199,3 +198,4 @@ app.run( ['$rootScope', '$state', '$stateParams', '$http', '$cookies', function 
         return changeTimeFormat(str, $rootScope.local.typeTime)
     }
 }]);
+
