@@ -1,24 +1,24 @@
 <%--<c:if test="${pageName} != front-page">--%>
-<div class="page-nav" ng-if="$state.params.day!='front-page'">
+<div class="page-nav">
     <nav class="pn-top" >
         <ul>
-            <li style="display: none" class="mob_weater"><a onclick="blockUrl(event)">{{$state.params.day}}</a></li>
-            <li><a href="/{{currentCountryCode}}/weather/outlook/{{selectedCity}}" ng-class="{'active':$state.current.name=='outlook'}" ng-bind="pageContent.outlook"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/today/{{selectedCity}}" ng-class="{'active':$state.current.name=='today'}" ng-bind="pageContent.today"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/tomorrow/{{selectedCity}}" ng-class="{'active':$state.current.name=='tomorrow'}" ng-bind="pageContent.tomorrow"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/history3/{{selectedCity}}" ng-class="{'active':$state.current.name=='past-weather'||$state.current.name=='past-weather1'}" ng-bind="pageContent.pastWeather"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/map/{{selectedCity}}" ng-class="{'active':$state.current.name=='map'}" ng-bind="pageContent.temperatureMap"></a></li>
+            <li style="display: none" class="mob_weater"><a onclick="blockUrl(event)">${$state.params.day}</a></li>
+            <li><a href="/${currentCountryCode}/weather/outlook/${selectedCity}" class=${pageName.equals("outlook")?"active":""}>${content.outlook}</a></li>
+            <li><a href="/${currentCountryCode}/weather/today/${selectedCity}" class=${pageName.equals("today")?"active":""}>${content.today}</a></li>
+            <li><a href="/${currentCountryCode}/weather/tomorrow/${selectedCity}" class=${pageName.equals("tomorrow")?"active":""}>${content.tomorrow}</a></li>
+            <li><a href="/${currentCountryCode}/weather/history3/${selectedCity}" class=${pageName.equals("history3") || pageName.equals("history1")?"active":""}>${content.pastWeather}</a></li>
+            <li><a href="/${currentCountryCode}/weather/map/${selectedCity}" class=${pageName.equals("map")?"active":""}>${content.temperatureMap}</a></li>
         </ul>
 
     </nav>
     <nav class="pn-bot">
         <ul>
-            <li><a href="/{{currentCountryCode}}/weather/3/{{selectedCity}}" ng-class="{'active':$state.current.name=='three-days'}" ng-bind="pageContent.threeDay"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/5/{{selectedCity}}" ng-class="{'active':$state.current.name=='five-days'}" ng-bind="pageContent.fiveDay"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/7/{{selectedCity}}" ng-class="{'active':$state.current.name=='seven-days'}" ng-bind="pageContent.sevenDay"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/10/{{selectedCity}}" ng-class="{'active':$state.current.name=='ten-days'}" ng-bind="pageContent.tenDay"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/14/{{selectedCity}}" ng-class="{'active':$state.current.name=='fourteen-days'}" ng-bind="pageContent.fourteenDay"></a></li>
-            <li><a href="/{{currentCountryCode}}/weather/hour-by-hour3/{{selectedCity}}" ng-class="{'active':$state.current.name=='hour-by-hour'||$state.current.name=='hour-by-hour1'}" ng-bind="pageContent.hourByHour"></a></li>
+            <li><a href="/${currentCountryCode}/weather/3/${selectedCity}" class=${pageName.equals("weather3")?"active":""}>${content.threeDay}</a></li>
+            <li><a href="/${currentCountryCode}/weather/5/${selectedCity}" class=${pageName.equals("weather5")?"active":""}>${content.fiveDay}</a></li>
+            <li><a href="/${currentCountryCode}/weather/7/${selectedCity}" class=${pageName.equals("weather7")?"active":""}>${content.sevenDay}</a></li>
+            <li><a href="/${currentCountryCode}/weather/10/${selectedCity}" class=${pageName.equals("weather10")?"active":""}>${content.tenDay}</a></li>
+            <li><a href="/${currentCountryCode}/weather/14/${selectedCity}" class=${pageName.equals("weather14")?"active":""}>${content.fourteenDay}</a></li>
+            <li><a href="/${currentCountryCode}/weather/hour-by-hour3/${selectedCity}" class=${pageName.equals("hour-by-hour-3") || pageName.equals("hour-by-hour-1") ? "active":""}>${content.hourByHour}</a></li>
         </ul>
     </nav>
 </div><!-- end page-nav -->

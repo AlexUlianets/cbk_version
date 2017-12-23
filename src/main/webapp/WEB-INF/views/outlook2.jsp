@@ -19,6 +19,8 @@
                     </c:otherwise>
                 </c:choose>
 
+                <%@include file="links2.jsp"%>
+
             </div><!-- end page-content -->
             <aside class="sidebar" style="padding-top: 35px">
                 <!-- <div class="ad300-520 mob-hide"></div> -->
@@ -105,14 +107,14 @@
 
     <section id="coordinates">
         <div class="container">
-            <h2 ng-bind="pageContent.coordinates"></h2>
-            <p><b>{{coordinates.city}}, {{coordinates.country}}.</b> {{coordinates.city}} <a href="#" ng-bind="pageContent.onMap"></a> {{coordinates.latitude}}°, {{coordinates.longitude}}°. {{pageContent.timezone}}: UTC {{coordinates.hours_between}}</p>
+            <h2>${content.coordinates}</h2>
+            <p><b>${coordinates.city}, ${coordinates.country}.</b> ${coordinates.city} <a href="#">${content.onMap}</a> ${coordinates.latitude}, ${coordinates.longitude}. ${content.timezone}: UTC ${coordinates.hours_between}</p>
         </div>
     </section><!-- end coordinates -->
 
     <section class="last-year5 theme-wrapper theme-block">
         <div class="container last-year-five">
-            <h4 ng-bind="pageContent.last5YearWeatherData"></h4>
+            <h4>${content.last5YearWeatherData}</h4>
         </div>
         <div class="blue-bg-full">
             <div class="container">
@@ -122,25 +124,33 @@
                             <img src="img/calendar.svg" alt="img" class="img">
                         </div>
                         <div class="v-today-wrap">
-                            <div class="today" ng-bind="pageContent.today"></div>
-                            <div class="date">{{temperature.day}} {{temperature.month}}</div>
+                            <div class="today">${content.today}</div>
+                            <div class="date">${temperature.day} ${temperature.month}</div>
                             <div style="font-size: 12px">Data at {{getTime('2:00 PM')}}</div>
                         </div>
                     </div>
                     <div class="btn-wrap">
-                        <a href="../../templates/html/past-weather.html" class="btn-theme" ng-bind="pageContent.checkPastWeather"></a>
+                        <a href="../../templates/html/past-weather.html" class="btn-theme">${content.checkPastWeather}</a>
                     </div>
                 </div>
                 <div class="v-year-wrap">
                     <div class="v-year-list">
-                        <div class="v-year-item" ng-repeat="year in five_years_average">
-                            <div class="v-year">{{year.year}}</div>
-                            <img class="v-img" ng-src="svg/wicons_svg_white/{{year.weatherCode}}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
+                        <c:forEach var = "elem" begin = "0" end = "${five_years_average.size()-1}">
+                        <div class="v-year-item">
+                            <div class="v-year">${five_years_average[elem].year}</div>
+                            <img class="v-img" src="svg/wicons_svg_white/${five_years_average[elem].weatherCode}_day.svg" alt="img" style="    width: 48px;    margin: auto; margin-bottom: 14px;">
                             <div class="temperature">
-                                <span class="count">{{local.typeTemp=='C'?year.tempC:year.tempF}}</span>
-                                <span class="mark">°{{local.typeTemp}}</span>
+                            <c:if test="${typeTemp == 'C'}">
+                                <span class="count">${five_years_average[elem].tempC}</span>
+                            </c:if>
+                            <c:if test="${typeTemp == 'F'}">
+                                <span class="count">${five_years_average[elem].tempF}</span>
+                            </c:if>
+
+                                <span class="mark">${typeTemp}</span>
                             </div>
                         </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
@@ -149,27 +159,27 @@
 
     <section id="uv-index">
         <div class="container">
-            <h4 ng-bind="pageContent.uvIndex"></h4>
+            <h4>${content.uvIndex}</h4>
             <div class="uv-top">
                 <div class="uv-top-block">
                     <span class="greenLow"></span>
-                    <em ng-bind="pageContent.uvIndex1"></em>
+                    <em>${content.uvIndex1}</em>
                 </div>
                 <div class="uv-top-block">
                     <span class="yellowAverage"></span>
-                    <em ng-bind="pageContent.uvIndex2"></em>
+                    <em>${content.uvIndex2}</em>
                 </div>
                 <div class="uv-top-block">
                     <span class="orangeHigh"></span>
-                    <em ng-bind="pageContent.uvIndex3"></em>
+                    <em>${content.uvIndex3}</em>
                 </div>
                 <div class="uv-top-block">
                     <span class="redHigh"></span>
-                    <em ng-bind="pageContent.uvIndex4"></em>
+                    <em>${content.uvIndex4}</em>
                 </div>
                 <div class="uv-top-block">
                     <span class="redExtreme"></span>
-                    <em ng-bind="pageContent.uvIndex5"></em>
+                    <em>${content.uvIndex5}</em>
                 </div>
             </div>
 

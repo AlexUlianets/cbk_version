@@ -217,4 +217,5 @@
 </c:if>
 <c:if test="${pageName != 'frontPage'}">
         <%@ include file="main-blue-header.jsp" %>
+        <%@include file="body.jsp"%>
 </c:if>

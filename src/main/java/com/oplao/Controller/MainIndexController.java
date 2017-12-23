@@ -170,9 +170,10 @@ public class MainIndexController {
             HashMap content = languageService.generateOutlookContent(resourceBundle, generatedCity.getString("name"), generatedCity.getString("countryName"), languageCookieCode);
             List recentTabs = searchService.createRecentCitiesTabs(currentCookieValue, languageCookieCode);
 
+            HashMap coordinates = weatherService.getCoordinates(generatedCity, languageCookieCode);
             List tableData = weatherService.getTableDataForDays(generatedCity, 1, 11, false, null, languageCookieCode);
             HashMap<Integer, Map<String, Map>> weatherReport = weatherService.getWeeklyWeatherReport(generatedCity, 7, languageCookieCode);
-
+            List fiveYearsAverage = weatherService.getFiveYearsAverage(generatedCity, languageCookieCode);
             ModelAndView modelAndView = new ModelAndView("outlook2");
 
             modelAndView.addObject("currentCountryCode", languageCookieCode);
@@ -185,6 +186,8 @@ public class MainIndexController {
             modelAndView.addObject("slavTable", slavTable);
             modelAndView.addObject("dynamicTableData", tableData);
             modelAndView.addObject("temperatureWeekly", weatherReport);
+            modelAndView.addObject("coordinates", coordinates);
+            modelAndView.addObject("five_years_average", fiveYearsAverage);
 
             return modelAndView;
         }
