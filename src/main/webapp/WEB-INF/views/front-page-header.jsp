@@ -48,7 +48,7 @@
     <div class="head-bot">
         <div class="hb-inner">
             <div class="weather-now">
-                <img width="90px" ng-src="svg/wicons_svg_white/${temperature.weatherIconCode}.svg" alt="img">
+                <img width="90px" src="svg/wicons_svg_white/${temperature.weatherIconCode}.svg" alt="img">
                 <div><b ng-bind="local.typeTemp=='C'?${temperature.temp_c}:${temperature.temp_f}"></b><em
                         ng-bind="local.typeTemp"></em>
                     <span>/<strong

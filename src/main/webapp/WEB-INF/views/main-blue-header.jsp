@@ -49,11 +49,31 @@
 <div class="head-bot-mini" style="display: block" id="head-bot-mini">
     <div class="hb-inner">
         <div class="weather-now">
-            <img ng-src="svg/wicons_svg_white/${temperature.weatherIconCode}.svg">
-            <div><b ng-bind="local.typeTemp=='C'?temperature.temp_c:temperature.temp_f"></b><em
-                    ng-bind="local.typeTemp"></em>
-                <span>/<strong ng-bind="local.typeTemp=='C'?temperature.temp_f:temperature.temp_c"></strong><abbr
-                        ng-bind="local.typeTemp!='C'?'C':'F'"></abbr></span></div>
+            <img src="svg/wicons_svg_white/${temperature.weatherIconCode}.svg">
+            <div><b>
+                <c:if test="${typeTemp == 'C'}">
+                    ${temperature.temp_c}
+                </c:if>
+                <c:if test="${typeTemp == 'F'}">
+                    ${temperature.temp_f}
+                </c:if>
+            </b><em>${typeTemp}</em>
+                <span>/<strong>
+                    <c:if test="${typeTemp == 'C'}">
+                        ${temperature.temp_f}
+                    </c:if>
+                <c:if test="${typeTemp == 'F'}">
+                    ${temperature.temp_c}
+                </c:if>`
+                </strong><abbr>
+                         <c:if test="${typeTemp == 'C'}">
+                            'F'
+                         </c:if>
+                        <c:if test="${typeTemp == 'F'}">
+                            'C'
+                        </c:if>
+
+                </abbr></span></div>
         </div>
 
         <div class="weather-info">
@@ -104,7 +124,7 @@
                     <p>    ${temperature.windMs} <span>${content.ms} </span></p>
                 </c:if>
                 <c:if test="${typeTemp == 'F'}">
-                    <p>    ${temperature.windMph} <span>${content.mph} </span></p>
+                    <p> ${temperature.windMph} <span>${content.mph} </span></p>
                 </c:if>
             </div>
         </div><!-- end weather-info -->
@@ -132,7 +152,7 @@
                 <c:forEach var = "elem" begin = "0" end = "${recentTabs.size()-1}">
                       <a class="weather-block-favorite w${elem}">
                     <div class="wb-left">
-                        <img ng-src="svg/wicons_svg/${recentTabs[elem].weatherCode}.svg" style="width: 30px;">
+                        <img src="svg/wicons_svg/${recentTabs[elem].weatherCode}.svg" style="width: 30px;">
 
                         <c:if test = "${typeTemp == 'C'}">
                             <div class="wbl-temp">${recentTabs[elem].tempC} <span>${typeTemp}</span></div>
