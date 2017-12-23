@@ -9,13 +9,13 @@
                     <div class="al-img">
                         <img src="images/svg/oplao_sunrise.svg" alt="img"></img>
                     </div>
-                    <span ng-bind="getTime(astronomy.sunrise)"></span>
+                    <span ng-bind="getTime('${astronomy.sunrise}')"></span>
                 </div>
                 <div class="al-block">
                     <div class="al-img">
                         <img src="images/svg/oplao_sunset.svg" alt="img"></img>
                     </div>
-                    <span ng-bind="getTime(astronomy.sunset)"></span>
+                    <span ng-bind="getTime('${astronomy.sunset}')"></span>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <h5>
                     ${astronomy.moon_phase_state}
                 </h5>
-                <img alt="img" ng-repeat="n in [1, 2, 3, 4, 5, 6, 7, 8]" ng-src="svg/oplao_moon_{{n}}.svg" ng-class="{'op_full':moon_phase_index==n, 'op':moon_phase_index!=n}"></img>
+                <img alt="img" ng-repeat="n in [1, 2, 3, 4, 5, 6, 7, 8]" ng-src="svg/oplao_moon_{{n}}.svg" ng-class="{'op_full':${astronomy.moon_phase_index}==n, 'op':${astronomy.moon_phase_index}!=n}"></img>
             </div>
         </div>
     </div>

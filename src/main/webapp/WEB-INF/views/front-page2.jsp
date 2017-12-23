@@ -76,7 +76,12 @@
 						<h2>${content.temperatureMap}</h2>
 						<a href="#" class="t-view-map">${content.viewMap}</a>
 					</div>
-					<div id="map"></div>
+					<figure id="map">
+						<div id="gmap"></div>
+						<map-marker
+								ng-repeat="location in locations">
+						</map-marker>
+					</figure>
 				</section><!-- end temperature-map -->
 			</div><!-- end page-content -->
 			<aside class="sidebar">

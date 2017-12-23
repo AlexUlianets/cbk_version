@@ -1,6 +1,6 @@
 <%@ include file="header2.jsp"%>
 
-<div ng-controller="outlookCtrl">
+<div>
     <div class="container section-margin-top">
         <div class="wrapper">
             <div class="page-content">
@@ -48,17 +48,17 @@
         </div><!-- end wrapper -->
     </div><!-- end container -->
 
+
     <div class="container section-margin-top">
         <div class="wrapper">
             <%@include file="astronomy-sect2.jsp"%>
-
             <aside href="#" class="sidebar">
-                <div>
-                    <a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>
-                </div>
+                <a href="https://play.google.com/store/apps/developer?id=Oplao" class="g-play" ng-include="'templates/html/google-play.html'"></a>
             </aside>
         </div>
-    </div><!-- end container -->
+
+    </div>
+</div><!-- end container -->
 
     <section id="climate-in"  style="position: relative;">
         <div class="container" style="margin-bottom: 4%">
@@ -73,19 +73,19 @@
            <div class="cit-block c-t-max">
                     <span></span>
                     <i></i>
-                    <em>T° {{pageContent.max}}</em>
+                    <em>T° ${content.max}</em>
                     <b>{{local.typeTemp=='C'?climate.tempMaxC:climate.tempMaxF}}°{{local.typeTemp}}</b>
                 </div>
                 <div class="cit-block c-t-min">
                     <span></span>
                     <i></i>
-                    <em>T° {{pageContent.min}}</em>
+                    <em>T° ${content.min}</em>
                     <b>{{local.typeTemp=='C'?climate.tempMinC:climate.tempMinF}}°{{local.typeTemp}}</b>
                 </div>
                 <div class="cit-block c-t-prec">
                     <span></span>
                     <i></i>
-                    <em>{{pageContent.precipitation}}</em>
+                    <em>${content.precipitation}</em>
                     <b>{{local.typeTemp=='C'?climate.precipMm:climate.precipIn}} {{local.typeTemp=='C'?pageContent.mmDist:pageContent.inDist}}</b>
                 </div>
         </div>
@@ -184,7 +184,7 @@
 
             <div class="uv-bot" >
                 <div class="uv-bot-block" ng-repeat="ultra in ultraviolet track by $index">
-                    <em>{{$index == 0 ? pageContent.today:ultra.date}}</em>
+                    <em ng-bind="$index == 0 ? '${content.today}':ultra.date"></em>
                     <span class="{{colorsUV[$index]}}"></span>
                 </div>
             </div>
