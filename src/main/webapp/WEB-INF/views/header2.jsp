@@ -161,7 +161,7 @@
                                 <a href="/${currentCountryCode}/weather/5/${selectedCity}">${content.fiveDaysWeatherForecast}</a>
                             </li>
                             <li>
-                                <a href="/${currentCountryCode}/weather/7/${selectedCity}">${content.sevenDaysWeatherForecast}}</a>
+                                <a href="/${currentCountryCode}/weather/7/${selectedCity}">${content.sevenDaysWeatherForecast}</a>
                             </li>
                             <li>
                                 <a href="/${currentCountryCode}/weather/14/${selectedCity}">${content.fourteenDaysWeatherForecast}</a>

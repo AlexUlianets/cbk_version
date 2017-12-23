@@ -138,8 +138,6 @@ public class MainIndexController {
 //        }
 
 
-
-
         @RequestMapping("/weather/outlook/{locationRequest:.+}")
         public ModelAndView weatherOutlook(@PathVariable(value = "locationRequest") String locationRequest,
                             @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
@@ -188,7 +186,51 @@ public class MainIndexController {
             modelAndView.addObject("temperatureWeekly", weatherReport);
             modelAndView.addObject("coordinates", coordinates);
             modelAndView.addObject("five_years_average", fiveYearsAverage);
+            modelAndView.addObject("astronomy", weatherService.getAstronomy(generatedCity, languageCookieCode));
+            modelAndView.addObject("weekly_weather_summary", weatherService.getWeeklyWeatherSummary(generatedCity, languageCookieCode));
 
+            return modelAndView;
+        }
+
+        @RequestMapping("/weather/today/{locationRequest:.+}")
+        public ModelAndView weatherToday(@PathVariable(value = "locationRequest") String locationRequest,
+                                           @CookieValue(value = SearchService.cookieName, defaultValue = "") String currentCookieValue,
+                                           HttpServletRequest request, HttpServletResponse response,
+                                           @CookieValue(value = "langCookieCode", defaultValue = "") String languageCookieCode,
+                                           @CookieValue(value = "temp_val", defaultValue = "C") String typeTemp) {
+
+            String reqUrl = request.getRequestURI();
+            try {
+                locationRequest = URLDecoder.decode(locationRequest, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            JSONObject generatedCity = searchService.generateUrlRequestWeather(locationRequest, currentCookieValue, request, response, reqUrl.split("/")[1]);
+
+            if(reqUrl.contains("forecast")){
+                response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+                response.setHeader("Location", reqUrl.replace("forecast", "weather"));
+            }
+
+
+            Locale locale = new Locale(languageCookieCode, LanguageUtil.getCountryCode(languageCookieCode));
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("messages_" + languageCookieCode, locale);
+
+            HashMap content = languageService.generateTodayTomorrowContent(resourceBundle, generatedCity.getString("name"), generatedCity.getString("countryName"), languageCookieCode, true);
+            List recentTabs = searchService.createRecentCitiesTabs(currentCookieValue, languageCookieCode);
+
+            ModelAndView modelAndView = new ModelAndView("today2");
+
+            modelAndView.addObject("currentCountryCode", languageCookieCode);
+            modelAndView.addObject("selectedCity", generatedCity.getString("name").toUpperCase() + "_" + generatedCity.getString("countryCode").toUpperCase());
+            modelAndView.addObject("typeTemp", typeTemp);
+            modelAndView.addObject("temperature", weatherService.getRemoteData(generatedCity, languageCookieCode));
+            modelAndView.addObject("pageName", "today");
+            modelAndView.addObject("recentTabs", recentTabs);
+            modelAndView.addObject("content", content);
+            modelAndView.addObject("dynamicTableData", weatherService.getDynamicTableData(generatedCity, 3,1, false, null, languageCookieCode, false));
+            modelAndView.addObject("astronomy", weatherService.getAstronomy(generatedCity, languageCookieCode));
+            modelAndView.addObject("weekly_weather_summary", weatherService.getWeeklyWeatherSummary(generatedCity, languageCookieCode));
             return modelAndView;
         }
     }
